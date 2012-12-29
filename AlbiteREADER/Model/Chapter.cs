@@ -17,7 +17,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model
         public Chapter PreviousChapter { get; private set; }
         public Chapter NextChapter {get; private set; }
         public Book Book { get; private set; }
-        public LayoutLocation ReadingLocation { get; set; }
+        public Location ReadingLocation { get; set; }
 
         public Chapter(Book book, Chapter previous, Chapter next)
         {

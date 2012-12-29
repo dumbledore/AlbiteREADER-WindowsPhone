@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace SvetlinAnkov.AlbiteREADER.Layout
 {
-    public class LayoutLocation
+    public class Location
     {
         /// <summary>
         /// This is the Unique element ID, got using the related IE API.
@@ -34,7 +34,7 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
         /// </summary>
         public int TextOffset { get; private set; }
 
-        public LayoutLocation(int index, int offset)
+        public Location(int index, int offset)
         {
             ElementIndex = index;
             TextOffset = offset;

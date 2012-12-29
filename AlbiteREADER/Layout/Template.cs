@@ -23,7 +23,7 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
     /// Once all placeholders have been set, call GetOutput() to get the
     /// processed content
     /// </summary>
-    public class LayoutTemplate
+    public class Template
     {
         private const string PlaceholderRegex = "%{([^}]*)}";
         private const string PlaceholderLeftSide = "%{";
@@ -32,9 +32,9 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
         private string template;
         private Dictionary<string, string> placeholders = new Dictionary<string,string>();
 
-        protected LayoutTemplate() { }
+        protected Template() { }
 
-        public LayoutTemplate(string template)
+        public Template(string template)
         {
             setTemplate(template);
         }

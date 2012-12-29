@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace SvetlinAnkov.AlbiteREADER.Layout
 {
-    public class LayoutSettings
+    public class Settings
     {
         public int LineHeight { get; set; }
         public string FontFamily { get; set; }
@@ -23,9 +23,10 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
         public int MarginLeft { get; set; }
         public int MarginRight { get; set; }
 
-        public LayoutTheme Theme { get; set; }
+        public Theme Theme { get; set; }
     }
 
+    // This emulates an enum with a custom ToString()
     public class TextAlign
     {
         private string text;

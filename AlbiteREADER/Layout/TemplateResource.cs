@@ -12,11 +12,11 @@ using SvetlinAnkov.AlbiteREADER.Utils;
 
 namespace SvetlinAnkov.AlbiteREADER.Layout
 {
-    public class LayoutTemplateResource : LayoutTemplate
+    public class TemplateResource : Template
     {
         private readonly string filename;
 
-        public LayoutTemplateResource(string filename)
+        public TemplateResource(string filename)
         {
             this.filename = filename;
 

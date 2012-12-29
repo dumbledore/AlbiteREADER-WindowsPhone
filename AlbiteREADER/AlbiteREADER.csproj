@@ -61,12 +61,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Layout\LayoutEngine.cs" />
-    <Compile Include="Layout\LayoutLocation.cs" />
-    <Compile Include="Layout\LayoutSettings.cs" />
-    <Compile Include="Layout\LayoutTemplate.cs" />
-    <Compile Include="Layout\LayoutTemplateResource.cs" />
-    <Compile Include="Layout\LayoutTheme.cs" />
+    <Compile Include="Layout\Defaults.cs" />
+    <Compile Include="Layout\Engine.cs" />
+    <Compile Include="Layout\Location.cs" />
+    <Compile Include="Layout\Settings.cs" />
+    <Compile Include="Layout\Template.cs" />
+    <Compile Include="Layout\TemplateResource.cs" />
+    <Compile Include="Layout\Theme.cs" />
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\Chapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

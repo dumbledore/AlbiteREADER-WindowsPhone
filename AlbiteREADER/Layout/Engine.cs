@@ -14,13 +14,13 @@ using SvetlinAnkov.AlbiteREADER.Utils;
 
 namespace SvetlinAnkov.AlbiteREADER.Layout
 {
-    public class LayoutEngine
+    public class Engine
     {
         private readonly WebBrowser webBrowser;
         // The settings are read-only, because their values will be updated
         // through data binding.
-        private readonly LayoutSettings settings;
-        public LayoutSettings Settings
+        private readonly Settings settings;
+        public Settings Settings
         {
             get
             {
@@ -31,12 +31,12 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
         private static readonly string FilesLocation = "/Layout/";
         private static readonly string[] FilesToCopy = { "Albite.js" };
 
-        private readonly LayoutTemplateResource contentTemplate = new LayoutTemplateResource(FilesLocation + "Content.css");
-        private readonly LayoutTemplateResource mainTemplate    = new LayoutTemplateResource(FilesLocation + "Main.xhtml");
-        private readonly LayoutTemplateResource stylesTemplate  = new LayoutTemplateResource(FilesLocation + "Styles.css");
-        private readonly LayoutTemplateResource themTemplate    = new LayoutTemplateResource(FilesLocation + "Theme.css");
+        private readonly TemplateResource contentTemplate = new TemplateResource(FilesLocation + "Content.css");
+        private readonly TemplateResource mainTemplate    = new TemplateResource(FilesLocation + "Main.xhtml");
+        private readonly TemplateResource stylesTemplate  = new TemplateResource(FilesLocation + "Styles.css");
+        private readonly TemplateResource themTemplate    = new TemplateResource(FilesLocation + "Theme.css");
         
-        public LayoutEngine(WebBrowser webBrowser, LayoutSettings settings) : base()
+        public Engine(WebBrowser webBrowser, Settings settings) : base()
         {
             this.webBrowser = webBrowser;
             this.settings = settings;
@@ -119,7 +119,7 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
         private void open()
         {
             // Set up the storage
-
+            
             
             apply();
         }
@@ -144,7 +144,7 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
             //      using ScriptNotify() and window.external.notify().
         }
 
-        public void goToLocation(LayoutLocation location)
+        public void goToLocation(Location location)
         {
             //TODO: Tell the JSEngine to go to this location.
         }

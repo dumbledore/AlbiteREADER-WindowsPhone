@@ -25,10 +25,10 @@ namespace SvetlinAnkov.AlbiteREADER.Test
         {
             InitializeComponent();
 
-            LayoutTemplateResource contentCss = new LayoutTemplateResource("Layout/Content.css");
-            LayoutTemplateResource mainXhtml  = new LayoutTemplateResource("Layout/Main.xhtml");
-            LayoutTemplateResource stylesCss  = new LayoutTemplateResource("Layout/Styles.css");
-            LayoutTemplateResource themeCss   = new LayoutTemplateResource("Layout/Theme.css");
+            TemplateResource contentCss = new TemplateResource("Layout/Content.css");
+            TemplateResource mainXhtml  = new TemplateResource("Layout/Main.xhtml");
+            TemplateResource stylesCss  = new TemplateResource("Layout/Styles.css");
+            TemplateResource themeCss   = new TemplateResource("Layout/Theme.css");
 
             contentCss["line_height"]   = "140"; //In %
             contentCss["font_size"]     = "28";  //In px
@@ -80,7 +80,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test
             }
         }
 
-        private void listTemplateNames(LayoutTemplate t)
+        private void listTemplateNames(Template t)
         {
             Debug.WriteLine("Number of placeholder names: {0}", t.Count);
             foreach (string name in t.Names)
