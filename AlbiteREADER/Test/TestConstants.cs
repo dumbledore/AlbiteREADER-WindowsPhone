@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace SvetlinAnkov.AlbiteREADER.Test
 {
-    public static class TestGlobals
+    public static class TestConstants
     {
         public const string IsoLocation = "/Test/";
     }

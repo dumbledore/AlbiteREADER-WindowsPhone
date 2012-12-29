@@ -15,7 +15,9 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
 {
     public class AlbiteResourceStorage : AlbiteStorage
     {
-        public AlbiteResourceStorage(string filename) : base(filename) { }
+        private static readonly string ResourcesLocation = "Resources/";
+
+        public AlbiteResourceStorage(string filename) : base(ResourcesLocation + filename) { }
 
         protected override Stream getStream(FileMode fileMode)
         {

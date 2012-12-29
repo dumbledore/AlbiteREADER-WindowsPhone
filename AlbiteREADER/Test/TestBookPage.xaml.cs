@@ -37,7 +37,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test
             listTemplateNames(contentCss);
             contentCss.SaveToStorage();
 
-            mainXhtml["page_width"]     = "480"; //In px
+            mainXhtml["full_page_width"]= "480"; //In px
             mainXhtml["chapter_title"]  = "Chapter I: Down The Rabbit Hole";
             mainXhtml["chapter_file"]   = "/Test/Book/chapter01.xhtml";
             listTemplateNames(mainXhtml);
@@ -66,7 +66,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test
 
             themeCss["background_color"] = "white";
             themeCss["text_color"] = "black";
-            themeCss["italics_color"] = "#634F3B";
+            themeCss["accent_color"] = "#634F3B";
             listTemplateNames(themeCss);
             themeCss.SaveToStorage();
 
@@ -96,7 +96,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test
         {
             get
             {
-                return TestGlobals.IsoLocation + "Book/";
+                return TestConstants.IsoLocation + "Book/";
             }
         }
     }

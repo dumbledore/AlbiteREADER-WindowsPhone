@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
   <App xmlns="" ProductID="{bdf349d4-69ac-4450-a13f-ca351b98353c}" Title="Albite READER" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="AlbiteREADER author" Description="Sample description" Publisher="AlbiteREADER">
-    <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">Resources\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES" />
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
@@ -24,7 +24,7 @@
     <Tokens>
       <PrimaryToken TokenID="AlbiteREADERToken" TaskName="_default">
         <TemplateType5>
-          <BackgroundImageURI IsRelative="true" IsResource="false">SplashScreenImage.jpg</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Resources\Background.png</BackgroundImageURI>
           <Count>0</Count>
           <Title>Albite READER</Title>
         </TemplateType5>

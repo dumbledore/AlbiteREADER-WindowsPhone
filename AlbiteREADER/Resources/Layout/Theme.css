@@ -8,7 +8,7 @@ div#header {
 }
 
 i, em {
-	color: %{italics_color}; /* Default: #634F3B */
+	color: %{accent_color}; /* Default: #634F3B */
 }
 
 hr {
