@@ -10,12 +10,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Resources;
 using System.IO;
+using SvetlinAnkov.AlbiteREADER.Utils;
 
 namespace SvetlinAnkov.AlbiteREADER.Utils
 {
     public class AlbiteResourceStorage : AlbiteStorage
     {
-        private static readonly string ResourcesLocation = "Resources/";
+        private static readonly string ResourcesLocation = Defaults.Application.Resources;
 
         public AlbiteResourceStorage(string filename) : base(ResourcesLocation + filename) { }
 

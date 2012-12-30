@@ -9,10 +9,10 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace SvetlinAnkov.AlbiteREADER.Test
+namespace SvetlinAnkov.AlbiteREADER.Model
 {
-    public static class TestConstants
+    public class BookContainer
     {
-        public const string IsoLocation = "/Test/";
+
     }
 }

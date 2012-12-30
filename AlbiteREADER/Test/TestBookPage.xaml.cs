@@ -25,9 +25,11 @@ namespace SvetlinAnkov.AlbiteREADER.Test
         {
             InitializeComponent();
 
-            TemplateResource contentCss = new TemplateResource("Layout/Content.css");
+            Engine engine = new Engine(null, Defaults.Layout.DefaultSettings);
+
             TemplateResource mainXhtml  = new TemplateResource("Layout/Main.xhtml");
-            TemplateResource stylesCss  = new TemplateResource("Layout/Styles.css");
+            TemplateResource baseCss    = new TemplateResource("Layout/Base.css");
+            TemplateResource contentCss = new TemplateResource("Layout/Content.css");
             TemplateResource themeCss   = new TemplateResource("Layout/Theme.css");
 
             contentCss["line_height"]   = "140"; //In %
@@ -54,15 +56,15 @@ namespace SvetlinAnkov.AlbiteREADER.Test
             int pageWidth = fullPageWidth - (pageMarginLeft + pageMarginRight);
             int pageHeight = fullPageHeight - (pageMarginTop + pageMarginBottom);
 
-            stylesCss["page_width_x_3"] = (fullPageWidth * 3).ToString();
-            stylesCss["page_margin_top"] = pageMarginTop.ToString();
-            stylesCss["page_margin_bottom"] = pageMarginBottom.ToString();
-            stylesCss["page_margin_left"] = pageMarginLeft.ToString();
-            stylesCss["page_margin_right"] = pageMarginRight.ToString();
-            stylesCss["page_width"] = pageWidth.ToString();
-            stylesCss["page_height"] = pageHeight.ToString();
-            listTemplateNames(stylesCss);
-            stylesCss.SaveToStorage();
+            baseCss["page_width_x_3"] = (fullPageWidth * 3).ToString();
+            baseCss["page_margin_top"] = pageMarginTop.ToString();
+            baseCss["page_margin_bottom"] = pageMarginBottom.ToString();
+            baseCss["page_margin_left"] = pageMarginLeft.ToString();
+            baseCss["page_margin_right"] = pageMarginRight.ToString();
+            baseCss["page_width"] = pageWidth.ToString();
+            baseCss["page_height"] = pageHeight.ToString();
+            listTemplateNames(baseCss);
+            baseCss.SaveToStorage();
 
             themeCss["background_color"] = "white";
             themeCss["text_color"] = "black";
@@ -86,17 +88,6 @@ namespace SvetlinAnkov.AlbiteREADER.Test
             foreach (string name in t.Names)
             {
                 Debug.WriteLine("Name: {0} = {1}", name, t[name]);
-            }
-        }
-    }
-
-    public class TestBook : AlbiteREADER.Model.Book
-    {
-        public override string IsoLocation
-        {
-            get
-            {
-                return TestConstants.IsoLocation + "Book/";
             }
         }
     }

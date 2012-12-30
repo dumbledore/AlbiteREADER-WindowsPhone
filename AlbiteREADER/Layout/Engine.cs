@@ -28,27 +28,24 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
             }
         }
 
-        private static readonly string FilesLocation = "/Layout/";
-        private static readonly string[] FilesToCopy = { "Albite.js" };
-
-        private readonly TemplateResource contentTemplate = new TemplateResource(FilesLocation + "Content.css");
-        private readonly TemplateResource mainTemplate    = new TemplateResource(FilesLocation + "Main.xhtml");
-        private readonly TemplateResource stylesTemplate  = new TemplateResource(FilesLocation + "Styles.css");
-        private readonly TemplateResource themTemplate    = new TemplateResource(FilesLocation + "Theme.css");
+        private readonly TemplateResource mainPageTemplate;
+        private readonly TemplateResource baseStylesTemplate;
+        private readonly TemplateResource contentStylesTemplate;
+        private readonly TemplateResource themeStylesTemplate;
         
-        public Engine(WebBrowser webBrowser, Settings settings) : base()
+        public Engine(WebBrowser webBrowser, Settings settings) : this()
         {
             this.webBrowser = webBrowser;
             this.settings = settings;
-
-            prepareFiles();
         }
 
-        private void prepareFiles()
+        private Engine()
         {
-            foreach (string file in FilesToCopy)
+            string FilesLocation = Defaults.Engine.LayoutPath;
+
+            // First, copy the JSEngine to the Isolated Storage
             {
-                string filename = FilesLocation + file;
+                string filename = FilesLocation + Defaults.Engine.JSEngine;
                 using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(filename))
                 {
                     using (AlbiteResourceStorage res = new AlbiteResourceStorage(filename))
@@ -57,6 +54,12 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
                     }
                 }
             }
+
+            // Then load the templates
+            mainPageTemplate = new TemplateResource(FilesLocation + Defaults.Engine.MainPage);
+            baseStylesTemplate = new TemplateResource(FilesLocation + Defaults.Engine.BaseStyles);
+            contentStylesTemplate = new TemplateResource(FilesLocation + Defaults.Engine.ContentStyles);
+            themeStylesTemplate = new TemplateResource(FilesLocation + Defaults.Engine.ThemeStyles);
         }
 
         /// <summary>
@@ -70,26 +73,26 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
             int pageWidth = fullPageWidth - (settings.MarginLeft + settings.MarginRight);
             int pageHeight = fullPageHeight - (settings.MarginTop + settings.MarginBottom);
 
-            mainTemplate["full_page_width"] = fullPageWidth.ToString();
-            mainTemplate.SaveToStorage();
+            mainPageTemplate["full_page_width"] = fullPageWidth.ToString();
+            mainPageTemplate.SaveToStorage();
 
-            stylesTemplate["page_width_x_3"] = (fullPageWidth * 3).ToString();
-            stylesTemplate["page_width"] = pageWidth.ToString();
-            stylesTemplate["page_height"] = pageHeight.ToString();
-            stylesTemplate.SaveToStorage();
+            baseStylesTemplate["page_width_x_3"] = (fullPageWidth * 3).ToString();
+            baseStylesTemplate["page_width"] = pageWidth.ToString();
+            baseStylesTemplate["page_height"] = pageHeight.ToString();
+            baseStylesTemplate.SaveToStorage();
         }
 
         private void updateLayout()
         {
-            contentTemplate["line_height"] = settings.LineHeight.ToString();
-            contentTemplate["font_size"] = settings.FontSize.ToString();
-            contentTemplate["font_family"] = settings.FontFamily;
-            contentTemplate["text_align"] = settings.TextAlign.ToString();
+            contentStylesTemplate["line_height"] = settings.LineHeight.ToString();
+            contentStylesTemplate["font_size"] = settings.FontSize.ToString();
+            contentStylesTemplate["font_family"] = settings.FontFamily;
+            contentStylesTemplate["text_align"] = settings.TextAlign.ToString();
 
-            stylesTemplate["page_margin_top"] = settings.MarginTop.ToString();
-            stylesTemplate["page_margin_bottom"] = settings.MarginBottom.ToString();
-            stylesTemplate["page_margin_left"] = settings.MarginLeft.ToString();
-            stylesTemplate["page_margin_right"] = settings.MarginRight.ToString();
+            baseStylesTemplate["page_margin_top"] = settings.MarginTop.ToString();
+            baseStylesTemplate["page_margin_bottom"] = settings.MarginBottom.ToString();
+            baseStylesTemplate["page_margin_left"] = settings.MarginLeft.ToString();
+            baseStylesTemplate["page_margin_right"] = settings.MarginRight.ToString();
 
             // Don't forget to update the dimensions as well as they
             // depend on the margins.

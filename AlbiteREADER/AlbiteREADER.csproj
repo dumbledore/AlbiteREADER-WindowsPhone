@@ -61,7 +61,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Layout\Defaults.cs" />
     <Compile Include="Layout\Engine.cs" />
     <Compile Include="Layout\Location.cs" />
     <Compile Include="Layout\Settings.cs" />
@@ -69,15 +68,37 @@
     <Compile Include="Layout\TemplateResource.cs" />
     <Compile Include="Layout\Theme.cs" />
     <Compile Include="Model\Book.cs" />
+    <Compile Include="Model\BookContainer.cs" />
     <Compile Include="Model\Chapter.cs" />
+    <Compile Include="Model\Library.cs" />
+    <Compile Include="Resources\Defaults\LayoutDefaults.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LayoutDefaults.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Defaults\ApplicationDefaults.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApplicationDefaults.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Defaults\EngineDefaults.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EngineDefaults.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Defaults\TestDefaults.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestDefaults.resx</DependentUpon>
+    </Compile>
     <Compile Include="Test\TestBookPage.xaml.cs">
       <DependentUpon>TestBookPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Test\TestConstants.cs" />
     <Compile Include="Utils\AlbiteIsolatedStorage.cs" />
     <Compile Include="Utils\AlbiteResourceStorage.cs" />
     <Compile Include="Utils\AlbiteStorage.cs" />
+    <Compile Include="Utils\Defaults.cs" />
     <Compile Include="View\BookPage.xaml.cs">
       <DependentUpon>BookPage.xaml</DependentUpon>
     </Compile>
@@ -102,7 +123,7 @@
     <Content Include="Resources\Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Layout\Styles.css" />
+    <Content Include="Resources\Layout\Base.css" />
     <Content Include="Resources\Layout\Theme.css" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
@@ -116,7 +137,24 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Defaults\LayoutDefaults.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LayoutDefaults.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Defaults\ApplicationDefaults.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ApplicationDefaults.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Defaults\EngineDefaults.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EngineDefaults.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Defaults\TestDefaults.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestDefaults.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

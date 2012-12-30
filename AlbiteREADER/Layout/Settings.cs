@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Collections.Generic;
 
 namespace SvetlinAnkov.AlbiteREADER.Layout
 {
@@ -45,5 +46,25 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
         public static readonly TextAlign Right = new TextAlign("right");
         public static readonly TextAlign Center = new TextAlign("center");
         public static readonly TextAlign Justify = new TextAlign("justify");
+
+        private static readonly Dictionary<string, TextAlign> values = new Dictionary<string, TextAlign>();
+
+        static TextAlign()
+        {
+            values.Add(Left.ToString(), Left);
+            values.Add(Right.ToString(), Right);
+            values.Add(Center.ToString(), Center);
+            values.Add(Justify.ToString(), Justify);
+        }
+
+        public static TextAlign FromString(string name)
+        {
+            if (!values.ContainsKey(name))
+            {
+                throw new InvalidOperationException("Value not supported");
+            }
+
+            return values[name];
+        }
     }
 }
