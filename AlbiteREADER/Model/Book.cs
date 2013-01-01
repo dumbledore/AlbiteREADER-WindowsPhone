@@ -8,6 +8,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using SvetlinAnkov.AlbiteREADER.Utils;
+using SvetlinAnkov.AlbiteREADER.Model.Containers;
 
 namespace SvetlinAnkov.AlbiteREADER.Model
 {
@@ -15,13 +17,21 @@ namespace SvetlinAnkov.AlbiteREADER.Model
     {
         private const string IsoLocationPath = "Books/";
 
+        //TODO: This will be set by the DataBase
         private int id = 0;
 
-        public virtual string IsoLocation
+        public Book(BookContainer bookContainer)
+        {
+            // Create the folder for this book
+            
+            // Extract the 
+        }
+
+        public virtual string Path
         {
             get
             {
-                return IsoLocationPath + id;
+                return Defaults.Engine.BookPath + id;
             }
         }
     }

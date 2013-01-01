@@ -30,6 +30,21 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
             this.filename = filename;
         }
 
+        public string Filename
+        {
+            get
+            {
+                return filename;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new AlbiteStorage, relative to this one
+        /// </summary>
+        /// <param name="filename">the filename of the new storage</param>
+        /// <returns></returns>
+        public abstract AlbiteStorage OpenRelative(string filename);
+
         protected abstract Stream getStream(FileMode fileMode);
         protected abstract void CreatePathForFile();
         public abstract void Dispose();

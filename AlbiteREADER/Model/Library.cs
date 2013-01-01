@@ -12,6 +12,8 @@ using System.Collections.Generic;
 
 namespace SvetlinAnkov.AlbiteREADER.Model
 {
+    //TODO: Perhaps this class will be used for different purposes
+
     public class Library
     {
         private Dictionary<int, Book> cachedBooks = new Dictionary<int, Book>();
@@ -27,12 +29,6 @@ namespace SvetlinAnkov.AlbiteREADER.Model
         private void SaveToStorage(Book book)
         {
             //TODO
-        }
-
-        private int getNextBookId()
-        {
-            // Increment first to allow recursive code
-            return ++nextBookId;
         }
 
         public Book this[int id]
@@ -60,6 +56,9 @@ namespace SvetlinAnkov.AlbiteREADER.Model
             }
         }
 
-        //public void addBook();
+        //public void addBook(BookContainer bookContainer)
+        //{
+        //    Book book = new Book();
+        //}
     }
 }

@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Windows.Resources;
 using SvetlinAnkov.AlbiteREADER.Layout;
 using SvetlinAnkov.AlbiteREADER.Utils;
+using SvetlinAnkov.AlbiteREADER.Model.Containers;
 
 namespace SvetlinAnkov.AlbiteREADER.Test
 {
@@ -27,57 +28,24 @@ namespace SvetlinAnkov.AlbiteREADER.Test
 
             Engine engine = new Engine(null, Defaults.Layout.DefaultSettings);
 
-            TemplateResource mainXhtml  = new TemplateResource("Layout/Main.xhtml");
-            TemplateResource baseCss    = new TemplateResource("Layout/Base.css");
-            TemplateResource contentCss = new TemplateResource("Layout/Content.css");
-            TemplateResource themeCss   = new TemplateResource("Layout/Theme.css");
-
-            contentCss["line_height"]   = "140"; //In %
-            contentCss["font_size"]     = "28";  //In px
-            contentCss["font_family"]   = "Georgia";
-            contentCss["text_align"]    = "justify";
-            listTemplateNames(contentCss);
-            contentCss.SaveToStorage();
-
-            mainXhtml["full_page_width"]= "480"; //In px
-            mainXhtml["chapter_title"]  = "Chapter I: Down The Rabbit Hole";
-            mainXhtml["chapter_file"]   = "/Test/Book/chapter01.xhtml";
-            listTemplateNames(mainXhtml);
-            mainXhtml.SaveToStorage();
-            
-            int fullPageWidth   = 480;
-            int fullPageHeight  = 800 - 72; // Leaving place for the application bar?
-
-            int pageMarginTop       = 30;
-            int pageMarginBottom    = 30;
-            int pageMarginLeft      = 30;
-            int pageMarginRight     = 40;
-
-            int pageWidth = fullPageWidth - (pageMarginLeft + pageMarginRight);
-            int pageHeight = fullPageHeight - (pageMarginTop + pageMarginBottom);
-
-            baseCss["page_width_x_3"] = (fullPageWidth * 3).ToString();
-            baseCss["page_margin_top"] = pageMarginTop.ToString();
-            baseCss["page_margin_bottom"] = pageMarginBottom.ToString();
-            baseCss["page_margin_left"] = pageMarginLeft.ToString();
-            baseCss["page_margin_right"] = pageMarginRight.ToString();
-            baseCss["page_width"] = pageWidth.ToString();
-            baseCss["page_height"] = pageHeight.ToString();
-            listTemplateNames(baseCss);
-            baseCss.SaveToStorage();
-
-            themeCss["background_color"] = "white";
-            themeCss["text_color"] = "black";
-            themeCss["accent_color"] = "#634F3B";
-            listTemplateNames(themeCss);
-            themeCss.SaveToStorage();
-
-            const string jsEnginePath = "Layout/Albite.js";
-            using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(jsEnginePath))
+            string epubPath = "Test/aliceDynamic.epub";
+            using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(epubPath))
             {
-                using (AlbiteResourceStorage res = new AlbiteResourceStorage(jsEnginePath))
+                using (AlbiteResourceStorage res = new AlbiteResourceStorage(epubPath))
                 {
                     res.CopyTo(iso);
+                }
+
+                using (Stream inputStream = iso.ReadAsStream())
+                {
+                    using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
+                    {
+                        using (AlbiteIsolatedStorage outputStorage = new AlbiteIsolatedStorage("Test/epub/"))
+                        {
+                            EpubContainer epub = new EpubContainer(zip);
+                            epub.Install(outputStorage);
+                        }
+                    }
                 }
             }
         }

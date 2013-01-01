@@ -18,11 +18,16 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
     {
         private static readonly string ResourcesLocation = Defaults.Application.Resources;
 
-        public AlbiteResourceStorage(string filename) : base(ResourcesLocation + filename) { }
+        public AlbiteResourceStorage(string filename) : base(filename) { }
+
+        public override AlbiteStorage OpenRelative(string filename)
+        {
+            return new AlbiteResourceStorage(this.filename + filename);
+        }
 
         protected override Stream getStream(FileMode fileMode)
         {
-            StreamResourceInfo sr = Application.GetResourceStream(new Uri(filename, UriKind.Relative));
+            StreamResourceInfo sr = Application.GetResourceStream(new Uri(ResourcesLocation + filename, UriKind.Relative));
 
             if (sr == null)
             {

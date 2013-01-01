@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace SvetlinAnkov.AlbiteREADER.Model
 {
-    public class BookContainer
+    public class TableOfContents
     {
 
     }

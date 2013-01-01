@@ -21,6 +21,11 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
 
         public AlbiteIsolatedStorage(string filename) : base(filename) { }
 
+        public override AlbiteStorage OpenRelative(string filename)
+        {
+            return new AlbiteIsolatedStorage(this.filename + filename);
+        }
+
         protected override void CreatePathForFile()
         {
             if (isf.FileExists(filename))
