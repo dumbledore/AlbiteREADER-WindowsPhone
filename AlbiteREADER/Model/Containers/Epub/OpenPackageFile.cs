@@ -15,6 +15,9 @@ using System.Diagnostics;
 
 namespace SvetlinAnkov.AlbiteREADER.Model.Containers.Epub
 {
+    /// <summary>
+    /// Check http://idpf.org/epub/20/spec/OPF_2.0.1_draft.htm
+    /// </summary>
     public class OpenPackageFile
     {
         public static string XmlNamespaceOpf { get { return "{http://www.idpf.org/2007/opf}"; } }
@@ -128,13 +131,11 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Containers.Epub
         private void processManifest(XElement manifestElement)
         {
             string itemName = XmlNamespaceOpf + "item";
-            string idAttributeName = "id";
-            string hrefAttributeName = "href";
 
             foreach (XElement element in manifestElement.Elements(itemName))
             {
-                XAttribute id = element.Attribute(idAttributeName);
-                XAttribute href = element.Attribute(hrefAttributeName);
+                XAttribute id = element.Attribute("id");
+                XAttribute href = element.Attribute("href");
 
                 items[id.Value] = href.Value;
             }
