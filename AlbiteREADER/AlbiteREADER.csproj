@@ -71,7 +71,10 @@
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\Containers\BookContainer.cs" />
     <Compile Include="Model\Chapter.cs" />
-    <Compile Include="Model\Containers\EpubContainer.cs" />
+    <Compile Include="Model\Containers\Epub\EpubContainer.cs" />
+    <Compile Include="Model\Containers\Epub\NavigationControlFile.cs" />
+    <Compile Include="Model\Containers\Epub\OpenContainerFile.cs" />
+    <Compile Include="Model\Containers\Epub\OpenPackageFile.cs" />
     <Compile Include="Model\Library.cs" />
     <Compile Include="Model\Spine.cs" />
     <Compile Include="Model\TableOfContents.cs" />

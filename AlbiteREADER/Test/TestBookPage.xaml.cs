@@ -17,6 +17,7 @@ using System.Windows.Resources;
 using SvetlinAnkov.AlbiteREADER.Layout;
 using SvetlinAnkov.AlbiteREADER.Utils;
 using SvetlinAnkov.AlbiteREADER.Model.Containers;
+using SvetlinAnkov.AlbiteREADER.Model.Containers.Epub;
 
 namespace SvetlinAnkov.AlbiteREADER.Test
 {
