@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
 {
-    public class EpubContainerTest : AlbiteTest
+    public class EpubContainerTest : TestCase
     {
         private string epubPath;
 
@@ -27,7 +27,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
 
         protected override void  TestImplementation()
         {
-            Debug.WriteLine("Opening ePub {0}", epubPath);
+            Log("Opening ePub {0}", epubPath);
 
             using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(epubPath))
             {
@@ -60,33 +60,33 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
 
         private void dumpOcf(OpenContainerFile ocf)
         {
-            Debug.WriteLine("Opf Path: {0}", ocf.OpfPath);
+            Log("Opf Path: {0}", ocf.OpfPath);
         }
 
         private void dumpOpf(OpenPackageFile opf)
         {
             // Metadata
-            Debug.WriteLine("Author: {0}", opf.Author);
-            Debug.WriteLine("Title: {0}", opf.Title);
-            Debug.WriteLine("Language: {0}", opf.Language);
-            Debug.WriteLine("Publisher: {0}", opf.Publisher);
-            Debug.WriteLine("Publication Date: {0}", opf.PublicationDate);
-            Debug.WriteLine("Rights: {0}", opf.Rights);
+            Log("Author: {0}", opf.Author);
+            Log("Title: {0}", opf.Title);
+            Log("Language: {0}", opf.Language);
+            Log("Publisher: {0}", opf.Publisher);
+            Log("Publication Date: {0}", opf.PublicationDate);
+            Log("Rights: {0}", opf.Rights);
 
             // Manifest
             foreach (string id in opf.ItemIds)
             {
-                Debug.WriteLine("Item {0} => {1}", id, opf.Item(id));
+                Log("Item {0} => {1}", id, opf.Item(id));
             }
 
             // Spine
             foreach (string id in opf.Spine)
             {
-                Debug.WriteLine("Spine {0} => {1}", id, opf.Item(id));
+                Log("Spine {0} => {1}", id, opf.Item(id));
             }
 
             // Ncx location
-            Debug.WriteLine("Ncx Path: {0}", opf.NcxPath);
+            Log("Ncx Path: {0}", opf.NcxPath);
         }
 
         private void dumpNcx(NavigationControlFile ncx)
@@ -108,7 +108,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
                 return;
             }
 
-            Debug.WriteLine("NavPoint. Level: {0}, Label: {1}, Content: {2}",
+            Log("NavPoint. Level: {0}, Label: {1}, Content: {2}",
                 level, navPoint.Label, navPoint.Src);
 
             dumpNavPoint(navPoint.FirstChild, level + 1);
@@ -117,13 +117,13 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
 
         private void dumpNavList(NavigationControlFile.NavList navList)
         {
-            Debug.WriteLine("NavList {0}", navList.Label);
+            Log("NavList {0}", navList.Label);
 
             NavigationControlFile.NavTarget navTarget = navList.FirstTarget;
 
             while (navTarget != null)
             {
-                Debug.WriteLine("NavTarget. Label: {0}, Content: {1}",
+                Log("NavTarget. Label: {0}, Content: {1}",
                     navTarget.Label, navTarget.Src);
 
                 navTarget = navTarget.NextSibling;

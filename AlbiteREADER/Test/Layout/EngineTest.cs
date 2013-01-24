@@ -13,7 +13,7 @@ using SvetlinAnkov.AlbiteREADER.Utils;
 
 namespace SvetlinAnkov.AlbiteREADER.Test.Layout
 {
-    public class EngineTest : AlbiteTest
+    public class EngineTest : TestCase
     {
         protected override void TestImplementation()
         {

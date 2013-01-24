@@ -9,25 +9,42 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using SvetlinAnkov.AlbiteREADER.Utils;
 
 namespace SvetlinAnkov.AlbiteREADER.Test
 {
-    public abstract class AlbiteTest
+    public abstract class TestCase
     {
         public bool Passed { get; private set; }
 
-        public AlbiteTest()
+        private readonly string Tag;
+
+        public TestCase()
         {
             Passed = false;
+            Tag = GetType().Name;
         }
 
         public void Test()
         {
-            Debug.WriteLine("=== Running {0} ===", this.GetType().Name);
+            Log(@"/== Running ==\");
+
             TestImplementation();
             Passed = true;
-            Debug.WriteLine("{0} Passed\n", this.GetType().Name);
+
+            Log("\\==  Passed ==/\n");
         }
+
+        protected void Log(string message)
+        {
+            Utils.Log.D(Tag, message);
+        }
+
+        protected void Log(string format, params object[] args)
+        {
+            Utils.Log.D(Tag, string.Format(format, args));
+        }
+
 
         protected abstract void TestImplementation();
     }

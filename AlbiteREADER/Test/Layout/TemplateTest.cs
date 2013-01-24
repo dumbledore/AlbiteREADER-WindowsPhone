@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace SvetlinAnkov.AlbiteREADER.Test.Layout
 {
-    public class TemplateTest : AlbiteTest
+    public class TemplateTest : TestCase
     {
         private string filename;
 
@@ -24,17 +24,17 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Layout
 
         protected override void TestImplementation()
         {
-            Debug.WriteLine("Opening Template {0}", filename);
+            Log("Opening Template {0}", filename);
             Template t = new TemplateResource(filename);
             listTemplateNames(t);
         }
 
         private void listTemplateNames(Template t)
         {
-            Debug.WriteLine("Number of placeholder names: {0}", t.Count);
+            Log("Number of placeholder names: {0}", t.Count);
             foreach (string name in t.Names)
             {
-                Debug.WriteLine("Name: {0} = {1}", name, t[name] != null ? t[name] : "<null>");
+                Log("Name: {0} = {1}", name, t[name] != null ? t[name] : "<null>");
             }
         }
     }
