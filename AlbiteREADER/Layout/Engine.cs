@@ -32,8 +32,10 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
         private readonly TemplateResource baseStylesTemplate;
         private readonly TemplateResource contentStylesTemplate;
         private readonly TemplateResource themeStylesTemplate;
-        
-        public Engine(WebBrowser webBrowser, Settings settings) : this()
+
+        public Engine(WebBrowser webBrowser) : this(webBrowser, Defaults.Layout.DefaultSettings) { }
+
+        public Engine(WebBrowser webBrowser, Settings settings)
         {
             this.webBrowser = webBrowser;
             this.settings = settings;

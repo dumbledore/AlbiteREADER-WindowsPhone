@@ -8,16 +8,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using System.Xml.Linq;
+using SvetlinAnkov.AlbiteREADER.Layout;
+using SvetlinAnkov.AlbiteREADER.Utils;
 
-namespace SvetlinAnkov.AlbiteREADER.Model.Containers.Epub
+namespace SvetlinAnkov.AlbiteREADER.Test.Layout
 {
-    public class NavigationControlFile
+    public class EngineTest : AlbiteTest
     {
-        public TableOfContents TableOfContents { get; private set; }
-
-        public NavigationControlFile(XDocument doc)
+        protected override void TestImplementation()
         {
+            Engine engine = new Engine(null, Defaults.Layout.DefaultSettings);
         }
     }
 }

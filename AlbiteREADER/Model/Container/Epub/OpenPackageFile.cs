@@ -13,10 +13,10 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.AlbiteREADER.Model.Containers.Epub
+namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 {
     /// <summary>
-    /// Check http://idpf.org/epub/20/spec/OPF_2.0.1_draft.htm
+    /// Check http://idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.0
     /// </summary>
     public class OpenPackageFile
     {
@@ -34,7 +34,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Containers.Epub
         private List<string> spine = new List<string>();
         public string NcxPath { get; private set; }
 
-        public OpenPackageFile(XDocument doc)
+        public OpenPackageFile(string filename, XDocument doc)
         {
             string xmlns = XmlNamespaceOpf;
 
@@ -48,7 +48,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Containers.Epub
 
             // process the manifest
             XElement manifestElement = rootElement.Element(xmlns + "manifest");
-            processManifest(manifestElement);
+            processManifest(filename, manifestElement);
 
             // process the spine
             XElement spineElement = rootElement.Element(xmlns + "spine");
@@ -128,16 +128,21 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Containers.Epub
             }
         }
 
-        private void processManifest(XElement manifestElement)
+        private void processManifest(string filename, XElement manifestElement)
         {
             string itemName = XmlNamespaceOpf + "item";
+
+            // Note that all hrefs are relative to the opf path
+            Uri rootUri = new Uri("/");
+            Uri baseUri = new Uri(rootUri, filename);
 
             foreach (XElement element in manifestElement.Elements(itemName))
             {
                 XAttribute id = element.Attribute("id");
                 XAttribute href = element.Attribute("href");
 
-                items[id.Value] = href.Value;
+                Uri uri = new Uri(baseUri, href.Value);
+                items[id.Value] = rootUri.MakeRelativeUri(uri).ToString();
             }
         }
 
@@ -154,11 +159,11 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Containers.Epub
             }
         }
 
-        public IEnumerator<string> ItemIds
+        public IEnumerable<string> ItemIds
         {
             get
             {
-                return items.Keys.GetEnumerator();
+                return items.Keys;
             }
         }
 
@@ -175,6 +180,11 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Containers.Epub
         public Boolean ContainsItem(string id)
         {
             return items.ContainsKey(id);
+        }
+
+        public IEnumerable<string> Spine
+        {
+            get { return spine; }
         }
     }
 }

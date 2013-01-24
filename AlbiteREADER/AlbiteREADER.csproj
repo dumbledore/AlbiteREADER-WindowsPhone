@@ -69,12 +69,12 @@
     <Compile Include="Layout\TemplateResource.cs" />
     <Compile Include="Layout\Theme.cs" />
     <Compile Include="Model\Book.cs" />
-    <Compile Include="Model\Containers\BookContainer.cs" />
+    <Compile Include="Model\Container\BookContainer.cs" />
     <Compile Include="Model\Chapter.cs" />
-    <Compile Include="Model\Containers\Epub\EpubContainer.cs" />
-    <Compile Include="Model\Containers\Epub\NavigationControlFile.cs" />
-    <Compile Include="Model\Containers\Epub\OpenContainerFile.cs" />
-    <Compile Include="Model\Containers\Epub\OpenPackageFile.cs" />
+    <Compile Include="Model\Container\Epub\EpubContainer.cs" />
+    <Compile Include="Model\Container\Epub\NavigationControlFile.cs" />
+    <Compile Include="Model\Container\Epub\OpenContainerFile.cs" />
+    <Compile Include="Model\Container\Epub\OpenPackageFile.cs" />
     <Compile Include="Model\Library.cs" />
     <Compile Include="Model\Spine.cs" />
     <Compile Include="Model\TableOfContents.cs" />
@@ -99,8 +99,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestDefaults.resx</DependentUpon>
     </Compile>
-    <Compile Include="Test\TestBookPage.xaml.cs">
-      <DependentUpon>TestBookPage.xaml</DependentUpon>
+    <Compile Include="Test\AlbiteTest.cs" />
+    <Compile Include="Test\Layout\EngineTest.cs" />
+    <Compile Include="Test\Layout\TemplateTest.cs" />
+    <Compile Include="Test\Model\Container\EpubContainerTest.cs" />
+    <Compile Include="Test\TestPage.xaml.cs">
+      <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\IAlbiteContainer.cs" />
     <Compile Include="Utils\AlbiteIsolatedStorage.cs" />
@@ -108,6 +112,7 @@
     <Compile Include="Utils\AlbiteStorage.cs" />
     <Compile Include="Utils\AlbiteZipContainer.cs" />
     <Compile Include="Utils\Defaults.cs" />
+    <Compile Include="Utils\Xml\AlbiteXmlReader.cs" />
     <Compile Include="View\BookPage.xaml.cs">
       <DependentUpon>BookPage.xaml</DependentUpon>
     </Compile>
@@ -125,6 +130,7 @@
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
     <Content Include="Resources\Test\aliceDynamic.epub" />
+    <Content Include="Resources\Test\idpf.epub" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ApplicationIcon.png">
@@ -138,7 +144,7 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Test\TestBookPage.xaml">
+    <Page Include="Test\TestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

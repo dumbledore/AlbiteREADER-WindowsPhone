@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using SvetlinAnkov.AlbiteREADER.Utils;
-using SvetlinAnkov.AlbiteREADER.Model.Containers;
+using SvetlinAnkov.AlbiteREADER.Model.Container;
 
 namespace SvetlinAnkov.AlbiteREADER.Model
 {

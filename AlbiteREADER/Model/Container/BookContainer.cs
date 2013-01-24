@@ -11,12 +11,12 @@ using System.Windows.Shapes;
 using SvetlinAnkov.AlbiteREADER.Utils;
 using System.IO;
 
-namespace SvetlinAnkov.AlbiteREADER.Model.Containers
+namespace SvetlinAnkov.AlbiteREADER.Model.Container
 {
     public abstract class BookContainer : IAlbiteContainer
     {
         protected IAlbiteContainer container;
-        
+
         public BookContainer(IAlbiteContainer container)
         {
             this.container = container;
@@ -25,7 +25,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Containers
         /// <summary>
         /// Creates an ePub book from the input file and
         /// extracts its contents into the storage.
-        /// 
+        ///
         /// Throws a BookContainerException if conversion fails.
         /// </summary>
         /// <param name="outputStorage"></param>
