@@ -9,11 +9,16 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using SvetlinAnkov.AlbiteREADER.Utils.Logging;
 
 namespace SvetlinAnkov.AlbiteREADER.Utils
 {
     public static class Log
     {
+        private static readonly AbstractLog logger = createLog();
+
+        public static string LogLocation { get { return IsolatedStorageLog.DefaultLogLocation; } }
+
         public enum Level { Error, Warning, Info, Debug }
 
         public static void E(string tag, string message)
@@ -24,6 +29,7 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
         public static void E(string tag, string message, Exception exception)
         {
             log(Level.Error, tag, message, exception);
+            Flush();
         }
 
         public static void W(string tag, string message)
@@ -58,7 +64,10 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
             log(Level.Debug, tag, message, exception);
         }
 
-        // TODO: What about sending the logs from the file in an email?
+        public static void Flush()
+        {
+            logger.Flush();
+        }
 
         private static void log(Level level, string tag, string message)
         {
@@ -67,14 +76,15 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
 
         private static void log(Level level, string tag, string message, Exception exception)
         {
-            string output = string.Format("{0} {1}/{2}: {3} {4} {5}",
-                DateTime.Now, level, tag, message,
-                exception == null ? null : exception.Message,
-                exception == null ? null : exception.StackTrace);
+            logger.Log(level, tag, message, exception);
+        }
+
+        private static AbstractLog createLog()
+        {
 #if DEBUG
-            Debug.WriteLine(output);
+            return new DebugLog();
 #else
-            // TODO: Log to file
+            return new IsolatedStorageLog();
 #endif
         }
     }

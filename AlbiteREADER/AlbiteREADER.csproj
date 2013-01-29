@@ -112,7 +112,11 @@
     <Compile Include="Utils\AlbiteStorage.cs" />
     <Compile Include="Utils\AlbiteZipContainer.cs" />
     <Compile Include="Utils\Defaults.cs" />
+    <Compile Include="Utils\Logging\AbstractLog.cs" />
+    <Compile Include="Utils\Logging\DebugLog.cs" />
     <Compile Include="Utils\Log.cs" />
+    <Compile Include="Utils\LogCollector.cs" />
+    <Compile Include="Utils\Logging\IsolatedStorageLog.cs" />
     <Compile Include="Utils\Xml\AlbiteXmlReader.cs" />
     <Compile Include="View\BookPage.xaml.cs">
       <DependentUpon>BookPage.xaml</DependentUpon>

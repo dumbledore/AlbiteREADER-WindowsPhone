@@ -17,31 +17,29 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
 {
     public class AlbiteIsolatedStorage : AlbiteStorage
     {
-        private IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
+        public static readonly string Delimiter = "/";
+        protected static readonly char[] DelimitarChars = Delimiter.ToCharArray();
+
+        private readonly IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
 
         public AlbiteIsolatedStorage(string filename) : base(filename) { }
 
-        public override AlbiteStorage OpenRelative(string filename)
+        private void createPathForFile()
         {
-            return new AlbiteIsolatedStorage(this.filename + filename);
-        }
-
-        protected override void CreatePathForFile()
-        {
-            if (isf.FileExists(filename))
+            if (isf.FileExists(FileName))
             {
                 // File already there
                 return;
             }
 
-            int index = filename.LastIndexOf(Delimiter);
+            int index = FileName.LastIndexOf(Delimiter);
             if (index < 0)
             {
                 // No directories in the path
                 return;
             }
 
-            string path = filename.Substring(0, index);
+            string path = FileName.Substring(0, index);
             if (isf.DirectoryExists(path))
             {
                 // Directory already there
@@ -59,9 +57,14 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
             }
         }
 
-        protected override Stream getStream(FileMode fileMode)
+        public override Stream GetStream(FileAccess access, FileMode mode, FileShare share)
         {
-            return isf.OpenFile(filename, fileMode);
+            if (mode != FileMode.Open)
+            {
+                createPathForFile();
+            }
+
+            return isf.OpenFile(FileName, mode, access, share);
         }
 
         public override void Dispose()

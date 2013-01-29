@@ -16,46 +16,41 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
     public abstract class AlbiteStorage : IDisposable
     {
         public static readonly int BufferSize = 1024;
-        public static readonly string Delimiter = "/";
-        protected static readonly char[] DelimitarChars = Delimiter.ToCharArray();
 
-        protected readonly string filename;
+        public string FileName { get; private set; }
 
-        /// <summary>
-        /// Create a new Storage object using the specified filename
-        /// </summary>
-        /// <param name="filename"></param>
         protected AlbiteStorage(string filename)
         {
-            this.filename = filename;
+            FileName = filename;
         }
 
-        public string Filename
+        public abstract Stream GetStream(FileAccess access, FileMode mode, FileShare share);
+
+        public Stream GetStream(FileAccess access, FileMode mode)
         {
-            get
+            return GetStream(access, mode, FileShare.None);
+        }
+
+        public Stream GetStream(FileAccess access)
+        {
+            return GetStream(access, getModeForAccess(access));
+        }
+
+        private static FileMode getModeForAccess(FileAccess access)
+        {
+            switch (access)
             {
-                return filename;
+                case FileAccess.Read:
+                    return FileMode.Open;
+
+                case FileAccess.ReadWrite:
+                    return FileMode.OpenOrCreate;
+
+                case FileAccess.Write:
+                    return FileMode.Create;
             }
-        }
 
-        /// <summary>
-        /// Creates a new AlbiteStorage, relative to this one
-        /// </summary>
-        /// <param name="filename">the filename of the new storage</param>
-        /// <returns></returns>
-        public abstract AlbiteStorage OpenRelative(string filename);
-
-        protected abstract Stream getStream(FileMode fileMode);
-        protected abstract void CreatePathForFile();
-        public abstract void Dispose();
-
-        /// <summary>
-        /// Gets the reading stream for this file
-        /// </summary>
-        /// <returns>A stream ready for reading</returns>
-        public Stream ReadAsStream()
-        {
-            return getStream(FileMode.Open);
+            return FileMode.OpenOrCreate;
         }
 
         /// <summary>
@@ -64,17 +59,13 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
         /// <returns>A byte array with the file contents</returns>
         public byte[] ReadAsBytes()
         {
-            byte[] data;
-
-            using (Stream stream = ReadAsStream())
+            using (Stream stream = GetStream(FileAccess.Read))
             {
                 using (BinaryReader reader = new BinaryReader(stream))
                 {
-                    data = reader.ReadBytes((int)stream.Length);
+                    return reader.ReadBytes((int)stream.Length);
                 }
             }
-
-            return data;
         }
 
         /// <summary>
@@ -84,17 +75,13 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
         /// <returns>A string representing the file content</returns>
         public string ReadAsString(Encoding encoding)
         {
-            string s;
-
-            using (Stream stream = ReadAsStream())
+            using (Stream stream = GetStream(FileAccess.Read))
             {
                 using (StreamReader reader = new StreamReader(stream, encoding))
                 {
-                    s = reader.ReadToEnd();
+                    return reader.ReadToEnd();
                 }
             }
-
-            return s;
         }
 
         /// <summary>
@@ -112,8 +99,7 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
         /// <param name="inputStream">The stream to be saved</param>
         public void Write(Stream inputStream)
         {
-            CreatePathForFile();
-            using (Stream stream = getStream(FileMode.Create))
+            using (Stream stream = GetStream(FileAccess.Write))
             {
                 byte[] buffer = new byte[BufferSize];
                 for (int bytesRead = inputStream.Read(buffer, 0, buffer.Length); bytesRead > 0; bytesRead = inputStream.Read(buffer, 0, buffer.Length))
@@ -129,8 +115,7 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
         /// <param name="data">The data to be saved</param>
         public void Write(byte[] data)
         {
-            CreatePathForFile();
-            using (Stream stream = getStream(FileMode.Create))
+            using (Stream stream = GetStream(FileAccess.Write))
             {
                 using (BinaryWriter bw = new BinaryWriter(stream))
                 {
@@ -146,7 +131,6 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
         /// <param name="encoding">The encoding to be used</param>
         public void Write(string s, Encoding encoding)
         {
-            CreatePathForFile();
             Write(encoding.GetBytes(s));
         }
 
@@ -165,10 +149,12 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
         /// <param name="other"></param>
         public void CopyTo(AlbiteStorage other)
         {
-            using (Stream inputStream = ReadAsStream())
+            using (Stream inputStream = GetStream(FileAccess.Read))
             {
                 other.Write(inputStream);
             }
         }
+
+        public abstract void Dispose();
     }
 }

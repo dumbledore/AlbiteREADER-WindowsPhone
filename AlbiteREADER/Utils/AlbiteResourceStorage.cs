@@ -20,26 +20,16 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
 
         public AlbiteResourceStorage(string filename) : base(filename) { }
 
-        public override AlbiteStorage OpenRelative(string filename)
+        public override Stream GetStream(FileAccess access, FileMode mode, FileShare share)
         {
-            return new AlbiteResourceStorage(this.filename + filename);
-        }
-
-        protected override Stream getStream(FileMode fileMode)
-        {
-            StreamResourceInfo sr = Application.GetResourceStream(new Uri(ResourcesLocation + filename, UriKind.Relative));
+            StreamResourceInfo sr = Application.GetResourceStream(new Uri(ResourcesLocation + FileName, UriKind.Relative));
 
             if (sr == null)
             {
-                throw new InvalidOperationException("File " + filename + " not found in Content!");
+                throw new InvalidOperationException("File " + FileName + " not found in Content!");
             }
 
             return sr.Stream;
-        }
-
-        protected override void CreatePathForFile()
-        {
-            throw new InvalidOperationException("Writing is not available for Resources");
         }
 
         public override void Dispose() { }

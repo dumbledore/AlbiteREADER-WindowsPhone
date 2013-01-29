@@ -36,7 +36,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
                     res.CopyTo(iso);
                 }
 
-                using (Stream inputStream = iso.ReadAsStream())
+                using (Stream inputStream = iso.GetStream(FileAccess.Read))
                 {
                     using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
                     {
