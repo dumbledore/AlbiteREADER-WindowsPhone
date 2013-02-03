@@ -12,19 +12,22 @@ using System.IO;
 using System.Xml.Linq;
 using System.Linq;
 using System.Collections.Generic;
+using SvetlinAnkov.AlbiteREADER.Utils;
 
 namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 {
     /// <summary>
     /// Check http://idpf.org/epub/30/spec/epub30-ocf.html#sec-container-metainf
     /// </summary>
-    public class OpenContainerFile
+    public class OpenContainerFile : EpubXmlFile
     {
         public static string Path { get { return "META-INF/container.xml"; } }
         public static string XmlNamespace { get { return "{urn:oasis:names:tc:opendocument:xmlns:container}"; } }
 
-        public OpenContainerFile(XDocument doc)
+        public OpenContainerFile(IAlbiteContainer container)
+            : base(container, Path)
         {
+            XDocument doc = GetDocument();
             XElement element = doc.Descendants(XmlNamespace + "rootfile").First();
             OpfPath = (string) element.Attribute("full-path");
         }

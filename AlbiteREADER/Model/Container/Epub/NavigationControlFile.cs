@@ -12,13 +12,14 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using SvetlinAnkov.AlbiteREADER.Utils;
 
 namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 {
     /// <summary>
     /// Check http://idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.4.1
     /// </summary>
-    public class NavigationControlFile
+    public class NavigationControlFile : EpubXmlFile
     {
         public static string XmlNamespace { get { return "{http://www.daisy.org/z3986/2005/ncx/}"; } }
 
@@ -29,19 +30,22 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             get { return navigationLists; }
         }
 
-        public NavigationControlFile(XDocument doc)
+        public NavigationControlFile(IAlbiteContainer container, string filename)
+            : base(container, filename)
         {
+            XDocument doc = GetDocument();
+
             // Get the root and make certain the root has the correct name
             XElement rootElement = doc.Element(XmlNamespace + "ncx");
 
             // Parse the nav map
             XElement navMapElement = rootElement.Element(NavMap.ElementName);
-            NavigationMap = new NavMap(navMapElement);
+            NavigationMap = new NavMap(this, navMapElement);
 
             // Parse all nav lists
             foreach (XElement element in rootElement.Elements(NavList.ElementName))
             {
-                navigationLists.Add(new NavList(element));
+                navigationLists.Add(new NavList(this, element));
             }
         }
 
@@ -51,12 +55,12 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public NavPoint FirstPoint { get; private set; }
 
-            public NavMap(XElement element)
+            public NavMap(EpubXmlFile root, XElement element)
             {
                 XElement pointElement = element.Element(NavPoint.ElementName);
                 if (pointElement != null)
                 {
-                    FirstPoint = new NavPoint(pointElement);
+                    FirstPoint = new NavPoint(root, pointElement);
                 }
             }
         }
@@ -68,18 +72,18 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             public NavPoint FirstChild { get; private set; }
             public NavPoint NextSibling { get; private set; }
 
-            public NavPoint(XElement element) : base(element)
+            public NavPoint(EpubXmlFile root, XElement element) : base(root, element)
             {
                 XElement child = element.Element(ElementName);
                 if (child != null)
                 {
-                    FirstChild = new NavPoint(child);
+                    FirstChild = new NavPoint(root, child);
                 }
 
                 IEnumerable<XElement> nextElements = element.ElementsAfterSelf(ElementName);
                 if (nextElements.Count() > 0)
                 {
-                    NextSibling = new NavPoint(nextElements.First());
+                    NextSibling = new NavPoint(root, nextElements.First());
                 }
             }
         }
@@ -90,12 +94,12 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public NavTarget FirstTarget { get; private set; }
 
-            public NavList(XElement element) : base(element)
+            public NavList(EpubXmlFile root, XElement element) : base(element)
             {
                 XElement targetElement = element.Element(NavTarget.ElementName);
                 if (targetElement != null)
                 {
-                    FirstTarget = new NavTarget(targetElement);
+                    FirstTarget = new NavTarget(root, targetElement);
                 }
             }
         }
@@ -106,12 +110,12 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public NavTarget NextSibling { get; protected set; }
 
-            public NavTarget(XElement element) : base(element)
+            public NavTarget(EpubXmlFile root, XElement element) : base(root, element)
             {
                 IEnumerable<XElement> nextElements = element.ElementsAfterSelf(ElementName);
                 if (nextElements.Count() > 0)
                 {
-                    NextSibling = new NavTarget(nextElements.First());
+                    NextSibling = new NavTarget(root, nextElements.First());
                 }
             }
         }
@@ -123,11 +127,12 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public string Src { get; private set; }
 
-            public NavContent(XElement element) : base(element)
+            public NavContent(EpubXmlFile root, XElement element) : base(element)
             {
                 XElement contentElement = element.Element(elementName);
                 XAttribute srcAttribute = contentElement.Attribute(attributeName);
-                Src = srcAttribute.Value;
+
+                Src = root.GetUriFor(srcAttribute.Value).ToString();
             }
         }
 

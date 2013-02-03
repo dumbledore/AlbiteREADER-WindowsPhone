@@ -30,35 +30,18 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             try
             {
                 // Read the container and extract the location to the OPF
-                Ocf = new OpenContainerFile(getDocument(OpenContainerFile.Path));
+                Ocf = new OpenContainerFile(container);
 
                 // Read the metadata, manifest & spine.
                 // Note that OpfPath is relative to the root, not to META-INF.
-                Opf = new OpenPackageFile(Ocf.OpfPath, getDocument(Ocf.OpfPath));
+                Opf = new OpenPackageFile(container, Ocf.OpfPath);
 
                 // Read the table of contents.
-                Ncx = new NavigationControlFile(getDocument(Opf.NcxPath));
+                Ncx = new NavigationControlFile(container, Opf.NcxPath);
             }
             catch (Exception e)
             {
                 throw new BookContainerException("Processing the ePub container failed", e);
-            }
-        }
-
-        private XDocument getDocument(string filename)
-        {
-            using (Stream stream = container.Stream(filename))
-            {
-                // Setup the reader so that XDocument won't waste time on
-                // comments and whitespace.
-                XmlReaderSettings settings = new XmlReaderSettings();
-                settings.IgnoreComments = true;
-                settings.IgnoreWhitespace = true;
-
-                using (XmlReader reader = new AlbiteXmlReader(stream, settings))
-                {
-                    return XDocument.Load(reader);
-                }
             }
         }
 

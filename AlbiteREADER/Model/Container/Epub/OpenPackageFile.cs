@@ -12,13 +12,14 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Linq;
 using System.Diagnostics;
+using SvetlinAnkov.AlbiteREADER.Utils;
 
 namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 {
     /// <summary>
     /// Check http://idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.0
     /// </summary>
-    public class OpenPackageFile
+    public class OpenPackageFile : EpubXmlFile
     {
         public static string XmlNamespaceOpf { get { return "{http://www.idpf.org/2007/opf}"; } }
         public static string XmlNamespaceDc { get { return "{http://purl.org/dc/elements/1.1/}"; } }
@@ -34,9 +35,12 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         private List<string> spine = new List<string>();
         public string NcxPath { get; private set; }
 
-        public OpenPackageFile(string filename, XDocument doc)
+        public OpenPackageFile(IAlbiteContainer container, string filename)
+            : base(container, filename)
         {
             string xmlns = XmlNamespaceOpf;
+
+            XDocument doc = GetDocument();
 
             // Get the root and make certain the root has the correct name
             XElement rootElement = doc.Element(xmlns + "package");
@@ -48,7 +52,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             // process the manifest
             XElement manifestElement = rootElement.Element(xmlns + "manifest");
-            processManifest(filename, manifestElement);
+            processManifest(manifestElement);
 
             // process the spine
             XElement spineElement = rootElement.Element(xmlns + "spine");
@@ -128,21 +132,18 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             }
         }
 
-        private void processManifest(string filename, XElement manifestElement)
+        private void processManifest(XElement manifestElement)
         {
             string itemName = XmlNamespaceOpf + "item";
 
             // Note that all hrefs are relative to the opf path
-            Uri rootUri = new Uri("/");
-            Uri baseUri = new Uri(rootUri, filename);
 
             foreach (XElement element in manifestElement.Elements(itemName))
             {
                 XAttribute id = element.Attribute("id");
                 XAttribute href = element.Attribute("href");
 
-                Uri uri = new Uri(baseUri, href.Value);
-                items[id.Value] = rootUri.MakeRelativeUri(uri).ToString();
+                items[id.Value] = GetUriFor(href.Value).ToString();
             }
         }
 
