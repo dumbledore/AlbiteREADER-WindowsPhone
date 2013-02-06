@@ -15,11 +15,11 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container
 {
     public abstract class BookContainer : IAlbiteContainer
     {
-        protected IAlbiteContainer container;
+        protected IAlbiteContainer Container;
 
         public BookContainer(IAlbiteContainer container)
         {
-            this.container = container;
+            this.Container = container;
         }
 
         /// <summary>
@@ -33,12 +33,12 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container
 
         public virtual Stream Stream(string entityName)
         {
-            return container.Stream(entityName);
+            return Container.Stream(entityName);
         }
 
         public void Dispose()
         {
-            container.Dispose();
+            Container.Dispose();
         }
     }
 

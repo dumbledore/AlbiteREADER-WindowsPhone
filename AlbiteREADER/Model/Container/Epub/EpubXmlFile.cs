@@ -49,6 +49,19 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             }
         }
 
+        protected void Assert(object o, string message)
+        {
+            Assert(o != null, message);
+        }
+
+        protected void Assert(bool condition, string message)
+        {
+            if (!condition)
+            {
+                throw new BookContainerException(message);
+            }
+        }
+
         /// <summary>
         /// Returns the Uri of the resource relative to the base path
         /// </summary>

@@ -21,28 +21,20 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 {
     public class EpubContainer : BookContainer
     {
+        private static readonly string tag = "EpubContainer";
+
         public OpenContainerFile Ocf { get; private set; }
         public OpenPackageFile Opf { get; private set; }
         public NavigationControlFile Ncx { get; private set; }
 
-        public EpubContainer(IAlbiteContainer archive) : base(archive)
+        /// <summary>
+        /// Returns true if there was a problem with parsing the files
+        /// </summary>
+        public bool HadErrors { get; private set; }
+
+        public EpubContainer(IAlbiteContainer container) : base(container)
         {
-            try
-            {
-                // Read the container and extract the location to the OPF
-                Ocf = new OpenContainerFile(container);
-
-                // Read the metadata, manifest & spine.
-                // Note that OpfPath is relative to the root, not to META-INF.
-                Opf = new OpenPackageFile(container, Ocf.OpfPath);
-
-                // Read the table of contents.
-                Ncx = new NavigationControlFile(container, Opf.NcxPath);
-            }
-            catch (Exception e)
-            {
-                throw new BookContainerException("Processing the ePub container failed", e);
-            }
+            processDocuments();
         }
 
         public override void Install(AlbiteStorage outputStorage)
@@ -62,6 +54,43 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             }
 
             return base.Stream(entityName);
+        }
+
+        private void processDocuments()
+        {
+            try
+            {
+                // Read the container and extract the location to the OPF
+                Ocf = new OpenContainerFile(Container);
+
+                // Read the manifest, spine & (optionally) metadata, .
+                Opf = new OpenPackageFile(Container, Ocf.OpfPath);
+
+                // Read the table of contents. Don't crash on error.
+                try
+                {
+                    if (Opf.NcxPath != null)
+                    {
+                        Ncx = new NavigationControlFile(Container, Opf.NcxPath);
+                    }
+                    else
+                    {
+                        Log.E(tag, "NCX not available");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.E(tag, "Couldn't parse the ncx", e);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.E(tag, "Couldn't create the ePub container", e);
+                throw new BookContainerException("Processing the ePub container failed", e);
+            }
+
+            // Summarize the problems
+            HadErrors = Opf.HadErrors || Ncx == null || Ncx.HadErrors;
         }
     }
 }

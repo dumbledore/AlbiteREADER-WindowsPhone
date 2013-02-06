@@ -24,14 +24,25 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         public static string Path { get { return "META-INF/container.xml"; } }
         public static string XmlNamespace { get { return "{urn:oasis:names:tc:opendocument:xmlns:container}"; } }
 
+        public string OpfPath { get; private set; }
+
         public OpenContainerFile(IAlbiteContainer container)
             : base(container, Path)
         {
-            XDocument doc = GetDocument();
-            XElement element = doc.Descendants(XmlNamespace + "rootfile").First();
-            OpfPath = (string) element.Attribute("full-path");
+            processDocument();
         }
 
-        public string OpfPath { get; private set; }
+        private void processDocument()
+        {
+            XDocument doc = GetDocument();
+
+            XElement element = doc.Descendants(XmlNamespace + "rootfile").First();
+            Assert(element, "No rootfile element");
+
+            XAttribute attribute = element.Attribute("full-path");
+            Assert(attribute, "No full-path attribute");
+
+            OpfPath = attribute.Value;
+        }
     }
 }

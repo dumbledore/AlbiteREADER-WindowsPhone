@@ -31,24 +31,58 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         public string Rights { get; private set; }
         public string Publisher { get; private set; }
 
-        private Dictionary<string, string> items = new Dictionary<string, string>();
-        private List<string> spine = new List<string>();
         public string NcxPath { get; private set; }
+
+        /// <summary>
+        /// Returns true if there was a problem with parsing the file.
+        /// </summary>
+        public bool HadErrors { get; private set; }
+
+        public IEnumerable<string> Spine { get; private set; }
+
+        private static readonly string tag = "OpenPackageFile";
+        private Dictionary<string, string> items = new Dictionary<string, string>();
 
         public OpenPackageFile(IAlbiteContainer container, string filename)
             : base(container, filename)
+        {
+            HadErrors = false;
+            processDocument();
+        }
+
+        public IEnumerable<string> ItemIds
+        {
+            get { return items.Keys; }
+        }
+
+        public string Item(string id)
+        {
+            if (items.ContainsKey(id))
+            {
+                return items[id];
+            }
+
+            return null;
+        }
+
+        public bool ContainsItem(string id)
+        {
+            return items.ContainsKey(id);
+        }
+
+        // IMPLEMENTATION
+        private void processDocument()
         {
             string xmlns = XmlNamespaceOpf;
 
             XDocument doc = GetDocument();
 
-            // Get the root and make certain the root has the correct name
-            XElement rootElement = doc.Element(xmlns + "package");
-
-            // process the metadata
-            XElement metadataElement = rootElement.Element(xmlns + "metadata");
-            XElement dcMetadataElement = metadataElement.Element(xmlns + "dc-metadata");
-            processMetadata(dcMetadataElement != null ? dcMetadataElement : metadataElement);
+            // Get the root and check if the root has the correct name
+            XElement rootElement = doc.Root;
+            if (rootElement.Name != xmlns + "package")
+            {
+                reportError("Root element for opf has an incorrect name: " + rootElement.Name);
+            }
 
             // process the manifest
             XElement manifestElement = rootElement.Element(xmlns + "manifest");
@@ -57,6 +91,85 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             // process the spine
             XElement spineElement = rootElement.Element(xmlns + "spine");
             processSpine(spineElement);
+
+            try
+            {
+                // process the metadata. not critical
+                XElement metadataElement = rootElement.Element(xmlns + "metadata");
+                Assert(metadataElement, "No metadata element");
+
+                XElement dcMetadataElement = metadataElement.Element(xmlns + "dc-metadata");
+                processMetadata(dcMetadataElement != null ? dcMetadataElement : metadataElement);
+            }
+            catch (Exception e)
+            {
+                reportError("Failed processing the metadata", e);
+            }
+        }
+
+        private void processManifest(XElement manifestElement)
+        {
+            Assert(manifestElement, "No manifest element");
+
+            string itemName = XmlNamespaceOpf + "item";
+
+            // Note that all hrefs are relative to the opf path
+            foreach (XElement element in manifestElement.Elements(itemName))
+            {
+                XAttribute id = element.Attribute("id");
+                XAttribute href = element.Attribute("href");
+
+                if (id == null || href == null)
+                {
+                    reportError("id or href not found for item");
+                    continue;
+                }
+
+                items[id.Value] = GetUriFor(href.Value).ToString();
+            }
+        }
+
+        private void processSpine(XElement spineElement)
+        {
+            Assert(spineElement, "No spine element");
+
+            setNcxPath(spineElement);
+
+            List<string> spine = new List<string>();
+
+            string itemrefName = XmlNamespaceOpf + "itemref";
+            foreach (XElement element in spineElement.Elements(itemrefName))
+            {
+                XAttribute idref = element.Attribute("idref");
+                if (idref == null)
+                {
+                    reportError("itemref without a valid idref");
+                    continue;
+                }
+
+                spine.Add(idref.Value);
+            }
+
+            Spine = spine;
+        }
+
+        private void setNcxPath(XElement spineElement)
+        {
+            XAttribute ncxAttribute = spineElement.Attribute("toc");
+            if (ncxAttribute == null)
+            {
+                reportError("Spine element doesn't specify a toc attribute");
+                return;
+            }
+
+            if (!items.ContainsKey(ncxAttribute.Value))
+            {
+                reportError("Couldn't find the path for the ncx with id "
+                    + ncxAttribute.Value);
+                return;
+            }
+
+            NcxPath = items[ncxAttribute.Value];
         }
 
         private void processMetadata(XElement metadataElement)
@@ -87,10 +200,11 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
                 }
                 else if (name == authorName)
                 {
+                    // Only use the first creator (that is an author of course)
                     if (Author == null)
                     {
-                        // Only use the first creator (that is an author of course)
                         XAttribute attribute = element.Attribute(authorAttributeName);
+                        // Either no attribute or its value must be "aut"
                         if (attribute == null || attribute.Value == "aut")
                         {
                             Author = element.Value;
@@ -99,9 +213,11 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
                 }
                 else if (name == dateName)
                 {
+                    // Only use the first publication date
                     if (PublicationDate == null)
                     {
                         XAttribute attribute = element.Attribute(dateAttributeName);
+                        // Either no attribute or its value must be "publication"
                         if (attribute == null || attribute.Value == "publication")
                         {
                             PublicationDate = element.Value;
@@ -110,6 +226,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
                 }
                 else if (name == languageName)
                 {
+                    // Only use the first language
                     if (Language == null)
                     {
                         Language = element.Value;
@@ -117,6 +234,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
                 }
                 else if (name == rightsName)
                 {
+                    // Only use the first rights element
                     if (Rights == null)
                     {
                         Rights = element.Value;
@@ -124,6 +242,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
                 }
                 else if (name == publisherName)
                 {
+                    // Only use the first publisher
                     if (Publisher == null)
                     {
                         Publisher = element.Value;
@@ -132,60 +251,16 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             }
         }
 
-        private void processManifest(XElement manifestElement)
+        private void reportError(string msg)
         {
-            string itemName = XmlNamespaceOpf + "item";
-
-            // Note that all hrefs are relative to the opf path
-
-            foreach (XElement element in manifestElement.Elements(itemName))
-            {
-                XAttribute id = element.Attribute("id");
-                XAttribute href = element.Attribute("href");
-
-                items[id.Value] = GetUriFor(href.Value).ToString();
-            }
+            Log.E(tag, msg);
+            HadErrors = true;
         }
 
-        private void processSpine(XElement spineElement)
+        private void reportError(string msg, Exception e)
         {
-            XAttribute ncxAttribute = spineElement.Attribute("toc");
-            NcxPath = items[ncxAttribute.Value];
-
-            string itemrefName = XmlNamespaceOpf + "itemref";
-            foreach (XElement element in spineElement.Elements(itemrefName))
-            {
-                XAttribute idref = element.Attribute("idref");
-                spine.Add(idref.Value);
-            }
-        }
-
-        public IEnumerable<string> ItemIds
-        {
-            get
-            {
-                return items.Keys;
-            }
-        }
-
-        public string Item(string id)
-        {
-            if (items.ContainsKey(id))
-            {
-                return items[id];
-            }
-
-            return null;
-        }
-
-        public Boolean ContainsItem(string id)
-        {
-            return items.ContainsKey(id);
-        }
-
-        public IEnumerable<string> Spine
-        {
-            get { return spine; }
+            Log.E(tag, msg, e);
+            HadErrors = true;
         }
     }
 }

@@ -24,43 +24,44 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         public static string XmlNamespace { get { return "{http://www.daisy.org/z3986/2005/ncx/}"; } }
 
         public NavMap NavigationMap { get; private set; }
+
         private List<NavList> navigationLists = new List<NavList>();
         public IEnumerable<NavList> NavigationLists
         {
             get { return navigationLists; }
         }
 
+        /// <summary>
+        /// Returns true if there was a problem with parsing the file.
+        /// </summary>
+        public bool HadErrors { get; private set; }
+
+        private static readonly string tag = "NavigationControlFile";
+
+        private NavObject.GetUriForDelegate getUriForDelegate;
+        private NavObject.ReportErrorDelegate reportErrorDelegate;
+
         public NavigationControlFile(IAlbiteContainer container, string filename)
             : base(container, filename)
         {
-            XDocument doc = GetDocument();
-
-            // Get the root and make certain the root has the correct name
-            XElement rootElement = doc.Element(XmlNamespace + "ncx");
-
-            // Parse the nav map
-            XElement navMapElement = rootElement.Element(NavMap.ElementName);
-            NavigationMap = new NavMap(this, navMapElement);
-
-            // Parse all nav lists
-            foreach (XElement element in rootElement.Elements(NavList.ElementName))
-            {
-                navigationLists.Add(new NavList(this, element));
-            }
+            getUriForDelegate = new NavObject.GetUriForDelegate(GetUriForToString);
+            reportErrorDelegate = new NavObject.ReportErrorDelegate(reportError);
+            HadErrors = false;
+            processDocument();
         }
 
-        public class NavMap
+        public class NavMap : NavObject
         {
             public static readonly string ElementName = XmlNamespace + "navMap";
 
             public NavPoint FirstPoint { get; private set; }
 
-            public NavMap(EpubXmlFile root, XElement element)
+            public NavMap(XElement element, ReportErrorDelegate r, GetUriForDelegate u)
             {
                 XElement pointElement = element.Element(NavPoint.ElementName);
                 if (pointElement != null)
                 {
-                    FirstPoint = new NavPoint(root, pointElement);
+                    FirstPoint = new NavPoint(pointElement, r, u);
                 }
             }
         }
@@ -72,18 +73,19 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             public NavPoint FirstChild { get; private set; }
             public NavPoint NextSibling { get; private set; }
 
-            public NavPoint(EpubXmlFile root, XElement element) : base(root, element)
+            public NavPoint(XElement element, ReportErrorDelegate r, GetUriForDelegate u)
+                : base(element, r, u)
             {
                 XElement child = element.Element(ElementName);
                 if (child != null)
                 {
-                    FirstChild = new NavPoint(root, child);
+                    FirstChild = new NavPoint(child, r, u);
                 }
 
                 IEnumerable<XElement> nextElements = element.ElementsAfterSelf(ElementName);
                 if (nextElements.Count() > 0)
                 {
-                    NextSibling = new NavPoint(root, nextElements.First());
+                    NextSibling = new NavPoint(nextElements.First(), r, u);
                 }
             }
         }
@@ -94,12 +96,13 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public NavTarget FirstTarget { get; private set; }
 
-            public NavList(EpubXmlFile root, XElement element) : base(element)
+            public NavList(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
+                : base(element, reportError)
             {
                 XElement targetElement = element.Element(NavTarget.ElementName);
                 if (targetElement != null)
                 {
-                    FirstTarget = new NavTarget(root, targetElement);
+                    FirstTarget = new NavTarget(targetElement, reportError, getUri);
                 }
             }
         }
@@ -110,12 +113,13 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public NavTarget NextSibling { get; protected set; }
 
-            public NavTarget(EpubXmlFile root, XElement element) : base(root, element)
+            public NavTarget(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
+                : base(element, reportError, getUri)
             {
                 IEnumerable<XElement> nextElements = element.ElementsAfterSelf(ElementName);
                 if (nextElements.Count() > 0)
                 {
-                    NextSibling = new NavTarget(root, nextElements.First());
+                    NextSibling = new NavTarget(nextElements.First(), reportError, getUri);
                 }
             }
         }
@@ -127,28 +131,137 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public string Src { get; private set; }
 
-            public NavContent(EpubXmlFile root, XElement element) : base(element)
+            public NavContent(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
+                : base(element, reportError)
             {
                 XElement contentElement = element.Element(elementName);
-                XAttribute srcAttribute = contentElement.Attribute(attributeName);
+                if (contentElement == null)
+                {
+                    if (reportError != null)
+                    {
+                        reportError("no content element");
+                    }
+                    return;
+                }
 
-                Src = root.GetUriFor(srcAttribute.Value).ToString();
+                XAttribute srcAttribute = contentElement.Attribute(attributeName);
+                if (srcAttribute == null)
+                {
+                    if (reportError != null)
+                    {
+                        reportError("no src attribute");
+                    }
+                    return;
+                }
+
+                Src = srcAttribute.Value;
+
+                // If the GetUri delegate is available, pass the path through it.
+                // It doesn't look perfectly readable this way, but it's
+                // the way to get our abstraction.
+                if (getUri != null)
+                {
+                    Src = getUri(Src);
+                }
             }
         }
 
-        public abstract class NavLabel
+        public abstract class  NavLabel : NavObject
         {
             private static readonly string labelName = XmlNamespace + "navLabel";
             private static readonly string textName = XmlNamespace + "text";
 
             public string Label { get; private set; }
 
-            public NavLabel(XElement element)
+            public NavLabel(XElement element, ReportErrorDelegate reportError)
             {
                 XElement labelElement = element.Element(labelName);
+                if (labelElement == null)
+                {
+                    if (reportError != null)
+                    {
+                        reportError("no label element");
+                    }
+                    return;
+                }
+
                 XElement textElement = labelElement.Element(textName);
+                if (textElement == null)
+                {
+                    if (reportError != null)
+                    {
+                        reportError("No text element");
+                    }
+                    return;
+                }
+
                 Label = textElement.Value;
             }
+        }
+
+        public abstract class NavObject
+        {
+            /// <summary>
+            /// Report an error.
+            /// </summary>
+            /// <param name="msg">error message</param>
+            public delegate void ReportErrorDelegate(string msg);
+
+            /// <summary>
+            /// Gets the Uri path for a path.
+            /// </summary>
+            /// <param name="path">path</param>
+            /// <returns></returns>
+            public delegate string GetUriForDelegate(string path);
+        }
+
+        private void processDocument()
+        {
+            XDocument doc = GetDocument();
+
+            // Get the root and check if the root has the correct name
+            XElement rootElement = doc.Root;
+            if (rootElement.Name != XmlNamespace + "ncx")
+            {
+                reportError("Root element for ncx has an incorrect name: " + rootElement.Name);
+            }
+
+            // Parse the nav map
+            XElement navMapElement = rootElement.Element(NavMap.ElementName);
+            processNavMap(navMapElement);
+
+            // All nav lists
+            processNavLists(rootElement);
+        }
+
+        private void processNavMap(XElement navMapElement)
+        {
+            if (navMapElement == null)
+            {
+                reportError("no NavMap");
+                return;
+            }
+
+            NavigationMap = new NavMap(navMapElement, reportErrorDelegate, getUriForDelegate);
+        }
+
+        private void processNavLists(XElement rootElement)
+        {
+            foreach (XElement element in rootElement.Elements(NavList.ElementName))
+            {
+                navigationLists.Add(new NavList(element, reportErrorDelegate, getUriForDelegate));
+            }
+        }
+
+        private void reportError(string msg)
+        {
+            Log.E(tag, msg);
+            HadErrors = true;
+        }
+
+        private string GetUriForToString(string path)
+        {
+            return GetUriFor(path).ToString();
         }
     }
 }
