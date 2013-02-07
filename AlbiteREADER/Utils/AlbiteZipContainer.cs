@@ -40,12 +40,13 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
             Uri uri = new Uri(entityName, UriKind.Relative);
             StreamResourceInfo info = new StreamResourceInfo(this.stream, null);
             StreamResourceInfo stream = System.Windows.Application.GetResourceStream(info, uri);
-            if (stream != null)
+
+            if (stream == null || stream.Stream == null)
             {
-                return stream.Stream;
+                throw new FileNotFoundException(entityName);
             }
 
-            return null;
+            return stream.Stream;
         }
 
         public void UnzipStorage(string entityName, AlbiteStorage output)

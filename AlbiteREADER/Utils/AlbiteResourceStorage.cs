@@ -26,7 +26,7 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
 
             if (sr == null)
             {
-                throw new InvalidOperationException("File " + FileName + " not found in Content!");
+                throw new FileNotFoundException(FileName);
             }
 
             return sr.Stream;
