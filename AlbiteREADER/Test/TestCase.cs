@@ -16,12 +16,12 @@ namespace SvetlinAnkov.AlbiteREADER.Test
     {
         public bool Passed { get; private set; }
 
-        private readonly string Tag;
+        private readonly string tag;
 
         public TestCase()
         {
             Passed = false;
-            Tag = GetType().Name;
+            tag = GetType().Name;
         }
 
         public void Test()
@@ -36,12 +36,12 @@ namespace SvetlinAnkov.AlbiteREADER.Test
 
         protected void Log(string message)
         {
-            Utils.Log.D(Tag, message);
+            Utils.Log.D(tag, message);
         }
 
         protected void Log(string format, params object[] args)
         {
-            Utils.Log.D(Tag, string.Format(format, args));
+            Utils.Log.D(tag, string.Format(format, args));
         }
 
 
