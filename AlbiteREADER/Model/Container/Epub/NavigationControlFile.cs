@@ -25,11 +25,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
         public NavMap NavigationMap { get; private set; }
 
-        private List<NavList> navigationLists = new List<NavList>();
-        public IEnumerable<NavList> NavigationLists
-        {
-            get { return navigationLists; }
-        }
+        public IEnumerable<NavList> NavigationLists { get; private set; }
 
         /// <summary>
         /// Returns true if there was a problem with parsing the file.
@@ -247,10 +243,14 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
         private void processNavLists(XElement rootElement)
         {
+            List<NavList> navigationLists = new List<NavList>();
+
             foreach (XElement element in rootElement.Elements(NavList.ElementName))
             {
                 navigationLists.Add(new NavList(element, reportErrorDelegate, getUriForDelegate));
             }
+
+            NavigationLists = navigationLists;
         }
 
         private void reportError(string msg)
