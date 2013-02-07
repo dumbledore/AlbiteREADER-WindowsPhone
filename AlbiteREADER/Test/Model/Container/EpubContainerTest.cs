@@ -56,6 +56,9 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
             dumpOcf(epub.Ocf);
             dumpOpf(epub.Opf);
             dumpNcx(epub.Ncx);
+
+            Log("Errors opening {0}: {1}", epubPath,
+                epub.HadErrors ? "y" : "n");
         }
 
         private void dumpOcf(OpenContainerFile ocf)
@@ -91,8 +94,17 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
 
         private void dumpNcx(NavigationControlFile ncx)
         {
+            if (ncx == null)
+            {
+                Log("No NCX available");
+                return;
+            }
+
             // Dump the navigation map
-            dumpNavPoint(ncx.NavigationMap.FirstPoint, 0);
+            if (ncx.NavigationMap != null)
+            {
+                dumpNavPoint(ncx.NavigationMap.FirstPoint, 0);
+            }
 
             // Dump the navigation lists
             foreach (NavigationControlFile.NavList navList in ncx.NavigationLists)
