@@ -36,10 +36,10 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         {
             XDocument doc = GetDocument();
 
-            XElement element = doc.Descendants(XmlNamespace + "rootfile").First();
-            Assert(element, "No rootfile element");
+            IEnumerable<XElement> elements = doc.Descendants(XmlNamespace + "rootfile");
+            Assert(elements.Count() > 0, "No rootfile element");
 
-            XAttribute attribute = element.Attribute("full-path");
+            XAttribute attribute = elements.First().Attribute("full-path");
             Assert(attribute, "No full-path attribute");
 
             OpfPath = attribute.Value;
