@@ -135,8 +135,8 @@
     <Content Include="Resources\Layout\Main.xhtml" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
-    <Content Include="Resources\Test\aliceDynamic.epub" />
-    <Content Include="Resources\Test\idpf.epub" />
+    <Content Include="Resources\Test\epub\aliceDynamic.epub" />
+    <Content Include="Resources\Test\epub\idpf.epub" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ApplicationIcon.png">

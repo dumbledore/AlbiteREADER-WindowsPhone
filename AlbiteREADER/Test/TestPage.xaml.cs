@@ -42,8 +42,8 @@ namespace SvetlinAnkov.AlbiteREADER.Test
             new EngineTest().Test();
 
             // Epub Container
-            new EpubContainerTest("Test/aliceDynamic.epub").Test();
-            new EpubContainerTest("Test/idpf.epub").Test();
+            new EpubContainerTest("Test/epub/aliceDynamic.epub").Test();
+            new EpubContainerTest("Test/epub/idpf.epub").Test();
         }
     }
 }
