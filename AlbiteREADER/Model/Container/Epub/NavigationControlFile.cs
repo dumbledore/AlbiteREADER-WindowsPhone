@@ -56,12 +56,12 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public NavPoint FirstPoint { get; private set; }
 
-            public NavMap(XElement element, ReportErrorDelegate r, GetUriForDelegate u)
+            public NavMap(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
             {
                 XElement pointElement = element.Element(NavPoint.ElementName);
                 if (pointElement != null)
                 {
-                    FirstPoint = new NavPoint(pointElement, r, u);
+                    FirstPoint = new NavPoint(pointElement, reportError, getUri);
                 }
             }
         }
@@ -73,19 +73,19 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             public NavPoint FirstChild { get; private set; }
             public NavPoint NextSibling { get; private set; }
 
-            public NavPoint(XElement element, ReportErrorDelegate r, GetUriForDelegate u)
-                : base(element, r, u)
+            public NavPoint(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
+                : base(element, reportError, getUri)
             {
                 XElement child = element.Element(ElementName);
                 if (child != null)
                 {
-                    FirstChild = new NavPoint(child, r, u);
+                    FirstChild = new NavPoint(child, reportError, getUri);
                 }
 
                 IEnumerable<XElement> nextElements = element.ElementsAfterSelf(ElementName);
                 if (nextElements.Count() > 0)
                 {
-                    NextSibling = new NavPoint(nextElements.First(), r, u);
+                    NextSibling = new NavPoint(nextElements.First(), reportError, getUri);
                 }
             }
         }
