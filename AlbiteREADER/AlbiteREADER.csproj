@@ -100,6 +100,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestDefaults.resx</DependentUpon>
     </Compile>
+    <Compile Include="Test\Model\Container\InvalidEpubContainerTest.cs" />
     <Compile Include="Test\TestCase.cs" />
     <Compile Include="Test\Layout\EngineTest.cs" />
     <Compile Include="Test\Layout\TemplateTest.cs" />
@@ -137,6 +138,18 @@
     <None Include="Properties\WMAppManifest.xml" />
     <Content Include="Resources\Test\epub\aliceDynamic.epub" />
     <Content Include="Resources\Test\epub\idpf.epub" />
+    <Content Include="Resources\Test\epub\invalid\fail\01.epub" />
+    <Content Include="Resources\Test\epub\invalid\fail\02.epub" />
+    <Content Include="Resources\Test\epub\invalid\fail\03.epub" />
+    <Content Include="Resources\Test\epub\invalid\fail\04.epub" />
+    <Content Include="Resources\Test\epub\invalid\fail\05.epub" />
+    <Content Include="Resources\Test\epub\invalid\fail\06.epub" />
+    <Content Include="Resources\Test\epub\invalid\pass\01.epub" />
+    <Content Include="Resources\Test\epub\invalid\pass\02.epub" />
+    <Content Include="Resources\Test\epub\invalid\pass\03.epub" />
+    <Content Include="Resources\Test\epub\invalid\pass\04.epub" />
+    <Content Include="Resources\Test\epub\invalid\pass\05.epub" />
+    <Content Include="Resources\Test\epub\invalid\pass\06.epub" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ApplicationIcon.png">
@@ -177,6 +190,7 @@
       <LastGenOutput>TestDefaults.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
