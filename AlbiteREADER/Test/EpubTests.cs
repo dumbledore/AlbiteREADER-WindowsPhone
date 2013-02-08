@@ -91,6 +91,9 @@ namespace SvetlinAnkov.AlbiteREADER.Test
                 // A guide ref without attributes at all
                 new EpubContainerTest("Test/epub/invalid/pass/07.epub"),
 
+                // Items with dangerous paths and invalid characters
+                new EpubContainerTest("Test/epub/invalid/pass/08.epub"),
+
                 // ---------------------------------------------------------
                 // These epubs should not fail and produce no error messages
                 new EpubContainerTest("Test/epub/aliceDynamic.epub"),

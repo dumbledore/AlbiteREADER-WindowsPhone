@@ -142,6 +142,7 @@
     <None Include="Properties\WMAppManifest.xml" />
     <Content Include="Resources\Test\epub\aliceDynamic.epub" />
     <Content Include="Resources\Test\epub\idpf.epub" />
+    <Content Include="Resources\Test\epub\invalid\pass\08.epub" />
     <Content Include="Resources\Test\epub\invalid\fail\01.epub" />
     <Content Include="Resources\Test\epub\invalid\fail\02.epub" />
     <Content Include="Resources\Test\epub\invalid\fail\03.epub" />
