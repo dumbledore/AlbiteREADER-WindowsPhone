@@ -40,7 +40,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         public NavigationControlFile(IAlbiteContainer container, string filename)
             : base(container, filename)
         {
-            getPathForDelegate = new NavObject.GetPathForDelegate(GetPathFor);
+            getPathForDelegate = new NavObject.GetPathForDelegate(getPathFor);
             reportErrorDelegate = new NavObject.ReportErrorDelegate(reportError);
             HadErrors = false;
             processDocument();
@@ -387,6 +387,19 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             }
 
             GuideReferences = guideReferences;
+        }
+
+        private string getPathFor(string path)
+        {
+            string res = GetPathFor(path);
+
+            if (!IsValidFileName(res))
+            {
+                reportError("Not a valid path for content: " + res);
+                return null;
+            }
+
+            return res;
         }
 
         private void reportError(string msg)

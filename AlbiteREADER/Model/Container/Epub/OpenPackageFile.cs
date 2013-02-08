@@ -125,7 +125,14 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
                     continue;
                 }
 
-                items[id.Value] = GetPathFor(href.Value);
+                string path = GetPathFor(href.Value);
+                if (!IsValidFileName(path))
+                {
+                    reportError("href not a valid filename: " + path);
+                    continue;
+                }
+
+                items[id.Value] = path;
             }
         }
 

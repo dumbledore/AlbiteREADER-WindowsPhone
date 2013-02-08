@@ -80,5 +80,56 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         {
             return Uri.UnescapeDataString(GetUriFor(path).ToString());
         }
+
+        /// <summary>
+        /// Checks if the path is a valid file name
+        /// </summary>
+        public bool IsValidFileName(string path)
+        {
+            if (path == null || path.Length < 1)
+            {
+                return false;
+            }
+
+            char[] chars = path.ToCharArray();
+
+            // Check path ending
+            switch (chars[chars.Length - 1])
+            {
+                case '.':
+                case '/':
+                case '\\':
+                    return false;
+            }
+
+            foreach (char c in chars)
+            {
+                // bad chars
+                switch (c)
+                {
+                    case '"':
+                    case '*':
+                    case ':':
+                    case '<':
+                    case '>':
+                    case '?':
+                    case '\u007F':
+                        return false;
+                }
+
+                // bad ranges
+                if (
+                    ('\u0000' <= c && c <= '\u001F') || // C0 range
+                    ('\u0080' <= c && c <= '\u009F') || // C1 range
+                    ('\uE000' <= c && c <= '\uF8FF') || // Private Use Area
+                    ('\uFDD0' <= c && c <= '\uFDEF') || // Non characters in Arabic Presentation Forms-A
+                    ('\uFFF0' <= c && c <= '\uFFFF')    // Specials
+                    )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
