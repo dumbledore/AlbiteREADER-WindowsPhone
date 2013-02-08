@@ -24,8 +24,8 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         public static string XmlNamespace { get { return "{http://www.daisy.org/z3986/2005/ncx/}"; } }
 
         public NavMap NavigationMap { get; private set; }
-
         public IEnumerable<NavList> NavigationLists { get; private set; }
+        public IEnumerable<GuideReference> GuideReferences { get; private set; }
 
         /// <summary>
         /// Returns true if there was a problem with parsing the file.
@@ -211,6 +211,108 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             public delegate string GetUriForDelegate(string path);
         }
 
+        public enum GuideType
+        {
+            Cover,          // the book cover(s), jacket information, etc.
+            TitlePage,      // page with possibly title, author, publisher, and other metadata
+            Toc,            // Table of Contents
+            Index,          // back-of-book style index
+            Glossary,
+            Acknowledgements,
+            Bibliography,
+            Colophon,
+            CopyrightPage,
+            Dedication,
+            Epigraph,
+            Foreword,
+            Loi,            // List of Illustrations
+            Lot,            // List of Tables
+            Notes,
+            Preface,
+            Text,           // First "real" page of content (e.g. "Chapter 1")
+            Unknown,
+        }
+
+        public class GuideReference : NavObject
+        {
+            public static readonly string ElementName = XmlNamespace + "reference";
+
+            public GuideType GuideType { get; private set; }
+            public string Title { get; private set; }
+            public string Href { get; private set; }
+
+            public GuideReference(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
+            {
+                GuideType = GuideType.Unknown;
+
+                XAttribute typeAttribute = element.Attribute("type");
+                if (typeAttribute == null)
+                {
+                    if (reportError != null)
+                    {
+                        reportError("no type attribute");
+                    }
+                }
+                else
+                {
+                    string guideType = typeAttribute.Value;
+                    try
+                    {
+                        // Need to handle those two cases rather ugly
+                        if (guideType.Equals("title-page", StringComparison.OrdinalIgnoreCase))
+                        {
+                            GuideType = GuideType.TitlePage;
+                        }
+                        else if (guideType.Equals("copyright-page", StringComparison.OrdinalIgnoreCase))
+                        {
+                            GuideType = GuideType.CopyrightPage;
+                        }
+                        else
+                        {
+                            GuideType = (GuideType)Enum.Parse(typeof(GuideType), guideType, true);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        if (reportError != null)
+                        {
+                            reportError("unknown guide type " + guideType);
+                        }
+                    }
+                }
+
+                XAttribute titleAttribute = element.Attribute("title");
+                if (titleAttribute == null)
+                {
+                    if (reportError != null)
+                    {
+                        reportError("no title attribute for guide ref");
+                    }
+                }
+                else
+                {
+                    Title = titleAttribute.Value;
+                }
+
+                XAttribute hrefAttribute = element.Attribute("href");
+                if (hrefAttribute == null)
+                {
+                    if (reportError != null)
+                    {
+                        reportError("no href attribute for guide ref");
+                    }
+                }
+                else
+                {
+                    Href = hrefAttribute.Value;
+                    if (getUri != null)
+                    {
+                        Href = getUri(Href);
+                    }
+                }
+            }
+        }
+
         private void processDocument()
         {
             XDocument doc = GetDocument();
@@ -228,6 +330,9 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             // All nav lists
             processNavLists(rootElement);
+
+            XElement guideElement = rootElement.Element(XmlNamespace + "guide");
+            processGuide(guideElement);
         }
 
         private void processNavMap(XElement navMapElement)
@@ -243,14 +348,45 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
         private void processNavLists(XElement rootElement)
         {
+            IEnumerable<XElement> elements = rootElement.Elements(NavList.ElementName);
+
+            if (elements.Count() < 1)
+            {
+                // No point creatin the list
+                return;
+            }
+
             List<NavList> navigationLists = new List<NavList>();
 
-            foreach (XElement element in rootElement.Elements(NavList.ElementName))
+            foreach (XElement element in elements)
             {
                 navigationLists.Add(new NavList(element, reportErrorDelegate, getUriForDelegate));
             }
 
             NavigationLists = navigationLists;
+        }
+
+        private void processGuide(XElement guideElement)
+        {
+            if (guideElement == null)
+            {
+                return;
+            }
+
+            IEnumerable<XElement> elements = guideElement.Elements(GuideReference.ElementName);
+            if (elements.Count() < 1)
+            {
+                return;
+            }
+
+            List<GuideReference> guideReferences = new List<GuideReference>();
+
+            foreach (XElement element in elements)
+            {
+                guideReferences.Add(new GuideReference(element, reportErrorDelegate, getUriForDelegate));
+            }
+
+            GuideReferences = guideReferences;
         }
 
         private void reportError(string msg)

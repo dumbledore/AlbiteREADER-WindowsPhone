@@ -107,9 +107,21 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
             }
 
             // Dump the navigation lists
-            foreach (NavigationControlFile.NavList navList in ncx.NavigationLists)
+            if (ncx.NavigationLists != null)
             {
-                dumpNavList(navList);
+                foreach (NavigationControlFile.NavList navList in ncx.NavigationLists)
+                {
+                    dumpNavList(navList);
+                }
+            }
+
+            // Dump the guide refs
+            if (ncx.GuideReferences != null)
+            {
+                foreach (NavigationControlFile.GuideReference guideRef in ncx.GuideReferences)
+                {
+                    dumpGuideReference(guideRef);
+                }
             }
         }
 
@@ -140,6 +152,12 @@ namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
 
                 navTarget = navTarget.NextSibling;
             }
+        }
+
+        private void dumpGuideReference(NavigationControlFile.GuideReference guideReference)
+        {
+            Log("Guide Reference. Type: {0} Title: {1} Href: {2}",
+                guideReference.GuideType, guideReference.Title, guideReference.Href);
         }
     }
 }
