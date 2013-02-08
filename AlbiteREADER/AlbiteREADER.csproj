@@ -100,7 +100,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestDefaults.resx</DependentUpon>
     </Compile>
+    <Compile Include="Test\EpubTests.cs" />
     <Compile Include="Test\Model\Container\InvalidEpubContainerTest.cs" />
+    <Compile Include="Test\TemplateTests.cs" />
     <Compile Include="Test\TestCase.cs" />
     <Compile Include="Test\Layout\EngineTest.cs" />
     <Compile Include="Test\Layout\TemplateTest.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Test\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Test\Tests.cs" />
     <Compile Include="Utils\IAlbiteContainer.cs" />
     <Compile Include="Utils\AlbiteIsolatedStorage.cs" />
     <Compile Include="Utils\AlbiteResourceStorage.cs" />
