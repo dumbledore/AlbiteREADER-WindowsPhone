@@ -125,6 +125,15 @@ namespace SvetlinAnkov.AlbiteREADER.Test
             // A NavTarget without a label element.
             // A NavTarget with a label but without a text element.
             new EpubContainerTest("Test/epub/invalid/pass/06.epub").Test();
+
+            // Has guide references
+            // A guide ref with an unknown type
+            // A guide ref with an empty string for a type
+            // A guide ref without a type
+            // A guide ref without a title
+            // A guide ref without a href
+            // A guide ref without attributes at all
+            new EpubContainerTest("Test/epub/invalid/pass/07.epub").Test();
         }
 
         /// <summary>

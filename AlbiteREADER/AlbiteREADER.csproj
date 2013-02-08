@@ -150,6 +150,7 @@
     <Content Include="Resources\Test\epub\invalid\pass\04.epub" />
     <Content Include="Resources\Test\epub\invalid\pass\05.epub" />
     <Content Include="Resources\Test\epub\invalid\pass\06.epub" />
+    <Content Include="Resources\Test\epub\invalid\pass\07.epub" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ApplicationIcon.png">
