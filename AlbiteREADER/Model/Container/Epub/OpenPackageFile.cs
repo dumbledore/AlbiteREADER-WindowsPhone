@@ -125,7 +125,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
                     continue;
                 }
 
-                items[id.Value] = GetUriFor(href.Value).ToString();
+                items[id.Value] = GetPathFor(href.Value);
             }
         }
 

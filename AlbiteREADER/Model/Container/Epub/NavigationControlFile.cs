@@ -34,13 +34,13 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
         private static readonly string tag = "NavigationControlFile";
 
-        private NavObject.GetUriForDelegate getUriForDelegate;
+        private NavObject.GetPathForDelegate getPathForDelegate;
         private NavObject.ReportErrorDelegate reportErrorDelegate;
 
         public NavigationControlFile(IAlbiteContainer container, string filename)
             : base(container, filename)
         {
-            getUriForDelegate = new NavObject.GetUriForDelegate(GetUriForToString);
+            getPathForDelegate = new NavObject.GetPathForDelegate(GetPathFor);
             reportErrorDelegate = new NavObject.ReportErrorDelegate(reportError);
             HadErrors = false;
             processDocument();
@@ -52,12 +52,12 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public NavPoint FirstPoint { get; private set; }
 
-            public NavMap(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
+            public NavMap(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
             {
                 XElement pointElement = element.Element(NavPoint.ElementName);
                 if (pointElement != null)
                 {
-                    FirstPoint = new NavPoint(pointElement, reportError, getUri);
+                    FirstPoint = new NavPoint(pointElement, reportError, getPath);
                 }
             }
         }
@@ -69,19 +69,19 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             public NavPoint FirstChild { get; private set; }
             public NavPoint NextSibling { get; private set; }
 
-            public NavPoint(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
-                : base(element, reportError, getUri)
+            public NavPoint(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
+                : base(element, reportError, getPath)
             {
                 XElement child = element.Element(ElementName);
                 if (child != null)
                 {
-                    FirstChild = new NavPoint(child, reportError, getUri);
+                    FirstChild = new NavPoint(child, reportError, getPath);
                 }
 
                 IEnumerable<XElement> nextElements = element.ElementsAfterSelf(ElementName);
                 if (nextElements.Count() > 0)
                 {
-                    NextSibling = new NavPoint(nextElements.First(), reportError, getUri);
+                    NextSibling = new NavPoint(nextElements.First(), reportError, getPath);
                 }
             }
         }
@@ -92,13 +92,13 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public NavTarget FirstTarget { get; private set; }
 
-            public NavList(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
+            public NavList(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
                 : base(element, reportError)
             {
                 XElement targetElement = element.Element(NavTarget.ElementName);
                 if (targetElement != null)
                 {
-                    FirstTarget = new NavTarget(targetElement, reportError, getUri);
+                    FirstTarget = new NavTarget(targetElement, reportError, getPath);
                 }
             }
         }
@@ -109,13 +109,13 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public NavTarget NextSibling { get; protected set; }
 
-            public NavTarget(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
-                : base(element, reportError, getUri)
+            public NavTarget(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
+                : base(element, reportError, getPath)
             {
                 IEnumerable<XElement> nextElements = element.ElementsAfterSelf(ElementName);
                 if (nextElements.Count() > 0)
                 {
-                    NextSibling = new NavTarget(nextElements.First(), reportError, getUri);
+                    NextSibling = new NavTarget(nextElements.First(), reportError, getPath);
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             public string Src { get; private set; }
 
-            public NavContent(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
+            public NavContent(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
                 : base(element, reportError)
             {
                 XElement contentElement = element.Element(elementName);
@@ -152,12 +152,12 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
                 Src = srcAttribute.Value;
 
-                // If the GetUri delegate is available, pass the path through it.
+                // If the GetPath delegate is available, pass the path through it.
                 // It doesn't look perfectly readable this way, but it's
                 // the way to get our abstraction.
-                if (getUri != null)
+                if (getPath != null)
                 {
-                    Src = getUri(Src);
+                    Src = getPath(Src);
                 }
             }
         }
@@ -208,7 +208,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             /// </summary>
             /// <param name="path">path</param>
             /// <returns></returns>
-            public delegate string GetUriForDelegate(string path);
+            public delegate string GetPathForDelegate(string path);
         }
 
         public enum GuideType
@@ -241,7 +241,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
             public string Title { get; private set; }
             public string Href { get; private set; }
 
-            public GuideReference(XElement element, ReportErrorDelegate reportError, GetUriForDelegate getUri)
+            public GuideReference(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
             {
                 GuideType = GuideType.Unknown;
 
@@ -305,9 +305,9 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
                 else
                 {
                     Href = hrefAttribute.Value;
-                    if (getUri != null)
+                    if (getPath != null)
                     {
-                        Href = getUri(Href);
+                        Href = getPath(Href);
                     }
                 }
             }
@@ -343,7 +343,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
                 return;
             }
 
-            NavigationMap = new NavMap(navMapElement, reportErrorDelegate, getUriForDelegate);
+            NavigationMap = new NavMap(navMapElement, reportErrorDelegate, getPathForDelegate);
         }
 
         private void processNavLists(XElement rootElement)
@@ -360,7 +360,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             foreach (XElement element in elements)
             {
-                navigationLists.Add(new NavList(element, reportErrorDelegate, getUriForDelegate));
+                navigationLists.Add(new NavList(element, reportErrorDelegate, getPathForDelegate));
             }
 
             NavigationLists = navigationLists;
@@ -383,7 +383,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
 
             foreach (XElement element in elements)
             {
-                guideReferences.Add(new GuideReference(element, reportErrorDelegate, getUriForDelegate));
+                guideReferences.Add(new GuideReference(element, reportErrorDelegate, getPathForDelegate));
             }
 
             GuideReferences = guideReferences;
@@ -393,11 +393,6 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         {
             Log.E(tag, msg);
             HadErrors = true;
-        }
-
-        private string GetUriForToString(string path)
-        {
-            return GetUriFor(path).ToString();
         }
     }
 }

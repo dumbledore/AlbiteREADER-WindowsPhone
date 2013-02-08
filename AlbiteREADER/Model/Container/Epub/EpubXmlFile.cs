@@ -66,11 +66,19 @@ namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
         /// Returns the Uri of the resource relative to the base path
         /// </summary>
         /// <param name="path">The path of the resource</param>
-        /// <returns></returns>
         public Uri GetUriFor(string path)
         {
             Uri uri = new Uri(baseUri, path);
             return rootUri.MakeRelativeUri(uri);
+        }
+
+        /// <summary>
+        /// Returns the unescaped path of the resource relative to the base path
+        /// </summary>
+        /// <param name="path">The path of the resource</param>
+        public string GetPathFor(string path)
+        {
+            return Uri.UnescapeDataString(GetUriFor(path).ToString());
         }
     }
 }
