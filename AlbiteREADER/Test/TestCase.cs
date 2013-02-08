@@ -46,5 +46,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test
 
 
         protected abstract void TestImplementation();
+
+        public virtual int NumberOfTests { get { return 1; } }
     }
 }

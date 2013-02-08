@@ -107,6 +107,7 @@
     <Compile Include="Test\Layout\EngineTest.cs" />
     <Compile Include="Test\Layout\TemplateTest.cs" />
     <Compile Include="Test\Model\Container\EpubContainerTest.cs" />
+    <Compile Include="Test\TestCollection.cs" />
     <Compile Include="Test\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>

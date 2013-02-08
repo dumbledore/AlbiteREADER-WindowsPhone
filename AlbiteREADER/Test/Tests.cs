@@ -9,16 +9,20 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using SvetlinAnkov.AlbiteREADER.Test.Layout;
+using System.Collections.Generic;
 
 namespace SvetlinAnkov.AlbiteREADER.Test
 {
-    public class Tests : TestCase
+    public class Tests : TestCollection
     {
-        protected override void TestImplementation()
+        protected override ICollection<TestCase> CreateTests()
         {
-            new EpubTests().Test();
-            new TemplateTests().Test();
-            new EngineTest().Test();
+            return new TestCase[]
+            {
+                new EpubTests(),
+                new TemplateTests(),
+                new EngineTest(),
+            };
         }
     }
 }

@@ -13,14 +13,17 @@ using SvetlinAnkov.AlbiteREADER.Utils;
 
 namespace SvetlinAnkov.AlbiteREADER.Test
 {
-    public class TemplateTests : TestCase
+    public class TemplateTests : TestCollection
     {
-        protected override void TestImplementation()
+        protected override System.Collections.Generic.ICollection<TestCase> CreateTests()
         {
-            new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.MainPage).Test();
-            new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.BaseStyles).Test();
-            new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.ContentStyles).Test();
-            new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.ThemeStyles).Test();
+            return new TestCase[]
+            {
+                new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.MainPage),
+                new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.BaseStyles),
+                new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.ContentStyles),
+                new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.ThemeStyles),
+            };
         }
     }
 }
