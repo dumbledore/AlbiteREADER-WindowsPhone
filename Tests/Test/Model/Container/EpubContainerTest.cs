@@ -8,13 +8,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.AlbiteREADER.Utils;
 using System.IO;
-using SvetlinAnkov.AlbiteREADER.Model.Container.Epub;
+using SvetlinAnkov.Albite.READER.Model.Container.Epub;
 using System.Diagnostics;
 using System.Collections.Generic;
+using SvetlinAnkov.Albite.Core.Test;
+using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
+namespace SvetlinAnkov.Albite.Tests.Test.Model.Container
 {
     public class EpubContainerTest : TestCase
     {

@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils.Logging
+namespace SvetlinAnkov.Albite.Core.Utils.Logging
 {
     internal abstract class AbstractLog : IDisposable
     {

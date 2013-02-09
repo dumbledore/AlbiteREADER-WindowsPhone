@@ -8,10 +8,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.AlbiteREADER.Layout;
-using SvetlinAnkov.AlbiteREADER.Resources.Defaults;
+using SvetlinAnkov.Albite.READER.Layout;
+using SvetlinAnkov.Albite.READER.Resources.Defaults;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils
+namespace SvetlinAnkov.Albite.READER.Utils
 {
     public static class Defaults
     {

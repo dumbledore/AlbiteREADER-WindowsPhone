@@ -12,7 +12,7 @@ using System.IO;
 using System.Windows.Resources;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils
+namespace SvetlinAnkov.Albite.Core.Utils
 {
     public class AlbiteZipContainer : IAlbiteContainer
     {

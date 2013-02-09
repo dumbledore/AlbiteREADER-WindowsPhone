@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.IO;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils
+namespace SvetlinAnkov.Albite.Core.Utils
 {
     public interface IAlbiteContainer : IDisposable
     {

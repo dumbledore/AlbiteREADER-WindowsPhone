@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils.Logging
+namespace SvetlinAnkov.Albite.Core.Utils.Logging
 {
     internal class DebugLog : AbstractLog
     {

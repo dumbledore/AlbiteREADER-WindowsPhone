@@ -8,9 +8,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.AlbiteREADER.Test.Model.Container;
+using SvetlinAnkov.Albite.Tests.Test.Model.Container;
+using SvetlinAnkov.Albite.Core.Test;
 
-namespace SvetlinAnkov.AlbiteREADER.Test
+namespace SvetlinAnkov.Albite.Tests.Test
 {
     public class EpubTests : TestCollection
     {

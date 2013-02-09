@@ -8,10 +8,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.AlbiteREADER.Utils;
-using SvetlinAnkov.AlbiteREADER.Model.Container;
+using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.READER.Model.Container;
 
-namespace SvetlinAnkov.AlbiteREADER.Model
+namespace SvetlinAnkov.Albite.READER.Model
 {
     public class Book
     {

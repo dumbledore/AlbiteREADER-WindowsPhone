@@ -8,9 +8,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.AlbiteREADER.Utils;
+using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.AlbiteREADER.Layout
+namespace SvetlinAnkov.Albite.READER.Layout
 {
     public class TemplateResource : Template
     {

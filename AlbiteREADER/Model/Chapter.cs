@@ -8,9 +8,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.AlbiteREADER.Layout;
+using SvetlinAnkov.Albite.READER.Layout;
 
-namespace SvetlinAnkov.AlbiteREADER.Model
+namespace SvetlinAnkov.Albite.READER.Model
 {
     public class Chapter
     {

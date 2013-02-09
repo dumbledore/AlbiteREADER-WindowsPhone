@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace SvetlinAnkov.AlbiteREADER.Layout
+namespace SvetlinAnkov.Albite.READER.Layout
 {
     public static class Paths
     {

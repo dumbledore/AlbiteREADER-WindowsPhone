@@ -9,9 +9,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Diagnostics;
-using SvetlinAnkov.AlbiteREADER.Utils.Logging;
+using SvetlinAnkov.Albite.Core.Utils.Logging;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils
+namespace SvetlinAnkov.Albite.Core.Utils
 {
     public static class Log
     {

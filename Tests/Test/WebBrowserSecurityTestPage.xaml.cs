@@ -10,9 +10,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using SvetlinAnkov.AlbiteREADER.Utils;
+using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.AlbiteREADER.Test
+namespace SvetlinAnkov.Albite.Tests.Test
 {
     public partial class WebBrowserSecurityTestPage : PhoneApplicationPage
     {

@@ -12,9 +12,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using SvetlinAnkov.AlbiteREADER.Utils;
+using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.AlbiteREADER
+namespace SvetlinAnkov.Albite.READER
 {
     public partial class App : Application
     {

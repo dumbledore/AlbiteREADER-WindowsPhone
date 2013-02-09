@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.AlbiteREADER.Layout
+namespace SvetlinAnkov.Albite.READER.Layout
 {
     /// <summary>
     /// Represents a LayoutTemplate

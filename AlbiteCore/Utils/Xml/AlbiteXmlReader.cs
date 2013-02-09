@@ -12,7 +12,7 @@ using System.Xml;
 using System.IO;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils.Xml
+namespace SvetlinAnkov.Albite.Core.Utils.Xml
 {
     /// <summary>
     /// This class is a tiny wrapper around an XmlReader.

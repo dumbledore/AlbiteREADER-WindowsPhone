@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 
-namespace SvetlinAnkov.AlbiteREADER.Model
+namespace SvetlinAnkov.Albite.READER.Model
 {
     //TODO: Perhaps this class will be used for different purposes
 

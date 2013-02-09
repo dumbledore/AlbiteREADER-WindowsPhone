@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SvetlinAnkov.AlbiteREADER.Resources.Defaults {
+namespace SvetlinAnkov.Albite.READER.Resources.Defaults {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SvetlinAnkov.AlbiteREADER.Resources.Defaults {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SvetlinAnkov.AlbiteREADER.Resources.Defaults.ApplicationDefaults", typeof(ApplicationDefaults).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SvetlinAnkov.Albite.READER.Resources.Defaults.ApplicationDefaults", typeof(ApplicationDefaults).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

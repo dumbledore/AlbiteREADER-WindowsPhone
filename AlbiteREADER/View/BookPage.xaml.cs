@@ -12,7 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.AlbiteREADER.View
+namespace SvetlinAnkov.Albite.READER.View
 {
     public partial class BookPage : PhoneApplicationPage
     {

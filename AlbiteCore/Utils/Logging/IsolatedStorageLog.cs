@@ -12,7 +12,7 @@ using System.IO;
 using System.Text;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils.Logging
+namespace SvetlinAnkov.Albite.Core.Utils.Logging
 {
     internal class IsolatedStorageLog : AbstractLog
     {

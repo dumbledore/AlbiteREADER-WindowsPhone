@@ -8,10 +8,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.AlbiteREADER.Layout;
-using SvetlinAnkov.AlbiteREADER.Utils;
+using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.Core.Test;
+using SvetlinAnkov.Albite.READER.Utils;
+using SvetlinAnkov.Albite.READER.Layout;
 
-namespace SvetlinAnkov.AlbiteREADER.Test.Layout
+namespace SvetlinAnkov.Albite.Tests.Test.Layout
 {
     public class EngineTest : TestCase
     {

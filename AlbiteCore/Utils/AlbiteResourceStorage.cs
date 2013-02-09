@@ -10,9 +10,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Resources;
 using System.IO;
-using SvetlinAnkov.AlbiteREADER.Utils;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils
+namespace SvetlinAnkov.Albite.Core.Utils
 {
     public class AlbiteResourceStorage : AlbiteStorage
     {

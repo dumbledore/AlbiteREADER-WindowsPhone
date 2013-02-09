@@ -12,9 +12,9 @@ using System.IO;
 using System.Xml.Linq;
 using System.Linq;
 using System.Collections.Generic;
-using SvetlinAnkov.AlbiteREADER.Utils;
+using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
+namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
 {
     /// <summary>
     /// Check http://idpf.org/epub/30/spec/epub30-ocf.html#sec-container-metainf

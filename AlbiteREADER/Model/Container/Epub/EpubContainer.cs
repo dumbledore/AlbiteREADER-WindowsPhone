@@ -8,16 +8,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.AlbiteREADER.Utils;
 using System.Xml.Linq;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
-using SvetlinAnkov.AlbiteREADER.Utils.Xml;
+using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.Core.Utils.Xml;
 
-namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
+namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
 {
     public class EpubContainer : BookContainer
     {

@@ -8,10 +8,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.AlbiteREADER.Layout;
-using System.Diagnostics;
+using SvetlinAnkov.Albite.READER.Layout;
+using SvetlinAnkov.Albite.Core.Test;
 
-namespace SvetlinAnkov.AlbiteREADER.Test.Layout
+namespace SvetlinAnkov.Albite.Tests.Test.Layout
 {
     public class TemplateTest : TestCase
     {

@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace SvetlinAnkov.AlbiteREADER.Test.Model.Container
+namespace SvetlinAnkov.Albite.Tests.Test.Model.Container
 {
     public class InvalidEpubContainerTest : EpubContainerTest
     {

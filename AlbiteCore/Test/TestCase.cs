@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.AlbiteREADER.Test
+namespace SvetlinAnkov.Albite.Core.Test
 {
     public abstract class TestCase
     {

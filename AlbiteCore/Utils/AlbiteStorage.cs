@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 using System.IO;
 using System.Text;
 
-namespace SvetlinAnkov.AlbiteREADER.Utils
+namespace SvetlinAnkov.Albite.Core.Utils
 {
     public abstract class AlbiteStorage : IDisposable
     {

@@ -12,9 +12,9 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using SvetlinAnkov.AlbiteREADER.Utils;
+using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.AlbiteREADER.Model.Container.Epub
+namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
 {
     /// <summary>
     /// Check http://idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.4.1

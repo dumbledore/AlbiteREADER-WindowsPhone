@@ -1,7 +1,7 @@
 ﻿using Microsoft.Phone.Controls;
 using System;
 
-namespace SvetlinAnkov.AlbiteREADER.Test
+namespace SvetlinAnkov.Albite.Tests.Test
 {
     public partial class TestPage : PhoneApplicationPage
     {
