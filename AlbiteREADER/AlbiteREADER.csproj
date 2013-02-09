@@ -112,6 +112,9 @@
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Test\Tests.cs" />
+    <Compile Include="Test\WebBrowserSecurityTestPage.xaml.cs">
+      <DependentUpon>WebBrowserSecurityTestPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\IAlbiteContainer.cs" />
     <Compile Include="Utils\AlbiteIsolatedStorage.cs" />
     <Compile Include="Utils\AlbiteResourceStorage.cs" />
@@ -166,10 +169,17 @@
     </Content>
     <Content Include="Resources\Layout\Base.css" />
     <Content Include="Resources\Layout\Theme.css" />
+    <Content Include="Resources\Test\webbrowser\security\exploit\exploit.html" />
+    <Content Include="Resources\Test\webbrowser\security\exploit\other.html" />
+    <Content Include="Resources\Test\webbrowser\security\other\other.html" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Test\TestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Test\WebBrowserSecurityTestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
