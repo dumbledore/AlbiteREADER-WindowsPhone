@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using SvetlinAnkov.AlbiteREADER.Test.Layout;
 using SvetlinAnkov.AlbiteREADER.Utils;
+using SvetlinAnkov.AlbiteREADER.Layout;
 
 namespace SvetlinAnkov.AlbiteREADER.Test
 {
@@ -19,10 +20,10 @@ namespace SvetlinAnkov.AlbiteREADER.Test
         {
             return new TestCase[]
             {
-                new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.MainPage),
-                new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.BaseStyles),
-                new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.ContentStyles),
-                new TemplateTest(Defaults.Engine.LayoutPath + Defaults.Engine.ThemeStyles),
+                new TemplateTest(Paths.MainPage),
+                new TemplateTest(Paths.BaseStyles),
+                new TemplateTest(Paths.ContentStyles),
+                new TemplateTest(Paths.ThemeStyles),
             };
         }
     }

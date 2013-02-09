@@ -59,14 +59,5 @@ namespace SvetlinAnkov.AlbiteREADER.Resources.Defaults {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Resources/.
-        /// </summary>
-        internal static string Resources {
-            get {
-                return ResourceManager.GetString("Resources", resourceCulture);
-            }
-        }
     }
 }

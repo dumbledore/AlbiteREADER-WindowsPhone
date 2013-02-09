@@ -16,7 +16,7 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
 {
     public class AlbiteResourceStorage : AlbiteStorage
     {
-        private static readonly string ResourcesLocation = Defaults.Application.Resources;
+        private static readonly string ResourcesLocation = "Resources/";
 
         public AlbiteResourceStorage(string filename) : base(filename) { }
 

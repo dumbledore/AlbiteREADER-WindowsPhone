@@ -33,8 +33,6 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
         private readonly TemplateResource contentStylesTemplate;
         private readonly TemplateResource themeStylesTemplate;
 
-        public Engine(WebBrowser webBrowser) : this(webBrowser, Defaults.Layout.DefaultSettings) { }
-
         public Engine(WebBrowser webBrowser, Settings settings)
         {
             this.webBrowser = webBrowser;
@@ -43,11 +41,9 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
 
         private Engine()
         {
-            string FilesLocation = Defaults.Engine.LayoutPath;
-
             // First, copy the JSEngine to the Isolated Storage
             {
-                string filename = FilesLocation + Defaults.Engine.JSEngine;
+                string filename = Paths.JSEngine;
                 using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(filename))
                 {
                     using (AlbiteResourceStorage res = new AlbiteResourceStorage(filename))
@@ -58,10 +54,10 @@ namespace SvetlinAnkov.AlbiteREADER.Layout
             }
 
             // Then load the templates
-            mainPageTemplate = new TemplateResource(FilesLocation + Defaults.Engine.MainPage);
-            baseStylesTemplate = new TemplateResource(FilesLocation + Defaults.Engine.BaseStyles);
-            contentStylesTemplate = new TemplateResource(FilesLocation + Defaults.Engine.ContentStyles);
-            themeStylesTemplate = new TemplateResource(FilesLocation + Defaults.Engine.ThemeStyles);
+            mainPageTemplate = new TemplateResource(Paths.MainPage);
+            baseStylesTemplate = new TemplateResource(Paths.BaseStyles);
+            contentStylesTemplate = new TemplateResource(Paths.ContentStyles);
+            themeStylesTemplate = new TemplateResource(Paths.ThemeStyles);
         }
 
         /// <summary>

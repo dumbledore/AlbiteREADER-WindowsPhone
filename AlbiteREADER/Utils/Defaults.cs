@@ -15,6 +15,11 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
 {
     public static class Defaults
     {
+        public static class Application
+        {
+            // Non so far
+        }
+
         public static class Layout
         {
             // Default settings
@@ -53,28 +58,6 @@ namespace SvetlinAnkov.AlbiteREADER.Utils
 
             public static readonly Theme DefaultTheme = DayTheme;
 
-        }
-
-        public static class Application
-        {
-            public static string Resources { get { return ApplicationDefaults.Resources; } }
-        }
-
-        public static class Engine
-        {
-            public static string LayoutPath { get { return EngineDefaults.LayoutPath; } }
-            public static string BookPath { get { return EngineDefaults.BookPath; } }
-
-            public static string JSEngine { get { return EngineDefaults.JSEngine; } }
-            public static string MainPage { get { return EngineDefaults.MainPage; } }
-            public static string BaseStyles { get { return EngineDefaults.BaseStyles; } }
-            public static string ContentStyles { get { return EngineDefaults.ContentStyles; } }
-            public static string ThemeStyles { get { return EngineDefaults.ThemeStyles; } }
-        }
-
-        public static class Test
-        {
-            public static string Path { get { return TestDefaults.Path; } }
         }
     }
 }

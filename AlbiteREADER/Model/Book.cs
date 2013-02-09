@@ -31,7 +31,7 @@ namespace SvetlinAnkov.AlbiteREADER.Model
         {
             get
             {
-                return Defaults.Engine.BookPath + id;
+                return "Book/" + id;
             }
         }
     }
