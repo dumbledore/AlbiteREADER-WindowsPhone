@@ -25,9 +25,9 @@ namespace SvetlinAnkov.AlbiteREADER.Test
         void prepare()
         {
             // Copy the resources to isolated storage
-            copyResToIso("Test/webbrowser/security/exploit/exploit.html");
-            copyResToIso("Test/webbrowser/security/exploit/other.html");
-            copyResToIso("Test/webbrowser/security/other/other.html");
+            copyResToIso("Test/WebBrowser/Security/exploit/exploit.html");
+            copyResToIso("Test/WebBrowser/Security/exploit/other.html");
+            copyResToIso("Test/WebBrowser/Security/other/other.html");
         }
 
         void copyResToIso(string filename)
@@ -43,14 +43,14 @@ namespace SvetlinAnkov.AlbiteREADER.Test
 
         private void BadBrowser_Loaded(object sender, RoutedEventArgs e)
         {
-            BadBrowser.Source = new Uri("Test/webbrowser/security/exploit/exploit.html", UriKind.Relative);
+            BadBrowser.Source = new Uri("Test/WebBrowser/Security/exploit/exploit.html", UriKind.Relative);
         }
 
         private static readonly string gbTag = "GoodBrowser";
 
         private void GoodBrowser_Loaded(object sender, RoutedEventArgs e)
         {
-            GoodBrowser.Base = "Test/webbrowser/security/exploit/";
+            GoodBrowser.Base = "Test/WebBrowser/Security/exploit/";
             GoodBrowser.Source = new Uri("exploit.html", UriKind.Relative);
         }
 
@@ -77,7 +77,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test
 
         private void AlbiteBrowser_Loaded(object sender, RoutedEventArgs e)
         {
-            AlbiteBrowser.Base = "Test/webbrowser/security/exploit/";
+            AlbiteBrowser.Base = "Test/WebBrowser/Security/exploit/";
             AlbiteBrowser.Source = new Uri("exploit.html", UriKind.Relative);
         }
 

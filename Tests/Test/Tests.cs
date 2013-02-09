@@ -20,7 +20,7 @@ namespace SvetlinAnkov.AlbiteREADER.Test
             return new TestCase[]
             {
                 new EpubTests(),
-                new TemplateTests(),
+                new TemplateTest("Test/Template/Main.xhtml"),
                 new EngineTest(),
             };
         }
