@@ -8,7 +8,15 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
     /*
      * Public API
      */
+
+    /*
+     * Called when an iframe has loaded
+     */
     this.contentLoaded  = contentLoaded;
+
+    /*
+     * Go to a particular page. No animations.
+     */
     this.goToPage       = goToPage;
 
     /*
@@ -22,14 +30,9 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
         }
     }
 
-    var startTime;
-
-    function tic() {
-        startTime = (new Date()).getMilliseconds();
-    }
-
-    function toc() {
-        return (new Date()).getMilliseconds() - startTime;
+    function reportError(msg) {
+        // TODO: this must report the error to the C# code
+        debug("Error: " + msg);
     }
 
     /*
@@ -39,6 +42,8 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
     var PREVIOUS_PAGE_POSITION  = "0px";
     var CURRENT_PAGE_POSITION   = pageWidth + "px";
     var NEXT_PAGE_POSITION      = (pageWidth * 2) + "px";
+
+    var CONTENT_CSS_FILE_NAME   = "content.css";
 
     /*
      * PageView is a mutable object that contains everything, necessary for
@@ -115,8 +120,6 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
     }
 
     // Private stuff
-    var numberOfFramesLoaded = 0;
-
     var previousPage;
     var currentPage;
     var nextPage;
@@ -127,35 +130,132 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
      */
     var booklet;
 
+    var numberOfFramesLoaded = 0;
+
     function contentLoaded(contentFrame) {
+        /*
+         * This works because layout/render and javascript are synchronized
+         * by running on the same thread.
+         */
         numberOfFramesLoaded++;
 
-        if (numberOfFramesLoaded == 1) {
+        switch (numberOfFramesLoaded) {
+            case 1:
+                contentLoaded1(contentFrame);
+                break;
+            case 2:
+                contentLoaded2(contentFrame);
+                break;
+            case 3:
+                contentLoaded3(contentFrame);
+                break;
+            default:
+                reportError("Loaded more frames than necessary: " + numberOfFramesLoaded);
+        }
+    }
+
+    function contentLoaded1(contentFrame) {
+        var doc = contentFrame.contentWindow.document;
+        var pageDiv = getParentByClassName(contentFrame, "page");
+
+        previousPage = new PageView(pageDiv);
+
+        loadCssFile(CONTENT_CSS_FILE_NAME, doc, function() {
+            createFrame(pageDiv);
+        });
+    }
+
+    function contentLoaded2(contentFrame) {
+        var doc = contentFrame.contentWindow.document;
+        var pageDiv = getParentByClassName(contentFrame, "page");
+
+        currentPage = new PageView(pageDiv);
+
+        loadCssFile(CONTENT_CSS_FILE_NAME, doc, function() {
+            createFrame(pageDiv);
+        });
+    }
+
+    function contentLoaded3(contentFrame) {
+        var doc = contentFrame.contentWindow.document;
+        var pageDiv = getParentByClassName(contentFrame, "page");
+
+        nextPage = new PageView(pageDiv);
+
+        loadCssFile(CONTENT_CSS_FILE_NAME, doc, function() {
             /*
-             * First paginate. This will create the bunch of page metrics,
-             * called a booklet.
+             * This will create the bunch of page metrics, called a booklet.
              */
             booklet = paginate(
                 contentFrame.scrollHeight,
                 contentFrame.contentWindow.document.body);
 
             /*
-             * Now create the page views
-             */
-            createPagesViews();
-        }
-
-        if (numberOfFramesLoaded == 3) {
-            /*
              * Set the pages to be shown.
              */
-            this.goToPage(currentPageNumber);
+            goToPage(currentPageNumber);
 
             /*
              * Ready to lift the curtains.
              */
             mainWindow.document.body.style.visibility = 'visible';
+
+            /*
+             * TODO: Notify the server that the page has loaded.
+             */
+        });
+    }
+
+    function createFrame(pageDiv) {
+        pageDiv.parentElement.appendChild(pageDiv.cloneNode(true));
+    }
+
+    function getParentByClassName(el, className) {
+        var classNameMiddle = ' ' + className + ' ';
+
+        var name;
+        var index;
+
+        for (; el; el = el.parentElement) {
+            name = el.className;
+            index = name.indexOf(className);
+
+            if (index < 0) {
+                continue;
+            }
+
+            if (className.length == name.length) {
+                return el;
+            }
+
+            if (index == 0 && name[className.length] == ' ') {
+                return el;
+            }
+
+            if (index == name.length - className.length) {
+                return el;
+            }
+
+            if (name.indexOf(classNameMiddle) > 0) {
+                return el;
+            }
         }
+
+        return null;
+    }
+
+    function loadCssFile(filename, doc, callback) {
+        var linkElement = doc.createElement("link");
+
+        linkElement.setAttribute("rel", "stylesheet");
+        linkElement.setAttribute("type", "text/css");
+        linkElement.setAttribute("href", filename);
+
+        if (callback) {
+            linkElement.addEventListener('load', callback);
+        }
+
+        doc.getElementsByTagName("head")[0].appendChild(linkElement);
     }
 
     function goToPage(pageNumber) {
@@ -176,6 +276,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
 
         /*
          * Set the view to the current page.
+         * TODO: remove in the final script
          */
         mainWindow.scrollTo(pageWidth, 0);
     }
@@ -390,34 +491,5 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
         pages.push(new PageMetrics(pages.length + 1, 0, 0));
 
         return pages;
-    }
-
-    function createPagesViews() {
-        /*
-         * We need three pages to be ready at the same time.
-         */
-
-        /*
-         * First get the only page and set its id.
-         */
-        var np = mainWindow.document.getElementsByClassName("page")[0];
-        np.id = "nextPage";
-        nextPage = new PageView(np);
-
-        /*
-         * Create the previous page.
-         */
-        var cp = np.cloneNode(true);
-        cp.id = "currentPage";
-        np.parentNode.insertBefore(cp, np);
-        currentPage = new PageView(cp);
-
-        /*
-         * And the last one.
-         */
-        var pp = cp.cloneNode(true);
-        pp.id = "previousPage";
-        np.parentNode.insertBefore(pp, cp);
-        previousPage = new PageView(pp);
     }
 }
