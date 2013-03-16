@@ -10,29 +10,49 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER.Model.Container;
+using System.Linq;
+using System.Data.Linq.Mapping;
 
 namespace SvetlinAnkov.Albite.READER.Model
 {
+    [Table(Name = "Books")]
     public class Book
     {
-        private const string IsoLocationPath = "Books/";
+        public static string IsoLocationPath { get { return "Books/"; } }
 
-        //TODO: This will be set by the DataBase
-        private int id = 0;
+        // ID
+        private int id;
 
-        public Book(BookContainer bookContainer)
+        [Column(Storage = "id", IsPrimaryKey = true, IsDbGenerated = true, DbType = "int NOT NULL IDENTITY")]
+        public int Id
         {
-            // Create the folder for this book
-            
-            // Extract the 
+            get { return id; }
+            private set { id = value; }
         }
 
-        public virtual string Path
-        {
-            get
-            {
-                return "Book/" + id;
-            }
-        }
+        // Title (string)
+        public string Title { get; set; }
+
+        // Author (reference)
+
+        // Genre (reference)
+
+        // Subjects (reference)
+
+        // Download URL so that one would be able to
+        // easily download the contents again.
+        //
+        // This might include some special protocol name
+        // for non http links, e.g.:
+        //
+        //   myuser@dropbox://mybooks/book.epub
+        //   myuser@skydrive://mybooks/book.epub
+
+        // Archived (boolean)
+
+        // Reading Persistance (lazy initialisation)
+        // Last Chapter (int)
+        // Position in Chater (string)
+        // Chapter Bookmarks, Highlights and Notes
     }
 }
