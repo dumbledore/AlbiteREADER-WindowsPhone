@@ -1,13 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.IO.IsolatedStorage;
 using System.Windows.Resources;
 using System.IO;
@@ -17,12 +9,21 @@ namespace SvetlinAnkov.Albite.Core.Utils
 {
     public class AlbiteIsolatedStorage : AlbiteStorage
     {
-        public static readonly string Delimiter = "/";
-        protected static readonly char[] DelimitarChars = Delimiter.ToCharArray();
-
         private readonly IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
 
-        public AlbiteIsolatedStorage(string filename) : base(filename) { }
+        public AlbiteIsolatedStorage(string filename) : base(normalize(filename)) { }
+
+        private static char[] separators
+            = { Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar };
+
+        // Calling IsolatedStorageFile.Delete() for paths
+        // that end with a separator throws an exception.
+        // This doesn't look like correct behaviour, but
+        // has to be circumvented anyway.
+        private static string normalize(string filename)
+        {
+            return filename.TrimEnd(separators);
+        }
 
         private void createPathForFile()
         {
@@ -32,27 +33,12 @@ namespace SvetlinAnkov.Albite.Core.Utils
                 return;
             }
 
-            int index = FileName.LastIndexOf(Delimiter);
-            if (index < 0)
-            {
-                // No directories in the path
-                return;
-            }
-
-            string path = FileName.Substring(0, index);
-            if (isf.DirectoryExists(path))
-            {
-                // Directory already there
-                return;
-            }
-
             string strBaseDir = string.Empty;
-            char[] delimiter = DelimitarChars;
-            string[] dirNames = path.Split(delimiter);
+            string[] dirNames = FileName.Split(separators);
 
-            for (int i = 0; i < dirNames.Length; i++)
+            for (int i = 0; i < dirNames.Length - 1; i++)
             {
-                strBaseDir = System.IO.Path.Combine(strBaseDir, dirNames[i]);
+                strBaseDir = Path.Combine(strBaseDir, dirNames[i]);
                 isf.CreateDirectory(strBaseDir);
             }
         }
@@ -76,33 +62,25 @@ namespace SvetlinAnkov.Albite.Core.Utils
                 return;
             }
 
-            string dirName = FileName;
-
-            if (dirName.EndsWith(Delimiter))
-            {
-                dirName = dirName.Substring(0, dirName.Length - 1);
-            }
-
-            if (!isf.DirectoryExists(dirName))
+            if (!isf.DirectoryExists(FileName))
             {
                 // there isn't such a dir, nothing to do
                 return;
             }
 
-            delete(dirName);
+            delete(FileName);
         }
 
         private void delete(string dir)
         {
-            string dirWithDelimiter = dir + Delimiter;
-            string pattern = dirWithDelimiter + "*";
+            string pattern = Path.Combine(dir, "*");
 
             // First delete all files
             {
                 string[] files = isf.GetFileNames(pattern);
                 foreach (string f in files)
                 {
-                    isf.DeleteFile(dirWithDelimiter + f);
+                    isf.DeleteFile(Path.Combine(dir, f));
                 }
             }
 
@@ -111,14 +89,8 @@ namespace SvetlinAnkov.Albite.Core.Utils
                 string[] dirs = isf.GetDirectoryNames(pattern);
                 foreach (string d in dirs)
                 {
-                    delete(dirWithDelimiter + d);
+                    delete(Path.Combine(dir, d));
                 }
-            }
-
-            if (dir == Delimiter || dir.Length == 0)
-            {
-                // Don't try deleting the root dir
-                return;
             }
 
             // Ready to delete this dir
