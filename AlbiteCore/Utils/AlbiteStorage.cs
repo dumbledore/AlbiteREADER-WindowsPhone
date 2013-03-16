@@ -15,7 +15,7 @@ namespace SvetlinAnkov.Albite.Core.Utils
 {
     public abstract class AlbiteStorage : IDisposable
     {
-        public static readonly int BufferSize = 1024;
+        public static int BufferSize { get { return 1024; } }
 
         public string FileName { get; private set; }
 
@@ -34,6 +34,11 @@ namespace SvetlinAnkov.Albite.Core.Utils
         public Stream GetStream(FileAccess access)
         {
             return GetStream(access, getModeForAccess(access));
+        }
+
+        public virtual void Delete()
+        {
+            throw new InvalidOperationException();
         }
 
         private static FileMode getModeForAccess(FileAccess access)

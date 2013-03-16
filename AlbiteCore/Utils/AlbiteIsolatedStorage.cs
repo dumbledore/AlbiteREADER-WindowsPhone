@@ -67,6 +67,64 @@ namespace SvetlinAnkov.Albite.Core.Utils
             return isf.OpenFile(FileName, mode, access, share);
         }
 
+        public override void Delete()
+        {
+            if (isf.FileExists(FileName))
+            {
+                // there's a file, delete it.
+                isf.DeleteFile(FileName);
+                return;
+            }
+
+            string dirName = FileName;
+
+            if (dirName.EndsWith(Delimiter))
+            {
+                dirName = dirName.Substring(0, dirName.Length - 1);
+            }
+
+            if (!isf.DirectoryExists(dirName))
+            {
+                // there isn't such a dir, nothing to do
+                return;
+            }
+
+            delete(dirName);
+        }
+
+        private void delete(string dir)
+        {
+            string dirWithDelimiter = dir + Delimiter;
+            string pattern = dirWithDelimiter + "*";
+
+            // First delete all files
+            {
+                string[] files = isf.GetFileNames(pattern);
+                foreach (string f in files)
+                {
+                    isf.DeleteFile(dirWithDelimiter + f);
+                }
+            }
+
+            // Now start with the subdirs
+            {
+                string[] dirs = isf.GetDirectoryNames(pattern);
+                foreach (string d in dirs)
+                {
+                    delete(dirWithDelimiter + d);
+                }
+            }
+
+            if (dir == Delimiter || dir.Length == 0)
+            {
+                // Don't try deleting the root dir
+                return;
+            }
+
+            // Ready to delete this dir
+            isf.DeleteDirectory(dir);
+        }
+
         public override void Dispose()
         {
             isf.Dispose();
