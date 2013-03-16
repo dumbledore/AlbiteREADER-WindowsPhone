@@ -27,21 +27,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
         public OpenPackageFile Opf { get; private set; }
         public NavigationControlFile Ncx { get; private set; }
 
-        /// <summary>
-        /// Returns true if there was a problem with parsing the files
-        /// </summary>
-        public bool HadErrors { get; private set; }
-
-        public EpubContainer(IAlbiteContainer container) : base(container)
+        public EpubContainer(IAlbiteContainer container, bool fallback = true) : base(container, fallback)
         {
             processDocuments();
         }
 
-        public override void Install(AlbiteStorage outputStorage)
+        public override IEnumerable<string> Items
         {
-            // Simply copy the entities to the storage
-            //IList<string> names = items;
-            //foreach (string name in entityNames)
+            get { return Opf.Items; }
         }
 
         public override Stream Stream(string entityName)
@@ -90,7 +83,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
             }
 
             // Summarize the problems
-            HadErrors = Opf.HadErrors || Ncx == null || Ncx.HadErrors;
+            HadErrors |= Opf.HadErrors || Ncx == null || Ncx.HadErrors;
         }
     }
 }

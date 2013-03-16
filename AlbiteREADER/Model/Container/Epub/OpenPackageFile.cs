@@ -50,11 +50,21 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
             processDocument();
         }
 
+        public IEnumerable<string> Items
+        {
+            get { return items.Values; }
+        }
+
         public IEnumerable<string> ItemIds
         {
             get { return items.Keys; }
         }
 
+        /// <summary>
+        /// Returns the item path for the specified id
+        /// </summary>
+        /// <param name="id">item id</param>
+        /// <returns>item path</returns>
         public string Item(string id)
         {
             if (items.ContainsKey(id))
@@ -65,9 +75,15 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
             return null;
         }
 
-        public bool ContainsItem(string id)
+        /// <summary>
+        /// Checks if there is an item with
+        /// the specified path.
+        /// </summary>
+        /// <param name="path">item path</param>
+        /// <returns>true if there is an item with that path</returns>
+        public bool ContainsItem(string path)
         {
-            return items.ContainsKey(id);
+            return items.ContainsValue(path);
         }
 
         // IMPLEMENTATION
