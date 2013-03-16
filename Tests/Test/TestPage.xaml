@@ -32,13 +32,16 @@
                 <Button x:Name="AutomatedTestsButton" Click="AutomatedTestsButton_Click">
                     <StackPanel>
                         <TextBlock Text="Automated Tests" />
-                        <ProgressBar />
                     </StackPanel>
                 </Button>
                 <Button x:Name="WebBrowserSecurityTestButton" Click="WebBrowserSecurityTestButton_Click">
                     <StackPanel>
                         <TextBlock Text="WebBrowser Security Test" />
-                        <ProgressBar />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="LibraryTestButton" Click="LibraryTestButton_Click">
+                    <StackPanel>
+                        <TextBlock Text="Library Test" />
                     </StackPanel>
                 </Button>
             </StackPanel>
