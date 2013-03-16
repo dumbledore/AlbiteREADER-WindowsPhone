@@ -41,6 +41,17 @@ namespace SvetlinAnkov.Albite.Core.Utils
             throw new InvalidOperationException();
         }
 
+        public void Move(string newFileName)
+        {
+            MoveImplementation(newFileName);
+            FileName = newFileName;
+        }
+
+        protected virtual void MoveImplementation(string newFileName)
+        {
+            throw new InvalidOperationException();
+        }
+
         private static FileMode getModeForAccess(FileAccess access)
         {
             switch (access)

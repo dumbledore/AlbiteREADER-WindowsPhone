@@ -25,16 +25,21 @@ namespace SvetlinAnkov.Albite.Core.Utils
             return filename.TrimEnd(separators);
         }
 
-        private void createPathForFile()
+        public void CreatePathForFile()
         {
-            if (isf.FileExists(FileName))
+            createPathForFile(FileName);
+        }
+
+        private void createPathForFile(string fileName)
+        {
+            if (isf.FileExists(fileName))
             {
                 // File already there
                 return;
             }
 
             string strBaseDir = string.Empty;
-            string[] dirNames = FileName.Split(separators);
+            string[] dirNames = fileName.Split(separators);
 
             for (int i = 0; i < dirNames.Length - 1; i++)
             {
@@ -47,7 +52,7 @@ namespace SvetlinAnkov.Albite.Core.Utils
         {
             if (mode != FileMode.Open)
             {
-                createPathForFile();
+                CreatePathForFile();
             }
 
             return isf.OpenFile(FileName, mode, access, share);
@@ -95,6 +100,24 @@ namespace SvetlinAnkov.Albite.Core.Utils
 
             // Ready to delete this dir
             isf.DeleteDirectory(dir);
+        }
+
+        protected override void MoveImplementation(string newFileName)
+        {
+            if (isf.DirectoryExists(FileName))
+            {
+                createPathForFile(newFileName);
+                isf.MoveDirectory(FileName, newFileName);
+            }
+            else if (isf.FileExists(FileName))
+            {
+                createPathForFile(newFileName);
+                isf.MoveFile(FileName, newFileName);
+            }
+            else
+            {
+                throw new FileNotFoundException();
+            }
         }
 
         public override void Dispose()
