@@ -13,10 +13,11 @@ using System.Linq;
 using System.Data.Linq;
 using SvetlinAnkov.Albite.READER.Model.Container;
 using System.Diagnostics.CodeAnalysis;
+using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.READER.Model
 {
-    public class Library
+    public class Library : IDisposable
     {
         // Public API
         public BookManager Books { get; private set; }
@@ -32,12 +33,25 @@ namespace SvetlinAnkov.Albite.READER.Model
         // Books Location
         private string booksLocation;
 
+        private string booksTempLocation;
+
         public Library(string dbLocation, string booksLocation)
         {
             this.booksLocation = booksLocation;
+            this.booksTempLocation = booksLocation + "/temp";
 
             db = new LibraryDataContext(dbLocation);
+            if (!db.DatabaseExists())
+            {
+                db.CreateDatabase();
+            }
+
             Books = new BookManager(this);
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
 
         public class BookManager
@@ -56,15 +70,24 @@ namespace SvetlinAnkov.Albite.READER.Model
                 // Fill in the defaults so that if there's
                 // a problem with the metadata it would
                 // fail gracefully.
-                book.Title = "New Book";
+                book.Title = container.Title;
 
                 //TODO: Fill in the metadata,
                 //incl author and info from Freebase.
 
+                // TODO: Check whether a book with the same metadata and
+                // SHA already exists in the database.
+
                 try
                 {
+                    // Remove the temp folder
+                    using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(library.booksTempLocation))
+                    {
+                        s.Delete();
+                    }
+
                     // Unpack
-                    container.Install(null);
+                    container.Install(library.booksTempLocation);
 
                     // Add to the database
                     library.db.Books.InsertOnSubmit(book);
@@ -80,6 +103,20 @@ namespace SvetlinAnkov.Albite.READER.Model
 
                     // Throw the error again so that it
                     // would be properly handled
+                    throw e;
+                }
+
+                try
+                {
+                    // Move the book to the real folder
+                    using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(library.booksTempLocation))
+                    {
+                        s.Move(library.booksLocation + "/" + book.Id);
+                    }
+                }
+                catch (Exception e)
+                {
+                    // Move failed. TODO
                     throw e;
                 }
 
@@ -116,7 +153,14 @@ namespace SvetlinAnkov.Albite.READER.Model
         {
             public Table<Book> Books;
 
-            public LibraryDataContext(string location) : base(location) { }
+            public LibraryDataContext(string location, int maxSize = 128) : base(getConnection(location, maxSize)) { }
+
+            private static string getConnection(string location, int maxSize)
+            {
+                return string.Format(
+                    "Data Source = 'isostore:/{0}'; Max Database Size = '{1}';",
+                    location, maxSize);
+            }
         }
     }
 }

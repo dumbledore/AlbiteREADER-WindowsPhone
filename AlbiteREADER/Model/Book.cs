@@ -30,7 +30,7 @@ namespace SvetlinAnkov.Albite.READER.Model
             private set { id = value; }
         }
 
-        // Title (string)
+        [Column]
         public string Title { get; set; }
 
         // Author (reference)
@@ -38,6 +38,9 @@ namespace SvetlinAnkov.Albite.READER.Model
         // Genre (reference)
 
         // Subjects (reference)
+
+        // SHA-512 so that one wouldn't accidentally
+        // add the same book twice.
 
         // Download URL so that one would be able to
         // easily download the contents again.

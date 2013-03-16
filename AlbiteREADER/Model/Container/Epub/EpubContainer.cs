@@ -37,6 +37,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
             get { return Opf.Items; }
         }
 
+        public override string Title
+        {
+            get { return Opf.Title; }
+        }
+
         public override Stream Stream(string entityName)
         {
             // First check that this stream is there and/or is allowed to

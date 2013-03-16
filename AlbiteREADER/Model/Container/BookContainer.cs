@@ -22,6 +22,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Container
 
         public abstract IEnumerable<string> Items { get; }
 
+        public abstract string Title { get; }
+
         /// <summary>
         /// Returns true if there was a problem when creating
         /// the container.
