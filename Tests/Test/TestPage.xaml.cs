@@ -1,5 +1,6 @@
 ﻿using Microsoft.Phone.Controls;
 using System;
+using System.IO.IsolatedStorage;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
@@ -12,6 +13,10 @@ namespace SvetlinAnkov.Albite.Tests.Test
 
         private void AutomatedTestsButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            // Remove the whole iso store for this app
+            IsolatedStorageFile.GetUserStoreForApplication().Remove();
+
+            // Now run the tests
             new Tests().Test();
         }
 
