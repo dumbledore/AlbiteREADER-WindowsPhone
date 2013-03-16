@@ -41,11 +41,22 @@ namespace SvetlinAnkov.Albite.Tests.Test.Model.Container
                 {
                     using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
                     {
-                        using (AlbiteIsolatedStorage outputStorage = new AlbiteIsolatedStorage("Test/epub/"))
+                        // The default path for installation
+                        string path = epubPath + "_install/";
+
+                        // Create the ePub
+                        EpubContainer epub = new EpubContainer(zip);
+
+                        // Dump it
+                        dumpEpub(epub);
+
+                        // Unpack it
+                        epub.Install(path);
+
+                        // Remove it
+                        using (AlbiteIsolatedStorage dir = new AlbiteIsolatedStorage(path))
                         {
-                            EpubContainer epub = new EpubContainer(zip);
-                            dumpEpub(epub);
-                            epub.Install(outputStorage);
+                            dir.Delete();
                         }
                     }
                 }
