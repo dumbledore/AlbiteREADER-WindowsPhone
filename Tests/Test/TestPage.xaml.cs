@@ -2,6 +2,7 @@
 using System;
 using System.IO.IsolatedStorage;
 using SvetlinAnkov.Albite.Tests.Test.Model;
+using SvetlinAnkov.Albite.Tests.Test.View;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
@@ -46,7 +47,11 @@ namespace SvetlinAnkov.Albite.Tests.Test
 
         private void ReaderPageTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/AlbiteREADER;component/View/ReaderPage.xaml?id=1", UriKind.Relative));
+            // Remove all local data
+            removeStore();
+
+            // Now run the actual test
+            new ReaderPageTest("Test/epub/aliceDynamic.epub", NavigationService).Test();
         }
     }
 }
