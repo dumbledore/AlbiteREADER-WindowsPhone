@@ -17,13 +17,15 @@ using SvetlinAnkov.Albite.READER.Model.Container;
 
 namespace SvetlinAnkov.Albite.Tests.Test.Model
 {
-    public class LibraryTest : TestCase
+    public class LibraryAddBookTest : TestCase
     {
         private string location;
+        private string[] books;
 
-        public LibraryTest(string location)
+        public LibraryAddBookTest(string location, string[] books)
         {
             this.location = location;
+            this.books = books;
         }
 
         protected override void TestImplementation()
@@ -40,8 +42,11 @@ namespace SvetlinAnkov.Albite.Tests.Test.Model
             // Start using the library
             using (Library library = new Library(dbPath, booksPath))
             {
-                // Add a book
-                addBook(library, "Test/epub/aliceDynamic.epub");
+                foreach (string book in books)
+                {
+                    // Add a book
+                    addBook(library, book);
+                }
             }
         }
 

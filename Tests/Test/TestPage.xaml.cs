@@ -37,7 +37,11 @@ namespace SvetlinAnkov.Albite.Tests.Test
             // Remove all local data
             removeStore();
 
-            new LibraryTest("Test/Library/").Test();
+            string[] books
+                = {
+                      "Test/epub/aliceDynamic.epub"
+                  };
+            new LibraryAddBookTest("Test/Library/", books).Test();
         }
     }
 }
