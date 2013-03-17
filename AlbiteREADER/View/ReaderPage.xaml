@@ -1,5 +1,5 @@
-﻿<phone:PhoneApplicationPage 
-    x:Class="SvetlinAnkov.Albite.READER.View.BookPage"
+﻿<phone:PhoneApplicationPage
+    x:Class="SvetlinAnkov.Albite.READER.View.ReaderPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -27,7 +27,7 @@
                 />
         </Grid>
     </Grid>
- 
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>

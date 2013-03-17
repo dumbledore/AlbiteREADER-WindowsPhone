@@ -14,9 +14,9 @@ using System.Diagnostics;
 
 namespace SvetlinAnkov.Albite.READER.View
 {
-    public partial class BookPage : PhoneApplicationPage
+    public partial class ReaderPage : PhoneApplicationPage
     {
-        public BookPage()
+        public ReaderPage()
         {
             InitializeComponent();
         }
@@ -28,7 +28,7 @@ namespace SvetlinAnkov.Albite.READER.View
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
