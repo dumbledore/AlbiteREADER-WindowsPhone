@@ -17,30 +17,24 @@ using SvetlinAnkov.Albite.READER.Model.Container;
 
 namespace SvetlinAnkov.Albite.Tests.Test.Model
 {
-    public class LibraryAddBookTest : TestCase
+    public class LibraryAddBookTest : LibraryTest
     {
-        private string location;
         private string[] books;
 
-        public LibraryAddBookTest(string location, string[] books)
+        public LibraryAddBookTest(string location, string[] books) : base(location)
         {
-            this.location = location;
             this.books = books;
         }
 
         protected override void TestImplementation()
         {
-            // Setup paths
-            string dbPath = location + "/Database.sdf";
-            string booksPath = location + "/Books";
-
-            using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(dbPath))
+            using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(DbPath))
             {
                 s.CreatePathForFile();
             }
 
             // Start using the library
-            using (Library library = new Library(dbPath, booksPath))
+            using (Library library = new Library(DbPath, BooksPath))
             {
                 foreach (string book in books)
                 {
