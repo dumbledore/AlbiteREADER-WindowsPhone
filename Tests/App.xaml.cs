@@ -12,16 +12,28 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using SvetlinAnkov.Albite.READER;
 
 namespace SvetlinAnkov.Albite.Tests
 {
-    public partial class App : Application
+    public partial class App : Application, IAlbiteApplication
     {
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
+
+        // Initialise the context for that app
+        private AlbiteContext context = new AlbiteContext();
+
+        public AlbiteContext CurrentContext
+        {
+            get
+            {
+                return context;
+            }
+        }
 
         /// <summary>
         /// Constructor for the Application object.

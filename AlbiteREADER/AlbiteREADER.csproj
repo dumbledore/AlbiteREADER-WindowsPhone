@@ -60,9 +60,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlbiteContext.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IAlbiteApplication.cs" />
     <Compile Include="Layout\Engine.cs" />
     <Compile Include="Layout\Location.cs" />
     <Compile Include="Layout\Paths.cs" />

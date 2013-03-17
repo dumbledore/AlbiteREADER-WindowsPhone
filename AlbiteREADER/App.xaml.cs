@@ -16,7 +16,7 @@ using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.READER
 {
-    public partial class App : Application
+    public partial class App : Application, IAlbiteApplication
     {
         public static string Tag { get { return "App"; } }
 
@@ -25,6 +25,29 @@ namespace SvetlinAnkov.Albite.READER
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
+
+        // Initialise the context for that app
+        private AlbiteContext context = new AlbiteContext();
+
+        public AlbiteContext CurrentContext
+        {
+            get
+            {
+                return context;
+            }
+        }
+
+        /// <summary>
+        /// Helper function that returns the AlbiteContext
+        /// for the running application.
+        /// </summary>
+        public static AlbiteContext Context
+        {
+            get
+            {
+                return ((IAlbiteApplication) Current).CurrentContext;
+            }
+        }
 
         /// <summary>
         /// Constructor for the Application object.
