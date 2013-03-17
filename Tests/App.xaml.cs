@@ -25,7 +25,7 @@ namespace SvetlinAnkov.Albite.Tests
         public PhoneApplicationFrame RootFrame { get; private set; }
 
         // Initialise the context for that app
-        private AlbiteContext context = new AlbiteContext();
+        private AlbiteContext context = new AlbiteContext("Test/Reader/Library");
 
         public AlbiteContext CurrentContext
         {

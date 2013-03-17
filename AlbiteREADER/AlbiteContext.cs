@@ -6,8 +6,32 @@ using SvetlinAnkov.Albite.READER.Model;
 
 namespace SvetlinAnkov.Albite.READER
 {
-    public class AlbiteContext
+    public class AlbiteContext : IDisposable
     {
-        public Library Library { get; private set; }
+        private string libraryPath;
+
+        private Library library;
+        public Library Library
+        {
+            get
+            {
+                if (library == null)
+                {
+                    library = new Library(libraryPath);
+                }
+                return library;
+            }
+        }
+
+        public AlbiteContext(string libraryPath)
+        {
+            this.libraryPath = libraryPath;
+        }
+
+        public void Dispose()
+        {
+            library.Dispose();
+            library = null;
+        }
     }
 }

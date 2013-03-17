@@ -27,7 +27,7 @@ namespace SvetlinAnkov.Albite.READER
         public PhoneApplicationFrame RootFrame { get; private set; }
 
         // Initialise the context for that app
-        private AlbiteContext context = new AlbiteContext();
+        private AlbiteContext context = new AlbiteContext("Library/");
 
         public AlbiteContext CurrentContext
         {
