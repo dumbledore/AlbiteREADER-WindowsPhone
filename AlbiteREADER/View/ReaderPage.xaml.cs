@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.Diagnostics;
+using SvetlinAnkov.Albite.READER.Model;
 
 namespace SvetlinAnkov.Albite.READER.View
 {
@@ -35,6 +36,7 @@ namespace SvetlinAnkov.Albite.READER.View
         {
             base.OnNavigatedTo(e);
             string bookId = NavigationContext.QueryString["id"];
+            Library lib = App.Context.Library;
             Debug.WriteLine("Navigated to page. Book id: {0}", bookId);
         }
     }
