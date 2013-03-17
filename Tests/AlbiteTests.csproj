@@ -68,7 +68,6 @@
     <Compile Include="Test\Model\Container\EpubContainerTest.cs" />
     <Compile Include="Test\Model\Container\InvalidEpubContainerTest.cs" />
     <Compile Include="Test\Model\LibraryAddBookTest.cs" />
-    <Compile Include="Test\Model\LibraryTest.cs" />
     <Compile Include="Test\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
