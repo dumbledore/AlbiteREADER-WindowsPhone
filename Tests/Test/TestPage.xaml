@@ -44,6 +44,11 @@
                         <TextBlock Text="Library Test" />
                     </StackPanel>
                 </Button>
+                <Button x:Name="ReaderPageTestButton" Click="ReaderPageTestButton_Click">
+                    <StackPanel>
+                        <TextBlock Text="Reader Page Test" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

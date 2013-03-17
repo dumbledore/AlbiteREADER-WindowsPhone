@@ -43,5 +43,10 @@ namespace SvetlinAnkov.Albite.Tests.Test
                   };
             new LibraryAddBookTest("Test/Library/", books).Test();
         }
+
+        private void ReaderPageTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
     }
 }
