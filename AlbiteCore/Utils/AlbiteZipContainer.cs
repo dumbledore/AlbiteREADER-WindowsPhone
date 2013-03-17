@@ -2,15 +2,9 @@
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.IO;
-using System.Windows.Resources;
 using System.Diagnostics;
+using System.Windows.Resources;
 
 namespace SvetlinAnkov.Albite.Core.Utils
 {
@@ -32,10 +26,8 @@ namespace SvetlinAnkov.Albite.Core.Utils
         {
             // If it's an absolute path, make it relative.
             // It doesn't work with absolute paths / uris.
-            if (entityName.StartsWith("/") && entityName.Length > 1)
-            {
-                entityName = entityName.Substring(1);
-            }
+            char[] separators = { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+            entityName = entityName.TrimStart(separators);
 
             Uri uri = new Uri(entityName, UriKind.Relative);
             StreamResourceInfo info = new StreamResourceInfo(this.stream, null);
