@@ -34,8 +34,8 @@ namespace SvetlinAnkov.Albite.READER.View
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-            Debug.WriteLine("Navigated to page. Query: {0}", e.Uri.Query);
+            string bookId = NavigationContext.QueryString["id"];
+            Debug.WriteLine("Navigated to page. Book id: {0}", bookId);
         }
     }
 }
