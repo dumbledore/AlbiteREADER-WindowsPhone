@@ -46,7 +46,7 @@ namespace SvetlinAnkov.Albite.Tests.Test
 
         private void ReaderPageTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/View/ReaderPage.xaml?id=1", UriKind.Relative));
         }
     }
 }
