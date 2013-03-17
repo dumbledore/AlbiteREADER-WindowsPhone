@@ -17,7 +17,7 @@ using SvetlinAnkov.Albite.READER.Model.Container;
 
 namespace SvetlinAnkov.Albite.Tests.Test.Model
 {
-    public class LibraryAddBookTest : TestCase
+    public class LibraryAddBookTest : LibraryTest
     {
         private string location;
         private string[] books;
@@ -36,32 +36,7 @@ namespace SvetlinAnkov.Albite.Tests.Test.Model
                 foreach (string book in books)
                 {
                     // Add a book
-                    addBook(library, book);
-                }
-            }
-        }
-
-        private void addBook(Library library, string epubPath)
-        {
-            Log("Opening ePub {0}", epubPath);
-
-            using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(epubPath))
-            {
-                using (AlbiteResourceStorage res = new AlbiteResourceStorage(epubPath))
-                {
-                    res.CopyTo(iso);
-                }
-
-                using (Stream inputStream = iso.GetStream(FileAccess.Read))
-                {
-                    using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
-                    {
-                        // Create the ePub
-                        EpubContainer epub = new EpubContainer(zip);
-
-                        // Add to the library
-                        library.Books.Add(epub);
-                    }
+                    AddBook(library, book);
                 }
             }
         }
