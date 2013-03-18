@@ -10,6 +10,7 @@ namespace SvetlinAnkov.Albite.Core.Utils
 {
     public class AlbiteZipContainer : IAlbiteContainer
     {
+        private readonly StreamResourceInfo info;
         private readonly Stream stream;
 
         public AlbiteZipContainer(Stream stream)
@@ -19,6 +20,7 @@ namespace SvetlinAnkov.Albite.Core.Utils
                 throw new NullReferenceException("Stream must not be null");
             }
 
+            this.info = new StreamResourceInfo(stream, null);
             this.stream = stream;
         }
 
@@ -30,8 +32,7 @@ namespace SvetlinAnkov.Albite.Core.Utils
             entityName = entityName.TrimStart(separators);
 
             Uri uri = new Uri(entityName, UriKind.Relative);
-            StreamResourceInfo info = new StreamResourceInfo(this.stream, null);
-            StreamResourceInfo stream = System.Windows.Application.GetResourceStream(info, uri);
+            StreamResourceInfo stream = Application.GetResourceStream(info, uri);
 
             if (stream == null || stream.Stream == null)
             {
