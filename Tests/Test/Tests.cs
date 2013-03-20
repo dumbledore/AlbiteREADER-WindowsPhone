@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using System.Collections.Generic;
 using SvetlinAnkov.Albite.Tests.Test.Layout;
 using SvetlinAnkov.Albite.Core.Test;
+using SvetlinAnkov.Albite.Tests.Test.Utils;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
@@ -21,6 +22,7 @@ namespace SvetlinAnkov.Albite.Tests.Test
             return new TestCase[]
             {
                 new EpubTests(),
+                new AlbiteIsolatedStorageTest("Test/epub/aliceDynamic.epub"),
                 new TemplateTest("Test/Template/Main.xhtml"),
                 new EngineTest(),
             };
