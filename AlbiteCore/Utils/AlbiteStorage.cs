@@ -111,14 +111,27 @@ namespace SvetlinAnkov.Albite.Core.Utils
 
         /// <summary>
         /// Saves the specified stream into the Isolated Storage
+        /// using the default size for the temporary buffer
         /// </summary>
         /// <param name="inputStream">The stream to be saved</param>
         public void Write(Stream inputStream)
         {
+            Write(inputStream, BufferSize);
+        }
+
+        /// <summary>
+        /// Saves the specified stream into the Isolated Storage
+        /// </summary>
+        /// <param name="inputStream">The stream to be saved</param>
+        /// <param name="bufferSize">The size of the temporary buffer</param>
+        public void Write(Stream inputStream, int bufferSize)
+        {
             using (Stream stream = GetStream(FileAccess.Write))
             {
-                byte[] buffer = new byte[BufferSize];
-                for (int bytesRead = inputStream.Read(buffer, 0, buffer.Length); bytesRead > 0; bytesRead = inputStream.Read(buffer, 0, buffer.Length))
+                byte[] buffer = new byte[bufferSize];
+
+                int bytesRead;
+                while ((bytesRead = inputStream.Read(buffer, 0, buffer.Length)) > 0)
                 {
                     stream.Write(buffer, 0, bytesRead);
                 }
