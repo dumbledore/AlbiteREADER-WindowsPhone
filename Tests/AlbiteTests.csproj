@@ -65,9 +65,9 @@
     <Compile Include="Test\EpubTests.cs" />
     <Compile Include="Test\Layout\EngineTest.cs" />
     <Compile Include="Test\Layout\TemplateTest.cs" />
+    <Compile Include="Test\Model\Container\EpubContainerTestWrapper.cs" />
     <Compile Include="Test\Model\LibraryTest.cs" />
     <Compile Include="Test\Model\Container\EpubContainerTest.cs" />
-    <Compile Include="Test\Model\Container\InvalidEpubContainerTest.cs" />
     <Compile Include="Test\Model\LibraryAddBookTest.cs" />
     <Compile Include="Test\Utils\AlbiteIsolatedStorageTest.cs" />
     <Compile Include="Test\View\ReaderPageTest.cs" />

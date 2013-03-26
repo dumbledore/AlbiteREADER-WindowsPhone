@@ -32,11 +32,6 @@ namespace SvetlinAnkov.Albite.Tests.Test.Model.Container
 
             using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(epubPath))
             {
-                using (AlbiteResourceStorage res = new AlbiteResourceStorage(epubPath))
-                {
-                    res.CopyTo(iso);
-                }
-
                 using (Stream inputStream = iso.GetStream(FileAccess.Read))
                 {
                     using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
