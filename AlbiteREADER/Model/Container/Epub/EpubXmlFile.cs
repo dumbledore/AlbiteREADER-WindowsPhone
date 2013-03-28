@@ -21,8 +21,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
         protected IAlbiteContainer Container { get; private set; }
         protected string Filename { get; private set; }
 
-        private Uri rootUri = new Uri("/");
         private Uri baseUri;
+
+        private static Uri rootUri = new Uri("file:///");
 
         public EpubXmlFile(IAlbiteContainer container, string filename)
         {
