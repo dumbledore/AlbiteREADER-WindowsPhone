@@ -7,7 +7,13 @@ namespace SvetlinAnkov.Albite.Core.Test
 {
     public class TestFailWrapper : TestCaseWrapper
     {
-        public TestFailWrapper(TestCase test) : base(test) { }
+        private Type exceptionType;
+
+        public TestFailWrapper(TestCase test, Type exceptionType = null)
+            : base(test)
+        {
+            this.exceptionType = exceptionType;
+        }
 
         protected override void TestImplementation()
         {
@@ -17,8 +23,13 @@ namespace SvetlinAnkov.Albite.Core.Test
             }
             catch (Exception e)
             {
+                if (exceptionType != null && exceptionType != e.GetType())
+                {
+                    throw new Exception("Expected " + exceptionType.Name + " but got " + e.GetType().Name);
+                }
+
                 // All is fine, there was an error.
-                Log("Successfully threw an exception: " + e.Message
+                Log("Successfully threw " + e.GetType().Name + ": " + e.Message
                     + (e.InnerException != null ? " -> " + e.InnerException.Message : ""));
                 return;
             }
