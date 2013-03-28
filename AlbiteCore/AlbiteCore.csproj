@@ -55,6 +55,7 @@
     <Compile Include="Test\TestCollection.cs" />
     <Compile Include="Test\TestFailWrapper.cs" />
     <Compile Include="Test\TestPrepareWrapper.cs" />
+    <Compile Include="Utils\AlbiteIsolatedContainer.cs" />
     <Compile Include="Utils\AlbiteIsolatedStorage.cs" />
     <Compile Include="Utils\AlbiteResourceStorage.cs" />
     <Compile Include="Utils\AlbiteStorage.cs" />
