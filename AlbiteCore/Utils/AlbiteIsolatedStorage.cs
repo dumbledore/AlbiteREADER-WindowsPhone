@@ -54,6 +54,14 @@ namespace SvetlinAnkov.Albite.Core.Utils
             {
                 CreatePathForFile();
             }
+            else
+            {
+                // Open mode is for reading only, so the file must exist
+                if (!isf.FileExists(FileName))
+                {
+                    throw new FileNotFoundException(FileName);
+                }
+            }
 
             return isf.OpenFile(FileName, mode, access, share);
         }
