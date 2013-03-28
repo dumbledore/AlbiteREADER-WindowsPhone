@@ -10,6 +10,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using SvetlinAnkov.Albite.Tests.Test.Model.Container;
 using SvetlinAnkov.Albite.Core.Test;
+using System.IO;
+using SvetlinAnkov.Albite.READER.Model.Container;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
@@ -24,26 +26,40 @@ namespace SvetlinAnkov.Albite.Tests.Test
                 // exception being thrown
 
                 // A non existent resource
-                new TestFailWrapper(new EpubContainerTestWrapper("Test/Epub/Invalid/doesntexist")),
+                new TestFailWrapper(
+                    new EpubContainerTestWrapper("Test/Epub/Invalid/doesntexist"),
+                    typeof(FileNotFoundException)),
 
                 // An empty zip file
-                new TestFailWrapper(new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/01.epub")),
+                new TestFailWrapper(
+                    new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/01.epub"),
+                    typeof(BookContainerException)),
 
                 // There is a META-INF/container.xml, but it doesn't have a rootfile element
-                new TestFailWrapper(new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/02.epub")),
+                new TestFailWrapper(
+                    new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/02.epub"),
+                    typeof(BookContainerException)),
 
                 // There is a META-INF/container.xml, the rootfile element is missing
                 // the full-path attribute
-                new TestFailWrapper(new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/03.epub")),
+                new TestFailWrapper(
+                    new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/03.epub"),
+                    typeof(BookContainerException)),
 
                 // There is a valid META-INF/container.xml, but nothing else
-                new TestFailWrapper(new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/04.epub")),
+                new TestFailWrapper(
+                    new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/04.epub"),
+                    typeof(BookContainerException)),
 
                 // No manifest in the OPF
-                new TestFailWrapper(new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/05.epub")),
+                new TestFailWrapper(
+                    new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/05.epub"),
+                    typeof(BookContainerException)),
 
                 // No spine in the OPF
-                new TestFailWrapper(new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/06.epub")),
+                new TestFailWrapper(
+                    new EpubContainerTestWrapper("Test/Epub/Invalid/Fail/06.epub"),
+                    typeof(BookContainerException)),
 
                 // --------------------------------------------------
                 // These epubs are not valid and should produce error
