@@ -21,8 +21,8 @@ namespace SvetlinAnkov.Albite.Tests.Test
         {
             return new TestCase[]
             {
+                new UtilsTests(),
                 new EpubTests(),
-                new AlbiteIsolatedStorageTest("Test/epub/aliceDynamic.epub"),
                 new TemplateTest("Test/Template/Main.xhtml"),
                 new EngineTest(),
             };
