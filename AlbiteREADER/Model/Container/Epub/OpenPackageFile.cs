@@ -170,6 +170,15 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
                     continue;
                 }
 
+                // According to the OPF specification:
+                // 1. A single resource (href) must not be listed in the manifest more than once.
+                // 2. In addition, a specific spine item (from the perspective of its id attribute
+                //    value in manifest) must not appear more than once in spine.
+                // Therefore:
+                // 1. every href can be included only once in the manifest, thus it can have
+                //    only one id associated with it. That is, there can be two different ids
+                //    pointing to the same resource.
+                // 2. Every spine item with the same id must be featured only once in the spine
                 spine.Add(idref.Value);
             }
 
