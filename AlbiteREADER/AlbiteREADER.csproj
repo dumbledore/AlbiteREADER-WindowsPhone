@@ -81,8 +81,6 @@
     <Compile Include="Model\Container\Epub\OpenContainerFile.cs" />
     <Compile Include="Model\Container\Epub\OpenPackageFile.cs" />
     <Compile Include="Model\Library.cs" />
-    <Compile Include="Model\Spine.cs" />
-    <Compile Include="Model\TableOfContents.cs" />
     <Compile Include="Resources\Defaults\LayoutDefaults.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
