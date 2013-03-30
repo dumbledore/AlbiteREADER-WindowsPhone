@@ -14,7 +14,7 @@ using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.READER.Layout
 {
-    public class Engine
+    public class BrowserEngine
     {
         private readonly WebBrowser webBrowser;
         // The settings are read-only, because their values will be updated
@@ -33,13 +33,13 @@ namespace SvetlinAnkov.Albite.READER.Layout
         private readonly TemplateResource contentStylesTemplate;
         private readonly TemplateResource themeStylesTemplate;
 
-        public Engine(WebBrowser webBrowser, Settings settings)
+        public BrowserEngine(WebBrowser webBrowser, Settings settings)
         {
             this.webBrowser = webBrowser;
             this.settings = settings;
         }
 
-        private Engine()
+        private BrowserEngine()
         {
             // First, copy the JSEngine to the Isolated Storage
             {

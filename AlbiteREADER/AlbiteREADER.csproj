@@ -65,7 +65,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="IAlbiteApplication.cs" />
-    <Compile Include="Layout\Engine.cs" />
+    <Compile Include="Layout\BrowserEngine.cs" />
     <Compile Include="Layout\Location.cs" />
     <Compile Include="Layout\Paths.cs" />
     <Compile Include="Layout\Settings.cs" />

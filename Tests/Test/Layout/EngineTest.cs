@@ -19,7 +19,7 @@ namespace SvetlinAnkov.Albite.Tests.Test.Layout
     {
         protected override void TestImplementation()
         {
-            Engine engine = new Engine(null, Defaults.Layout.DefaultSettings);
+            BrowserEngine engine = new BrowserEngine(null, Defaults.Layout.DefaultSettings);
         }
     }
 }
