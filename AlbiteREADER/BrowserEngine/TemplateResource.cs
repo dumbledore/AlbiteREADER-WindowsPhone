@@ -26,9 +26,10 @@ namespace SvetlinAnkov.Albite.READER.BrowserEngine
             }
         }
 
-        public void SaveToStorage()
+        public void SaveToStorage(string filename = null)
         {
-            using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(filename))
+            using (AlbiteIsolatedStorage iso =
+                new AlbiteIsolatedStorage(filename != null ? filename : this.filename))
             {
                 iso.Write(GetOutput());
             }
