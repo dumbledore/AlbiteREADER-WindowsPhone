@@ -12,7 +12,7 @@ using Microsoft.Phone.Controls;
 using SvetlinAnkov.Albite.READER.Model;
 using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.Albite.READER.Layout
+namespace SvetlinAnkov.Albite.READER.BrowserEngine
 {
     public class BrowserEngine
     {

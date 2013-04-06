@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace SvetlinAnkov.Albite.READER.Layout
+namespace SvetlinAnkov.Albite.READER.BrowserEngine
 {
     // For simpicity's sake themes should be immutable
     public class Theme

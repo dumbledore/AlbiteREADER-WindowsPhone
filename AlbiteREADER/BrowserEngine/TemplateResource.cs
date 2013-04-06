@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.Albite.READER.Layout
+namespace SvetlinAnkov.Albite.READER.BrowserEngine
 {
     public class TemplateResource : Template
     {

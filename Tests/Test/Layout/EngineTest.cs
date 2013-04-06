@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.READER.Utils;
-using SvetlinAnkov.Albite.READER.Layout;
+using SvetlinAnkov.Albite.READER.BrowserEngine;
 
 namespace SvetlinAnkov.Albite.Tests.Test.Layout
 {

@@ -65,13 +65,13 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="IAlbiteApplication.cs" />
-    <Compile Include="Layout\BrowserEngine.cs" />
-    <Compile Include="Layout\Location.cs" />
-    <Compile Include="Layout\Paths.cs" />
-    <Compile Include="Layout\Settings.cs" />
-    <Compile Include="Layout\Template.cs" />
-    <Compile Include="Layout\TemplateResource.cs" />
-    <Compile Include="Layout\Theme.cs" />
+    <Compile Include="BrowserEngine\BrowserEngine.cs" />
+    <Compile Include="BrowserEngine\Location.cs" />
+    <Compile Include="BrowserEngine\Paths.cs" />
+    <Compile Include="BrowserEngine\Settings.cs" />
+    <Compile Include="BrowserEngine\Template.cs" />
+    <Compile Include="BrowserEngine\TemplateResource.cs" />
+    <Compile Include="BrowserEngine\Theme.cs" />
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\Container\BookContainer.cs" />
     <Compile Include="Model\Chapter.cs" />
