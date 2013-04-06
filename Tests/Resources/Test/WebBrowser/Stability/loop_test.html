@@ -1,0 +1,37 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>WebBrowser Stability Test</title>
+    <script type="text/javascript">
+      function log(message) {
+        window.external.notify(message);
+      }
+
+      var myRes = 0;
+
+      function test() {
+        try {
+          var x;
+          var y;
+
+          while (true) {
+            x = Math.random();
+            y = Math.random();
+            myRes = x * y;
+          }
+
+          contentDiv = document.getElementById("content");
+          text = document.createTextNode("Finished");
+          contentDiv.appendChild(text);
+          log("Test Finished Successfully");
+        } catch (e) {
+          log("Error: " + e.message);
+        }
+      }
+    </script>
+  </head>
+  <body onload="test();">
+    <div id="content">
+      Running Test...
+    </div>
+  </body>
+</html>

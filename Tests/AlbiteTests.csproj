@@ -81,6 +81,9 @@
     <Compile Include="Test\WebBrowserSecurityTestPage.xaml.cs">
       <DependentUpon>WebBrowserSecurityTestPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Test\WebBrowserStabilityTestPage.xaml.cs">
+      <DependentUpon>WebBrowserStabilityTestPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -108,6 +111,9 @@
     <Content Include="Resources\Test\Epub\Invalid\Pass\07.epub" />
     <Content Include="Resources\Test\Epub\Invalid\Pass\08.epub" />
     <Content Include="Resources\Test\Template\Main.xhtml" />
+    <Content Include="Resources\Test\WebBrowser\Stability\allocation_test.html" />
+    <Content Include="Resources\Test\WebBrowser\Stability\content_test.html" />
+    <Content Include="Resources\Test\WebBrowser\Stability\loop_test.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ApplicationIcon.png">
@@ -129,6 +135,10 @@
     <Page Include="Test\WebBrowserSecurityTestPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Test\WebBrowserStabilityTestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
