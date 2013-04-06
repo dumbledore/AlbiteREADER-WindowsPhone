@@ -30,8 +30,11 @@ namespace SvetlinAnkov.Albite.READER
 
         public void Dispose()
         {
-            library.Dispose();
-            library = null;
+            if (library != null)
+            {
+                library.Dispose();
+                library = null;
+            }
         }
     }
 }
