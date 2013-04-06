@@ -21,14 +21,8 @@ namespace SvetlinAnkov.Albite.READER.Model
         public static string IsoLocationPath { get { return "Books/"; } }
 
         // ID
-        private int id;
-
-        [Column(Storage = "id", IsPrimaryKey = true, IsDbGenerated = true, DbType = "int NOT NULL IDENTITY")]
-        public int Id
-        {
-            get { return id; }
-            private set { id = value; }
-        }
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "int NOT NULL IDENTITY")]
+        public int Id { get; private set; }
 
         [Column]
         public string Title { get; set; }
