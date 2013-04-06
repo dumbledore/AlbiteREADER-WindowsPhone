@@ -54,7 +54,7 @@ namespace SvetlinAnkov.Albite.Core.Utils.Logging
 
         public override void Log(Log.Level level, string tag, string message, Exception exception)
         {
-            lock(myLock)
+            lock (myLock)
             {
                 trimLogs();
                 logInternal(level, tag, message, exception);
