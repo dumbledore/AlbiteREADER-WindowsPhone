@@ -11,16 +11,16 @@ using System.Windows.Shapes;
 
 namespace SvetlinAnkov.Albite.READER.BrowserEngine
 {
-    public class Location
+    public class DomLocation
     {
         /// <summary>
         /// This is the Unique element ID, got using the related IE API.
         /// To serialize:
         ///     ElementIndex = this.sourceIndex
-        ///     
+        ///
         /// To deserialize:
         ///     document.getElementsByTagName('*')[ElementIndex]
-        /// 
+        ///
         /// Or Even better:
         ///     document.all[ElementIndex]
         /// </summary>
@@ -29,12 +29,12 @@ namespace SvetlinAnkov.Albite.READER.BrowserEngine
         /// <summary>
         /// If the element was of type Text, this is the offset in
         /// the text so that the correct line would be selected.
-        /// 
+        ///
         /// If it was not a Text element, TextOffset should be -1.
         /// </summary>
         public int TextOffset { get; private set; }
 
-        public Location(int index, int offset)
+        public DomLocation(int index, int offset)
         {
             ElementIndex = index;
             TextOffset = offset;

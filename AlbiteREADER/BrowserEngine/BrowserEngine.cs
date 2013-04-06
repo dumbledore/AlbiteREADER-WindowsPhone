@@ -145,7 +145,7 @@ namespace SvetlinAnkov.Albite.READER.BrowserEngine
             //      using ScriptNotify() and window.external.notify().
         }
 
-        public void goToLocation(Location location)
+        public void goToLocation(DomLocation location)
         {
             //TODO: Tell the JSEngine to go to this location.
         }
