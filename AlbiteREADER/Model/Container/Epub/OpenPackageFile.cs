@@ -182,6 +182,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
                 spine.Add(idref.Value);
             }
 
+            Assert(spine.Count > 0, "Spine is empty");
+
             Spine = spine;
         }
 
