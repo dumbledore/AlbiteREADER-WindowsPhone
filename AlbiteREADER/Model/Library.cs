@@ -18,9 +18,6 @@ namespace SvetlinAnkov.Albite.READER.Model
 
         // Private Implementation
 
-        // Object lock
-        private Object myLock = new Object();
-
         // Data Base
         private LibraryDataContext db;
 
@@ -90,13 +87,16 @@ namespace SvetlinAnkov.Albite.READER.Model
                     // Unpack
                     container.Install(library.booksTempPath);
 
-                    // Add to the database
-                    library.db.Books.InsertOnSubmit(book);
+                    lock (library.db)
+                    {
+                        // Add to the database
+                        library.db.Books.InsertOnSubmit(book);
 
-                    // If there's an error, with the database
-                    // it will roll back the changes
-                    // and thrown an Exception
-                    library.db.SubmitChanges();
+                        // If there's an error, with the database
+                        // it will roll back the changes
+                        // and thrown an Exception
+                        library.db.SubmitChanges();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -144,7 +144,13 @@ namespace SvetlinAnkov.Albite.READER.Model
 
             public Book this[int id]
             {
-                get { return library.db.Books.Single(b => b.Id == id); }
+                get
+                {
+                    lock (library.db)
+                    {
+                        return library.db.Books.Single(b => b.Id == id);
+                    }
+                }
             }
 
             // TODO: Simplified API for querying the database
