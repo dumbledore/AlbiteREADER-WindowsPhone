@@ -47,9 +47,15 @@ namespace SvetlinAnkov.Albite.READER.Model
 
         // Archived (boolean)
 
-        // Reading Persistance (lazy initialisation)
-        // Last Chapter (int)
-        // Position in Chater (string)
-        // Chapter Bookmarks, Highlights and Notes
+        // Reading Persistance
+
+        [Column]
+        private int currentChapterIndex { get; set; }
+
+        [Column]
+        private int locationIndex { get; set; }
+
+        [Column]
+        private int locationOffset { get; set; }
     }
 }
