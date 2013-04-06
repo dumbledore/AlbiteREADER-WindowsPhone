@@ -8,7 +8,7 @@ namespace SvetlinAnkov.Albite.READER
 {
     public class AlbiteContext : IDisposable
     {
-        private string libraryPath;
+        private readonly string libraryPath;
 
         private Library library;
         public Library Library
