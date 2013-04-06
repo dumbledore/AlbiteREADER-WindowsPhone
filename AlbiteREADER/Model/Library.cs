@@ -8,6 +8,7 @@ using System.Data.Linq;
 using SvetlinAnkov.Albite.READER.Model.Container;
 using System.Diagnostics.CodeAnalysis;
 using SvetlinAnkov.Albite.Core.Utils;
+using System.IO;
 
 namespace SvetlinAnkov.Albite.READER.Model
 {
@@ -112,7 +113,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                     // Move the book to the real folder
                     using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(library.booksTempPath))
                     {
-                        s.Move(library.BooksPath + "/" + book.Id);
+                        s.Move(getPath(book));
                     }
                 }
                 catch (Exception e)
@@ -154,6 +155,12 @@ namespace SvetlinAnkov.Albite.READER.Model
             }
 
             // TODO: Simplified API for querying the database
+
+            // Private API
+            private string getPath(Book book)
+            {
+                return Path.Combine(library.BooksPath, book.Id.ToString());
+            }
         }
 
         private class LibraryDataContext : DataContext
