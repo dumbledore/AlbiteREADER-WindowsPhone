@@ -8,18 +8,24 @@ namespace SvetlinAnkov.Albite.READER
 {
     public class AlbiteContext : IDisposable
     {
+        private readonly Object myLock = new Object();
         private readonly string libraryPath;
 
         private Library library;
+
         public Library Library
         {
             get
             {
-                if (library == null)
+                lock (myLock)
                 {
-                    library = new Library(libraryPath);
+                    if (library == null)
+                    {
+                        library = new Library(libraryPath);
+                    }
+
+                    return library;
                 }
-                return library;
             }
         }
 
