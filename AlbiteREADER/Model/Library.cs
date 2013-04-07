@@ -9,6 +9,7 @@ using SvetlinAnkov.Albite.READER.Model.Container;
 using System.Diagnostics.CodeAnalysis;
 using SvetlinAnkov.Albite.Core.Utils;
 using System.IO;
+using SvetlinAnkov.Albite.READER.Model.Container.Epub;
 
 namespace SvetlinAnkov.Albite.READER.Model
 {
@@ -166,6 +167,15 @@ namespace SvetlinAnkov.Albite.READER.Model
                         return library.db.Books.Single(b => b.Id == id);
                     }
                 }
+            }
+
+            public Book.Presenter GetPresenter(Book book)
+            {
+                return new Book.Presenter(
+                    book,
+                    new EpubContainer(
+                        new AlbiteIsolatedContainer(getContentPath(book))),
+                    new PersistDelegate(library.persist));
             }
 
             // TODO: Simplified API for querying the database

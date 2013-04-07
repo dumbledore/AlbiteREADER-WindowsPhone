@@ -12,6 +12,7 @@ using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER.Model.Container;
 using System.Linq;
 using System.Data.Linq.Mapping;
+using SvetlinAnkov.Albite.READER.BrowserEngine;
 
 namespace SvetlinAnkov.Albite.READER.Model
 {
@@ -55,5 +56,91 @@ namespace SvetlinAnkov.Albite.READER.Model
 
         [Column]
         private int locationOffset { get; set; }
+
+        public class Presenter : IDisposable
+        {
+            private readonly Book book;
+            private readonly BookContainer container;
+            private readonly Library.PersistDelegate persist;
+
+            private readonly Object myLock = new Object();
+
+            private SpineElement[] spine;
+            // TODO: ToC
+            // TODO: Lists
+            // TODO: Export other metadata, perhaps?
+
+            public Presenter(Book book, BookContainer container, Library.PersistDelegate persist)
+            {
+                this.book = book;
+                this.container = container;
+                this.persist = persist;
+
+                prepare();
+            }
+
+            private void prepare()
+            {
+                // TODO
+                // 1. Load all the spine elements
+                // 2. Set bookLocation
+            }
+
+            private BookLocation bookLocation;
+            public BookLocation BookLocation
+            {
+                get
+                {
+                    return bookLocation;
+                }
+                set
+                {
+                    bookLocation = value;
+                    book.currentChapterIndex = bookLocation.SpineElement.Number;
+                    book.locationIndex = bookLocation.DomLocation.ElementIndex;
+                    book.locationOffset = bookLocation.DomLocation.TextOffset;
+                }
+            }
+
+            public void Persist()
+            {
+                persist();
+            }
+
+            public void Dispose()
+            {
+                container.Dispose();
+            }
+        }
+
+        public class SpineElement
+        {
+            public int Number { get; private set; }
+            public Chapter Chapter { get; private set; }
+            public SpineElement Previous { get; private set; }
+            public SpineElement Next { get; private set; }
+
+            internal SpineElement(
+                int number, Chapter chapter,
+                SpineElement previous, SpineElement next)
+            {
+                Number = number;
+                Chapter = chapter;
+                Previous = previous;
+                Next = next;
+            }
+        }
+
+        public class BookLocation
+        {
+            public SpineElement SpineElement { get; private set; }
+            public DomLocation DomLocation { get; private set; }
+
+            public BookLocation(SpineElement spineElement, DomLocation domLocation)
+            {
+                SpineElement = spineElement;
+                DomLocation = domLocation;
+            }
+        }
     }
 }
