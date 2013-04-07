@@ -22,24 +22,20 @@ namespace SvetlinAnkov.Albite.READER.Model
         // Data Base
         private LibraryDataContext db;
 
-        public string LibraryPath { get; private set; }
-        public string DbPath { get; private set; }
-        public string BooksPath { get; private set; }
-        private string booksTempPath;
+        private string libraryPath;
+        private string dbPath;
 
         public Library(string libraryPath)
         {
-            LibraryPath = libraryPath;
-            DbPath = libraryPath + "/Database.sdf";
-            BooksPath = libraryPath + "/Books";
-            booksTempPath = BooksPath + "/Temp";
+            this.libraryPath = libraryPath;
+            dbPath = libraryPath + "/Database.sdf";
 
-            using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(DbPath))
+            using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(dbPath))
             {
                 s.CreatePathForFile();
             }
 
-            db = new LibraryDataContext(DbPath);
+            db = new LibraryDataContext(dbPath);
             if (!db.DatabaseExists())
             {
                 db.CreateDatabase();
@@ -56,10 +52,14 @@ namespace SvetlinAnkov.Albite.READER.Model
         public class BookManager
         {
             private Library library;
+            private string booksPath;
+            private string booksTempPath;
 
             public BookManager(Library library)
             {
                 this.library = library;
+                booksPath = library.libraryPath + "/Books";
+                booksTempPath = booksPath + "/Temp";
             }
 
             public Book Add(BookContainer container)
@@ -80,13 +80,13 @@ namespace SvetlinAnkov.Albite.READER.Model
                 try
                 {
                     // Remove the temp folder
-                    using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(library.booksTempPath))
+                    using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(booksTempPath))
                     {
                         s.Delete();
                     }
 
                     // Unpack
-                    container.Install(library.booksTempPath);
+                    container.Install(booksTempPath);
 
                     lock (library.db)
                     {
@@ -111,7 +111,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                 try
                 {
                     // Move the book to the real folder
-                    using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(library.booksTempPath))
+                    using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(booksTempPath))
                     {
                         s.Move(getPath(book));
                     }
@@ -159,7 +159,7 @@ namespace SvetlinAnkov.Albite.READER.Model
             // Private API
             private string getPath(Book book)
             {
-                return Path.Combine(library.BooksPath, book.Id.ToString());
+                return Path.Combine(booksPath, book.Id.ToString());
             }
         }
 
