@@ -113,7 +113,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                     // Move the book to the real folder
                     using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(booksTempPath))
                     {
-                        s.Move(getPath(book));
+                        s.Move(getContentPath(book));
                     }
                 }
                 catch (Exception e)
@@ -157,9 +157,9 @@ namespace SvetlinAnkov.Albite.READER.Model
             // TODO: Simplified API for querying the database
 
             // Private API
-            private string getPath(Book book)
+            private string getContentPath(Book book)
             {
-                return Path.Combine(booksPath, book.Id.ToString());
+                return Path.Combine(Path.Combine(booksPath, book.Id.ToString()), "content");
             }
         }
 
