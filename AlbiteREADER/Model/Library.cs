@@ -28,7 +28,7 @@ namespace SvetlinAnkov.Albite.READER.Model
         public Library(string libraryPath)
         {
             this.libraryPath = libraryPath;
-            dbPath = libraryPath + "/Database.sdf";
+            dbPath = Path.Combine(libraryPath, "Database.sdf");
 
             using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(dbPath))
             {
@@ -58,8 +58,8 @@ namespace SvetlinAnkov.Albite.READER.Model
             public BookManager(Library library)
             {
                 this.library = library;
-                booksPath = library.libraryPath + "/Books";
-                booksTempPath = booksPath + "/Temp";
+                booksPath = Path.Combine(library.libraryPath, "Books");
+                booksTempPath = Path.Combine(booksPath, "Temp");
             }
 
             public Book Add(BookContainer container)
