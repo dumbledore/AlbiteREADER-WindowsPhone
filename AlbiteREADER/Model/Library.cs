@@ -17,10 +17,14 @@ namespace SvetlinAnkov.Albite.READER.Model
         // Public API
         public BookManager Books { get; private set; }
 
+        public delegate void PersistDelegate();
+
         // Private Implementation
 
         // Data Base
         private LibraryDataContext db;
+
+        private PersistDelegate persistDelegate;
 
         private string libraryPath;
         private string dbPath;
@@ -29,6 +33,8 @@ namespace SvetlinAnkov.Albite.READER.Model
         {
             this.libraryPath = libraryPath;
             dbPath = Path.Combine(libraryPath, "Database.sdf");
+
+            persistDelegate = new PersistDelegate(persist);
 
             using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(dbPath))
             {
@@ -42,6 +48,14 @@ namespace SvetlinAnkov.Albite.READER.Model
             }
 
             Books = new BookManager(this);
+        }
+
+        private void persist()
+        {
+            lock (db)
+            {
+                db.SubmitChanges();
+            }
         }
 
         public void Dispose()
