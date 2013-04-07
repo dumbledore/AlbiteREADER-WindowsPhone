@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 using SvetlinAnkov.Albite.READER.BrowserEngine;
 using SvetlinAnkov.Albite.Core.Test;
 
-namespace SvetlinAnkov.Albite.Tests.Test.Layout
+namespace SvetlinAnkov.Albite.Tests.Test.BrowserEngine
 {
     public class TemplateTest : TestCase
     {

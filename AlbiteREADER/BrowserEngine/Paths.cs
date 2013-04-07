@@ -15,22 +15,22 @@ namespace SvetlinAnkov.Albite.READER.BrowserEngine
     {
         public static string BaseStyles
         {
-            get { return "Layout/Base.css"; }
+            get { return "BrowserEngine/Base.css"; }
         }
 
         public static string ContentStyles
         {
-            get { return "Layout/Content.css"; }
+            get { return "BrowserEngine/Content.css"; }
         }
 
         public static string JSEngine
         {
-            get { return "Layout/Albite.js"; }
+            get { return "BrowserEngine/Albite.js"; }
         }
 
         public static string MainPage
         {
-            get { return "Layout/Main.xhtml"; }
+            get { return "BrowserEngine/Main.xhtml"; }
         }
 
         public static string ThemeStyles

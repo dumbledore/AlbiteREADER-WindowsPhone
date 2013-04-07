@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
-using SvetlinAnkov.Albite.Tests.Test.Layout;
+using SvetlinAnkov.Albite.Tests.Test.BrowserEngine;
 using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.Tests.Test.Utils;
 

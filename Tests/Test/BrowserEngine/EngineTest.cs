@@ -13,13 +13,14 @@ using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.READER.Utils;
 using SvetlinAnkov.Albite.READER.BrowserEngine;
 
-namespace SvetlinAnkov.Albite.Tests.Test.Layout
+namespace SvetlinAnkov.Albite.Tests.Test.BrowserEngine
 {
     public class EngineTest : TestCase
     {
         protected override void TestImplementation()
         {
-            BrowserEngine engine = new BrowserEngine(null, Defaults.Layout.DefaultSettings);
+            READER.BrowserEngine.BrowserEngine engine
+                = new READER.BrowserEngine.BrowserEngine(null, Defaults.Layout.DefaultSettings);
         }
     }
 }
