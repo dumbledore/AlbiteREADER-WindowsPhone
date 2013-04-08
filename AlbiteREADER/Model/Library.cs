@@ -190,6 +190,7 @@ namespace SvetlinAnkov.Albite.READER.Model
         private class LibraryDataContext : DataContext
         {
             public Table<Book> Books;
+            public Table<Chapter> Chapters;
 
             public LibraryDataContext(string location, int maxSize = 128) : base(getConnection(location, maxSize)) { }
 
