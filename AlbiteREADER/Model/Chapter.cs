@@ -27,7 +27,13 @@ namespace SvetlinAnkov.Albite.READER.Model
         public Book Book
         {
             get { return bookRef.Entity; }
-            private set { bookRef.Entity = value; }
+            private set
+            {
+                bookRef.Entity = value;
+                // There seems to be a bug on WP7 and
+                // one needs to set the ID explicitly.
+                bookId = value.Id;
+            }
         }
 
         // Used by LinqToSql for deserialization
