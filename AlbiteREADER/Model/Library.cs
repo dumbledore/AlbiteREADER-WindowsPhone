@@ -175,6 +175,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                     book,
                     new EpubContainer(
                         new AlbiteIsolatedContainer(getContentPath(book))),
+                    this,
                     new PersistDelegate(library.persist));
             }
 

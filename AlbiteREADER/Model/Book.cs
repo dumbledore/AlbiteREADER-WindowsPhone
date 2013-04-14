@@ -67,6 +67,7 @@ namespace SvetlinAnkov.Albite.READER.Model
         {
             private readonly Book book;
             private readonly BookContainer container;
+            private readonly Library.BookManager manager;
             private readonly Library.PersistDelegate persist;
 
             private readonly Object myLock = new Object();
@@ -76,10 +77,15 @@ namespace SvetlinAnkov.Albite.READER.Model
             // TODO: Lists
             // TODO: Export other metadata, perhaps?
 
-            public Presenter(Book book, BookContainer container, Library.PersistDelegate persist)
+            public Presenter(
+                Book book,
+                BookContainer container,
+                Library.BookManager manager,
+                Library.PersistDelegate persist)
             {
                 this.book = book;
                 this.container = container;
+                this.manager = manager;
                 this.persist = persist;
 
                 prepare();
@@ -87,9 +93,35 @@ namespace SvetlinAnkov.Albite.READER.Model
 
             private void prepare()
             {
-                // TODO
-                // 1. Load all the spine elements
-                // 2. Set bookLocation
+                // Load all the spine elements
+                spine = prepareSpine();
+
+                // Set bookLocation
+                bookLocation = new BookLocation(
+                    spine[book.currentChapterIndex],
+                    new DomLocation(book.locationIndex, book.locationOffset));
+            }
+
+            private SpineElement[] prepareSpine()
+            {
+                List<SpineElement> spine = new List<SpineElement>();
+                SpineElement previous = null;
+                SpineElement current = null;
+                int number = 0;
+
+                foreach (Chapter chapter in manager.GetChapters(book, container.Spine))
+                {
+                    // Add the chapter to the spine
+                    current = new SpineElement(number++,
+                            chapter,
+                            previous,
+                            null
+                    );
+                    spine.Add(current);
+                    previous = current;
+                }
+
+                return spine.ToArray();
             }
 
             private BookLocation bookLocation;
@@ -134,6 +166,16 @@ namespace SvetlinAnkov.Albite.READER.Model
                 Chapter = chapter;
                 Previous = previous;
                 Next = next;
+
+                if (previous != null)
+                {
+                    previous.Next = this;
+                }
+
+                if (next != null)
+                {
+                    next.Previous = this;
+                }
             }
         }
 
