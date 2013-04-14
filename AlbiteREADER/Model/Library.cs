@@ -128,7 +128,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                     // Move the book to the real folder
                     using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(booksTempPath))
                     {
-                        s.Move(getContentPath(book));
+                        s.Move(GetContentPath(book));
                     }
                 }
                 catch (Exception e)
@@ -174,7 +174,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                 return new Book.Presenter(
                     book,
                     new EpubContainer(
-                        new AlbiteIsolatedContainer(getContentPath(book))),
+                        new AlbiteIsolatedContainer(GetContentPath(book))),
                     this,
                     new PersistDelegate(library.persist));
             }
@@ -218,14 +218,34 @@ namespace SvetlinAnkov.Albite.READER.Model
                 return result;
             }
 
+            public static string RelativeContentPath
+            {
+                get { return "content"; }
+            }
+
+            public static string RelativeEnginePath
+            {
+                get { return "albite"; }
+            }
+
+            public string GetPath(Book book)
+            {
+                return Path.Combine(booksPath, book.Id.ToString());
+            }
+
+            public string GetContentPath(Book book)
+            {
+                return Path.Combine(GetPath(book), RelativeContentPath);
+            }
+
+            public string GetEnginePath(Book book)
+            {
+                return Path.Combine(GetPath(book), RelativeEnginePath);
+            }
+
             // TODO: Simplified API for querying the database
 
             // Private API
-            private string getContentPath(Book book)
-            {
-                return Path.Combine(Path.Combine(booksPath, book.Id.ToString()), "content");
-            }
-
             private Chapter getChapterPrivate(Book book, string url, ref bool needsSave)
             {
                 IEnumerable<Chapter> chapters = book.Chapters.Where(c => c.Url == url);

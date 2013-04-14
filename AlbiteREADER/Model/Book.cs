@@ -8,7 +8,7 @@ using System.Data.Linq;
 using System.Collections.Generic;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER.Model.Container;
-using SvetlinAnkov.Albite.READER.BrowserEngine;
+using SvetlinAnkov.Albite.READER.Model.Reader.Browser;
 
 namespace SvetlinAnkov.Albite.READER.Model
 {
@@ -138,6 +138,31 @@ namespace SvetlinAnkov.Albite.READER.Model
                     book.locationIndex = bookLocation.DomLocation.ElementIndex;
                     book.locationOffset = bookLocation.DomLocation.TextOffset;
                 }
+            }
+
+            public string Path
+            {
+                get { return manager.GetPath(book); }
+            }
+
+            public string RelativeContentPath
+            {
+                get { return Library.BookManager.RelativeContentPath; }
+            }
+
+            public string ContentPath
+            {
+                get { return manager.GetContentPath(book); }
+            }
+
+            public string RelativeEnginePath
+            {
+                get { return Library.BookManager.RelativeEnginePath; }
+            }
+
+            public string EnginePath
+            {
+                get { return manager.GetEnginePath(book); }
             }
 
             public void Persist()

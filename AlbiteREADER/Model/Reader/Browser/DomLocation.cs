@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace SvetlinAnkov.Albite.READER.BrowserEngine
+namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
 {
     public class DomLocation
     {

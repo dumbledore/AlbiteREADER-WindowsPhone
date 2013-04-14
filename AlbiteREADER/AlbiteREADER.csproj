@@ -65,14 +65,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="IAlbiteApplication.cs" />
-    <Compile Include="BrowserEngine\BrowserEngine.cs" />
-    <Compile Include="BrowserEngine\DomLocation.cs" />
-    <Compile Include="BrowserEngine\Paths.cs" />
-    <Compile Include="BrowserEngine\Settings.cs" />
-    <Compile Include="BrowserEngine\Template.cs" />
-    <Compile Include="BrowserEngine\TemplateResource.cs" />
-    <Compile Include="BrowserEngine\Theme.cs" />
+    <Compile Include="Model\Reader\Browser\BrowserEngine.cs" />
+    <Compile Include="Model\Reader\Browser\DomLocation.cs" />
+    <Compile Include="Model\Reader\Browser\Paths.cs" />
+    <Compile Include="Model\Reader\Browser\Settings.cs" />
+    <Compile Include="Model\Reader\Browser\Template.cs" />
+    <Compile Include="Model\Reader\Browser\TemplateResource.cs" />
+    <Compile Include="Model\Reader\Browser\Theme.cs" />
     <Compile Include="Model\Book.cs" />
+    <Compile Include="Model\Reader\BookEngine.cs" />
     <Compile Include="Model\Container\BookContainer.cs" />
     <Compile Include="Model\Chapter.cs" />
     <Compile Include="Model\Container\Epub\EpubContainer.cs" />

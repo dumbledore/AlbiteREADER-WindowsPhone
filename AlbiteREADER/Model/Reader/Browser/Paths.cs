@@ -9,33 +9,38 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace SvetlinAnkov.Albite.READER.BrowserEngine
+namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
 {
     public static class Paths
     {
+        public static string BasePath
+        {
+            get { return "BrowserEngine"; }
+        }
+
         public static string BaseStyles
         {
-            get { return "BrowserEngine/Base.css"; }
+            get { return "Base.css"; }
         }
 
         public static string ContentStyles
         {
-            get { return "BrowserEngine/Content.css"; }
+            get { return "Content.css"; }
         }
 
         public static string JSEngine
         {
-            get { return "BrowserEngine/Albite.js"; }
+            get { return "Albite.js"; }
         }
 
         public static string MainPage
         {
-            get { return "BrowserEngine/Main.xhtml"; }
+            get { return "Main.xhtml"; }
         }
 
         public static string ThemeStyles
         {
-            get { return "Layout/Theme.css"; }
+            get { return "Theme.css"; }
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.Albite.READER.BrowserEngine;
+using SvetlinAnkov.Albite.READER.Model.Reader.Browser;
 using SvetlinAnkov.Albite.READER.Resources.Defaults;
 
 namespace SvetlinAnkov.Albite.READER.Utils

@@ -1,0 +1,16 @@
+html {
+	background-color: %{background_color}; /* Default: white */
+	color:            %{text_color};       /* Default: black */
+}
+
+div#header {
+	border-bottom-color: %{text_color};
+}
+
+i, em {
+	color: %{accent_color}; /* Default: #634F3B */
+}
+
+hr {
+	border-bottom-color: %{text_color};
+}

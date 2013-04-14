@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 
-namespace SvetlinAnkov.Albite.READER.BrowserEngine
+namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
 {
     public class Settings
     {

@@ -1,0 +1,66 @@
+body {
+	font-family: "Arial", sans-serif;
+	font-size: 28px;
+}
+
+html, body {
+	margin: 0;
+
+	/*
+	 * The width is 3 times the page width,
+	 * because it will cover three pages
+	 */
+	width: %{page_width_x_3}px; /* Default 3xPageWidth, so most probably 1440 */
+	height: 100%;
+}
+
+/*
+ * Hide the body. It will be shown by the JS, when all iframes have
+ * finished loading and pagination is complete.
+ */
+body {
+	visibility: hidden;
+}
+
+div.page {
+	margin-top:    %{page_margin_top}px;    /* Default: 30 */
+	margin-bottom: %{page_margin_bottom}px; /* Default: 30 */
+	margin-left:   %{page_margin_left}px;   /* Default: 30 */
+	margin-right:  %{page_margin_right}px;  /* Default: 40 */
+	width:         %{page_width}px;         /* Default: 410 */
+	height:        %{page_height}px;        /* Default: 668 */
+	position: absolute;
+}
+
+.page_header {
+	width: 100%;
+	height: 4%;
+	overflow: hidden;
+	font-size: 70%;
+	text-transform: uppercase;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+
+	/*
+	 * Hide it for the first page
+	 * of the chapter. Unhide it after that.
+	 */
+	visibility: hidden;
+}
+
+.page_header_space {
+	height: 2%;
+}
+
+.page_content_box {
+	width: 100%;
+	height: 94%;
+}
+
+.page_content_clipper {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}

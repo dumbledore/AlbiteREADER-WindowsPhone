@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Albite READER</title>
+        <!-- The width should change from 480 to 800 when the device goes into landscape mode -->
+        <meta name="viewport" content="width=%{full_page_width}, user-scalable=no, initial-zoom=1" />
+        <link rel="stylesheet" type="text/css" href="Base.css" />
+        <link rel="stylesheet" type="text/css" href="Theme.css" />
+        <script type="text/javascript" src="Albite.js" />
+        <script type="text/javascript">
+            albite = new Albite(window, %{full_page_width}, 1);
+        </script>
+    </head>
+    <body>
+        <div class="page">
+            <div class="page_header">
+                %{chapter_title}
+            </div>
+            <div class="page_header_space" />
+            <div class="page_content_box">
+                <div class="page_content_clipper">
+                    <iframe class="page_content_frame" src="%{chapter_file}" marginWidth="0" marginHeight="0" scrolling="no" width="100%" height="100%" frameborder="0" onload="albite.contentLoaded(this);"/>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
