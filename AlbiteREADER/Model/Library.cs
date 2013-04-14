@@ -27,13 +27,13 @@ namespace SvetlinAnkov.Albite.READER.Model
 
         private PersistDelegate persistDelegate;
 
-        private string libraryPath;
+        public string LibraryPath { get; private set; }
         private string dbPath;
 
         public Library(string libraryPath)
         {
-            this.libraryPath = libraryPath;
-            dbPath = Path.Combine(libraryPath, "Database.sdf");
+            LibraryPath = libraryPath;
+            dbPath = Path.Combine(LibraryPath, "Database.sdf");
 
             persistDelegate = new PersistDelegate(persist);
 
@@ -73,7 +73,7 @@ namespace SvetlinAnkov.Albite.READER.Model
             public BookManager(Library library)
             {
                 this.library = library;
-                booksPath = Path.Combine(library.libraryPath, "Books");
+                booksPath = Path.Combine(library.LibraryPath, "Books");
                 booksTempPath = Path.Combine(booksPath, "Temp");
             }
 
