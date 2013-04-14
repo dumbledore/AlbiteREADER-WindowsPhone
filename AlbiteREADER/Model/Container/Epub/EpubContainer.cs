@@ -34,7 +34,21 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
 
         public override IEnumerable<string> Items
         {
-            get { return Opf.Items; }
+            get
+            {
+                // Copy the items from the manifest
+                List<string> itemsRes = new List<string>(Opf.Items);
+
+                // Don't forget to add the OCF, OPF and NCX
+                itemsRes.Add(OpenContainerFile.Path);
+                itemsRes.Add(Ocf.OpfPath);
+                if (Opf.NcxPath != null)
+                {
+                    itemsRes.Add(Opf.NcxPath);
+                }
+
+                return itemsRes;
+            }
         }
 
         public override string Title
@@ -46,12 +60,15 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
         {
             // First check that this stream is there and/or is allowed to
             // be used at all.
-            if (!Opf.ContainsItem(entityName))
+            if (Opf.ContainsItem(entityName)
+                || entityName == OpenContainerFile.Path
+                || entityName == Ocf.OpfPath
+                || entityName == Opf.NcxPath)
             {
-                throw new BookContainerException("Entity not found in book");
+                return base.Stream(entityName);
             }
 
-            return base.Stream(entityName);
+            throw new BookContainerException("Entity not found in book");
         }
 
         private void processDocuments()
