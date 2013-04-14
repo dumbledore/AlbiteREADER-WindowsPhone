@@ -23,10 +23,11 @@ namespace SvetlinAnkov.Albite.Tests.Test
                     using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
                     {
                         // Create the ePub
-                        EpubContainer epub = new EpubContainer(zip);
-
-                        // Add to the library
-                        library.Books.Add(epub);
+                        using (EpubContainer epub = new EpubContainer(zip))
+                        {
+                            // Add to the library
+                            library.Books.Add(epub);
+                        }
                     }
                 }
             }
