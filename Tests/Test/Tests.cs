@@ -24,7 +24,6 @@ namespace SvetlinAnkov.Albite.Tests.Test
                 new UtilsTests(),
                 new EpubTests(),
                 new TemplateTest("Test/Template/Main.xhtml"),
-                new EngineTest(),
             };
         }
     }
