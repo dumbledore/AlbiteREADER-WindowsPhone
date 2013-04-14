@@ -24,6 +24,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Container
 
         public abstract string Title { get; }
 
+        public abstract IEnumerable<String> Spine { get; }
+
         /// <summary>
         /// Returns true if there was a problem when creating
         /// the container.

@@ -51,6 +51,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
             }
         }
 
+        public override IEnumerable<String> Spine
+        {
+            get { return Opf.Spine; }
+        }
+
         public override string Title
         {
             get { return Opf.Title; }
