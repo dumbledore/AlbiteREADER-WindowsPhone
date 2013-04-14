@@ -36,13 +36,17 @@ namespace SvetlinAnkov.Albite.READER.Model
             }
         }
 
+        [Column]
+        public string Url { get; private set; }
+
         // Used by LinqToSql for deserialization
         public Chapter() { }
 
         // Used when creating a new entity
-        public Chapter(Book book)
+        public Chapter(Book book, string url)
         {
             Book = book;
+            Url = url;
         }
 
         // TODO: Chapter Bookmarks, Highlights and Notes
