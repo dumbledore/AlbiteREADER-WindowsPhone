@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.Diagnostics;
 using SvetlinAnkov.Albite.READER.Model;
+using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.READER.View
 {
@@ -35,9 +36,18 @@ namespace SvetlinAnkov.Albite.READER.View
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            string bookId = NavigationContext.QueryString["id"];
-            Library lib = App.Context.Library;
-            Debug.WriteLine("Navigated to page. Book id: {0}", bookId);
+
+            // Get the book id from the query string
+            int bookId = int.Parse(NavigationContext.QueryString["id"]);
+
+            // Get the library from the current context
+            Library library = App.Context.Library;
+
+            // Get the book for the given id
+            Book book = library.Books[bookId];
+
+            // Finally, get the presenter
+            Book.Presenter presenter = library.Books.GetPresenter(book);
         }
     }
 }
