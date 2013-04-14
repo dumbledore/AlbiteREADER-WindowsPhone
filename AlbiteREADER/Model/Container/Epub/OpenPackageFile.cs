@@ -104,7 +104,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
             XElement manifestElement = rootElement.Element(xmlns + "manifest");
             processManifest(manifestElement);
 
-            // process the spine
+            // process the spine last so that it will be able to use the manifest
             XElement spineElement = rootElement.Element(xmlns + "spine");
             processSpine(spineElement);
 
@@ -179,7 +179,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
                 //    only one id associated with it. That is, there can be two different ids
                 //    pointing to the same resource.
                 // 2. Every spine item with the same id must be featured only once in the spine
-                spine.Add(idref.Value);
+                if (items.ContainsKey(idref.Value))
+                {
+                    spine.Add(items[idref.Value]);
+                }
+                else
+                {
+                    reportError("Couldn't add " + idref.Value + " to spine");
+                }
             }
 
             Assert(spine.Count > 0, "Spine is empty");
