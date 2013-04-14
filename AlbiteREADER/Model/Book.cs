@@ -53,6 +53,16 @@ namespace SvetlinAnkov.Albite.READER.Model
         [Column]
         private int locationOffset { get; set; }
 
+        // Chapters
+        private EntitySet<Chapter> chaptersSet = new EntitySet<Chapter>();
+
+        [Association(Storage="chaptersSet", OtherKey="bookId")]
+        public EntitySet<Chapter> Chapters
+        {
+            get { return chaptersSet; }
+            set { chaptersSet.Assign(value); }
+        }
+
         public class Presenter : IDisposable
         {
             private readonly Book book;
