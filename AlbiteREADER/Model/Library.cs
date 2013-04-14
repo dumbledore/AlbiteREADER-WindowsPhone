@@ -178,12 +178,73 @@ namespace SvetlinAnkov.Albite.READER.Model
                     new PersistDelegate(library.persist));
             }
 
+            public Chapter GetChapter(Book book, string url)
+            {
+                return GetChapters(book, new string[] { url }).First();
+            }
+
+            public IEnumerable<Chapter> GetChapters(Book book, IEnumerable<string> urls)
+            {
+                List<Chapter> toBeSaved = new List<Chapter>();
+                List<Chapter> result = new List<Chapter>();
+
+                foreach (string url in urls)
+                {
+                    bool needsSave = false;
+                    Chapter chapter = getChapterPrivate(book, url, ref needsSave);
+                    result.Add(chapter);
+
+                    if (needsSave)
+                    {
+                        toBeSaved.Add(chapter);
+                    }
+                }
+
+                if (toBeSaved.Count > 0)
+                {
+                    // First try to commit in case something else has been changed
+                    library.db.SubmitChanges();
+
+                    // Now commit the new changes
+                    foreach (Chapter chapter in toBeSaved)
+                    {
+                        book.Chapters.Add(chapter);
+                    }
+
+                    library.db.SubmitChanges();
+                }
+
+                return result;
+            }
+
             // TODO: Simplified API for querying the database
 
             // Private API
             private string getContentPath(Book book)
             {
                 return Path.Combine(Path.Combine(booksPath, book.Id.ToString()), "content");
+            }
+
+            private Chapter getChapterPrivate(Book book, string url, ref bool needsSave)
+            {
+                IEnumerable<Chapter> chapters = book.Chapters.Where(c => c.Url == url);
+                Chapter chapter = null;
+                int count = chapters.Count();
+                if (count == 0)
+                {
+                    chapter = new Chapter(book, url);
+                    needsSave = true;
+                }
+                else if (count == 1)
+                {
+                    chapter = chapters.First();
+                }
+                else
+                {
+                    throw new InvalidOperationException("More than one chapters found with " + url);
+                }
+
+                return chapter;
             }
         }
 
