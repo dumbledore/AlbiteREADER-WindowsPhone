@@ -3,11 +3,14 @@ using System;
 using System.IO.IsolatedStorage;
 using SvetlinAnkov.Albite.Tests.Test.Model;
 using SvetlinAnkov.Albite.Tests.Test.View;
+using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
     public partial class TestPage : PhoneApplicationPage
     {
+        private static readonly string tag = "TestPage";
+
         public TestPage()
         {
             InitializeComponent();
@@ -16,6 +19,7 @@ namespace SvetlinAnkov.Albite.Tests.Test
         private void removeStore()
         {
             // Remove the whole iso store for this app
+            Log.D(tag, "Clearing Isolated Storage...");
             IsolatedStorageFile.GetUserStoreForApplication().Remove();
         }
 
