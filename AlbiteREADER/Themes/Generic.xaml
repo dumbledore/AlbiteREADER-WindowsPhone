@@ -1,0 +1,21 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:albite="clr-namespace:SvetlinAnkov.Albite.READER.Controls">
+
+    <Style TargetType="albite:ReaderControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="albite:ReaderControl">
+                    <Grid>
+                        <phone:WebBrowser x:Name="WebBrowser"
+                            IsHitTestVisible="False"
+                            IsScriptEnabled="True" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

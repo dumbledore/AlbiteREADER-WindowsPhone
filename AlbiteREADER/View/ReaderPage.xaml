@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:albite="clr-namespace:SvetlinAnkov.Albite.READER.Controls"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -21,10 +22,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="0">
-            <phone:WebBrowser
-                x:Name="Browser"
-                IsHitTestVisible="True"
-                IsScriptEnabled="True" Navigated="Browser_Navigated" Navigating="Browser_Navigating" NavigationFailed="Browser_NavigationFailed" ScriptNotify="Browser_ScriptNotify" SizeChanged="Browser_SizeChanged" Loaded="Browser_Loaded" Unloaded="Browser_Unloaded" />
+            <albite:ReaderControl x:Name="ReaderControl" Loaded="ReaderControl_Loaded" />
         </Grid>
     </Grid>
 

@@ -68,6 +68,7 @@
     <Compile Include="Model\Reader\Browser\BrowserEngine.cs" />
     <Compile Include="Model\Reader\Browser\DomLocation.cs" />
     <Compile Include="Model\Reader\Browser\Paths.cs" />
+    <Compile Include="Controls\ReaderControl.cs" />
     <Compile Include="Model\Reader\Browser\Settings.cs" />
     <Compile Include="Model\Reader\Browser\Template.cs" />
     <Compile Include="Model\Reader\Browser\TemplateResource.cs" />
@@ -143,6 +144,13 @@
       <Project>{85084981-FCBE-4271-A231-6D8CC83CA774}</Project>
       <Name>AlbiteCore</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
