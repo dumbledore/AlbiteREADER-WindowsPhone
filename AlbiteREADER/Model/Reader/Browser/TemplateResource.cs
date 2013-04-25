@@ -28,6 +28,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
             }
         }
 
+        public TemplateResource(AlbiteStorage storage) : this(storage, storage.FileName) { }
+
+        public TemplateResource(AlbiteStorage storage, string outputFilename)
+        {
+            this.outputFilename = outputFilename;
+            base.setTemplate(storage.ReadAsString());
+        }
+
         public void SaveToStorage()
         {
             using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(outputFilename))
