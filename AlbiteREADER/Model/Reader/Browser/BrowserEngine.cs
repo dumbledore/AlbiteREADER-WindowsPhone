@@ -15,8 +15,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
 
         private readonly Book.Presenter presenter;
 
-        private readonly string relativeContentPath;
-
         private Uri mainUri;
 
         // The settings are read-only, because their values will be updated
@@ -37,7 +35,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
             this.webBrowser = webBrowser;
             this.presenter = presenter;
             this.settings = settings;
-            this.relativeContentPath = presenter.RelativeContentPath;
 
             prepare();
         }
@@ -53,7 +50,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
 
                 // Set up the main.xhtml
                 mainPageTemplate["chapter_title"] = "untitled"; //ToDo
-                mainPageTemplate["chapter_file"] = Path.Combine("/" + relativeContentPath, chapter.Url);
+                mainPageTemplate["chapter_file"] = Path.Combine("/" + presenter.RelativeContentPath, chapter.Url);
                 mainPageTemplate.SaveToStorage();
 
                 // Now navigate the web browser
