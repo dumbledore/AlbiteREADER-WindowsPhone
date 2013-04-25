@@ -14,14 +14,12 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
 {
     public class TemplateResource : Template
     {
-        private readonly string inputFilename;
         private readonly string outputFilename;
 
         public TemplateResource(string filename) : this(filename, filename) { }
 
         public TemplateResource(string inputFilename, string outputFilename)
         {
-            this.inputFilename = inputFilename;
             this.outputFilename = outputFilename;
 
             using (AlbiteResourceStorage res = new AlbiteResourceStorage(inputFilename))
