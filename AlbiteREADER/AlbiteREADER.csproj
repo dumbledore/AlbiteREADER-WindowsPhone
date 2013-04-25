@@ -106,9 +106,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\BrowserEngine\Albite.js" />
-    <Content Include="Resources\BrowserEngine\Content.css" />
-    <Content Include="Resources\BrowserEngine\Main.xhtml" />
+    <Resource Include="Resources\BrowserEngine\Albite.js" />
+    <Resource Include="Resources\BrowserEngine\Content.css" />
+    <Resource Include="Resources\BrowserEngine\Main.xhtml" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>
@@ -119,8 +119,8 @@
     <Content Include="Resources\Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\BrowserEngine\Base.css" />
-    <Content Include="Resources\BrowserEngine\Theme.css" />
+    <Resource Include="Resources\BrowserEngine\Base.css" />
+    <Resource Include="Resources\BrowserEngine\Theme.css" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

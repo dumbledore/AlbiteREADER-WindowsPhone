@@ -6,6 +6,7 @@ using Microsoft.Phone.Controls;
 using SvetlinAnkov.Albite.READER.Model;
 using SvetlinAnkov.Albite.Core.Utils;
 using System.IO;
+using System.Reflection;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
 {
@@ -37,6 +38,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
             this.settings = settings;
 
             prepare();
+        }
+
+        private static readonly string assemblyName;
+
+        static BrowserEngine()
+        {
+            AssemblyName name = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
+            assemblyName = name.Name;
         }
 
         private Chapter chapter;
@@ -101,34 +110,48 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
             string enginePath = presenter.EnginePath;
 
             // Copy the JSEngine to the Isolated Storage
-            using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(Path.Combine(enginePath, Paths.JSEngine)))
+            using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(
+                Path.Combine(enginePath, Paths.JSEngine)))
             {
-                using (AlbiteResourceStorage res = new AlbiteResourceStorage(Path.Combine(Paths.BasePath, Paths.JSEngine)))
+                using (AlbiteResourceStorage res = new AlbiteResourceStorage(
+                    Path.Combine(Paths.BasePath, Paths.JSEngine), assemblyName))
                 {
                     res.CopyTo(iso);
                 }
             }
 
             // Load the templates
-            mainPageTemplate = new TemplateResource(
-                Path.Combine(Paths.BasePath, Paths.MainPage),
-                Path.Combine(enginePath, Paths.MainPage));
+            using (AlbiteResourceStorage res = new AlbiteResourceStorage(
+                Path.Combine(Paths.BasePath, Paths.MainPage), assemblyName))
+            {
+                mainPageTemplate = new TemplateResource(
+                    res, Path.Combine(enginePath, Paths.MainPage));
+            }
 
             // Set defaults. These will be overwritten upon open
             mainPageTemplate["chapter_title"] = "";
             mainPageTemplate["chapter_file"] = "";
 
-            baseStylesTemplate = new TemplateResource(
-                Path.Combine(Paths.BasePath, Paths.BaseStyles),
-                Path.Combine(enginePath, Paths.BaseStyles));
+            using (AlbiteResourceStorage res = new AlbiteResourceStorage(
+                Path.Combine(Paths.BasePath, Paths.BaseStyles), assemblyName))
+            {
+                baseStylesTemplate = new TemplateResource(
+                    res, Path.Combine(enginePath, Paths.BaseStyles));
+            }
 
-            contentStylesTemplate = new TemplateResource(
-                Path.Combine(Paths.BasePath, Paths.ContentStyles),
-                Path.Combine(enginePath, Paths.ContentStyles));
+            using (AlbiteResourceStorage res = new AlbiteResourceStorage(
+                Path.Combine(Paths.BasePath, Paths.ContentStyles), assemblyName))
+            {
+                contentStylesTemplate = new TemplateResource(
+                    res, Path.Combine(enginePath, Paths.ContentStyles));
+            }
 
-            themeStylesTemplate = new TemplateResource(
-                Path.Combine(Paths.BasePath, Paths.ThemeStyles),
-                Path.Combine(enginePath, Paths.ThemeStyles));
+            using (AlbiteResourceStorage res = new AlbiteResourceStorage(
+                Path.Combine(Paths.BasePath, Paths.ThemeStyles), assemblyName))
+            {
+                themeStylesTemplate = new TemplateResource(
+                    res, Path.Combine(enginePath, Paths.ThemeStyles));
+            }
 
             // Set up the templates
             updateLayout();

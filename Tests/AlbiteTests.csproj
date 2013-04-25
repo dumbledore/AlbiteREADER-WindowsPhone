@@ -93,10 +93,6 @@
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
-    <Content Include="Resources\BrowserEngine\Albite.js" />
-    <Content Include="Resources\BrowserEngine\Base.css" />
-    <Content Include="Resources\BrowserEngine\Content.css" />
-    <Content Include="Resources\BrowserEngine\Theme.css" />
     <Content Include="Resources\Test\Epub\aliceDynamic.epub" />
     <Content Include="Resources\Test\Epub\idpf.epub" />
     <Content Include="Resources\Test\Epub\Invalid\Fail\01.epub" />
@@ -117,7 +113,6 @@
     <Content Include="Resources\Test\WebBrowser\Stability\allocation_test.html" />
     <Content Include="Resources\Test\WebBrowser\Stability\content_test.html" />
     <Content Include="Resources\Test\WebBrowser\Stability\loop_test.html" />
-    <Content Include="Resources\BrowserEngine\Main.xhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ApplicationIcon.png">
