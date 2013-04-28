@@ -13,6 +13,9 @@
                         <phone:WebBrowser x:Name="WebBrowser"
                             IsHitTestVisible="False"
                             IsScriptEnabled="True" />
+                        <Border
+                            x:Name="Border"
+                            Background="Transparent" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

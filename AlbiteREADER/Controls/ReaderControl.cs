@@ -127,5 +127,30 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 Log.D(tag, "Size changed: " + e.NewSize.Width + " x " + e.NewSize.Height);
             }
         }
+
+        protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
+        {
+            base.OnManipulationStarted(e);
+            e.ManipulationContainer = this;
+            e.Handled = true;
+
+            Log.D(tag, "ManipulationStarted");
+        }
+
+        protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
+        {
+            base.OnManipulationDelta(e);
+            e.Handled = true;
+
+            Log.D(tag, "ManipulationDelta: " + e.DeltaManipulation.Translation.X);
+        }
+
+        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
+        {
+            base.OnManipulationCompleted(e);
+            e.Handled = true;
+
+            Log.D(tag, "ManipulationCompleted");
+        }
     }
 }
