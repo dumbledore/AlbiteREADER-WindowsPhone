@@ -13,7 +13,7 @@ using Microsoft.Phone.Controls;
 using System.Diagnostics;
 using SvetlinAnkov.Albite.READER.Model;
 using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.READER.Model.Reader.Browser;
+using SvetlinAnkov.Albite.READER.Model.Reader;
 using SvetlinAnkov.Albite.READER.Utils;
 
 namespace SvetlinAnkov.Albite.READER.View

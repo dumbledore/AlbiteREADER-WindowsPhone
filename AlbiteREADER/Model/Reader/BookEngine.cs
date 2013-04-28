@@ -3,9 +3,8 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Phone.Controls;
-using SvetlinAnkov.Albite.READER.Model.Reader.Browser;
 
-namespace SvetlinAnkov.Albite.READER.Model
+namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
     public class BookEngine
     {

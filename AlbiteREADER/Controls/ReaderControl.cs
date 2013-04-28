@@ -13,6 +13,7 @@ using SvetlinAnkov.Albite.Core.Utils;
 using System.Windows.Navigation;
 using SvetlinAnkov.Albite.READER.Model;
 using SvetlinAnkov.Albite.READER.Utils;
+using SvetlinAnkov.Albite.READER.Model.Reader;
 
 namespace SvetlinAnkov.Albite.READER.Controls
 {

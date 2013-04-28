@@ -8,7 +8,7 @@ using SvetlinAnkov.Albite.Core.Utils;
 using System.IO;
 using System.Reflection;
 
-namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
+namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
     public class BrowserEngine
     {

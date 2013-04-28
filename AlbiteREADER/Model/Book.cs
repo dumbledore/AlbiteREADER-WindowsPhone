@@ -8,7 +8,7 @@ using System.Data.Linq;
 using System.Collections.Generic;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER.Model.Container;
-using SvetlinAnkov.Albite.READER.Model.Reader.Browser;
+using SvetlinAnkov.Albite.READER.Model.Reader;
 
 namespace SvetlinAnkov.Albite.READER.Model
 {

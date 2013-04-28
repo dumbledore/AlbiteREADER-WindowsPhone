@@ -13,13 +13,13 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
+namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
     /// <summary>
     /// Represents a LayoutTemplate
-    /// 
+    ///
     /// The input is text data with placeholders of the kind: %{placeholder_name}
-    /// 
+    ///
     /// Once all placeholders have been set, call GetOutput() to get the
     /// processed content
     /// </summary>
@@ -95,7 +95,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader.Browser
         private void parsePlaceholders()
         {
             placeholders.Clear();
-            
+
             MatchCollection matches = Regex.Matches(template, PlaceholderRegex, RegexOptions.None);
             foreach (Match match in matches)
             {
