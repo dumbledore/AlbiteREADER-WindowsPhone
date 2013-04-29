@@ -18,15 +18,18 @@ namespace SvetlinAnkov.Albite.READER.Controls
 {
     public partial class ReaderControl : UserControl, IDisposable
     {
+        private static readonly string tag = "ReaderControl";
+
+        private BookEngine engine;
+        private WaitPopup waitPopup;
+
         public ReaderControl()
         {
             InitializeComponent();
+
+            waitPopup = new WaitPopup();
+            LoadingStarted();
         }
-
-        private static readonly string tag = "ReaderControl";
-
-        // Related to the Model and the Engine
-        private BookEngine engine;
 
         public void OpenBook(int bookId)
         {
@@ -74,6 +77,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             Log.D(tag, "Unloaded");
+            LoadingCompleted();
         }
 
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
@@ -96,6 +100,16 @@ namespace SvetlinAnkov.Albite.READER.Controls
             base.OnManipulationCompleted(e);
             engine.OnManipulationCompleted(e);
             e.Handled = true;
+        }
+
+        public void LoadingStarted()
+        {
+            waitPopup.IsOpen = true;
+        }
+
+        public void LoadingCompleted()
+        {
+            waitPopup.IsOpen = false;
         }
     }
 }
