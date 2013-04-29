@@ -257,7 +257,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         private void browser_ScriptNotify(object sender, NotifyEventArgs e)
         {
-            Log.D(tag, "ScriptNotify: " + e.Value);
+            processCommand(e.Value);
         }
 
         private void browser_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -319,6 +319,25 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             {
                 Browser.SizeChanged -= browser_SizeChangedHandler;
                 browser_SizeChangedHandler = null;
+            }
+        }
+
+        private static readonly string debugCommand = "{debug}";
+        private static readonly string loadedCommand = "{loaded}";
+
+        private void processCommand(string command)
+        {
+            if (command.StartsWith(loadedCommand))
+            {
+                loader.LoadingCompleted();
+            }
+            else if (command.StartsWith(debugCommand))
+            {
+                Log.I(tag, "JavaScript: " + command.Substring(debugCommand.Length));
+            }
+            else
+            {
+                Log.E(tag, "Unknown command: " + command);
             }
         }
 

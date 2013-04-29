@@ -28,15 +28,20 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
      */
     function debug(msg) {
         try {
-            console.log(msg);
+            /*
+             * Try reporting to .NET
+             */
+            notifyServer("{debug}" + msg);
         } catch (e) {
             try {
                 /*
-                 * Try reporting to .NET
-                 * This will be changed when the API is ready
+                 * Try the console (e.g. Chrome)
                  */
-                window.external.notify(msg);
+                console.log(msg);
             } catch (e) {
+                /*
+                 * Last resort
+                 */
                 alert(msg);
             }
         }
@@ -44,6 +49,14 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
 
     function reportError(msg) {
         debug("Error: " + msg);
+    }
+
+    function notifyServer(command) {
+        window.external.notify(command);
+    }
+
+    function notifyLoaded() {
+        notifyServer("{loaded}");
     }
 
     /*
@@ -216,8 +229,9 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
             mainWindow.document.body.style.visibility = 'visible';
 
             /*
-             * TODO: Notify the server that the page has loaded.
+             * Notify the server that the page has loaded.
              */
+            notifyLoaded();
         });
     }
 
