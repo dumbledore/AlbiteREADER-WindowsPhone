@@ -19,6 +19,10 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
      */
     this.goToPage       = goToPage;
 
+    this.press          = press;
+    this.move           = move;
+    this.release        = release;
+
     /*
      * Functions for debugging
      */
@@ -502,5 +506,42 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
         pages.push(new PageMetrics(pages.length + 1, 0, 0));
 
         return pages;
+    }
+
+    var moved = false;
+
+    function press(x, y) {
+        cancelScroll();
+        moved = false;
+    }
+
+    function move(x, y) {
+        // Ignore Y for the time being
+        mainWindow.scrollBy(x, 0);
+        moved = true;
+    }
+
+    function release(x, y) {
+        scheduleScroll();
+    }
+
+    var scrollTimer = null;
+
+    function cancelScroll() {
+        debug("cancelScroll");
+        if (scrollTimer != null) {
+            clearInterval(scrollTimer);
+        }
+    }
+
+    // TODO: Needs to be computed in %
+    var dragTreshold = 100;
+
+    function scheduleScroll() {
+        debug("scheduleScroll");
+    }
+
+    function scroll(targetPosition, dx) {
+
     }
 }

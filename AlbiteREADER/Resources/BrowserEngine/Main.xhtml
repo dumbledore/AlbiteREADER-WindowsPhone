@@ -10,6 +10,21 @@
         <script type="text/javascript" src="Albite.js" />
         <script type="text/javascript">
             albite = new Albite(window, %{full_page_width}, 1);
+
+            /*
+             * Export Albite functions to WebBrowser.InvokeScript
+             */
+            function albite_press(x, y) {
+                albite.press(x, y);
+            }
+
+            function albite_move(x, y) {
+                albite.move(x, y);
+            }
+
+            function albite_release(x, y) {
+                albite.release(x, y);
+            }
         </script>
     </head>
     <body>
