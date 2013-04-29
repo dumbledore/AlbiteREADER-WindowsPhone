@@ -8,8 +8,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
     public class BookEngine : BrowserEngine
     {
-        public BookEngine(WebBrowser webBrowser, Book.Presenter presenter, Settings settings)
-            : base(webBrowser, presenter, settings) { }
+        public BookEngine(WebBrowser webBrowser, ILoader loader, Book.Presenter presenter, Settings settings)
+            : base(webBrowser, loader, presenter, settings) { }
 
         // TODO: Add history stack
 

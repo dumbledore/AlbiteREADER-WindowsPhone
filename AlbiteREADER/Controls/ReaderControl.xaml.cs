@@ -16,7 +16,7 @@ using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.READER.Controls
 {
-    public partial class ReaderControl : UserControl, IDisposable
+    public partial class ReaderControl : UserControl, IDisposable, BookEngine.ILoader
     {
         private static readonly string tag = "ReaderControl";
 
@@ -47,7 +47,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
             Book.Presenter presenter = library.Books.GetPresenter(book);
 
             // Load the engine
-            engine = new BookEngine(WebBrowser, presenter, Defaults.Layout.DefaultSettings);
+            engine = new BookEngine(WebBrowser, this, presenter, Defaults.Layout.DefaultSettings);
 
             // Go to the last reading location
             engine.BookLocation = presenter.BookLocation;

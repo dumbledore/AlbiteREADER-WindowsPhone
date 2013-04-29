@@ -19,6 +19,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         protected readonly WebBrowser Browser;
         protected readonly Book.Presenter Presenter;
 
+        private readonly ILoader loader;
+
         private Uri mainUri;
 
         // The settings are read-only, because their values will be updated
@@ -34,9 +36,10 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         private TemplateResource contentStylesTemplate;
         private TemplateResource themeStylesTemplate;
 
-        public BrowserEngine(WebBrowser webBrowser, Book.Presenter presenter, Settings settings)
+        public BrowserEngine(WebBrowser webBrowser, ILoader loader, Book.Presenter presenter, Settings settings)
         {
             this.Browser = webBrowser;
+            this.loader = loader;
             this.Presenter = presenter;
             this.settings = settings;
 
@@ -58,6 +61,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             set
             {
+                loader.LoadingStarted();
+
                 chapter = value;
 
                 // Set up the main.xhtml
@@ -321,6 +326,12 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             Presenter.Dispose();
             browserRelease();
+        }
+
+        public interface ILoader
+        {
+            void LoadingStarted();
+            void LoadingCompleted();
         }
     }
 }
