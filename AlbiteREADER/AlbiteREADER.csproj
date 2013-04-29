@@ -67,6 +67,10 @@
     <Compile Include="Controls\ReaderControl.xaml.cs">
       <DependentUpon>ReaderControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WaitControl.xaml.cs">
+      <DependentUpon>WaitControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WaitPopup.cs" />
     <Compile Include="IAlbiteApplication.cs" />
     <Compile Include="Model\Reader\BrowserEngine.cs" />
     <Compile Include="Model\Reader\DomLocation.cs" />
@@ -127,6 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\ReaderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WaitControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
