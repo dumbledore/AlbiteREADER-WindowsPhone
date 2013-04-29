@@ -6,18 +6,10 @@ using Microsoft.Phone.Controls;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
-    public class BookEngine
+    public class BookEngine : BrowserEngine
     {
-        private readonly WebBrowser webBrowser;
-        private readonly Book.Presenter presenter;
-        private BrowserEngine engine;
-
         public BookEngine(WebBrowser webBrowser, Book.Presenter presenter, Settings settings)
-        {
-            this.webBrowser = webBrowser;
-            this.presenter = presenter;
-            this.engine = new BrowserEngine(webBrowser, presenter, settings);
-        }
+            : base(webBrowser, presenter, settings) { }
 
         // TODO: Add history stack
 
@@ -38,9 +30,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             set
             {
-                current = value.SpineElement;
-                engine.Chapter = value.SpineElement.Chapter;
-                engine.DomLocation = value.DomLocation;
+                current = value.SpineElement.Next;
+                Chapter = value.SpineElement.Next.Chapter;
+                DomLocation = value.DomLocation;
             }
         }
 

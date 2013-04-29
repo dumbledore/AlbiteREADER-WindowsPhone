@@ -7,14 +7,17 @@ using SvetlinAnkov.Albite.READER.Model;
 using SvetlinAnkov.Albite.Core.Utils;
 using System.IO;
 using System.Reflection;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
-    public class BrowserEngine
+    public class BrowserEngine : IDisposable
     {
-        private readonly WebBrowser webBrowser;
+        private static readonly string tag = "BrowserEngine";
 
-        private readonly Book.Presenter presenter;
+        protected readonly WebBrowser Browser;
+        protected readonly Book.Presenter Presenter;
 
         private Uri mainUri;
 
@@ -33,8 +36,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         public BrowserEngine(WebBrowser webBrowser, Book.Presenter presenter, Settings settings)
         {
-            this.webBrowser = webBrowser;
-            this.presenter = presenter;
+            this.Browser = webBrowser;
+            this.Presenter = presenter;
             this.settings = settings;
 
             prepare();
@@ -59,11 +62,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
                 // Set up the main.xhtml
                 mainPageTemplate["chapter_title"] = "untitled"; //ToDo
-                mainPageTemplate["chapter_file"] = Path.Combine("/" + presenter.RelativeContentPath, chapter.Url);
+                mainPageTemplate["chapter_file"] = Path.Combine("/" + Presenter.RelativeContentPath, chapter.Url);
                 mainPageTemplate.SaveToStorage();
 
                 // Now navigate the web browser
-                webBrowser.Source = mainUri;
+                Browser.Source = mainUri;
             }
         }
 
@@ -99,15 +102,13 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return 0; /*TODO*/ }
         }
 
-        // Private API
-
         private void prepare()
         {
-            // Set up the WebBrowser
-            webBrowser.Base = presenter.Path;
-            mainUri = new Uri(Path.Combine(presenter.RelativeEnginePath, Paths.MainPage), UriKind.Relative);
+            browserPrepare();
 
-            string enginePath = presenter.EnginePath;
+            mainUri = new Uri(Path.Combine(Presenter.RelativeEnginePath, Paths.MainPage), UriKind.Relative);
+
+            string enginePath = Presenter.EnginePath;
 
             // Copy the JSEngine to the Isolated Storage
             using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(
@@ -161,17 +162,15 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         /// Called whenever the viewport is resized and/or the margins
         /// have been changed.
         /// </summary>
-        private void updateDimensions()
+        private void updateDimensions(int width, int height)
         {
-            int fullPageWidth = (int)webBrowser.ActualWidth;
-            int fullPageHeight = (int)webBrowser.ActualHeight;
-            int pageWidth = fullPageWidth - (settings.MarginLeft + settings.MarginRight);
-            int pageHeight = fullPageHeight - (settings.MarginTop + settings.MarginBottom);
+            int pageWidth = width - (settings.MarginLeft + settings.MarginRight);
+            int pageHeight = height - (settings.MarginTop + settings.MarginBottom);
 
-            mainPageTemplate["full_page_width"] = fullPageWidth.ToString();
+            mainPageTemplate["full_page_width"] = width.ToString();
             mainPageTemplate.SaveToStorage();
 
-            baseStylesTemplate["page_width_x_3"] = (fullPageWidth * 3).ToString();
+            baseStylesTemplate["page_width_x_3"] = (width * 3).ToString();
             baseStylesTemplate["page_width"] = pageWidth.ToString();
             baseStylesTemplate["page_height"] = pageHeight.ToString();
             baseStylesTemplate.SaveToStorage();
@@ -192,7 +191,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             // Don't forget to update the dimensions as well as they
             // depend on the margins.
-            updateDimensions();
+            updateDimensions((int) Browser.ActualWidth, (int) Browser.ActualHeight);
         }
 
         private void goToLocation(DomLocation location)
@@ -203,6 +202,125 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         private void goToPage(int pageNumber)
         {
             //TODO
+        }
+
+        public void OnManipulationStarted(ManipulationStartedEventArgs e)
+        {
+            // x is inverted in JavaScript
+            int x = (int) -e.ManipulationOrigin.X;
+            int y = (int) e.ManipulationOrigin.Y;
+
+            Browser.InvokeScript("albite_press", new string[] { x.ToString(), y.ToString() });
+        }
+
+        public void OnManipulationDelta(ManipulationDeltaEventArgs e)
+        {
+            // x is inverted in JavaScript
+            int x = (int) -e.DeltaManipulation.Translation.X;
+            int y = (int) e.DeltaManipulation.Translation.Y;
+
+            Browser.InvokeScript("albite_move", new string[] { x.ToString(), y.ToString() });
+        }
+
+        public void OnManipulationCompleted(ManipulationCompletedEventArgs e)
+        {
+            // x is inverted in JavaScript
+            int x = (int) -e.TotalManipulation.Translation.X;
+            int y = (int) e.TotalManipulation.Translation.Y;
+            Log.D(tag, "Inertial: " + e.IsInertial);
+            Log.D(tag, "VelocityX: " + e.FinalVelocities.LinearVelocity.X);
+
+            Browser.InvokeScript("albite_release", new string[] { x.ToString(), y.ToString() });
+        }
+
+        private void browser_Navigated(object sender, NavigationEventArgs e)
+        {
+            Log.D(tag, "Navigated: " + e.Uri.ToString() + ", initiator: " + e.IsNavigationInitiator
+                            + ", mode: " + e.NavigationMode);
+        }
+
+        private void browser_Navigating(object sender, NavigatingEventArgs e)
+        {
+            Log.D(tag, "Navigating to: " + e.Uri.ToString());
+        }
+
+        private void browser_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            Log.E(tag, "Navigation failed: " + e.Uri.ToString());
+            e.Handled = true;
+        }
+
+        private void browser_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            Log.D(tag, "ScriptNotify: " + e.Value);
+        }
+
+        private void browser_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Log.D(tag, "Size changed: " + e.NewSize.Width + " x " + e.NewSize.Height);
+            updateDimensions((int) e.NewSize.Width, (int) e.NewSize.Height);
+        }
+
+        private EventHandler<NavigationEventArgs> browser_NavigatedHandler;
+        private EventHandler<NavigatingEventArgs> browser_NavigatingHandler;
+        private NavigationFailedEventHandler browser_NavigationFailedHandler;
+        private EventHandler<NotifyEventArgs> browser_ScriptNotifyHandler;
+        private SizeChangedEventHandler browser_SizeChangedHandler;
+
+        private void browserPrepare()
+        {
+            browser_NavigatedHandler = new EventHandler<NavigationEventArgs>(browser_Navigated);
+            browser_NavigatingHandler = new EventHandler<NavigatingEventArgs>(browser_Navigating);
+            browser_NavigationFailedHandler = new NavigationFailedEventHandler(browser_NavigationFailed);
+            browser_ScriptNotifyHandler = new EventHandler<NotifyEventArgs>(browser_ScriptNotify);
+            browser_SizeChangedHandler = new SizeChangedEventHandler(browser_SizeChanged);
+
+            Browser.Navigated += browser_NavigatedHandler;
+            Browser.Navigating += browser_NavigatingHandler;
+            Browser.NavigationFailed += browser_NavigationFailedHandler;
+            Browser.ScriptNotify += browser_ScriptNotifyHandler;
+            Browser.SizeChanged += browser_SizeChangedHandler;
+
+            Browser.Base = Presenter.Path;
+        }
+
+        private void browserRelease()
+        {
+            if (browser_NavigatedHandler != null)
+            {
+                Browser.Navigated -= browser_NavigatedHandler;
+                browser_NavigatedHandler = null;
+            }
+
+            if (browser_NavigatingHandler != null)
+            {
+                Browser.Navigating -= browser_NavigatingHandler;
+                browser_NavigatingHandler = null;
+            }
+
+            if (browser_NavigationFailedHandler != null)
+            {
+                Browser.NavigationFailed -= browser_NavigationFailedHandler;
+                browser_NavigationFailedHandler = null;
+            }
+
+            if (browser_ScriptNotifyHandler != null)
+            {
+                Browser.ScriptNotify -= browser_ScriptNotifyHandler;
+                browser_ScriptNotifyHandler = null;
+            }
+
+            if (browser_SizeChangedHandler != null)
+            {
+                Browser.SizeChanged -= browser_SizeChangedHandler;
+                browser_SizeChangedHandler = null;
+            }
+        }
+
+        public void Dispose()
+        {
+            Presenter.Dispose();
+            browserRelease();
         }
     }
 }

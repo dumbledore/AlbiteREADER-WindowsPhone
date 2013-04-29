@@ -25,11 +25,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
         private WebBrowser webBrowser;
 
         // Related to the Model and the Engine
-        private Book.Presenter presenter;
         private BookEngine engine;
-
-        // State
-        private bool initialised = false;
 
         public ReaderControl()
         {
@@ -42,14 +38,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
             webBrowser = GetTemplateChild("WebBrowser") as WebBrowser;
-
-            webBrowser.Navigated += new EventHandler<NavigationEventArgs>(webBrowser_Navigated);
-            webBrowser.Navigating += new EventHandler<NavigatingEventArgs>(webBrowser_Navigating);
-            webBrowser.NavigationFailed += new NavigationFailedEventHandler(webBrowser_NavigationFailed);
-            webBrowser.ScriptNotify += new EventHandler<NotifyEventArgs>(webBrowser_ScriptNotify);
-            webBrowser.SizeChanged += new SizeChangedEventHandler(webBrowser_SizeChanged);
         }
 
         public void OpenBook(int bookId)
@@ -65,7 +54,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
             Book book = library.Books[bookId];
 
             // Get the presenter
-            presenter = library.Books.GetPresenter(book);
+            Book.Presenter presenter = library.Books.GetPresenter(book);
 
             // Load the engine
             engine = new BookEngine(webBrowser, presenter, Defaults.Layout.DefaultSettings);
@@ -76,21 +65,17 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         public void CloseBook()
         {
-            if (presenter != null)
+            if (engine != null)
             {
                 // TODO: Book persistance
 
-                presenter.Dispose();
+                engine.Dispose();
             }
-
-            presenter = null;
             engine = null;
         }
 
         private void loaded(object sender, RoutedEventArgs e)
         {
-            initialised = true;
-
             Log.D(tag, "Loaded");
         }
 
@@ -99,59 +84,26 @@ namespace SvetlinAnkov.Albite.READER.Controls
             Log.D(tag, "Unloaded");
         }
 
-        private void webBrowser_Navigated(object sender, NavigationEventArgs e)
-        {
-            Log.D(tag, "Navigated: " + e.Uri.ToString() + ", initiator: " + e.IsNavigationInitiator
-                            + ", mode: " + e.NavigationMode);
-        }
-
-        private void webBrowser_Navigating(object sender, NavigatingEventArgs e)
-        {
-            Log.D(tag, "Navigating to: " + e.Uri.ToString());
-        }
-
-        private void webBrowser_NavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            Log.E(tag, "Navigation failed: " + e.Uri.ToString());
-            e.Handled = true;
-        }
-
-        private void webBrowser_ScriptNotify(object sender, NotifyEventArgs e)
-        {
-            Log.D(tag, "ScriptNotify: " + e.Value);
-        }
-
-        private void webBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (initialised)
-            {
-                Log.D(tag, "Size changed: " + e.NewSize.Width + " x " + e.NewSize.Height);
-            }
-        }
-
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
             base.OnManipulationStarted(e);
+            engine.OnManipulationStarted(e);
             e.ManipulationContainer = this;
             e.Handled = true;
-
-            Log.D(tag, "ManipulationStarted");
         }
 
         protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
             base.OnManipulationDelta(e);
+            engine.OnManipulationDelta(e);
             e.Handled = true;
-
-            Log.D(tag, "ManipulationDelta: " + e.DeltaManipulation.Translation.X);
         }
 
         protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
         {
             base.OnManipulationCompleted(e);
+            engine.OnManipulationCompleted(e);
             e.Handled = true;
-
-            Log.D(tag, "ManipulationCompleted");
         }
     }
 }
