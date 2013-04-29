@@ -1,45 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using SvetlinAnkov.Albite.Core.Utils;
-using System.Windows.Navigation;
+using SvetlinAnkov.Albite.READER.Model.Reader;
 using SvetlinAnkov.Albite.READER.Model;
 using SvetlinAnkov.Albite.READER.Utils;
-using SvetlinAnkov.Albite.READER.Model.Reader;
+using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.READER.Controls
 {
-    public class ReaderControl : Control
+    public partial class ReaderControl : UserControl, IDisposable
     {
-        private static readonly string tag = "ReaderControl";
+        public ReaderControl()
+        {
+            InitializeComponent();
+        }
 
-        // Controls from the ControlTemplate
-        private WebBrowser webBrowser;
+        private static readonly string tag = "ReaderControl";
 
         // Related to the Model and the Engine
         private BookEngine engine;
-
-        public ReaderControl()
-        {
-            DefaultStyleKey = typeof(ReaderControl);
-
-            Loaded += new RoutedEventHandler(loaded);
-            Unloaded += new RoutedEventHandler(unloaded);
-        }
-
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            webBrowser = GetTemplateChild("WebBrowser") as WebBrowser;
-        }
 
         public void OpenBook(int bookId)
         {
@@ -57,7 +44,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
             Book.Presenter presenter = library.Books.GetPresenter(book);
 
             // Load the engine
-            engine = new BookEngine(webBrowser, presenter, Defaults.Layout.DefaultSettings);
+            engine = new BookEngine(WebBrowser, presenter, Defaults.Layout.DefaultSettings);
 
             // Go to the last reading location
             engine.BookLocation = presenter.BookLocation;
@@ -65,21 +52,26 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         public void CloseBook()
         {
+            // TODO: Book persistance
+            Dispose();
+        }
+
+        public void Dispose()
+        {
             if (engine != null)
             {
-                // TODO: Book persistance
 
                 engine.Dispose();
             }
             engine = null;
         }
 
-        private void loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             Log.D(tag, "Loaded");
         }
 
-        private void unloaded(object sender, RoutedEventArgs e)
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             Log.D(tag, "Unloaded");
         }

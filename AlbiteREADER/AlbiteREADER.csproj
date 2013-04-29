@@ -64,11 +64,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ReaderControl.xaml.cs">
+      <DependentUpon>ReaderControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IAlbiteApplication.cs" />
     <Compile Include="Model\Reader\BrowserEngine.cs" />
     <Compile Include="Model\Reader\DomLocation.cs" />
     <Compile Include="Model\Reader\Paths.cs" />
-    <Compile Include="Controls\ReaderControl.cs" />
     <Compile Include="Model\Reader\Settings.cs" />
     <Compile Include="Model\Reader\Template.cs" />
     <Compile Include="Model\Reader\TemplateResource.cs" />
@@ -124,6 +126,10 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\ReaderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ReaderPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -146,12 +152,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Resource Include="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Resource>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
