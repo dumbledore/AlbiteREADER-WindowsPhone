@@ -21,6 +21,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         private readonly ILoader loader;
 
+        private bool loading = true;
+
         private Uri mainUri;
 
         // The settings are read-only, because their values will be updated
@@ -61,7 +63,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             set
             {
-                loader.LoadingStarted();
+                startLoading();
 
                 chapter = value;
 
@@ -71,10 +73,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 mainPageTemplate.SaveToStorage();
 
                 // Now navigate the web browser
-                Browser.Source = mainUri;
+                navigateBrowser();
             }
         }
-
 
         public DomLocation DomLocation
         {
@@ -179,6 +180,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             baseStylesTemplate["page_width"] = pageWidth.ToString();
             baseStylesTemplate["page_height"] = pageHeight.ToString();
             baseStylesTemplate.SaveToStorage();
+
+            reloadBrowser();
         }
 
         private void updateLayout()
@@ -195,8 +198,25 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             baseStylesTemplate["page_margin_right"] = settings.MarginRight.ToString();
 
             // Don't forget to update the dimensions as well as they
-            // depend on the margins.
+            // depend on the margins. This will reload the browser.
             updateDimensions((int) Browser.ActualWidth, (int) Browser.ActualHeight);
+        }
+
+        private void reloadBrowser()
+        {
+            if (Browser.Source != mainUri)
+            {
+                return;
+            }
+
+            // TODO: Get the location
+            navigateBrowser();
+            // TODO: Set the location
+        }
+
+        private void navigateBrowser()
+        {
+            Browser.Navigate(mainUri);
         }
 
         private void goToLocation(DomLocation location)
@@ -215,7 +235,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             int x = (int) -e.ManipulationOrigin.X;
             int y = (int) e.ManipulationOrigin.Y;
 
-            Browser.InvokeScript("albite_press", new string[] { x.ToString(), y.ToString() });
+            sendCommand("albite_press", new string[] { x.ToString(), y.ToString() });
         }
 
         public void OnManipulationDelta(ManipulationDeltaEventArgs e)
@@ -224,7 +244,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             int x = (int) -e.DeltaManipulation.Translation.X;
             int y = (int) e.DeltaManipulation.Translation.Y;
 
-            Browser.InvokeScript("albite_move", new string[] { x.ToString(), y.ToString() });
+            sendCommand("albite_move", new string[] { x.ToString(), y.ToString() });
         }
 
         public void OnManipulationCompleted(ManipulationCompletedEventArgs e)
@@ -232,10 +252,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             // x is inverted in JavaScript
             int x = (int) -e.TotalManipulation.Translation.X;
             int y = (int) e.TotalManipulation.Translation.Y;
-            Log.D(tag, "Inertial: " + e.IsInertial);
-            Log.D(tag, "VelocityX: " + e.FinalVelocities.LinearVelocity.X);
+            int velocityX = (int) -e.FinalVelocities.LinearVelocity.X;
 
-            Browser.InvokeScript("albite_release", new string[] { x.ToString(), y.ToString() });
+            sendCommand("albite_release", new string[] { x.ToString(), y.ToString() });
         }
 
         private void browser_Navigated(object sender, NavigationEventArgs e)
@@ -246,6 +265,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         private void browser_Navigating(object sender, NavigatingEventArgs e)
         {
+            startLoading();
             Log.D(tag, "Navigating to: " + e.Uri.ToString());
         }
 
@@ -263,6 +283,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         private void browser_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Log.D(tag, "Size changed: " + e.NewSize.Width + " x " + e.NewSize.Height);
+            startLoading();
             updateDimensions((int) e.NewSize.Width, (int) e.NewSize.Height);
         }
 
@@ -322,6 +343,19 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
         }
 
+        private object sendCommand(string command, string[] args)
+        {
+            Log.D(tag, "sendcommand: " + command);
+
+            if (loading)
+            {
+                Log.D(tag, "Can't send command. Still loading.");
+                return null;
+            }
+
+            return Browser.InvokeScript(command, args);
+        }
+
         private static readonly string debugCommand = "{debug}";
         private static readonly string loadedCommand = "{loaded}";
 
@@ -329,7 +363,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             if (command.StartsWith(loadedCommand))
             {
-                loader.LoadingCompleted();
+                completeLoading();
             }
             else if (command.StartsWith(debugCommand))
             {
@@ -345,6 +379,18 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             Presenter.Dispose();
             browserRelease();
+        }
+
+        private void startLoading()
+        {
+            loading = true;
+            loader.LoadingStarted();
+        }
+
+        private void completeLoading()
+        {
+            loader.LoadingCompleted();
+            loading = false;
         }
 
         public interface ILoader
