@@ -259,7 +259,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             int y = (int) e.TotalManipulation.Translation.Y;
             int velocityX = (int) -e.FinalVelocities.LinearVelocity.X;
 
-            sendCommand("albite_release", new string[] { x.ToString(), y.ToString() });
+            sendCommand("albite_release", new string[] { x.ToString(), y.ToString(), velocityX.ToString() });
         }
 
         private void browser_Navigated(object sender, NavigationEventArgs e)
