@@ -3,7 +3,7 @@
  * the classes that use this are going to be available in very small counts,
  * thus speed and encapsulation are more important than small memory concerns.
  */
-function Albite(mainWindow, pageWidth, currentPageNumber) {
+function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
 
     /*
      * Public API
@@ -26,7 +26,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
     /*
      * Functions for debugging
      */
-    function debug(msg) {
+    function log(msg) {
         try {
             /*
              * Try reporting to .NET
@@ -48,7 +48,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
     }
 
     function reportError(msg) {
-        debug("Error: " + msg);
+        log("Error: " + msg);
     }
 
     function notifyServer(command) {
@@ -415,7 +415,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
                  * sorted by the `top` values, all next pieces of content will
                  * start after this page as well. Create a new page.
                  */
-                // debug("Element " + ct.element + " doesn't start on this page. Ending page.");
+                // log("Element " + ct.element + " doesn't start on this page. Ending page.");
                 /*
                  * Create the page and add it to the list.
                  */
@@ -444,7 +444,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
                 /*
                  * It ends here as well. Continue with the next content.
                  */
-                // debug("Element " + ct.element + " starts on the current page. Continuing on.");
+                // log("Element " + ct.element + " starts on the current page. Continuing on.");
                 ct = content.pop();
                 continue;
             }
@@ -459,7 +459,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
                  * The content would fit into the next page. No need to split.
                  * Simply create a new page.
                  */
-                // debug("Element " + ct.element + " doesn't end on this page. Moving to the next.");
+                // log("Element " + ct.element + " doesn't end on this page. Moving to the next.");
                 page = new PageMetrics(
                     pages.length, pageStart.top,
                     pageBottom < ct.top ? pageBottom : ct.top, pageStart.element);
@@ -482,7 +482,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
             /*
              * This content would need to be clipped. Create a new page.
              */
-            // debug("Element " + ct.element + " needs to be clipped.");
+            // log("Element " + ct.element + " needs to be clipped.");
             page = new PageMetrics(
                 pages.length, pageStart.top,
                 pageBottom, pageStart.element);
@@ -525,11 +525,19 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
     var moved = false;
 
     function press(x, y) {
+        if (debugEnabled) {
+            log("press: (" + x + ", " + y + ")");
+        }
+
         cancelScroll();
         moved = false;
     }
 
     function move(x, y) {
+        if (debugEnabled) {
+            log("move: (" + x + ", " + y + ")");
+        }
+
         // Ignore Y for the time being
         mainWindow.scrollBy(x, 0);
         moved = true;
@@ -542,7 +550,10 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
     var scrollTimer = null;
 
     function cancelScroll() {
-        debug("cancelScroll");
+        if (debugEnabled) {
+            log("cancelScroll");
+        }
+
         if (scrollTimer != null) {
             clearInterval(scrollTimer);
         }
@@ -552,7 +563,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber) {
     var dragTreshold = 100;
 
     function scheduleScroll() {
-        debug("scheduleScroll");
+        log("scheduleScroll");
     }
 
     function scroll(targetPosition, dx) {

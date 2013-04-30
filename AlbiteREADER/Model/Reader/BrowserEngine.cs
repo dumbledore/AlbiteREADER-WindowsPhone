@@ -138,6 +138,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             // Set defaults. These will be overwritten upon open
             mainPageTemplate["chapter_title"] = "";
             mainPageTemplate["chapter_file"] = "";
+#if DEBUG
+            mainPageTemplate["debug"] = "true";
+#else
+            mainPageTemplate["debug"] = "false";
+#endif
 
             using (AlbiteResourceStorage res = new AlbiteResourceStorage(
                 Path.Combine(Paths.BasePath, Paths.BaseStyles), assemblyName))
