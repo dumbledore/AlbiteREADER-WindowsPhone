@@ -13,7 +13,10 @@
     <Grid x:Name="LayoutRoot">
         <ScrollViewer x:Name="ScrollViewer" SizeChanged="ScrollViewer_SizeChanged"
                       HorizontalScrollBarVisibility="Hidden"
-                      VerticalScrollBarVisibility="Disabled">
+                      VerticalScrollBarVisibility="Disabled"
+                      ManipulationStarted="ScrollViewer_ManipulationStarted"
+                      ManipulationDelta="ScrollViewer_ManipulationDelta"
+                      ManipulationCompleted="ScrollViewer_ManipulationCompleted">
             <phone:WebBrowser x:Name="WebBrowser"
                 IsHitTestVisible="False"
                 IsScriptEnabled="True"

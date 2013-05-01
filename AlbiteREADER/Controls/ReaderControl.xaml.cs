@@ -31,6 +31,31 @@ namespace SvetlinAnkov.Albite.READER.Controls
         }
 
         #region UI Events
+        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WebBrowser.Width = e.NewSize.Width * 3;
+        }
+
+        private void ScrollViewer_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
+        {
+            logEvent(string.Format(
+                "ManipulationStarted: ({0}, {1})", e.ManipulationOrigin.X, e.ManipulationOrigin.Y));
+        }
+
+        private void ScrollViewer_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        {
+            logEvent(string.Format(
+                "ManipulationDelta: ({0}, {1})",
+                e.DeltaManipulation.Translation.X, e.DeltaManipulation.Translation.Y));
+        }
+
+        private void ScrollViewer_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            logEvent(string.Format(
+                "ManipulationCompleted: ({0}, {1})",
+                e.TotalManipulation.Translation.X, e.TotalManipulation.Translation.Y));
+        }
+
         private void WebBrowser_Loaded(object sender, RoutedEventArgs e)
         {
             logEvent("Loaded");
@@ -41,11 +66,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             logEvent("Unloaded");
             unload();
-        }
-
-        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            WebBrowser.Width = e.NewSize.Width * 3;
         }
 
         private void WebBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
