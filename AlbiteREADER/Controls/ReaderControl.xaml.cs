@@ -22,6 +22,23 @@ namespace SvetlinAnkov.Albite.READER.Controls
     {
         private static readonly string tag = "ReaderControl";
 
+        public static readonly DependencyProperty ScrollOffsetProperty =
+            DependencyProperty.Register("ScrollOffset", typeof(double), typeof(ReaderControl),
+            new PropertyMetadata(OnScrollOffsetChanged));
+
+        public double ScrollOffset
+        {
+            get { return (double)GetValue(ScrollOffsetProperty); }
+            set { SetValue(ScrollOffsetProperty, value); }
+        }
+
+        private static void OnScrollOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ReaderControl readerControl = (ReaderControl) d;
+            double offset = (double) e.NewValue;
+            readerControl.ScrollViewer.ScrollToHorizontalOffset(offset);
+        }
+
         private EngineController controller;
 
         public ReaderControl()
