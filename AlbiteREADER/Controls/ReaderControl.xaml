@@ -8,14 +8,22 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="480" d:DesignWidth="480" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
+    d:DesignHeight="480" d:DesignWidth="480">
 
     <Grid x:Name="LayoutRoot">
-        <phone:WebBrowser x:Name="WebBrowser"
-            IsHitTestVisible="False"
-            IsScriptEnabled="True" />
-        <Border
-            x:Name="Border"
-            Background="Transparent" />
+        <ScrollViewer x:Name="ScrollViewer" SizeChanged="ScrollViewer_SizeChanged"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Disabled">
+            <phone:WebBrowser x:Name="WebBrowser"
+                IsHitTestVisible="False"
+                IsScriptEnabled="True"
+                Navigated="WebBrowser_Navigated"
+                Navigating="WebBrowser_Navigating"
+                NavigationFailed="WebBrowser_NavigationFailed"
+                ScriptNotify="WebBrowser_ScriptNotify"
+                SizeChanged="WebBrowser_SizeChanged"
+                Loaded="WebBrowser_Loaded"
+                Unloaded="WebBrowser_Unloaded" />
+        </ScrollViewer>
     </Grid>
 </UserControl>

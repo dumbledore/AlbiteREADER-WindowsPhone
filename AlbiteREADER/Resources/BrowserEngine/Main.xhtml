@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Albite READER</title>
-        <!-- The width should change from 480 to 800 when the device goes into landscape mode -->
-        <meta name="viewport" content="width=%{full_page_width}, user-scalable=no, initial-zoom=1" />
+        <meta name="viewport" content="width=%{viewport_width}, user-scalable=no, initial-zoom=1" />
         <link rel="stylesheet" type="text/css" href="Base.css" />
         <link rel="stylesheet" type="text/css" href="Theme.css" />
         <script type="text/javascript" src="Albite.js" />
@@ -14,17 +13,6 @@
             /*
              * Export Albite functions to WebBrowser.InvokeScript
              */
-            function albite_press(x, y) {
-                albite.press(x, y);
-            }
-
-            function albite_move(x, y) {
-                albite.move(x, y);
-            }
-
-            function albite_release(x, y, velocityX) {
-                albite.release(x, y, velocityX);
-            }
         </script>
     </head>
     <body>

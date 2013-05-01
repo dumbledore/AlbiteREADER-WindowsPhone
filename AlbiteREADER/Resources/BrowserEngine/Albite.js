@@ -19,10 +19,6 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
      */
     this.goToPage       = goToPage;
 
-    this.press          = press;
-    this.move           = move;
-    this.release        = release;
-
     /*
      * Functions for debugging
      */
@@ -520,110 +516,5 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
         pages.push(new PageMetrics(pages.length + 1, 0, 0));
 
         return pages;
-    }
-
-    var moved = false;
-
-    function press(x, y) {
-        if (debugEnabled) {
-            log("press: (" + x + ", " + y + ")");
-        }
-
-        cancelScroll();
-        moved = false;
-    }
-
-    function move(x, y) {
-        if (debugEnabled) {
-            log("move: (" + x + ", " + y + ")");
-        }
-
-        // Ignore Y for the time being
-        mainWindow.scrollBy(x, 0);
-        moved = true;
-    }
-
-    function release(x, y, velocityX) {
-        if (debugEnabled) {
-            log("release(" + x + ", " + y + ", " + velocityX + ")");
-        }
-
-        if (moved) {
-            // Note: X and Y are relative
-            scheduleScroll(x, velocityX);
-        } else {
-            // TODO: Check if going pressed in corners for next/previous page
-        }
-    }
-
-    var scrollTimer = null;
-
-    function cancelScroll() {
-        if (debugEnabled) {
-            log("cancelScroll");
-        }
-
-        if (scrollTimer != null) {
-            clearInterval(scrollTimer);
-        }
-    }
-
-    // TODO: Needs to be computed in %
-    var dragTreshold = 100;
-    var SCROLL_MILLIS = 60;
-    var DEFAULT_VELOCITY = 300;
-    var DEFAULT_SMALL_VELOCITY = 100;
-
-    function scheduleScroll(x, velocityX) {
-        if (debugEnabled) {
-            log("scheduleScroll(" + x + ", " + velocityX + ")");
-        }
-
-        var dx = 0;
-        var targetPosition = 0;
-
-        if (velocityX > 0 || Math.abs(x) > dragTreshold) {
-            if (velocityX == 0) {
-                dx = x > 0 ? DEFAULT_VELOCITY : -DEFAULT_VELOCITY;
-            } else {
-                dx = velocityX;
-            }
-
-            targetPosition = x < 0 ? 0 : 2 * pageWidth;
-        } else {
-            var scrollX = mainWindow.pageXOffset;
-
-            if (scrollX == 0) {
-                return;
-            }
-
-            dx = DEFAULT_SMALL_VELOCITY
-
-            if (scrollX > pageWidth) {
-                dx = -dx;
-            }
-
-            targetPosition = pageWidth;
-        }
-
-        dx = dx / SCROLL_MILLIS;
-
-        if (dx == 0) {
-            dx = DEFAULT_VELOCITY / SCROLL_MILLIS;
-        }
-
-        scrollTimer = setInterval(function() {
-            scroll(targetPosition, dx);
-        }, SCROLL_MILLIS);
-    }
-
-    function scroll(targetPosition, dx) {
-        if (Math.abs(mainWindow.pageXOffset - targetPosition) < Math.abs(dx))
-        {
-            mainWindow.scrollTo(targetPosition, 0);
-            cancelScroll();
-        } else {
-            mainWindow.scrollBy(dx, 0);
-        }
     }
 }
