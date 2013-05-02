@@ -196,11 +196,12 @@ namespace SvetlinAnkov.Albite.READER.Controls
             private Book.Presenter presenter;
             private BookEngine engine;
 
-            private bool isLoading = true;
+            public bool IsLoading { get; private set; }
 
             public EngineController(ReaderControl control)
             {
                 this.control = control;
+                IsLoading = true;
             }
 
             public BookEngine Engine
@@ -277,7 +278,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
             {
                 Log.D(tag, "sendcommand: " + command);
 
-                if (isLoading)
+                if (IsLoading)
                 {
                     Log.D(tag, "Can't send command. Still loading.");
                     return null;
@@ -288,7 +289,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
             public void LoadingStarted()
             {
-                isLoading = true;
+                IsLoading = true;
                 waitPopup.IsOpen = true;
             }
 
@@ -298,6 +299,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
                     control.ScrollViewer.ActualWidth);
 
                 waitPopup.IsOpen = false;
+                IsLoading = false;
             }
         }
     }
