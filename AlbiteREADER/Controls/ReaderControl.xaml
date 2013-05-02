@@ -11,29 +11,8 @@
     d:DesignHeight="480" d:DesignWidth="480"
     x:Name="ReaderRoot">
 
-    <UserControl.Resources>
-        <BeginStoryboard x:Name="ReaderRootStoryboard">
-            <Storyboard>
-                <DoubleAnimation
-                            Storyboard.TargetName="ReaderRoot"
-                            Storyboard.TargetProperty="ScrollOffset"
-                            From="480" To="960" Duration="0:0:0.5"
-                            RepeatBehavior="Forever">
-                    <DoubleAnimation.EasingFunction>
-                        <SineEase EasingMode="EaseOut" />
-                    </DoubleAnimation.EasingFunction>
-                </DoubleAnimation>
-            </Storyboard>
-        </BeginStoryboard>
-    </UserControl.Resources>
-
     <Grid x:Name="LayoutRoot">
-        <ScrollViewer x:Name="ScrollViewer" SizeChanged="ScrollViewer_SizeChanged"
-                      HorizontalScrollBarVisibility="Hidden"
-                      VerticalScrollBarVisibility="Disabled"
-                      ManipulationStarted="ScrollViewer_ManipulationStarted"
-                      ManipulationDelta="ScrollViewer_ManipulationDelta"
-                      ManipulationCompleted="ScrollViewer_ManipulationCompleted">
+        <Canvas x:Name="ScrollCanvas" SizeChanged="ScrollCanvas_SizeChanged">
             <phone:WebBrowser x:Name="WebBrowser"
                 IsHitTestVisible="False"
                 IsScriptEnabled="True"
@@ -44,6 +23,7 @@
                 SizeChanged="WebBrowser_SizeChanged"
                 Loaded="WebBrowser_Loaded"
                 Unloaded="WebBrowser_Unloaded" />
-        </ScrollViewer>
+            <Border x:Name="ScrollBorder" Background="Transparent" />
+        </Canvas>
     </Grid>
 </UserControl>

@@ -22,57 +22,49 @@ namespace SvetlinAnkov.Albite.READER.Controls
     {
         private static readonly string tag = "ReaderControl";
 
-        public static readonly DependencyProperty ScrollOffsetProperty =
-            DependencyProperty.Register("ScrollOffset", typeof(double), typeof(ReaderControl),
-            new PropertyMetadata(OnScrollOffsetChanged));
-
-        public double ScrollOffset
-        {
-            get { return (double)GetValue(ScrollOffsetProperty); }
-            set { SetValue(ScrollOffsetProperty, value); }
-        }
-
-        private static void OnScrollOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ReaderControl readerControl = (ReaderControl) d;
-            double offset = (double) e.NewValue;
-            readerControl.ScrollViewer.ScrollToHorizontalOffset(offset);
-        }
-
         private EngineController controller;
 
         public ReaderControl()
         {
             InitializeComponent();
+            initializeScrolling();
+            initializeAnimation();
             load();
         }
 
+        #region LifeCycle
+        private void load()
+        {
+            if (controller == null)
+            {
+                controller = new EngineController(this);
+            }
+
+            controller.LoadingStarted();
+        }
+
+        private void unload()
+        {
+            if (controller == null)
+            {
+                return;
+            }
+
+            controller.LoadingCompleted();
+            controller.Dispose();
+            controller = null;
+        }
+
+        public void Dispose()
+        {
+            if (controller != null)
+            {
+                controller.Dispose();
+            }
+        }
+        #endregion
+
         #region UI Events
-        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            WebBrowser.Width = e.NewSize.Width * 3;
-        }
-
-        private void ScrollViewer_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
-        {
-            logEvent(string.Format(
-                "ManipulationStarted: ({0}, {1})", e.ManipulationOrigin.X, e.ManipulationOrigin.Y));
-        }
-
-        private void ScrollViewer_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
-        {
-            logEvent(string.Format(
-                "ManipulationDelta: ({0}, {1})",
-                e.DeltaManipulation.Translation.X, e.DeltaManipulation.Translation.Y));
-        }
-
-        private void ScrollViewer_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            logEvent(string.Format(
-                "ManipulationCompleted: ({0}, {1})",
-                e.TotalManipulation.Translation.X, e.TotalManipulation.Translation.Y));
-        }
-
         private void WebBrowser_Loaded(object sender, RoutedEventArgs e)
         {
             logEvent("Loaded");
@@ -111,6 +103,11 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         private void WebBrowser_NavigationFailed(object sender, System.Windows.Navigation.NavigationFailedEventArgs e)
         {
+            // TODO: How should the user be informed and/or
+            // what has to be done? This a fault of the app, not the epub.
+            // TODO: Handling failed navigation in the iframe?
+            // What about errors from the client?
+            // What about an '{loadingError}' event from the client?
             Log.E(tag, "Navigation failed: " + e.Uri.ToString());
             e.Handled = true;
         }
@@ -140,30 +137,90 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 (int) e.NewSize.Width, (int) e.NewSize.Height);
         }
 
-        #endregion
-
-        private void load()
+        private void ScrollCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (controller == null)
-            {
-                controller = new EngineController(this);
-            }
+            WebBrowser.Width = 3 * e.NewSize.Width;
+            WebBrowser.Height = e.NewSize.Height;
 
-            controller.LoadingStarted();
+            ScrollBorder.Width = e.NewSize.Width;
+            ScrollBorder.Height = e.NewSize.Height;
         }
 
-        private void unload()
+        protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
-            if (controller == null)
+            base.OnManipulationStarted(e);
+
+            logEvent(string.Format("OnManipulationStarted: ({0}, {1})",
+                e.ManipulationOrigin.X, e.ManipulationOrigin.Y));
+
+            if (controller.IsLoading)
             {
+                Log.D(tag, "Still loading, dropping event");
                 return;
             }
 
-            controller.LoadingCompleted();
-            controller.Dispose();
-            controller = null;
+            // There's no need to cancel/stop the animation as it's got a higher pripority
+            // and therefore the code in OnManipulationDelta won't have an effect.
         }
 
+        protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
+        {
+            base.OnManipulationDelta(e);
+
+            logEvent(string.Format("OnManipulationDelta: ({0}, {1})",
+                e.DeltaManipulation.Translation.X,
+                e.DeltaManipulation.Translation.Y));
+
+            if (controller.IsLoading)
+            {
+                Log.D(tag, "Still loading, dropping event");
+                return;
+            }
+
+            // Simply scroll the content
+            scrollPageDelta(e.DeltaManipulation.Translation.X);
+        }
+
+        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
+        {
+            base.OnManipulationCompleted(e);
+
+            logEvent(string.Format("OnManipulationCompleted: ({0}, {1})",
+                e.TotalManipulation.Translation.X,
+                e.TotalManipulation.Translation.Y));
+
+            if (controller.IsLoading)
+            {
+                Log.D(tag, "Still loading, dropping event");
+                return;
+            }
+
+            scrollPageStart(e.ManipulationOrigin.X + e.TotalManipulation.Translation.X);
+        }
+        #endregion
+
+        #region Misc
+        [Conditional("DEBUG")]
+        private void logEvent(string msg)
+        {
+            Log.D(tag, msg + " @ " + Thread.CurrentThread.Name + " # " + Thread.CurrentThread.ManagedThreadId);
+        }
+
+        private static double clamp(double value, double min, double max)
+        {
+            if (value < min)
+            {
+                value = min;
+            }
+            else if (value > max)
+            {
+                value = max;
+            }
+            return value;
+        }
+        #endregion
+
+        #region Public API
         public void OpenBook(int bookId)
         {
             controller.OpenBook(bookId);
@@ -173,21 +230,95 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             controller.CloseBook();
         }
+        #endregion
 
-        public void Dispose()
+        #region Animation
+
+        private DoubleAnimation scrollAnimation;
+        private Storyboard scrollStoryboard;
+
+        private void initializeAnimation()
         {
-            if (controller!= null)
-            {
-                controller.Dispose();
-            }
+            // Create a DoubleAnimation to animate the ScrollOffset property
+            scrollAnimation = new DoubleAnimation();
+            scrollAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(500));
+            scrollAnimation.Completed += new EventHandler(ScrollAnimation_Completed);
+
+            // Configure the EasingFunction
+            SineEase easingFunction = new SineEase();
+            easingFunction.EasingMode = EasingMode.EaseOut;
+            scrollAnimation.EasingFunction = easingFunction;
+
+            // Configure the animation to target the ReaderControl's ScrollOffset property
+            //Storyboard.SetTargetName(scrollAnimation, "ReaderRoot");
+            Storyboard.SetTarget(scrollAnimation, translate);
+            Storyboard.SetTargetProperty(scrollAnimation, new PropertyPath(TranslateTransform.XProperty));
+
+            // Create a storyboard to contain the animation.
+            scrollStoryboard = new Storyboard();
+            scrollStoryboard.Children.Add(scrollAnimation);
         }
 
-        [Conditional("DEBUG")]
-        private void logEvent(string msg)
+        private void scrollTo(double to, double speedRatio = 1.0)
         {
-            Log.D(tag, msg + " @ " + Thread.CurrentThread.Name + " # " + Thread.CurrentThread.ManagedThreadId);
+            scrollAnimation.From = translate.X;
+            scrollAnimation.To = to;
+            scrollAnimation.SpeedRatio = speedRatio;
+
+            scrollStoryboard.Begin();
         }
 
+        private void cancelScroll()
+        {
+            scrollStoryboard.Stop();
+        }
+        #endregion
+
+        #region Page Scrolling
+
+        TranslateTransform translate;
+
+        private void initializeScrolling()
+        {
+            translate = new TranslateTransform();
+            translate.X = 0;
+            translate.Y = 0;
+            WebBrowser.RenderTransform = translate;
+        }
+
+        private double previousPagePosition
+        {
+            get { return -(ScrollBorder.Width * 2); }
+        }
+
+        private double currentPagePosition
+        {
+            get { return -ScrollBorder.ActualWidth; }
+        }
+
+        private double nextPagePosition
+        {
+            get { return 0; }
+        }
+
+        private void scrollPageDelta(double xDelta)
+        {
+            translate.X = clamp(translate.X + xDelta, previousPagePosition, nextPagePosition);
+        }
+
+        private void scrollPageStart(double xAbsolute)
+        {
+            //TODO
+            scrollTo(currentPagePosition, 0.1);
+        }
+
+        private void ScrollAnimation_Completed(object sender, EventArgs e)
+        {
+            logEvent("Animation completed");
+        }
+        #endregion
+
+        #region EngineController
         private class EngineController : BrowserEngine.IEngineController, IDisposable
         {
             private readonly ReaderControl control;
@@ -291,16 +422,16 @@ namespace SvetlinAnkov.Albite.READER.Controls
             {
                 IsLoading = true;
                 waitPopup.IsOpen = true;
+                control.cancelScroll();
             }
 
             public void LoadingCompleted()
             {
-                control.ScrollViewer.ScrollToHorizontalOffset(
-                    control.ScrollViewer.ActualWidth);
-
+                control.translate.X = control.currentPagePosition;
                 waitPopup.IsOpen = false;
                 IsLoading = false;
             }
         }
+        #endregion
     }
 }
