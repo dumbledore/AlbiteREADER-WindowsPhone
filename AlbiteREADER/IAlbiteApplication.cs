@@ -5,8 +5,10 @@ using System.Text;
 
 namespace SvetlinAnkov.Albite.READER
 {
-    public interface IAlbiteApplication
+    public interface IAlbiteApplication : IDisposable
     {
         AlbiteContext CurrentContext { get; }
+
+        void DisposeContext();
     }
 }
