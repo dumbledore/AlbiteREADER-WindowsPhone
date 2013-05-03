@@ -50,6 +50,11 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 return;
             }
 
+            // Persist the book and release the files
+            controller.CloseBook();
+
+            // Call LoadingCompleted so to hide the popup
+            // and cancel the animation.
             controller.LoadingCompleted();
             controller.Dispose();
             controller = null;
@@ -270,6 +275,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         private void cancelScroll()
         {
+            Log.D(tag, "Cancelling scroll animation");
             scrollStoryboard.Stop();
         }
         #endregion
@@ -427,6 +433,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
             public void LoadingCompleted()
             {
+                control.cancelScroll();
                 control.translate.X = control.currentPagePosition;
                 waitPopup.IsOpen = false;
                 IsLoading = false;
