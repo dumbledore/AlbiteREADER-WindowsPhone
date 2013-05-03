@@ -4,6 +4,7 @@ using System.IO.IsolatedStorage;
 using SvetlinAnkov.Albite.Tests.Test.Model;
 using SvetlinAnkov.Albite.Tests.Test.View;
 using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.READER;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
@@ -56,6 +57,9 @@ namespace SvetlinAnkov.Albite.Tests.Test
 
         private void ReaderPageTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            // Release the context
+            ((IAlbiteApplication) App.Current).DisposeContext();
+
             // Remove all local data
             removeStore();
 
