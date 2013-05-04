@@ -158,9 +158,15 @@ namespace SvetlinAnkov.Albite.READER.Controls
             logEvent(string.Format("OnManipulationStarted: ({0}, {1})",
                 e.ManipulationOrigin.X, e.ManipulationOrigin.Y));
 
-            if (controller.IsLoading)
+            if (controller == null || controller.IsLoading)
             {
                 Log.D(tag, "Still loading, dropping event");
+                return;
+            }
+
+            if (isAnimating)
+            {
+                Log.D(tag, "Still animating, dropping event");
                 return;
             }
 
@@ -176,9 +182,15 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 e.DeltaManipulation.Translation.X,
                 e.DeltaManipulation.Translation.Y));
 
-            if (controller.IsLoading)
+            if (controller == null || controller.IsLoading)
             {
                 Log.D(tag, "Still loading, dropping event");
+                return;
+            }
+
+            if (isAnimating)
+            {
+                Log.D(tag, "Still animating, dropping event");
                 return;
             }
 
@@ -194,9 +206,15 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 e.TotalManipulation.Translation.X,
                 e.TotalManipulation.Translation.Y));
 
-            if (controller.IsLoading)
+            if (controller == null || controller.IsLoading)
             {
                 Log.D(tag, "Still loading, dropping event");
+                return;
+            }
+
+            if (isAnimating)
+            {
+                Log.D(tag, "Still animating, dropping event");
                 return;
             }
 
@@ -264,12 +282,19 @@ namespace SvetlinAnkov.Albite.READER.Controls
             scrollStoryboard.Children.Add(scrollAnimation);
         }
 
+        private bool isAnimating = false;
+
         private void scrollTo(double to, double speedRatio = 1.0)
         {
             scrollAnimation.From = translate.X;
             scrollAnimation.To = to;
             scrollAnimation.SpeedRatio = speedRatio;
 
+            Log.D(tag, string.Format("Scrolling from {0} to {1} in {2} msec",
+                scrollAnimation.From, scrollAnimation.To,
+                scrollAnimation.Duration.TimeSpan.Milliseconds / scrollAnimation.SpeedRatio));
+
+            isAnimating = true;
             scrollStoryboard.Begin();
         }
 
@@ -277,6 +302,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             Log.D(tag, "Cancelling scroll animation");
             scrollStoryboard.Stop();
+            isAnimating = false;
         }
         #endregion
 
@@ -321,6 +347,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
         private void ScrollAnimation_Completed(object sender, EventArgs e)
         {
             logEvent("Animation completed");
+            isAnimating = false;
         }
         #endregion
 
