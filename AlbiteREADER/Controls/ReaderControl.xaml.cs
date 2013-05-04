@@ -282,7 +282,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         #region Page Scrolling
 
-        TranslateTransform translate;
+        private TranslateTransform translate;
 
         private void initializeScrolling()
         {
