@@ -144,6 +144,8 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         private void ScrollCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            updatePageProperties(e.NewSize.Width);
+
             WebBrowser.Width = 3 * e.NewSize.Width;
             WebBrowser.Height = e.NewSize.Height;
 
@@ -218,7 +220,16 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 return;
             }
 
-            scrollPageStart(e.ManipulationOrigin.X + e.TotalManipulation.Translation.X);
+            double xDelta = e.TotalManipulation.Translation.X;
+            if (xDelta == 0)
+            {
+                double xAbs = xDelta + e.ManipulationOrigin.X;
+                scrollPageTouch(xAbs);
+            }
+            else
+            {
+                scrollPageStart(xDelta, e.FinalVelocities.LinearVelocity.X);
+            }
         }
         #endregion
 
@@ -318,30 +329,83 @@ namespace SvetlinAnkov.Albite.READER.Controls
             WebBrowser.RenderTransform = translate;
         }
 
-        private double previousPagePosition
-        {
-            get { return -(ScrollBorder.Width * 2); }
-        }
+        private double pageWidth;
 
-        private double currentPagePosition
-        {
-            get { return -ScrollBorder.ActualWidth; }
-        }
+        private double previousPagePosition;
+        private double currentPagePosition;
+        private double nextPagePosition;
 
-        private double nextPagePosition
+        // If the total delta is within these bounds
+        // the scroll will be back to the current page
+        private static readonly double noScrollIntervalRatio = 0.075;
+        private double noScrollInterval;
+
+        // Velocity under this amount will not be
+        // considered as important even if it's in
+        // the opposite direction of the drag
+        private static readonly double negligibleVelocityRatio = 0.075;
+        private double negligibleVelocity;
+
+        private static readonly double samePageVelocityRatio = 2.0;
+
+        private void updatePageProperties(double pageWidth)
         {
-            get { return 0; }
+            this.pageWidth = pageWidth;
+
+            // Scrolling to the right is done with
+            // a negative number, i.e. by dragging left
+
+            previousPagePosition = 0;
+            currentPagePosition = previousPagePosition - pageWidth;
+            nextPagePosition = currentPagePosition - pageWidth;
+
+            noScrollInterval = pageWidth * noScrollIntervalRatio;
+            negligibleVelocity = pageWidth * negligibleVelocityRatio;
         }
 
         private void scrollPageDelta(double xDelta)
         {
-            translate.X = clamp(translate.X + xDelta, previousPagePosition, nextPagePosition);
+            // Don't forget that: nextPagePosition < currentPagePosition < previousPagePosition
+            translate.X = clamp(translate.X + xDelta, nextPagePosition, previousPagePosition);
         }
 
-        private void scrollPageStart(double xAbsolute)
+        private void scrollPageStart(double xDelta, double xVelocity)
         {
-            //TODO
-            scrollTo(currentPagePosition, 0.1);
+            // Scroll back to the current page if:
+            //   1. The drag was too insignificant, most probably a mistake
+            //   2. There's a considerable amount of velocity and it's in the direction
+            //      opposite of the drag
+            if (Math.Abs(xDelta) <= noScrollInterval
+                || (Math.Abs(xVelocity) > negligibleVelocity && Math.Sign(xVelocity) != Math.Sign(xDelta)))
+            {
+                scrollTo(currentPagePosition, samePageVelocityRatio);
+                return;
+            }
+
+            // If xDelta is negative, then the user is dragging left
+            // and therefore wants to go to the next page
+            double pagePosition = xDelta < 0 ? nextPagePosition : previousPagePosition;
+
+            // The duration of the animation should reflect the current position
+            double ratio = Math.Abs(pageWidth - xDelta) / pageWidth;
+
+            // Take into account the velocity of the flick
+            double velocityRatio = Math.Abs(xVelocity) / pageWidth;
+
+            // Clamp the velocity into some sane limits. It definitely shouldn't
+            // go under 1.0, i.e. shouldn't be able to slow down the animation
+            // only speed it up.
+            velocityRatio = clamp(velocityRatio, 1.0, 3.0);
+
+            // Ready to scroll
+            scrollTo(pagePosition, ratio * velocityRatio);
+        }
+
+        private void scrollPageTouch(double xAbs)
+        {
+            // TODO: Handle touches:
+            // 1. Ask the engine if there's anything to touch (like a link)
+            // 2. if not, check if ok to scroll left/right.
         }
 
         private void ScrollAnimation_Completed(object sender, EventArgs e)
