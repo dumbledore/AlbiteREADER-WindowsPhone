@@ -451,6 +451,53 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             logEvent("Animation completed");
             isAnimating = false;
+
+            switch (scrollPageType)
+            {
+                case PageType.CURRENT_PAGE:
+                    break;
+
+                case PageType.PREVIOUS_PAGE:
+                    if (controller.Engine.IsFirstPage)
+                    {
+                        if (false)
+                        {
+                            // TODO: Go to the previous chapter
+                            break;
+                        }
+                        else
+                        {
+                            // That's the first chapter.
+                            scrollTo(PageType.CURRENT_PAGE);
+                            break;
+                        }
+                    }
+
+                    controller.Engine.Page--;
+                    break;
+
+                case PageType.NEXT_PAGE:
+                    if (controller.Engine.IsLastPage)
+                    {
+                        if (false)
+                        {
+                            // TODO: Go to the next chapter
+                            break;
+                        }
+                        else
+                        {
+                            // That's the last chapter.
+                            scrollTo(PageType.CURRENT_PAGE);
+                            break;
+                        }
+                    }
+
+                    controller.Engine.Page++;
+                    break;
+
+                default:
+                    throw new InvalidOperationException("Bad page type");
+            }
         }
         #endregion
 
