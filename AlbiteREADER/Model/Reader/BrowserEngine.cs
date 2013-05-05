@@ -279,7 +279,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             void ResetScrollPosition();
 
-            object SendCommand(string command, string[] args);
+            string SendCommand(string command);
+            string SendCommand(string command, string[] args);
 
             Book.Presenter Presenter { get; }
 

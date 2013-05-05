@@ -515,7 +515,12 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 control.resetScrollPosition();
             }
 
-            public object SendCommand(string command, string[] args)
+            public string SendCommand(string command)
+            {
+                return SendCommand(command, new string[0]);
+            }
+
+            public string SendCommand(string command, string[] args)
             {
                 Log.D(tag, "sendcommand: " + command);
 
@@ -525,7 +530,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
                     return null;
                 }
 
-                return control.WebBrowser.InvokeScript(command, args);
+                return (string) control.WebBrowser.InvokeScript(command, args);
             }
 
             public void LoadingStarted()
