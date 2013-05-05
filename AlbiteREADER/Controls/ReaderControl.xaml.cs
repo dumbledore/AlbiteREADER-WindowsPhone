@@ -426,7 +426,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
             PageType pageType = xDelta < 0 ? PageType.NEXT_PAGE : PageType.PREVIOUS_PAGE;
 
             // The duration of the animation should reflect the current position
-            double ratio = Math.Abs(pageWidth - xDelta) / pageWidth;
+            double ratio = Math.Abs(pageWidth + Math.Abs(xDelta)) / pageWidth;
 
             // Take into account the velocity of the flick
             double velocityRatio = Math.Abs(xVelocity) / pageWidth;
