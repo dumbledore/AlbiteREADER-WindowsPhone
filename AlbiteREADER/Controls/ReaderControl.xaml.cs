@@ -363,6 +363,14 @@ namespace SvetlinAnkov.Albite.READER.Controls
             negligibleVelocity = pageWidth * negligibleVelocityRatio;
         }
 
+        /// <summary>
+        /// Reset the the position to the current page
+        /// </summary>
+        private void resetScrollPosition()
+        {
+            translate.X = currentPagePosition;
+        }
+
         private void scrollPageDelta(double xDelta)
         {
             // Don't forget that: nextPagePosition < currentPagePosition < previousPagePosition
@@ -502,6 +510,11 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 engine = null;
             }
 
+            public void ResetScrollPosition()
+            {
+                control.resetScrollPosition();
+            }
+
             public object SendCommand(string command, string[] args)
             {
                 Log.D(tag, "sendcommand: " + command);
@@ -525,7 +538,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
             public void LoadingCompleted()
             {
                 control.cancelScroll();
-                control.translate.X = control.currentPagePosition;
+                ResetScrollPosition();
                 waitPopup.IsOpen = false;
                 IsLoading = false;
             }

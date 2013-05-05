@@ -277,6 +277,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             string BasePath { get; set; }
             Uri SourceUri { get; set; }
 
+            void ResetScrollPosition();
+
             object SendCommand(string command, string[] args);
 
             Book.Presenter Presenter { get; }
