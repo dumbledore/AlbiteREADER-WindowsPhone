@@ -106,20 +106,21 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         /// <summary>
         /// Returns the content of the template with all placeholders replaced
         /// </summary>
-        /// <throws>An InvalidOperationException if a placeholder hasn't been set</throws>
-        /// <returns></returns>
         public string GetOutput()
         {
             StringBuilder buffer = new StringBuilder(template, (int) (template.Length * 1.2));
 
             foreach (KeyValuePair<string, string> placeholder in placeholders)
             {
-                if (placeholder.Value == null)
+                string value = placeholder.Value;
+
+                if (value == null)
                 {
-                    throw new InvalidOperationException("Placeholder " + placeholder.Key + " has not been set");
+                    // Default to the empty string
+                    value = "";
                 }
 
-                buffer.Replace(PlaceholderLeftSide + placeholder.Key + PlaceholderRightSide, placeholder.Value);
+                buffer.Replace(PlaceholderLeftSide + placeholder.Key + PlaceholderRightSide, value);
             }
 
             return buffer.ToString();
