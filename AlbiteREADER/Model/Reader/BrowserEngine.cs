@@ -144,9 +144,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                     res, Path.Combine(enginePath, Paths.MainPage));
             }
 
-            // Set defaults. These will be overwritten upon open
-            mainPageTemplate["chapter_title"] = "";
-            mainPageTemplate["chapter_file"] = "";
 #if DEBUG
             mainPageTemplate["debug"] = "true";
 #else
