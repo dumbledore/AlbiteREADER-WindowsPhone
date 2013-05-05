@@ -295,8 +295,39 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         private bool isAnimating = false;
 
-        private void scrollTo(double to, double speedRatio = 1.0)
+        enum PageType
         {
+            PREVIOUS_PAGE,
+            CURRENT_PAGE,
+            NEXT_PAGE
+        };
+
+        private PageType scrollPageType;
+
+        private void scrollTo(PageType pageType, double speedRatio = 1.0)
+        {
+            double to;
+
+            switch (pageType)
+            {
+                case PageType.PREVIOUS_PAGE:
+                    to = previousPagePosition;
+                    break;
+
+                case PageType.CURRENT_PAGE:
+                    to = currentPagePosition;
+                    break;
+
+                case PageType.NEXT_PAGE:
+                    to = nextPagePosition;
+                    break;
+
+                default:
+                    throw new InvalidOperationException("Bad page type");
+            }
+
+            scrollPageType = pageType;
+
             scrollAnimation.From = translate.X;
             scrollAnimation.To = to;
             scrollAnimation.SpeedRatio = speedRatio;
@@ -386,13 +417,13 @@ namespace SvetlinAnkov.Albite.READER.Controls
             if (Math.Abs(xDelta) <= noScrollInterval
                 || (Math.Abs(xVelocity) > negligibleVelocity && Math.Sign(xVelocity) != Math.Sign(xDelta)))
             {
-                scrollTo(currentPagePosition, samePageVelocityRatio);
+                scrollTo(PageType.CURRENT_PAGE, samePageVelocityRatio);
                 return;
             }
 
             // If xDelta is negative, then the user is dragging left
             // and therefore wants to go to the next page
-            double pagePosition = xDelta < 0 ? nextPagePosition : previousPagePosition;
+            PageType pageType = xDelta < 0 ? PageType.NEXT_PAGE : PageType.PREVIOUS_PAGE;
 
             // The duration of the animation should reflect the current position
             double ratio = Math.Abs(pageWidth - xDelta) / pageWidth;
@@ -406,7 +437,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
             velocityRatio = clamp(velocityRatio, 1.0, 3.0);
 
             // Ready to scroll
-            scrollTo(pagePosition, ratio * velocityRatio);
+            scrollTo(pageType, ratio * velocityRatio);
         }
 
         private void scrollPageTouch(double xAbs)
