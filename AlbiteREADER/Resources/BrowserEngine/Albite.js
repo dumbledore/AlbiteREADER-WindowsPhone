@@ -20,6 +20,11 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
     this.goToPage       = goToPage;
 
     /*
+     * Get the amount of available pages
+     */
+    this.getPageCount   = getPageCount;
+
+    /*
      * Functions for debugging
      */
     function log(msg) {
@@ -304,6 +309,10 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
          * TODO: remove in the final script
          */
         mainWindow.scrollTo(pageWidth, 0);
+    }
+
+    function getPageCount() {
+        return booklet.length;
     }
 
     function paginate(pageHeight, body) {

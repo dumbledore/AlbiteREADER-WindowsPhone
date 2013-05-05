@@ -96,10 +96,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             set { goToPage(value); }
         }
 
-        public int PageCount
-        {
-            get { return 0; /*TODO*/ }
-        }
+        public int PageCount { get; private set; }
 
         private void prepare()
         {
@@ -288,6 +285,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             // Inform the EngineController that it's ready
             Controller.LoadingCompleted();
+
+            // Now get the page count
+            PageCount = int.Parse(Controller.SendCommand("albite_getPageCount"));
 
             // And finally, go to the location if there was one
             if (locationCached != null)

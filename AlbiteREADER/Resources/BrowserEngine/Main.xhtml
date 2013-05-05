@@ -13,6 +13,18 @@
             /*
              * Export Albite functions to WebBrowser.InvokeScript
              */
+            function albite_getPageCount() {
+                return albite_return(albite.getPageCount());
+            }
+
+            /*
+             * All returned values to the host MUST
+             * be converted to strings first or otherwise
+             * InvokeScript returns an empty string.
+             */
+            function albite_return(val) {
+                return "" + val;
+            }
         </script>
     </head>
     <body>
