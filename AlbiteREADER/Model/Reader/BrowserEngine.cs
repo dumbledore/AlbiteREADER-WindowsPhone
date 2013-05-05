@@ -257,16 +257,27 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             if (command.StartsWith(loadedCommand))
             {
-                Controller.LoadingCompleted();
+                handleLoadedCommand();
             }
             else if (command.StartsWith(debugCommand))
             {
-                Log.I(tag, "JavaScript: " + command.Substring(debugCommand.Length));
+                handleDebugCommand(command.Substring(debugCommand.Length));
             }
             else
             {
                 Log.E(tag, "Unknown command: " + command);
             }
+        }
+
+        private void handleLoadedCommand()
+        {
+            // Inform the EngineController that it's ready
+            Controller.LoadingCompleted();
+        }
+
+        private void handleDebugCommand(string message)
+        {
+            Log.I(tag, "JavaScript: " + message);
         }
 
         public interface IEngineController
