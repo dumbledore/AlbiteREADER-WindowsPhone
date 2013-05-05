@@ -223,8 +223,23 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             Controller.SourceUri = mainUri;
         }
 
+        private DomLocation locationCached;
+
         private void goToLocation(DomLocation location)
         {
+            Log.D(tag, string.Format("Going to location #{0}/{1}",
+                location.ElementIndex, location.TextOffset));
+
+            // clear the cached value
+            locationCached = null;
+
+            if (Controller.IsLoading)
+            {
+                Log.D(tag, "Still loading. Cache the location");
+                locationCached = location;
+                return;
+            }
+
             //TODO: Tell the JSEngine to go to this location.
         }
 
@@ -273,6 +288,12 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             // Inform the EngineController that it's ready
             Controller.LoadingCompleted();
+
+            // And finally, go to the location if there was one
+            if (locationCached != null)
+            {
+                goToLocation(locationCached);
+            }
         }
 
         private void handleDebugCommand(string message)
@@ -295,6 +316,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             Book.Presenter Presenter { get; }
 
+            bool IsLoading { get; }
             void LoadingStarted();
             void LoadingCompleted();
         }
