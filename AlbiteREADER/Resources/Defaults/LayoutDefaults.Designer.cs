@@ -61,6 +61,15 @@ namespace SvetlinAnkov.Albite.READER.Resources.Defaults {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to black.
+        /// </summary>
+        internal static string ControlBackground {
+            get {
+                return ResourceManager.GetString("ControlBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to #634F3B.
         /// </summary>
         internal static string DayThemeAccentColor {

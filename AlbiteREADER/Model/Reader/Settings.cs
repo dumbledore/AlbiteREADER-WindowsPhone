@@ -24,6 +24,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         public int MarginLeft { get; set; }
         public int MarginRight { get; set; }
 
+        public string ControlBackground { get; set; }
+
         public Theme Theme { get; set; }
     }
 

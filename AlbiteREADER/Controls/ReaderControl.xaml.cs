@@ -564,6 +564,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 // Get the presenter
                 presenter = library.Books.GetPresenter(book);
 
+                // TODO: The component background color needs to be data-bound
+                //       to Resources["PhoneBackgroundBrush"]
+
                 // Load the engine
                 engine = new BookEngine(this, Defaults.Layout.DefaultSettings);
 
