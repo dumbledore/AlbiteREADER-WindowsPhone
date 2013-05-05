@@ -13,6 +13,18 @@
             /*
              * Export Albite functions to WebBrowser.InvokeScript
              */
+            function albite_goToPage1(page) {
+                /*
+                 * All input values are strings.
+                 * Don't forget to convert the to numbers!
+                 */
+                albite.goToPage1(parseInt(page));
+            }
+
+            function albite_goToPage2() {
+                albite.goToPage2();
+            }
+
             function albite_getPageCount() {
                 return albite_return(albite.getPageCount());
             }

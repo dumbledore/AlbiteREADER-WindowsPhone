@@ -9,6 +9,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System.Threading;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
@@ -82,21 +83,40 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             set { goToLocation(value); }
         }
 
+        private int currentPage;
+
         /// <summary>
         /// Gets / sets the current page
         /// </summary>
         public int Page
         {
-            get
-            {
-                // TODO
-                return 0;
-            }
-
+            get { return currentPage; }
             set { goToPage(value); }
         }
 
         public int PageCount { get; private set; }
+
+        //Note: there are always AT LEAST 3 pages
+        public int FirstPageNumber { get { return 1; } }
+        public int LastPageNumber { get { return PageCount - 2; } }
+
+        public bool IsFirstPage { get { return currentPage <= FirstPageNumber; } }
+        public bool IsLastPage { get { return currentPage >= LastPageNumber; } }
+
+        private int validatePageNumber(int pageNumber)
+        {
+            if (pageNumber <= FirstPageNumber)
+            {
+                pageNumber = FirstPageNumber;
+            }
+
+            if (pageNumber >= LastPageNumber)
+            {
+                pageNumber = LastPageNumber;
+            }
+
+            return pageNumber;
+        }
 
         private void prepare()
         {
@@ -238,11 +258,32 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
 
             //TODO: Tell the JSEngine to go to this location.
+            goToPage(10);
         }
 
         private void goToPage(int pageNumber)
         {
-            //TODO
+            Log.D(tag, "Going to page #" + pageNumber);
+
+            pageNumber = validatePageNumber(pageNumber);
+
+            // This will update the current page to have the same content as the
+            // page going to
+            Controller.SendCommand("albite_goToPage1", new string[] { pageNumber.ToString() });
+
+            // Wait for the browser to keep up with rendering so that there wouldn't
+            // be any visible tearing.
+            // Unfortunately, there doesn't seem to be any better way of doing this
+            // on WindowsPhone 7.5
+            Thread.Sleep(150);
+
+            // Reset position to current page
+            Controller.ResetScrollPosition();
+
+            // Now update the previous/next pages as well.
+            Controller.SendCommand("albite_goToPage2");
+
+            currentPage = pageNumber;
         }
 
         /// <summary>

@@ -15,9 +15,21 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
     this.contentLoaded  = contentLoaded;
 
     /*
-     * Go to a particular page. No animations.
+     * Go to a particular page. Step #1
+     *
+     * This updates the current page.
+     *
+     * After that, the Server will scroll to the current page
+     * without the user noticing the difference
      */
-    this.goToPage       = goToPage;
+    this.goToPage1       = goToPage1;
+
+    /*
+     * Go to a particular page. Step #2
+     *
+     * This updates the previous/next pages.
+     */
+    this.goToPage2       = goToPage2;
 
     /*
      * Get the amount of available pages
@@ -288,27 +300,56 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
         doc.getElementsByTagName("head")[0].appendChild(linkElement);
     }
 
-    function goToPage(pageNumber) {
-        if (isNaN(pageNumber)) {
+    function firstPageNumber() {
+        return 1;
+    }
+
+    function lastPageNumber() {
+        return booklet.length - 2;
+    }
+
+    function isFirstPage(pageNumber) {
+        return pageNumber <= firstPageNumber();
+    }
+
+    function isLastPage(pageNumber) {
+        return pageNumber >= lastPageNumber();
+    }
+
+    function validatePageNumber(pageNumber) {
+        if (typeof(pageNumber) != "number") {
             pageNumber = 1;
         }
 
-        if (pageNumber <= 0) pageNumber = 1;
-        if (pageNumber >= booklet.length) pageNumber = booklet.length - 2;
+        if (isFirstPage(pageNumber)) {
+            pageNumber = firstPageNumber();
+        }
 
-        previousPage.setPage(booklet[pageNumber - 1]);
+        if (isLastPage(pageNumber)) {
+            pageNumber = lastPageNumber();
+        }
+
+        return pageNumber;
+    }
+
+    function goToPage(pageNumber) {
+        goToPage1(pageNumber);
+        goToPage2();
+    }
+
+    function goToPage1(pageNumber) {
+        currentPageNumber = validatePageNumber(pageNumber);
+
         currentPage.setPage(booklet[pageNumber]);
-        nextPage.setPage(booklet[pageNumber + 1]);
+        currentPage.setPosition(CURRENT_PAGE_POSITION);
+    }
+
+    function goToPage2() {
+        previousPage.setPage(booklet[currentPageNumber - 1]);
+        nextPage.setPage(booklet[currentPageNumber + 1]);
 
         previousPage.setPosition(PREVIOUS_PAGE_POSITION);
-        currentPage.setPosition(CURRENT_PAGE_POSITION);
         nextPage.setPosition(NEXT_PAGE_POSITION);
-
-        /*
-         * Set the view to the current page.
-         * TODO: remove in the final script
-         */
-        mainWindow.scrollTo(pageWidth, 0);
     }
 
     function getPageCount() {
