@@ -59,3 +59,19 @@ hr {
     border: 0;
     border-bottom: 1px solid black;
 }
+
+/*
+ *  Theme
+ */
+html {
+	background-color: %{background_color} !important; /* Default: white */
+	color:            %{text_color} !important;       /* Default: black */
+}
+
+i, em {
+	color: %{accent_color} !important; /* Default: #634F3B */
+}
+
+hr {
+	border-bottom-color: %{text_color} !important;
+}

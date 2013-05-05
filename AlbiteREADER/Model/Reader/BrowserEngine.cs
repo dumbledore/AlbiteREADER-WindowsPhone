@@ -166,6 +166,22 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             // Set up the templates
             updateLayout();
+
+            // Set up the theme
+            updateTheme();
+        }
+
+        private void updateTheme()
+        {
+            baseStylesTemplate["control_background"] = settings.ControlBackground;
+            baseStylesTemplate["background_color"] = settings.Theme.BackgroundColor;
+            baseStylesTemplate["text_color"] = settings.Theme.FontColor;
+            baseStylesTemplate.SaveToStorage();
+
+            contentStylesTemplate["background_color"] = settings.Theme.BackgroundColor;
+            contentStylesTemplate["text_color"] = settings.Theme.FontColor;
+            contentStylesTemplate["accent_color"] = settings.Theme.AccentColor;
+            contentStylesTemplate.SaveToStorage();
         }
 
         /// <summary>

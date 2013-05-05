@@ -23,10 +23,10 @@ body {
 }
 
 div.page {
-	margin-top:    %{page_margin_top}px;    /* Default: 30 */
-	margin-bottom: %{page_margin_bottom}px; /* Default: 30 */
-	margin-left:   %{page_margin_left}px;   /* Default: 30 */
-	margin-right:  %{page_margin_right}px;  /* Default: 40 */
+	padding-top:    %{page_margin_top}px;    /* Default: 30 */
+	padding-bottom: %{page_margin_bottom}px; /* Default: 30 */
+	padding-left:   %{page_margin_left}px;   /* Default: 30 */
+	padding-right:  %{page_margin_right}px;  /* Default: 40 */
 	width:         %{page_width}px;         /* Default: 410 */
 	height:        %{page_height}px;        /* Default: 668 */
 	position: absolute;
@@ -63,4 +63,24 @@ div.page {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+}
+
+/*
+ * Theme
+ */
+html {
+	background-color: %{control_background}; /* Default: black */
+	color:            %{text_color};         /* Default: black */
+}
+
+div.page {
+	background-color: %{background_color};	 /* Default: white */
+}
+
+div.header {
+	border-bottom-color: %{text_color};
+}
+
+hr {
+	border-bottom-color: %{text_color};
 }
