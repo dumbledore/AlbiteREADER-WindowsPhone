@@ -32,7 +32,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         private TemplateResource mainPageTemplate;
         private TemplateResource baseStylesTemplate;
         private TemplateResource contentStylesTemplate;
-        private TemplateResource themeStylesTemplate;
 
         public BrowserEngine(IEngineController controller, Settings settings)
         {
@@ -166,13 +165,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             {
                 contentStylesTemplate = new TemplateResource(
                     res, Path.Combine(enginePath, Paths.ContentStyles));
-            }
-
-            using (AlbiteResourceStorage res = new AlbiteResourceStorage(
-                Path.Combine(Paths.BasePath, Paths.ThemeStyles), assemblyName))
-            {
-                themeStylesTemplate = new TemplateResource(
-                    res, Path.Combine(enginePath, Paths.ThemeStyles));
             }
 
             // Set up the templates

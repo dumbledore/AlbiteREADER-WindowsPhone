@@ -126,7 +126,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\BrowserEngine\Base.css" />
-    <Resource Include="Resources\BrowserEngine\Theme.css" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

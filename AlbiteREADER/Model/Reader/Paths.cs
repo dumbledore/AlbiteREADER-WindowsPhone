@@ -37,10 +37,5 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             get { return "Main.xhtml"; }
         }
-
-        public static string ThemeStyles
-        {
-            get { return "Theme.css"; }
-        }
     }
 }
