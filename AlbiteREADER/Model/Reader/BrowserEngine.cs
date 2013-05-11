@@ -309,6 +309,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         }
 
         private static readonly string debugCommand = "{debug}";
+        private static readonly string errorCommand = "{error}";
         private static readonly string loadedCommand = "{loaded}";
 
         public void ReceiveCommand(string command)
@@ -321,9 +322,13 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             {
                 handleDebugCommand(command.Substring(debugCommand.Length));
             }
+            else if (command.StartsWith(errorCommand))
+            {
+                handleErrorCommand(command.Substring(errorCommand.Length));
+            }
             else
             {
-                Log.E(tag, "Unknown command: " + command);
+                Controller.OnError("Unknown command: " + command);
             }
         }
 
@@ -347,6 +352,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             Log.I(tag, "JavaScript: " + message);
         }
 
+        private void handleErrorCommand(string message)
+        {
+            Controller.OnError("JavaScript Error: " + message);
+        }
+
         public interface IEngineController
         {
             double ViewportWidth { get; }
@@ -365,6 +375,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             bool IsLoading { get; }
             void LoadingStarted();
             void LoadingCompleted();
+
+            void OnError(string message);
         }
     }
 }

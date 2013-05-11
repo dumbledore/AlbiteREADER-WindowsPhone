@@ -22,7 +22,9 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="0">
-            <albite:ReaderControl x:Name="ReaderControl" Loaded="ReaderControl_Loaded" />
+            <albite:ReaderControl x:Name="ReaderControl"
+                    Loaded="ReaderControl_Loaded"
+                    ReaderError="ReaderControl_ReaderError" />
         </Grid>
     </Grid>
 

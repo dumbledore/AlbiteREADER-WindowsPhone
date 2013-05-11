@@ -42,6 +42,15 @@ namespace SvetlinAnkov.Albite.READER.View
             ReaderControl.OpenBook(bookId);
         }
 
+        private void ReaderControl_ReaderError(object sender, EventArgs e)
+        {
+            MessageBox.Show("There was a problem with this book");
+
+            // There MUST be a previous entry, otherwise it wouldn't
+            // make sense
+            NavigationService.GoBack();
+        }
+
         // TODO: Add proper thread synchronization
     }
 }

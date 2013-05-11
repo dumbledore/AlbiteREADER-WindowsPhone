@@ -22,6 +22,8 @@ namespace SvetlinAnkov.Albite.READER.Controls
     {
         private static readonly string tag = "ReaderControl";
 
+        public event EventHandler ReaderError;
+
         private EngineController controller;
 
         public ReaderControl()
@@ -251,6 +253,16 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 value = max;
             }
             return value;
+        }
+
+        private void onError(string message)
+        {
+            Log.E(tag, "ReaderError: " + message);
+
+            if (ReaderError != null)
+            {
+                ReaderError(this, EventArgs.Empty);
+            }
         }
         #endregion
 
@@ -627,6 +639,11 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 ResetScrollPosition();
                 waitPopup.IsOpen = false;
                 IsLoading = false;
+            }
+
+            public void OnError(string message)
+            {
+                control.onError(message);
             }
         }
         #endregion

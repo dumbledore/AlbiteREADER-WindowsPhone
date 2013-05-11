@@ -4,6 +4,10 @@
  * thus speed and encapsulation are more important than small memory concerns.
  */
 function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
+    /*
+     * Attach the error handler for the main window
+     */
+    mainWindow.onerror = handleError;
 
     /*
      * Public API
@@ -39,12 +43,13 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
     /*
      * Functions for debugging
      */
-    function log(msg) {
+    function log(msg, isError) {
         try {
             /*
              * Try reporting to .NET
              */
-            notifyServer("{debug}" + msg);
+            var msgType = isError ? "{error}" : "{debug}";
+            notifyServer(msgType + msg);
         } catch (e) {
             try {
                 /*
@@ -60,8 +65,8 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
         }
     }
 
-    function reportError(msg) {
-        log("Error: " + msg);
+    function handleError(msg, url, line) {
+        log(msg + " on line " + line + " for " + url, true);
     }
 
     function notifyServer(command) {
@@ -170,28 +175,29 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
     var numberOfFramesLoaded = 0;
 
     function contentLoaded(contentFrame) {
-        try {
-            /*
-             * This works because layout/render and javascript are synchronized
-             * by running on the same thread.
-             */
-            numberOfFramesLoaded++;
+        /*
+         * Attach the error handler
+         */
+        contentFrame.contentWindow.onerror = handleError;
 
-            switch (numberOfFramesLoaded) {
-                case 1:
-                    contentLoaded1(contentFrame);
-                    break;
-                case 2:
-                    contentLoaded2(contentFrame);
-                    break;
-                case 3:
-                    contentLoaded3(contentFrame);
-                    break;
-                default:
-                    reportError("Loaded more frames than necessary: " + numberOfFramesLoaded);
-            }
-        } catch (e) {
-            reportError(e.message);
+        /*
+         * This works because layout/render and javascript are synchronized
+         * by running on the same thread.
+         */
+        numberOfFramesLoaded++;
+
+        switch (numberOfFramesLoaded) {
+            case 1:
+                contentLoaded1(contentFrame);
+                break;
+            case 2:
+                contentLoaded2(contentFrame);
+                break;
+            case 3:
+                contentLoaded3(contentFrame);
+                break;
+            default:
+                throw("Loaded more frames than necessary: " + numberOfFramesLoaded);
         }
     }
 
