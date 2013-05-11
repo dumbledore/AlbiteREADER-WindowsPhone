@@ -3,11 +3,14 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Phone.Controls;
+using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
     public class BookEngine : BrowserEngine
     {
+        private static readonly string tag = "BookEngine";
+
         public BookEngine(IEngineController controller, Settings settings)
             : base(controller, settings) { }
 
@@ -34,6 +37,42 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 Chapter = value.SpineElement.Chapter;
                 DomLocation = value.DomLocation;
             }
+        }
+
+        public bool IsFirstChapter
+        {
+            get { return current.Previous == null; }
+        }
+
+        public bool IsLastChapter
+        {
+            get { return current.Next == null; }
+        }
+
+        public void GoToPreviousChapter()
+        {
+            if (IsFirstChapter)
+            {
+                Log.W(tag, "It's the first chapter already");
+                return;
+            }
+
+            current = current.Previous;
+            Chapter = current.Chapter;
+            GoToLastPage();
+        }
+
+        public void GoToNextChapter()
+        {
+            if (IsLastChapter)
+            {
+                Log.W(tag, "It's the last chapter already");
+                return;
+            }
+
+            current = current.Next;
+            Chapter = current.Chapter;
+            GoToFirstPage();
         }
 
         // Private API

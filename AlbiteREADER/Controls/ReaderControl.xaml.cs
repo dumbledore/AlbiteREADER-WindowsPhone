@@ -472,9 +472,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 case PageType.PREVIOUS_PAGE:
                     if (controller.Engine.IsFirstPage)
                     {
-                        if (false)
+                        if (!controller.Engine.IsFirstChapter)
                         {
-                            // TODO: Go to the previous chapter
+                            controller.Engine.GoToPreviousChapter();
                             break;
                         }
                         else
@@ -491,9 +491,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 case PageType.NEXT_PAGE:
                     if (controller.Engine.IsLastPage)
                     {
-                        if (false)
+                        if (!controller.Engine.IsLastChapter)
                         {
-                            // TODO: Go to the next chapter
+                            controller.Engine.GoToNextChapter();
                             break;
                         }
                         else

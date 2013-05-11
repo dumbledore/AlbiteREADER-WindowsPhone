@@ -17,22 +17,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
     {
         private static readonly string tag = "BrowserEngine";
 
-        protected readonly IEngineController Controller;
-
-        private Uri mainUri;
-
-        // The settings are read-only, because their values will be updated
-        // through data binding.
-        private readonly Settings settings;
-        public Settings Settings
-        {
-            get { return settings; }
-        }
-
-        private TemplateResource mainPageTemplate;
-        private TemplateResource baseStylesTemplate;
-        private TemplateResource contentStylesTemplate;
-
+        #region Constructors
         public BrowserEngine(IEngineController controller, Settings settings)
         {
             this.Controller = controller;
@@ -48,6 +33,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             AssemblyName name = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
             assemblyName = name.Name;
         }
+        #endregion
+
+        #region Public API
 
         private Chapter chapter;
         protected Chapter Chapter
@@ -79,7 +67,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 return null;
             }
 
-            set { goToLocation(value); }
+            set { goToLocation(new DomLocationWrapper(this, value)); }
         }
 
         private int currentPage;
@@ -90,10 +78,20 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         public int Page
         {
             get { return currentPage; }
-            set { goToPage(value); }
+            set { goToLocation(new PageLocationWrapper(this, value)); }
         }
 
         public int PageCount { get; private set; }
+
+        public void GoToFirstPage()
+        {
+            goToLocation(new LimitsLocationWrapper(this, true));
+        }
+
+        public void GoToLastPage()
+        {
+            goToLocation(new LimitsLocationWrapper(this, false));
+        }
 
         //Note: there are always AT LEAST 3 pages
         public int FirstPageNumber { get { return 1; } }
@@ -101,6 +99,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         public bool IsFirstPage { get { return currentPage <= FirstPageNumber; } }
         public bool IsLastPage { get { return currentPage >= LastPageNumber; } }
+        #endregion
+
+        #region Location API
 
         private int validatePageNumber(int pageNumber)
         {
@@ -116,6 +117,202 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             return pageNumber;
         }
+
+        private ILocationWrapper locationCached;
+
+        /// <summary>
+        /// This wrapper is used for postponing location requests.
+        /// A location may be requested to be changed before the chapters
+        /// has actually loaded and therefore needs to be postponed for
+        /// when the chapter is ready
+        /// </summary>
+        private interface ILocationWrapper
+        {
+            void goTo();
+        }
+
+        private class DomLocationWrapper : ILocationWrapper
+        {
+            private readonly BrowserEngine engine;
+            private readonly DomLocation location;
+
+            public DomLocationWrapper(BrowserEngine engine, DomLocation location)
+            {
+                this.engine = engine;
+                this.location = location;
+            }
+
+            public void goTo()
+            {
+                engine.goToDomLocation(location);
+            }
+
+            public override string ToString()
+            {
+                return string.Format("Element Index: {0}, Text Offset: {1}",
+                    location.ElementIndex, location.TextOffset);
+            }
+        }
+
+        private class PageLocationWrapper : ILocationWrapper
+        {
+            private readonly BrowserEngine engine;
+            private readonly int page;
+
+            public PageLocationWrapper(BrowserEngine engine, int page)
+            {
+                this.engine = engine;
+                this.page = page;
+            }
+
+            public void goTo()
+            {
+                engine.goToPage(page);
+            }
+
+            public override string ToString()
+            {
+                return string.Format("Page #{0}", page);
+            }
+        }
+
+        private class LimitsLocationWrapper : ILocationWrapper
+        {
+            private readonly BrowserEngine engine;
+            private readonly bool goingToFirstPage;
+
+            public LimitsLocationWrapper(BrowserEngine engine, bool goingToFirstPage)
+            {
+                this.engine = engine;
+                this.goingToFirstPage = goingToFirstPage;
+            }
+
+            public void goTo()
+            {
+                if (goingToFirstPage)
+                {
+                    engine.goToFirstPage();
+                }
+                else
+                {
+                    engine.goToLastPage();
+                }
+            }
+
+            public override string ToString()
+            {
+                return goingToFirstPage ? "First Page" : "Last Page";
+            }
+        }
+
+        private void goToLocation(ILocationWrapper location)
+        {
+            // clear the cached value
+            locationCached = null;
+
+            if (Controller.IsLoading)
+            {
+                Log.D(tag, "Still loading. Cache the location");
+                locationCached = location;
+                return;
+            }
+
+            Log.D(tag, string.Format("Going to location " + location.ToString()));
+            location.goTo();
+        }
+
+        private void goToDomLocation(DomLocation location)
+        {
+            //TODO
+            goToPage(1);
+        }
+
+        private void goToPage(int pageNumber)
+        {
+            pageNumber = validatePageNumber(pageNumber);
+
+            // This will update the current page to have the same content as the
+            // page going to
+            Controller.SendCommand("albite_goToPage1", new string[] { pageNumber.ToString() });
+
+            // Wait for the browser to keep up with rendering so that there wouldn't
+            // be any visible tearing.
+            // Unfortunately, there doesn't seem to be any better way of doing this
+            // on WindowsPhone 7.5
+            Thread.Sleep(150);
+
+            // Reset position to current page
+            Controller.ResetScrollPosition();
+
+            // Now update the previous/next pages as well.
+            Controller.SendCommand("albite_goToPage2");
+
+            currentPage = pageNumber;
+        }
+
+        private void goToFirstPage()
+        {
+            goToPage(FirstPageNumber);
+        }
+
+        private void goToLastPage()
+        {
+            goToPage(LastPageNumber);
+        }
+        #endregion
+
+        #region Browser Navigation
+
+        private void reloadBrowser()
+        {
+            if (Controller.SourceUri != mainUri)
+            {
+                return;
+            }
+
+            // TODO: Get the location
+            navigateBrowser();
+            // TODO: Set the location
+        }
+
+        private void navigateBrowser()
+        {
+            Controller.SourceUri = mainUri;
+        }
+
+        /// <summary>
+        /// Navigate to a in-book or out-book uri
+        /// </summary>
+        /// <param name="uri">uri</param>
+        /// <returns>True, if navigation is handled</returns>
+        public bool NavigateTo(Uri uri)
+        {
+            if (uri == mainUri)
+            {
+                // Allow the browser to load
+                return false;
+            }
+
+            // TODO: Handle in-book & out-book navigation
+            return true;
+        }
+        #endregion
+
+        #region Templates
+
+        private Uri mainUri;
+
+        // The settings are read-only, because their values will be updated
+        // through data binding.
+        private readonly Settings settings;
+        public Settings Settings
+        {
+            get { return settings; }
+        }
+
+        private TemplateResource mainPageTemplate;
+        private TemplateResource baseStylesTemplate;
+        private TemplateResource contentStylesTemplate;
 
         private void prepare()
         {
@@ -225,88 +422,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             // Don't forget to update the dimensions as well as they
             // depend on the margins. This will reload the browser.
-            UpdateDimensions((int) Controller.ViewportWidth, (int) Controller.ViewportHeight);
+            UpdateDimensions((int)Controller.ViewportWidth, (int)Controller.ViewportHeight);
         }
+        #endregion
 
-        private void reloadBrowser()
-        {
-            if (Controller.SourceUri != mainUri)
-            {
-                return;
-            }
-
-            // TODO: Get the location
-            navigateBrowser();
-            // TODO: Set the location
-        }
-
-        private void navigateBrowser()
-        {
-            Controller.SourceUri = mainUri;
-        }
-
-        private DomLocation locationCached;
-
-        private void goToLocation(DomLocation location)
-        {
-            Log.D(tag, string.Format("Going to location #{0}/{1}",
-                location.ElementIndex, location.TextOffset));
-
-            // clear the cached value
-            locationCached = null;
-
-            if (Controller.IsLoading)
-            {
-                Log.D(tag, "Still loading. Cache the location");
-                locationCached = location;
-                return;
-            }
-
-            //TODO: Tell the JSEngine to go to this location.
-            goToPage(1);
-        }
-
-        private void goToPage(int pageNumber)
-        {
-            Log.D(tag, "Going to page #" + pageNumber);
-
-            pageNumber = validatePageNumber(pageNumber);
-
-            // This will update the current page to have the same content as the
-            // page going to
-            Controller.SendCommand("albite_goToPage1", new string[] { pageNumber.ToString() });
-
-            // Wait for the browser to keep up with rendering so that there wouldn't
-            // be any visible tearing.
-            // Unfortunately, there doesn't seem to be any better way of doing this
-            // on WindowsPhone 7.5
-            Thread.Sleep(150);
-
-            // Reset position to current page
-            Controller.ResetScrollPosition();
-
-            // Now update the previous/next pages as well.
-            Controller.SendCommand("albite_goToPage2");
-
-            currentPage = pageNumber;
-        }
-
-        /// <summary>
-        /// Navigate to a in-book or out-book uri
-        /// </summary>
-        /// <param name="uri">uri</param>
-        /// <returns>True, if navigation is handled</returns>
-        public bool NavigateTo(Uri uri)
-        {
-            if (uri == mainUri)
-            {
-                // Allow the browser to load
-                return false;
-            }
-
-            // TODO: Handle in-book & out-book navigation
-            return true;
-        }
+        #region Handling Command from the JS Client
 
         private static readonly string debugCommand = "{debug}";
         private static readonly string errorCommand = "{error}";
@@ -356,6 +476,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             Controller.OnError("JavaScript Error: " + message);
         }
+        #endregion
+
+        #region IEngineController
+
+        protected readonly IEngineController Controller;
 
         public interface IEngineController
         {
@@ -378,5 +503,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             void OnError(string message);
         }
+        #endregion
     }
 }
