@@ -63,6 +63,21 @@ namespace SvetlinAnkov.Albite.READER.Model
             set { chaptersSet.Assign(value); }
         }
 
+        public Chapter this[string url]
+        {
+            get
+            {
+                IEnumerable<Chapter> chapters = Chapters.Where(c => c.Url == url);
+
+                if (chapters.Count() > 0)
+                {
+                    return chapters.First();
+                }
+
+                return null;
+            }
+        }
+
         public class Presenter : IDisposable
         {
             private readonly Book book;
@@ -109,11 +124,11 @@ namespace SvetlinAnkov.Albite.READER.Model
                 SpineElement current = null;
                 int number = 0;
 
-                foreach (Chapter chapter in manager.GetChapters(book, container.Spine))
+                foreach (string url in container.Spine)
                 {
                     // Add the chapter to the spine
                     current = new SpineElement(number++,
-                            chapter,
+                            book[url],
                             previous,
                             null
                     );

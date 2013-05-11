@@ -66,6 +66,8 @@ namespace SvetlinAnkov.Albite.READER.Model
 
         public class BookManager
         {
+            private static readonly string tag = "BookManager";
+
             private Library library;
             private string booksPath;
             private string booksTempPath;
@@ -105,12 +107,33 @@ namespace SvetlinAnkov.Albite.READER.Model
 
                     lock (library.db)
                     {
+
                         // Add to the database
                         library.db.Books.InsertOnSubmit(book);
 
                         // If there's an error, with the database
                         // it will roll back the changes
                         // and thrown an Exception
+                        library.db.SubmitChanges();
+
+                        // Create the chapters
+                        List<string> urls = new List<string>();
+
+                        foreach (string url in container.Spine)
+                        {
+                            if (urls.Contains(url))
+                            {
+                                Log.W(tag, "Chapter " + url + " already there");
+                                continue;
+                            }
+
+                            urls.Add(url);
+
+                            // Add it to the book at last
+                            book.Chapters.Add(new Chapter(book, url));
+                        }
+
+                        // Submit again, this time the chapters
                         library.db.SubmitChanges();
                     }
                 }
@@ -179,45 +202,6 @@ namespace SvetlinAnkov.Albite.READER.Model
                     new PersistDelegate(library.persist));
             }
 
-            public Chapter GetChapter(Book book, string url)
-            {
-                return GetChapters(book, new string[] { url }).First();
-            }
-
-            public IEnumerable<Chapter> GetChapters(Book book, IEnumerable<string> urls)
-            {
-                List<Chapter> toBeSaved = new List<Chapter>();
-                List<Chapter> result = new List<Chapter>();
-
-                foreach (string url in urls)
-                {
-                    bool needsSave = false;
-                    Chapter chapter = getChapterPrivate(book, url, ref needsSave);
-                    result.Add(chapter);
-
-                    if (needsSave)
-                    {
-                        toBeSaved.Add(chapter);
-                    }
-                }
-
-                if (toBeSaved.Count > 0)
-                {
-                    // First try to commit in case something else has been changed
-                    library.db.SubmitChanges();
-
-                    // Now commit the new changes
-                    foreach (Chapter chapter in toBeSaved)
-                    {
-                        book.Chapters.Add(chapter);
-                    }
-
-                    library.db.SubmitChanges();
-                }
-
-                return result;
-            }
-
             public static string RelativeContentPath
             {
                 get { return "content"; }
@@ -244,29 +228,6 @@ namespace SvetlinAnkov.Albite.READER.Model
             }
 
             // TODO: Simplified API for querying the database
-
-            // Private API
-            private Chapter getChapterPrivate(Book book, string url, ref bool needsSave)
-            {
-                IEnumerable<Chapter> chapters = book.Chapters.Where(c => c.Url == url);
-                Chapter chapter = null;
-                int count = chapters.Count();
-                if (count == 0)
-                {
-                    chapter = new Chapter(book, url);
-                    needsSave = true;
-                }
-                else if (count == 1)
-                {
-                    chapter = chapters.First();
-                }
-                else
-                {
-                    throw new InvalidOperationException("More than one chapters found with " + url);
-                }
-
-                return chapter;
-            }
         }
 
         private class LibraryDataContext : DataContext
