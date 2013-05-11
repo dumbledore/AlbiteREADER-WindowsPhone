@@ -263,7 +263,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
 
             //TODO: Tell the JSEngine to go to this location.
-            goToPage(10);
+            goToPage(1);
         }
 
         private void goToPage(int pageNumber)

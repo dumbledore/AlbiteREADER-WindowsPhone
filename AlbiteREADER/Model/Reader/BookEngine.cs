@@ -30,8 +30,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             set
             {
-                current = value.SpineElement.Next;
-                Chapter = value.SpineElement.Next.Chapter;
+                current = value.SpineElement;
+                Chapter = value.SpineElement.Chapter;
                 DomLocation = value.DomLocation;
             }
         }
