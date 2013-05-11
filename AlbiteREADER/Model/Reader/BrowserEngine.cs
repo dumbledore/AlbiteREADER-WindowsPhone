@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
-    public class BrowserEngine
+    public abstract class BrowserEngine
     {
         private static readonly string tag = "BrowserEngine";
 
@@ -50,7 +50,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         }
 
         private Chapter chapter;
-        public Chapter Chapter
+        protected Chapter Chapter
         {
             get { return chapter; }
 
@@ -70,7 +70,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
         }
 
-        public DomLocation DomLocation
+        protected DomLocation DomLocation
         {
             get
             {
