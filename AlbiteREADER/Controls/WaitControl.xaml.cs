@@ -18,5 +18,15 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             InitializeComponent();
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ProgressBar.IsIndeterminate = true;
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ProgressBar.IsIndeterminate = false;
+        }
     }
 }
