@@ -514,7 +514,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
              * be created. But is it too tall so it would have to be clipped
              * in two or would it fit into the next page?
              */
-            if (ct.bottom - ct.top <= pageHeight) {
+            if (ct.bottom - ct.top < pageHeight && ct.element.tagName != "img") {
                 /*
                  * The content would fit into the next page. No need to split.
                  * Simply create a new page.
