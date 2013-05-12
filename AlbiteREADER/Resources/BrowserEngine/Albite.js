@@ -160,7 +160,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
     function PageMetrics(pageNumber, offsetTop, offsetBottom, startNode) {
         this.pageNumber = pageNumber
         this.offsetTop  = offsetTop;
-        this.clipHeight = offsetBottom - offsetTop;
+        this.clipHeight = offsetBottom - offsetTop + 1;
         this.startNode  = startNode;
     }
 
@@ -462,7 +462,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
 
         var ct          = content.pop();
         var pageStart   = ct;
-        var pageBottom  = ct.top + pageHeight;
+        var pageBottom  = ct.top + pageHeight - 1;
         var page;
 
         while (ct) {
@@ -481,14 +481,14 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
                  */
                 page = new PageMetrics(
                     pages.length, pageStart.top,
-                    pageBottom < ct.top ? pageBottom : ct.top, pageStart.element);
+                    pageBottom, pageStart.element);
                 pages.push(page);
 
                 /*
                  * Update the stuff for the next page.
                  */
                 pageStart = ct;
-                pageBottom = ct.top + pageHeight;
+                pageBottom = ct.top + pageHeight - 1;
 
                 /*
                  * Don't pop the content. This one might need to be processed
@@ -504,7 +504,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
                 /*
                  * It ends here as well. Continue with the next content.
                  */
-                // log("Element " + ct.element + " starts on the current page. Continuing on.");
+                // log("Element " + ct.element + " ends on the current page. Continuing on.");
                 ct = content.pop();
                 continue;
             }
@@ -540,30 +540,19 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
             }
 
             /*
-             * This content would need to be clipped. Create a new page.
+             * This content would need to be clipped.
              */
             // log("Element " + ct.element + " needs to be clipped.");
-            page = new PageMetrics(
-                pages.length, pageStart.top,
-                pageBottom, pageStart.element);
-            pages.push(page);
 
             /*
-             * Update the stuff for the next page.
-             *
-             * Note that:
-             * 1. One needs to hack the `top` property of pageStart in
-             *    order to proceed on.
-             * 2. The page should have full height.
+             * Create a new PageContent, starting from the new top position,
+             * add it to the list and then sort the list again, so that the
+             * content would be on the next page and elements on this page
+             * would still be processed
              */
-            pageStart = ct;
-            pageStart.top = pageBottom;
-            pageBottom += pageHeight;
-
-            /*
-             * Don't pop the content. This one might need to be clipped again,
-             * so simply continue.
-             */
+            content.push(new PageContent(ct.element, { "top" : pageBottom + 1, "bottom" : ct.bottom }));
+            content.sort(sortContent);
+            ct = content.pop();
             continue;
         }
 
