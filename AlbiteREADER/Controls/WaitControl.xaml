@@ -7,16 +7,21 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="480" d:DesignWidth="480" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
+    d:DesignHeight="480" d:DesignWidth="480">
 
     <Grid x:Name="LayoutRoot">
         <Border
             Background="Black">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock
+                    FontSize="{StaticResource PhoneFontSizeLarge}"
                     HorizontalAlignment="Center"
                     Margin="10">Loading</TextBlock>
-                <ProgressBar Margin="10" Height="15" IsIndeterminate="False" x:Name="ProgressBar"/>
+                <TextBlock
+                    FontSize="{StaticResource PhoneFontSizeSmall}"
+                    Foreground="{StaticResource PhoneAccentBrush}"
+                    HorizontalAlignment="Center"
+                    Margin="0">Please, wait...</TextBlock>
             </StackPanel>
         </Border>
     </Grid>
