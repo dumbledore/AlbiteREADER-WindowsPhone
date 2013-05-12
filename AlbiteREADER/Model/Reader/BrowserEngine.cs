@@ -270,9 +270,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 return;
             }
 
-            // TODO: Get the location
+            // Get the current location
+            DomLocation location = DomLocation;
+
+            // reload
             navigateBrowser();
-            // TODO: Set the location
+
+            // Set to the same location
+            DomLocation = location;
         }
 
         private void navigateBrowser()
