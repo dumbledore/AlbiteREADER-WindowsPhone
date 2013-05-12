@@ -64,7 +64,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             {
                 //TODO: Write JScript code that will tell the current reading location
                 //      using ScriptNotify() and window.external.notify().
-                return null;
+                return new DomLocation(0, 0);
             }
 
             set { goToLocation(new DomLocationWrapper(this, value)); }
