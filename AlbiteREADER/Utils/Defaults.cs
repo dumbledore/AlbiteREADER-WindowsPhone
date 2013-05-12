@@ -33,10 +33,10 @@ namespace SvetlinAnkov.Albite.READER.Utils
                     settings.FontSize = int.Parse(LayoutDefaults.FontSize);
                     settings.FontFamily = LayoutDefaults.FontFamily;
                     settings.TextAlign = TextAlign.FromString(LayoutDefaults.TextAlign);
-                    settings.MarginTop = int.Parse(LayoutDefaults.MarginTop);
-                    settings.MarginBottom = int.Parse(LayoutDefaults.MarginBottom);
-                    settings.MarginLeft = int.Parse(LayoutDefaults.MarginLeft);
-                    settings.MarginRight = int.Parse(LayoutDefaults.MarginRight);
+                    settings.MarginTop = float.Parse(LayoutDefaults.MarginTop);
+                    settings.MarginBottom = float.Parse(LayoutDefaults.MarginBottom);
+                    settings.MarginLeft = float.Parse(LayoutDefaults.MarginLeft);
+                    settings.MarginRight = float.Parse(LayoutDefaults.MarginRight);
                     settings.ControlBackground = LayoutDefaults.ControlBackground;
                     settings.Theme = DefaultTheme;
 

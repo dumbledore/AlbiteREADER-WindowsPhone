@@ -23,20 +23,20 @@ body {
 }
 
 div.page {
-	padding-top:    %{page_margin_top}px;    /* Default: 30 */
-	padding-bottom: %{page_margin_bottom}px; /* Default: 30 */
-	padding-left:   %{page_margin_left}px;   /* Default: 30 */
-	padding-right:  %{page_margin_right}px;  /* Default: 40 */
-	width:         %{page_width}px;         /* Default: 410 */
-	height:        %{page_height}px;        /* Default: 668 */
-	position: absolute;
+	padding-top:    %{page_margin_top}px;    /* Default: 30  */
+	padding-bottom: %{page_margin_bottom}px; /* Default: 30  */
+	padding-left:   %{page_margin_left}px;   /* Default: 30  */
+	padding-right:  %{page_margin_right}px;  /* Default: 40  */
+	width:          %{page_width}px;         /* Default: 410 */
+	height:         %{page_height}px;        /* Default: 668 */
+	position:       absolute;
 }
 
 .page_header {
 	width: 100%;
-	height: 4%;
+	height: %{header_height}px;
 	overflow: hidden;
-	font-size: 70%;
+	font-size: %{header_font_size}px;
 	text-transform: uppercase;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -51,12 +51,12 @@ div.page {
 }
 
 .page_header_space {
-	height: 2%;
+	height: %{header_space_height}px;
 }
 
 .page_content_box {
 	width: 100%;
-	height: 94%;
+	height: %{content_box_height}px;
 }
 
 .page_content_clipper {

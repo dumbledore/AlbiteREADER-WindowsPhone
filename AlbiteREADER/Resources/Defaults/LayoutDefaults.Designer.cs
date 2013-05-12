@@ -124,7 +124,7 @@ namespace SvetlinAnkov.Albite.READER.Resources.Defaults {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 30.
+        ///   Looks up a localized string similar to 0.0375.
         /// </summary>
         internal static string MarginBottom {
             get {
@@ -133,7 +133,7 @@ namespace SvetlinAnkov.Albite.READER.Resources.Defaults {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 30.
+        ///   Looks up a localized string similar to 0.0375.
         /// </summary>
         internal static string MarginLeft {
             get {
@@ -142,7 +142,7 @@ namespace SvetlinAnkov.Albite.READER.Resources.Defaults {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 40.
+        ///   Looks up a localized string similar to 0.05.
         /// </summary>
         internal static string MarginRight {
             get {
@@ -151,7 +151,7 @@ namespace SvetlinAnkov.Albite.READER.Resources.Defaults {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 30.
+        ///   Looks up a localized string similar to 0.0375.
         /// </summary>
         internal static string MarginTop {
             get {

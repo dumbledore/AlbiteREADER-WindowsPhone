@@ -141,16 +141,20 @@
     <comment>in %</comment>
   </data>
   <data name="MarginBottom" xml:space="preserve">
-    <value>30</value>
+    <value>0.0375</value>
+    <comment>in % of the longer side</comment>
   </data>
   <data name="MarginLeft" xml:space="preserve">
-    <value>30</value>
+    <value>0.0375</value>
+    <comment>in % of the longer side</comment>
   </data>
   <data name="MarginRight" xml:space="preserve">
-    <value>40</value>
+    <value>0.05</value>
+    <comment>in % of the longer side</comment>
   </data>
   <data name="MarginTop" xml:space="preserve">
-    <value>30</value>
+    <value>0.0375</value>
+    <comment>in % of the longer side</comment>
   </data>
   <data name="NightThemeAccentColor" xml:space="preserve">
     <value>#634F3B</value>

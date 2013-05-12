@@ -364,6 +364,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             // Set up the templates
             updateLayout();
 
+            // Set up the dimensions
+            updateDimensions((int) Controller.ViewportWidth, (int) Controller.ViewportHeight);
+
             // Set up the theme
             updateTheme();
         }
@@ -387,24 +390,53 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         /// </summary>
         public void UpdateDimensions(int viewportWidth, int viewportHeight)
         {
+            Controller.LoadingStarted();
+            updateDimensions(viewportWidth, viewportHeight);
+            reloadBrowser();
+        }
+
+        private void updateDimensions(int viewportWidth, int viewportHeight)
+        {
             Log.D(tag, string.Format("UpdateDimensions: {0}x{1}", viewportWidth, viewportHeight));
 
-            Controller.LoadingStarted();
-
             int width = viewportWidth / 3;
-            int pageWidth = width - (settings.MarginLeft + settings.MarginRight);
-            int pageHeight = viewportHeight - (settings.MarginTop + settings.MarginBottom);
-
+            int height = viewportHeight;
             mainPageTemplate["full_page_width"] = width.ToString();
             mainPageTemplate["viewport_width"] = viewportWidth.ToString();
             mainPageTemplate.SaveToStorage();
 
+            int viewportReference = Math.Max(width, height);
+            int marginLeft = (int) (settings.MarginLeft * viewportReference);
+            int marginRight = (int) (settings.MarginRight * viewportReference);
+            int marginTop = (int) (settings.MarginTop * viewportReference);
+            int marginBottom = (int) (settings.MarginBottom * viewportReference);
+
+            baseStylesTemplate["page_margin_top"] = marginTop.ToString();
+            baseStylesTemplate["page_margin_bottom"] = marginBottom.ToString();
+            baseStylesTemplate["page_margin_left"] = marginLeft.ToString();
+            baseStylesTemplate["page_margin_right"] = marginRight.ToString();
+
+            int pageWidth = width - (marginLeft + marginRight);
+            int pageHeight = height - (marginTop + marginBottom);
+
             baseStylesTemplate["page_width_x_3"] = viewportWidth.ToString();
             baseStylesTemplate["page_width"] = pageWidth.ToString();
             baseStylesTemplate["page_height"] = pageHeight.ToString();
-            baseStylesTemplate.SaveToStorage();
 
-            reloadBrowser();
+            int pageReference = Math.Max(pageWidth, pageHeight);
+            int headerHeight = (int) (0.04 * pageReference) + 1; // 1px is for the bottom border
+            int headerSpaceHeight = (int) (0.02 * pageReference);
+            int contentBoxHeight = pageHeight - (headerHeight + headerSpaceHeight);
+
+            baseStylesTemplate["header_height"] = headerHeight.ToString();
+            baseStylesTemplate["header_space_height"] = headerSpaceHeight.ToString();
+            baseStylesTemplate["content_box_height"] = contentBoxHeight.ToString();
+
+            int headerFontSize = (int) (0.8 * headerHeight);
+
+            baseStylesTemplate["header_font_size"] = headerFontSize.ToString();
+
+            baseStylesTemplate.SaveToStorage();
         }
 
         private void updateLayout()
@@ -414,15 +446,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             contentStylesTemplate["font_family"] = settings.FontFamily;
             contentStylesTemplate["text_align"] = settings.TextAlign.ToString();
             contentStylesTemplate.SaveToStorage();
-
-            baseStylesTemplate["page_margin_top"] = settings.MarginTop.ToString();
-            baseStylesTemplate["page_margin_bottom"] = settings.MarginBottom.ToString();
-            baseStylesTemplate["page_margin_left"] = settings.MarginLeft.ToString();
-            baseStylesTemplate["page_margin_right"] = settings.MarginRight.ToString();
-
-            // Don't forget to update the dimensions as well as they
-            // depend on the margins. This will reload the browser.
-            UpdateDimensions((int)Controller.ViewportWidth, (int)Controller.ViewportHeight);
         }
         #endregion
 

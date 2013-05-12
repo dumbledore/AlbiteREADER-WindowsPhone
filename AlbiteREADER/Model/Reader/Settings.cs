@@ -19,10 +19,10 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         public int FontSize { get; set; }
         public TextAlign TextAlign { get; set; }
 
-        public int MarginTop { get; set; }
-        public int MarginBottom { get; set; }
-        public int MarginLeft { get; set; }
-        public int MarginRight { get; set; }
+        public float MarginTop { get; set; }
+        public float MarginBottom { get; set; }
+        public float MarginLeft { get; set; }
+        public float MarginRight { get; set; }
 
         public string ControlBackground { get; set; }
 
