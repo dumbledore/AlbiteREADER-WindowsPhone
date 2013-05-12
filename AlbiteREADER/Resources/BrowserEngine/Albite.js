@@ -381,7 +381,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
         }
 
         function sortContent(a, b) {
-            return a.top - b.top;
+            return b.top - a.top;
         }
 
         var content = [];
@@ -433,7 +433,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
          *
          * sortContent() uses the top values for reference.
          */
-        content.reverse(sortContent);
+        content.sort(sortContent);
 
         pages = [];
 
