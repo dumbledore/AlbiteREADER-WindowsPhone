@@ -173,9 +173,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 Log.D(tag, "Still animating, dropping event");
                 return;
             }
-
-            // There's no need to cancel/stop the animation as it's got a higher pripority
-            // and therefore the code in OnManipulationDelta won't have an effect.
         }
 
         protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
