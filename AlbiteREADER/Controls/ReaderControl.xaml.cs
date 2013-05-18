@@ -302,7 +302,13 @@ namespace SvetlinAnkov.Albite.READER.Controls
             scrollStoryboard.Children.Add(scrollAnimation);
         }
 
-        private bool isAnimating = false;
+        private bool isAnimating
+        {
+            get
+            {
+                return scrollStoryboard.GetCurrentState() == ClockState.Active;
+            }
+        }
 
         enum PageType
         {
@@ -345,7 +351,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 scrollAnimation.From, scrollAnimation.To,
                 scrollAnimation.Duration.TimeSpan.Milliseconds / scrollAnimation.SpeedRatio));
 
-            isAnimating = true;
             scrollStoryboard.Begin();
         }
 
@@ -353,7 +358,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             Log.D(tag, "Cancelling scroll animation");
             scrollStoryboard.Stop();
-            isAnimating = false;
         }
         #endregion
 
@@ -459,7 +463,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
         private void ScrollAnimation_Completed(object sender, EventArgs e)
         {
             logEvent("Animation completed");
-            isAnimating = false;
 
             switch (scrollPageType)
             {
