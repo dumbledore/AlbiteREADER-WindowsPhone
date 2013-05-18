@@ -80,17 +80,17 @@ namespace SvetlinAnkov.Albite.READER.Model
 
         public class Presenter : IDisposable
         {
-            private readonly Book book;
-            private readonly BookContainer container;
             private readonly Library.BookManager manager;
             private readonly Library.PersistDelegate persist;
+
+            public Book Book { get; private set; }
+            public BookContainer Container { get; private set; }
 
             private readonly Object myLock = new Object();
 
             private SpineElement[] spine;
             // TODO: ToC
             // TODO: Lists
-            // TODO: Export other metadata, perhaps?
 
             public Presenter(
                 Book book,
@@ -98,8 +98,8 @@ namespace SvetlinAnkov.Albite.READER.Model
                 Library.BookManager manager,
                 Library.PersistDelegate persist)
             {
-                this.book = book;
-                this.container = container;
+                this.Book = book;
+                this.Container = container;
                 this.manager = manager;
                 this.persist = persist;
 
@@ -113,8 +113,8 @@ namespace SvetlinAnkov.Albite.READER.Model
 
                 // Set bookLocation
                 bookLocation = new BookLocation(
-                    spine[book.currentChapterIndex],
-                    new DomLocation(book.locationIndex, book.locationOffset));
+                    spine[Book.currentChapterIndex],
+                    new DomLocation(Book.locationIndex, Book.locationOffset));
             }
 
             private SpineElement[] prepareSpine()
@@ -124,11 +124,11 @@ namespace SvetlinAnkov.Albite.READER.Model
                 SpineElement current = null;
                 int number = 0;
 
-                foreach (string url in container.Spine)
+                foreach (string url in Container.Spine)
                 {
                     // Add the chapter to the spine
                     current = new SpineElement(number++,
-                            book[url],
+                            Book[url],
                             previous,
                             null
                     );
@@ -149,15 +149,15 @@ namespace SvetlinAnkov.Albite.READER.Model
                 set
                 {
                     bookLocation = value;
-                    book.currentChapterIndex = bookLocation.SpineElement.Number;
-                    book.locationIndex = bookLocation.DomLocation.ElementIndex;
-                    book.locationOffset = bookLocation.DomLocation.TextOffset;
+                    Book.currentChapterIndex = bookLocation.SpineElement.Number;
+                    Book.locationIndex = bookLocation.DomLocation.ElementIndex;
+                    Book.locationOffset = bookLocation.DomLocation.TextOffset;
                 }
             }
 
             public string Path
             {
-                get { return manager.GetPath(book); }
+                get { return manager.GetPath(Book); }
             }
 
             public string RelativeContentPath
@@ -167,7 +167,7 @@ namespace SvetlinAnkov.Albite.READER.Model
 
             public string ContentPath
             {
-                get { return manager.GetContentPath(book); }
+                get { return manager.GetContentPath(Book); }
             }
 
             public string RelativeEnginePath
@@ -177,7 +177,7 @@ namespace SvetlinAnkov.Albite.READER.Model
 
             public string EnginePath
             {
-                get { return manager.GetEnginePath(book); }
+                get { return manager.GetEnginePath(Book); }
             }
 
             public void Persist()
@@ -187,7 +187,7 @@ namespace SvetlinAnkov.Albite.READER.Model
 
             public void Dispose()
             {
-                container.Dispose();
+                Container.Dispose();
             }
         }
 
