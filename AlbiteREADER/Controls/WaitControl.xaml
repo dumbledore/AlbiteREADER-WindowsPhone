@@ -11,7 +11,7 @@
 
     <Grid x:Name="LayoutRoot">
         <Border
-            Background="Black">
+            Background="{StaticResource PhoneBackgroundBrush}">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock
                     FontSize="{StaticResource PhoneFontSizeLarge}"
