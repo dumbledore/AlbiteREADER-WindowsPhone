@@ -32,31 +32,9 @@ div.page {
 	position:       absolute;
 }
 
-.page_header {
-	width: 100%;
-	height: %{header_height}px;
-	overflow: hidden;
-	font-size: %{header_font_size}px;
-	text-transform: uppercase;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-
-	/*
-	 * Hide it for the first page
-	 * of the chapter. Unhide it after that.
-	 */
-	visibility: hidden;
-}
-
-.page_header_space {
-	height: %{header_space_height}px;
-}
-
 .page_content_box {
 	width: 100%;
-	height: %{content_box_height}px;
+	height: 100%;
 }
 
 .page_content_clipper {
@@ -75,10 +53,6 @@ html {
 
 div.page {
 	background-color: %{background_color};	 /* Default: white */
-}
-
-div.header {
-	border-bottom-color: %{text_color};
 }
 
 hr {

@@ -49,7 +49,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 chapter = value;
 
                 // Set up the main.xhtml
-                mainPageTemplate["chapter_title"] = "untitled"; //ToDo
                 mainPageTemplate["chapter_file"] = Path.Combine("/" + Controller.Presenter.RelativeContentPath, chapter.Url);
                 mainPageTemplate.SaveToStorage();
 
@@ -427,19 +426,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             baseStylesTemplate["page_width_x_3"] = viewportWidth.ToString();
             baseStylesTemplate["page_width"] = pageWidth.ToString();
             baseStylesTemplate["page_height"] = pageHeight.ToString();
-
-            int pageReference = Math.Max(pageWidth, pageHeight);
-            int headerHeight = (int) (0.04 * pageReference) + 1; // 1px is for the bottom border
-            int headerSpaceHeight = (int) (0.02 * pageReference);
-            int contentBoxHeight = pageHeight - (headerHeight + headerSpaceHeight);
-
-            baseStylesTemplate["header_height"] = headerHeight.ToString();
-            baseStylesTemplate["header_space_height"] = headerSpaceHeight.ToString();
-            baseStylesTemplate["content_box_height"] = contentBoxHeight.ToString();
-
-            int headerFontSize = (int) (0.8 * headerHeight);
-
-            baseStylesTemplate["header_font_size"] = headerFontSize.ToString();
 
             baseStylesTemplate.SaveToStorage();
         }

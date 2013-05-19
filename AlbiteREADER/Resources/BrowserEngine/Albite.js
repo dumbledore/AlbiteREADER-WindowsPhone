@@ -104,8 +104,6 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
         this.setPage        = setPage;
         this.setPosition    = setPosition;
 
-        var header = pageContent.getElementsByClassName("page_header")[0];
-
         var contentFrame =
                 pageContent.getElementsByClassName("page_content_frame")[0];
 
@@ -136,11 +134,6 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
              */
             contentWindow.scrollTo(0, pageMetrics.offsetTop);
             contentClipper.style.height = pageMetrics.clipHeight + "px";
-
-            /*
-             * Hide the header for the first page.
-             */
-            header.style.visibility = pageNumber != 1 ? "visible" : "hidden";
 
             /*
              * Now show it
