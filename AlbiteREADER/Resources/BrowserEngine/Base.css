@@ -7,10 +7,10 @@ html, body {
 	margin: 0;
 
 	/*
-	 * The width is 3 times the page width,
+	 * The viewport width is 3 times the page width,
 	 * because it will cover three pages
 	 */
-	width: %{page_width_x_3}px; /* Default 3xPageWidth, so most probably 1440 */
+	width: %{viewport_width}px; /* Default 3xPageWidth, so most probably 1440 */
 	height: 100%;
 }
 

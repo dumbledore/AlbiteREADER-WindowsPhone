@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="Theme.css" />
         <script type="text/javascript" src="Albite.js" />
         <script type="text/javascript">
-            albite = new Albite(window, %{full_page_width}, 1, %{debug});
+            albite = new Albite(window, %{full_page_width}, %{initial_location}, %{debug});
 
             /*
              * Export Albite functions to WebBrowser.InvokeScript
@@ -27,6 +27,17 @@
 
             function albite_getPageCount() {
                 return albite_return(albite.getPageCount());
+            }
+
+            function albite_getCurrentPageNumber() {
+                return albite_return(albite.getCurrentPageNumber());
+            }
+
+            function albite_getPageForLocation(elementIndex, textOffset) {
+                var e = parseInt(elementIndex);
+                var t = parseInt(textOffset);
+
+                return albite_return(albite.getPageForLocation(e, t));
             }
 
             /*

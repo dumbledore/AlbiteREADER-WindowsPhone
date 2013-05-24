@@ -25,39 +25,54 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             prepare();
         }
-
-        private static readonly string assemblyName;
-
-        static BrowserEngine()
-        {
-            AssemblyName name = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
-            assemblyName = name.Name;
-        }
         #endregion
 
         #region Public API
 
-        private Chapter chapter;
-        protected Chapter Chapter
+        public Chapter Chapter { get; private set; }
+
+        public void SetChapter(Chapter chapter, int page)
         {
-            get { return chapter; }
-
-            set
-            {
-                Controller.LoadingStarted();
-
-                chapter = value;
-
-                // Set up the main.xhtml
-                mainPageTemplate["chapter_file"] = Path.Combine("/" + Controller.Presenter.RelativeContentPath, chapter.Url);
-                mainPageTemplate.SaveToStorage();
-
-                // Now navigate the web browser
-                navigateBrowser();
-            }
+            mainPageTemplate.InitialLocation = page.ToString();
+            SetChapter(chapter);
         }
 
-        protected DomLocation DomLocation
+        public void SetChapterFirstPage(Chapter chapter)
+        {
+            mainPageTemplate.InitialLocation = "\"first\"";
+            SetChapter(chapter);
+        }
+
+        public void SetChapterLastPage(Chapter chapter)
+        {
+            mainPageTemplate.InitialLocation = "\"last\"";
+            SetChapter(chapter);
+        }
+
+        public void SetChapterDomLocation(Chapter chapter, DomLocation location)
+        {
+            mainPageTemplate.InitialLocation
+                = string.Format("{{elementIndex: {0}, textOffset:{1} }}",
+                location.ElementIndex, location.TextOffset);
+
+            SetChapter(chapter);
+        }
+
+        private void SetChapter(Chapter chapter)
+        {
+            Controller.LoadingStarted();
+
+            Chapter = chapter;
+
+            // Set up the main.xhtml
+            mainPageTemplate.ChatperFile = Path.Combine("/" + Controller.Presenter.RelativeContentPath, chapter.Url);
+            mainPageTemplate.SaveToStorage();
+
+            // Now navigate the web browser
+            navigateBrowser();
+        }
+
+        public DomLocation DomLocation
         {
             get
             {
@@ -66,7 +81,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 return new DomLocation(0, 0);
             }
 
-            set { goToLocation(new DomLocationWrapper(this, value)); }
+            set { goToDomLocation(value); }
         }
 
         private int currentPage;
@@ -77,19 +92,19 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         public int Page
         {
             get { return currentPage; }
-            set { goToLocation(new PageLocationWrapper(this, value)); }
+            set { goToPage(value); }
         }
 
         public int PageCount { get; private set; }
 
         public void GoToFirstPage()
         {
-            goToLocation(new LimitsLocationWrapper(this, true));
+            goToPage(FirstPageNumber);
         }
 
         public void GoToLastPage()
         {
-            goToLocation(new LimitsLocationWrapper(this, false));
+            goToPage(LastPageNumber);
         }
 
         //Note: there are always AT LEAST 3 pages
@@ -100,7 +115,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         public bool IsLastPage { get { return currentPage >= LastPageNumber; } }
         #endregion
 
-        #region Location API
+        #region Location implementation
 
         private int validatePageNumber(int pageNumber)
         {
@@ -117,113 +132,23 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             return pageNumber;
         }
 
-        private ILocationWrapper locationCached;
-
-        /// <summary>
-        /// This wrapper is used for postponing location requests.
-        /// A location may be requested to be changed before the chapters
-        /// has actually loaded and therefore needs to be postponed for
-        /// when the chapter is ready
-        /// </summary>
-        private interface ILocationWrapper
+        private void goToDomLocation(DomLocation location)
         {
-            void goTo();
-        }
-
-        private class DomLocationWrapper : ILocationWrapper
-        {
-            private readonly BrowserEngine engine;
-            private readonly DomLocation location;
-
-            public DomLocationWrapper(BrowserEngine engine, DomLocation location)
-            {
-                this.engine = engine;
-                this.location = location;
-            }
-
-            public void goTo()
-            {
-                engine.goToDomLocation(location);
-            }
-
-            public override string ToString()
-            {
-                return string.Format("Element Index: {0}, Text Offset: {1}",
-                    location.ElementIndex, location.TextOffset);
-            }
-        }
-
-        private class PageLocationWrapper : ILocationWrapper
-        {
-            private readonly BrowserEngine engine;
-            private readonly int page;
-
-            public PageLocationWrapper(BrowserEngine engine, int page)
-            {
-                this.engine = engine;
-                this.page = page;
-            }
-
-            public void goTo()
-            {
-                engine.goToPage(page);
-            }
-
-            public override string ToString()
-            {
-                return string.Format("Page #{0}", page);
-            }
-        }
-
-        private class LimitsLocationWrapper : ILocationWrapper
-        {
-            private readonly BrowserEngine engine;
-            private readonly bool goingToFirstPage;
-
-            public LimitsLocationWrapper(BrowserEngine engine, bool goingToFirstPage)
-            {
-                this.engine = engine;
-                this.goingToFirstPage = goingToFirstPage;
-            }
-
-            public void goTo()
-            {
-                if (goingToFirstPage)
-                {
-                    engine.goToFirstPage();
-                }
-                else
-                {
-                    engine.goToLastPage();
-                }
-            }
-
-            public override string ToString()
-            {
-                return goingToFirstPage ? "First Page" : "Last Page";
-            }
-        }
-
-        private void goToLocation(ILocationWrapper location)
-        {
-            // clear the cached value
-            locationCached = null;
-
             if (Controller.IsLoading)
             {
-                Log.D(tag, "Still loading. Cache the location");
-                locationCached = location;
                 return;
             }
 
-            Log.D(tag, string.Format("Going to location " + location.ToString()));
-            location.goTo();
-        }
+            // setup the arguments
+            string[] args = {
+                location.ElementIndex.ToString(), location.TextOffset.ToString()
+            };
 
-        private void goToDomLocation(DomLocation location)
-        {
-            //TODO
-            goToPage(1);
+            // get the page for this dom location
+            string page = Controller.SendCommand("albite_getPageForLocation", args);
+
+            // finally, simply go to this page
+            goToPage(int.Parse(page));
         }
 
         private void goToPage(int pageNumber)
@@ -247,16 +172,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             Controller.SendCommand("albite_goToPage2");
 
             currentPage = pageNumber;
-        }
-
-        private void goToFirstPage()
-        {
-            goToPage(FirstPageNumber);
-        }
-
-        private void goToLastPage()
-        {
-            goToPage(LastPageNumber);
         }
         #endregion
 
@@ -314,9 +229,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return settings; }
         }
 
-        private TemplateResource mainPageTemplate;
-        private TemplateResource baseStylesTemplate;
-        private TemplateResource contentStylesTemplate;
+        private MainPageTemplate mainPageTemplate;
+        private BaseStylesTemplate baseStylesTemplate;
+        private ContentStylesTemplate contentStylesTemplate;
 
         private void prepare()
         {
@@ -328,42 +243,21 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             // Copy the JSEngine to the Isolated Storage
             using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(
-                Path.Combine(enginePath, Paths.JSEngine)))
+                EngineTemplate.GetOutputPath(Paths.JSEngine, enginePath)))
             {
-                using (AlbiteResourceStorage res = new AlbiteResourceStorage(
-                    Path.Combine(Paths.BasePath, Paths.JSEngine), assemblyName))
+                using (AlbiteStorage res = EngineTemplate.GetStorage(Paths.JSEngine))
                 {
                     res.CopyTo(iso);
                 }
             }
 
             // Load the templates
-            using (AlbiteResourceStorage res = new AlbiteResourceStorage(
-                Path.Combine(Paths.BasePath, Paths.MainPage), assemblyName))
-            {
-                mainPageTemplate = new TemplateResource(
-                    res, Path.Combine(enginePath, Paths.MainPage));
-            }
-
+            mainPageTemplate = new MainPageTemplate(enginePath);
 #if DEBUG
-            mainPageTemplate["debug"] = "true";
-#else
-            mainPageTemplate["debug"] = "false";
+            mainPageTemplate.Debug = true;
 #endif
-
-            using (AlbiteResourceStorage res = new AlbiteResourceStorage(
-                Path.Combine(Paths.BasePath, Paths.BaseStyles), assemblyName))
-            {
-                baseStylesTemplate = new TemplateResource(
-                    res, Path.Combine(enginePath, Paths.BaseStyles));
-            }
-
-            using (AlbiteResourceStorage res = new AlbiteResourceStorage(
-                Path.Combine(Paths.BasePath, Paths.ContentStyles), assemblyName))
-            {
-                contentStylesTemplate = new TemplateResource(
-                    res, Path.Combine(enginePath, Paths.ContentStyles));
-            }
+            baseStylesTemplate = new BaseStylesTemplate(enginePath);
+            contentStylesTemplate = new ContentStylesTemplate(enginePath);
 
             // Set up the templates
             updateLayout();
@@ -377,14 +271,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         private void updateTheme()
         {
-            baseStylesTemplate["control_background"] = settings.ControlBackground;
-            baseStylesTemplate["background_color"] = settings.Theme.BackgroundColor;
-            baseStylesTemplate["text_color"] = settings.Theme.FontColor;
+            baseStylesTemplate.ControlBackground = settings.ControlBackground;
+            baseStylesTemplate.BackgroundColor = settings.Theme.BackgroundColor;
+            baseStylesTemplate.TextColor = settings.Theme.FontColor;
             baseStylesTemplate.SaveToStorage();
 
-            contentStylesTemplate["background_color"] = settings.Theme.BackgroundColor;
-            contentStylesTemplate["text_color"] = settings.Theme.FontColor;
-            contentStylesTemplate["accent_color"] = settings.Theme.AccentColor;
+            contentStylesTemplate.BackgroundColor = settings.Theme.BackgroundColor;
+            contentStylesTemplate.TextColor = settings.Theme.FontColor;
+            contentStylesTemplate.AccentColor = settings.Theme.AccentColor;
             contentStylesTemplate.SaveToStorage();
         }
 
@@ -405,8 +299,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             int width = viewportWidth / 3;
             int height = viewportHeight;
-            mainPageTemplate["full_page_width"] = width.ToString();
-            mainPageTemplate["viewport_width"] = viewportWidth.ToString();
+            mainPageTemplate.FullPageWidth = width;
+            mainPageTemplate.ViewportWidth = viewportWidth;
             mainPageTemplate.SaveToStorage();
 
             int viewportReference = Math.Max(width, height);
@@ -415,27 +309,28 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             int marginTop = (int) (settings.MarginTop * viewportReference);
             int marginBottom = (int) (settings.MarginBottom * viewportReference);
 
-            baseStylesTemplate["page_margin_top"] = marginTop.ToString();
-            baseStylesTemplate["page_margin_bottom"] = marginBottom.ToString();
-            baseStylesTemplate["page_margin_left"] = marginLeft.ToString();
-            baseStylesTemplate["page_margin_right"] = marginRight.ToString();
+            baseStylesTemplate.MarginTop = marginTop;
+            baseStylesTemplate.MarginBottom = marginBottom;
+            baseStylesTemplate.MarginLeft = marginLeft;
+            baseStylesTemplate.MarginRight = marginRight;
 
             int pageWidth = width - (marginLeft + marginRight);
             int pageHeight = height - (marginTop + marginBottom);
 
-            baseStylesTemplate["page_width_x_3"] = viewportWidth.ToString();
-            baseStylesTemplate["page_width"] = pageWidth.ToString();
-            baseStylesTemplate["page_height"] = pageHeight.ToString();
+            baseStylesTemplate.ViewportWidth = viewportWidth;
+            baseStylesTemplate.PageWidth = pageWidth;
+            baseStylesTemplate.PageHeight = pageHeight;
 
             baseStylesTemplate.SaveToStorage();
         }
 
         private void updateLayout()
         {
-            contentStylesTemplate["line_height"] = settings.LineHeight.ToString();
-            contentStylesTemplate["font_size"] = settings.FontSize.ToString();
-            contentStylesTemplate["font_family"] = settings.FontFamily;
-            contentStylesTemplate["text_align"] = settings.TextAlign.ToString();
+            contentStylesTemplate.LineHeight = settings.LineHeight;
+            contentStylesTemplate.FontSize = settings.FontSize;
+            contentStylesTemplate.FontFamily = settings.FontFamily;
+            contentStylesTemplate.TextAlign = settings.TextAlign;
+
             contentStylesTemplate.SaveToStorage();
         }
         #endregion
@@ -474,11 +369,10 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             // Now get the page count
             PageCount = int.Parse(Controller.SendCommand("albite_getPageCount"));
 
-            // And finally, go to the location if there was one
-            if (locationCached != null)
-            {
-                goToLocation(locationCached);
-            }
+            // Get the current page number
+            currentPage = int.Parse(Controller.SendCommand("albite_getCurrentPageNumber"));
+
+            // TODO: Handle missed orientations
         }
 
         private void handleDebugCommand(string message)

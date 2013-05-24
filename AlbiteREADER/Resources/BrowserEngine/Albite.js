@@ -3,7 +3,7 @@
  * the classes that use this are going to be available in very small counts,
  * thus speed and encapsulation are more important than small memory concerns.
  */
-function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
+function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     /*
      * Attach the error handler for the main window
      */
@@ -39,6 +39,16 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
      * Get the amount of available pages
      */
     this.getPageCount   = getPageCount;
+
+    /*
+     * Get the current page number
+     */
+    this.getCurrentPageNumber = getCurrentPageNumber;
+
+    /*
+     * Get the page for the specified DOM Location
+     */
+    this.getPageForLocation = getPageForLocation;
 
     /*
      * Functions for debugging
@@ -88,6 +98,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
     /*
      * Implementations
      */
+    var currentPageNumber = 1;
 
     var PREVIOUS_PAGE_POSITION  = "0px";
     var CURRENT_PAGE_POSITION   = pageWidth + "px";
@@ -155,11 +166,6 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
         this.offsetTop  = offsetTop;
         this.clipHeight = offsetBottom - offsetTop + 1;
         this.startNode  = startNode;
-    }
-
-    function ChapterPosition(textElement, textOffset) {
-        this.textElement = textElement;
-        this.textOffset = textOffset;
     }
 
     // Private stuff
@@ -241,7 +247,7 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
             /*
              * Set the pages to be shown.
              */
-            goToPage(currentPageNumber);
+            setupInitialLocation();
 
             /*
              * Ready to lift the curtains.
@@ -253,6 +259,37 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
              */
             notifyLoaded();
         });
+    }
+
+    function setupInitialLocation() {
+        var type = typeof(initialLocation);
+        switch (type) {
+            case "number":
+                goToPage(initialLocation);
+                break;
+
+            case "string":
+                switch(initialLocation) {
+                    case "first":
+                        goToFirstPage();
+                        break;
+
+                    case "last":
+                        goToLastPage();
+                        break;
+
+                    default:
+                        throw("Invalid string for the initial location: " + initialLocation);
+                }
+                break;
+
+            case "object":
+                goToDomLocation(initialLocation.elementIndex, initialLocation.textOffset);
+                break;
+
+            default:
+                throw("Invalid type for the initial location: " + type);
+        }
     }
 
     function createFrame(pageDiv) {
@@ -307,6 +344,11 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
         doc.getElementsByTagName("head")[0].appendChild(linkElement);
     }
 
+    function getPageForLocation(elementIndex, textOffset) {
+        // TODO
+        return 1;
+    }
+
     function firstPageNumber() {
         return 1;
     }
@@ -321,6 +363,18 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
 
     function isLastPage(pageNumber) {
         return pageNumber >= lastPageNumber();
+    }
+
+    function goToFirstPage() {
+        goToPage(firstPageNumber());
+    }
+
+    function goToLastPage() {
+        goToPage(lastPageNumber());
+    }
+
+    function goToDomLocation(elementIndex, textOffset) {
+        goToPage(getPageForLocation(elementIndex, textOffset));
     }
 
     function validatePageNumber(pageNumber) {
@@ -361,6 +415,10 @@ function Albite(mainWindow, pageWidth, currentPageNumber, debugEnabled) {
 
     function getPageCount() {
         return booklet.length;
+    }
+
+    function getCurrentPageNumber() {
+        return currentPageNumber;
     }
 
     function paginate(pageHeight, body) {
