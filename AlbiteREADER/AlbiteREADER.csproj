@@ -74,6 +74,7 @@
     <Compile Include="IAlbiteApplication.cs" />
     <Compile Include="Model\Reader\BrowserEngine.cs" />
     <Compile Include="Model\Reader\DomLocation.cs" />
+    <Compile Include="Model\Reader\EngineTemplate.cs" />
     <Compile Include="Model\Reader\Paths.cs" />
     <Compile Include="Model\Reader\Settings.cs" />
     <Compile Include="Model\Reader\Template.cs" />

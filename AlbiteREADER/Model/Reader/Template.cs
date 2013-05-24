@@ -29,17 +29,12 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         private const string PlaceholderLeftSide = "%{";
         private const string PlaceholderRightSide = "}";
 
-        private string template;
+        private readonly string template;
         private Dictionary<string, string> placeholders = new Dictionary<string,string>();
 
         protected Template() { }
 
         public Template(string template)
-        {
-            setTemplate(template);
-        }
-
-        protected void setTemplate(string template)
         {
             this.template = template;
             parsePlaceholders();

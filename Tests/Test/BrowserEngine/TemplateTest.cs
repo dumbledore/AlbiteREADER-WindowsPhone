@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using SvetlinAnkov.Albite.READER.Model.Reader;
 using SvetlinAnkov.Albite.Core.Test;
+using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.Tests.Test.BrowserEngine
 {
@@ -25,8 +26,16 @@ namespace SvetlinAnkov.Albite.Tests.Test.BrowserEngine
         protected override void TestImplementation()
         {
             Log("Opening Template {0}", filename);
-            Template t = new TemplateResource(filename);
+            Template t = new TemplateResource(getTemplate());
             listTemplateNames(t);
+        }
+
+        private string getTemplate()
+        {
+            using (AlbiteResourceStorage s = new AlbiteResourceStorage(filename))
+            {
+                return s.ReadAsString();
+            }
         }
 
         private void listTemplateNames(Template t)
