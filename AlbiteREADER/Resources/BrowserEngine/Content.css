@@ -11,6 +11,7 @@ body
 	 * page could be scrolled. Using the WP8 value just in case
 	 */
 	padding-bottom: 1280px !important;
+	word-wrap: break-word !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
