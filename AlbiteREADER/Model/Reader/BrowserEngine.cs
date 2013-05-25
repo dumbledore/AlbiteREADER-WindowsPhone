@@ -263,7 +263,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             updateLayout();
 
             // Set up the dimensions
-            updateDimensions((int) Controller.ViewportWidth, (int) Controller.ViewportHeight);
+            updateDimensions(Controller.ViewportWidth, Controller.ViewportHeight);
 
             // Set up the theme
             updateTheme();
@@ -282,12 +282,31 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             contentStylesTemplate.SaveToStorage();
         }
 
+        private int actualViewportWidth = 0;
+        private int actualViewportHeight = 0;
+
         /// <summary>
         /// Called whenever the viewport is resized and/or the margins
         /// have been changed.
         /// </summary>
-        public void UpdateDimensions(int viewportWidth, int viewportHeight)
+        public void UpdateDimensions()
         {
+            if (Controller.IsLoading)
+            {
+                Log.D(tag, "Can't update the dimensions while loading");
+                return;
+            }
+
+            int viewportWidth = Controller.ViewportWidth;
+            int viewportHeight = Controller.ViewportHeight;
+
+            if (viewportWidth == actualViewportWidth
+                && viewportHeight == actualViewportHeight)
+            {
+                Log.D(tag, "The dimensions haven't changed, no need to update.");
+                return;
+            }
+
             Controller.LoadingStarted();
             updateDimensions(viewportWidth, viewportHeight);
             reloadBrowser();
@@ -322,6 +341,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             baseStylesTemplate.PageHeight = pageHeight;
 
             baseStylesTemplate.SaveToStorage();
+
+            actualViewportWidth = viewportWidth;
+            actualViewportHeight = viewportHeight;
         }
 
         private void updateLayout()
@@ -372,7 +394,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             // Get the current page number
             currentPage = int.Parse(Controller.SendCommand("albite_getCurrentPageNumber"));
 
-            // TODO: Handle missed orientations
+            // Handle missed orientations
+            UpdateDimensions();
         }
 
         private void handleDebugCommand(string message)
@@ -392,8 +415,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         public interface IEngineController
         {
-            double ViewportWidth { get; }
-            double ViewportHeight { get; }
+            int ViewportWidth { get; }
+            int ViewportHeight { get; }
 
             string BasePath { get; set; }
             Uri SourceUri { get; set; }

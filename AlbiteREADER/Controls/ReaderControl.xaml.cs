@@ -156,8 +156,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 return;
             }
 
-            controller.Engine.UpdateDimensions(
-                (int) e.NewSize.Width, (int) e.NewSize.Height);
+            controller.Engine.UpdateDimensions();
         }
 
         private void ScrollCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -560,14 +559,14 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 get { return engine; }
             }
 
-            public double ViewportWidth
+            public int ViewportWidth
             {
-                get { return control.WebBrowser.ActualWidth; }
+                get { return (int) control.WebBrowser.ActualWidth; }
             }
 
-            public double ViewportHeight
+            public int ViewportHeight
             {
-                get { return control.WebBrowser.ActualHeight; }
+                get { return (int) control.WebBrowser.ActualHeight; }
             }
 
             public string BasePath
