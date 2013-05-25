@@ -48,8 +48,9 @@ p {
  * as it won't leave small piece of text dangling around.
  */
 img {
-	max-width: 90%;
-	max-height: 80%;
+	max-width: 90% !important;
+	height: auto !important;
+
 	margin: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
