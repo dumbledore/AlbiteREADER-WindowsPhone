@@ -66,6 +66,7 @@
     <Compile Include="Utils\Logging\AbstractLog.cs" />
     <Compile Include="Utils\Logging\DebugLog.cs" />
     <Compile Include="Utils\Logging\IsolatedStorageLog.cs" />
+    <Compile Include="Utils\ThreadCheck.cs" />
     <Compile Include="Utils\Xml\AlbiteXmlReader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

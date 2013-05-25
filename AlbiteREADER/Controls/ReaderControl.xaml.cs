@@ -26,6 +26,8 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         private EngineController controller;
 
+        private ThreadCheck threadCheck = new ThreadCheck();
+
         public ReaderControl()
         {
             InitializeComponent();
@@ -74,24 +76,32 @@ namespace SvetlinAnkov.Albite.READER.Controls
         #region UI Events
         private void WebBrowser_Loaded(object sender, RoutedEventArgs e)
         {
-            logEvent("Loaded");
+            threadCheck.Check();
+
+            Log.D(tag, "Loaded");
             load();
         }
 
         private void WebBrowser_Unloaded(object sender, RoutedEventArgs e)
         {
-            logEvent("Unloaded");
+            threadCheck.Check();
+
+            Log.D(tag, "Unloaded");
             unload();
         }
 
         private void WebBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            logEvent("Navigated: " + e.Uri.ToString());
+            threadCheck.Check();
+
+            Log.D(tag, "Navigated: " + e.Uri.ToString());
         }
 
         private void WebBrowser_Navigating(object sender, Microsoft.Phone.Controls.NavigatingEventArgs e)
         {
-            logEvent("Navigating to: " + e.Uri.ToString());
+            threadCheck.Check();
+
+            Log.D(tag, "Navigating to: " + e.Uri.ToString());
 
             if (controller == null || controller.Engine == null)
             {
@@ -101,7 +111,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
             if (controller.Engine.NavigateTo(e.Uri))
             {
                 // Handled internally, has to cancel
-                logEvent("Cancelling navigation");
+                Log.D(tag, "Cancelling navigation");
                 e.Cancel = true;
             }
 
@@ -110,6 +120,8 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         private void WebBrowser_NavigationFailed(object sender, System.Windows.Navigation.NavigationFailedEventArgs e)
         {
+            threadCheck.Check();
+
             // TODO: How should the user be informed and/or
             // what has to be done? This a fault of the app, not the epub.
             // TODO: Handling failed navigation in the iframe?
@@ -121,7 +133,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         private void WebBrowser_ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
         {
-            logEvent("ScriptNotify: " + e.Value);
+            threadCheck.Check();
+
+            Log.D(tag, "ScriptNotify: " + e.Value);
 
             if (controller == null || controller.Engine == null)
             {
@@ -133,7 +147,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         public void WebBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            logEvent("SizeChanged: " + e.NewSize.Width + "x" + e.NewSize.Height);
+            threadCheck.Check();
+
+            Log.D(tag, "SizeChanged: " + e.NewSize.Width + "x" + e.NewSize.Height);
 
             if (controller == null || controller.Engine == null)
             {
@@ -146,6 +162,8 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         private void ScrollCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            threadCheck.Check();
+
             updatePageProperties(e.NewSize.Width);
 
             WebBrowser.Width = 3 * e.NewSize.Width;
@@ -159,7 +177,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             base.OnManipulationStarted(e);
 
-            logEvent(string.Format("OnManipulationStarted: ({0}, {1})",
+            threadCheck.Check();
+
+            Log.D(tag, string.Format("OnManipulationStarted: ({0}, {1})",
                 e.ManipulationOrigin.X, e.ManipulationOrigin.Y));
 
             if (controller == null || controller.IsLoading)
@@ -179,7 +199,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             base.OnManipulationDelta(e);
 
-            logEvent(string.Format("OnManipulationDelta: ({0}, {1})",
+            threadCheck.Check();
+
+            Log.D(tag, string.Format("OnManipulationDelta: ({0}, {1})",
                 e.DeltaManipulation.Translation.X,
                 e.DeltaManipulation.Translation.Y));
 
@@ -203,7 +225,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             base.OnManipulationCompleted(e);
 
-            logEvent(string.Format("OnManipulationCompleted: ({0}, {1})",
+            threadCheck.Check();
+
+            Log.D(tag, string.Format("OnManipulationCompleted: ({0}, {1})",
                 e.TotalManipulation.Translation.X,
                 e.TotalManipulation.Translation.Y));
 
@@ -233,11 +257,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
         #endregion
 
         #region Misc
-        [Conditional("DEBUG")]
-        private void logEvent(string msg)
-        {
-            Log.D(tag, msg + " @ " + Thread.CurrentThread.Name + " # " + Thread.CurrentThread.ManagedThreadId);
-        }
 
         private static double clamp(double value, double min, double max)
         {
@@ -266,11 +285,15 @@ namespace SvetlinAnkov.Albite.READER.Controls
         #region Public API
         public void OpenBook(int bookId)
         {
+            threadCheck.Check();
+
             controller.OpenBook(bookId);
         }
 
         public void CloseBook()
         {
+            threadCheck.Check();
+
             controller.CloseBook();
         }
         #endregion
@@ -462,7 +485,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
         private void ScrollAnimation_Completed(object sender, EventArgs e)
         {
-            logEvent("Animation completed");
+            threadCheck.Check();
+
+            Log.D(tag, "Animation completed");
 
             switch (scrollPageType)
             {
