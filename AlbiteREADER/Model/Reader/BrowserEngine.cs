@@ -291,14 +291,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         /// </summary>
         public void UpdateDimensions()
         {
+            int viewportWidth = Controller.ViewportWidth;
+            int viewportHeight = Controller.ViewportHeight;
+
             if (Controller.IsLoading)
             {
                 Log.D(tag, "Can't update the dimensions while loading");
                 return;
             }
-
-            int viewportWidth = Controller.ViewportWidth;
-            int viewportHeight = Controller.ViewportHeight;
 
             if (viewportWidth == actualViewportWidth
                 && viewportHeight == actualViewportHeight)
