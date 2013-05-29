@@ -142,7 +142,7 @@ namespace SvetlinAnkov.Albite.READER.Resources.Defaults {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0.05.
+        ///   Looks up a localized string similar to 0.0375.
         /// </summary>
         internal static string MarginRight {
             get {

@@ -149,7 +149,7 @@
     <comment>in % of the longer side</comment>
   </data>
   <data name="MarginRight" xml:space="preserve">
-    <value>0.05</value>
+    <value>0.0375</value>
     <comment>in % of the longer side</comment>
   </data>
   <data name="MarginTop" xml:space="preserve">
