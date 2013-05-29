@@ -64,6 +64,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppUtils.cs" />
     <Compile Include="Controls\ReaderControl.xaml.cs">
       <DependentUpon>ReaderControl.xaml</DependentUpon>
     </Compile>
