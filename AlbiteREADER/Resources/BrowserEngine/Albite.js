@@ -20,8 +20,6 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
 
     /*
      * Go to a particular page.
-     *
-     * This updates the current page.
      */
     this.goToPage       = goToPage;
 
@@ -169,6 +167,9 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
      */
     var booklet;
 
+    /*
+     * Initial loading
+     */
     var numberOfFramesLoaded = 0;
 
     function contentLoaded(contentFrame) {
@@ -334,6 +335,9 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
         doc.getElementsByTagName("head")[0].appendChild(linkElement);
     }
 
+    /*
+     * Location
+     */
     function getPageForLocation(elementIndex, textOffset) {
         // TODO
         return 1;
@@ -394,6 +398,8 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
 
         previousPage.setPosition(PREVIOUS_PAGE_POSITION);
         nextPage.setPosition(NEXT_PAGE_POSITION);
+
+        resetWindow();
     }
 
     function getPageCount() {
@@ -404,6 +410,16 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
         return currentPageNumber;
     }
 
+    /*
+     * Scrolling and animation
+     */
+    function resetWindow() {
+        window.scrollTo(pageWidth);
+    }
+
+    /*
+     * Pagination
+     */
     function paginate(pageHeight, body) {
 
         var contentHeight = body.scrollHeight;

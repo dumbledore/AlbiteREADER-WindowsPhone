@@ -157,17 +157,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
             controller.Engine.UpdateDimensions();
         }
 
-        private void ScrollCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            threadCheck.Check();
-
-            WebBrowser.Width = 3 * e.NewSize.Width;
-            WebBrowser.Height = e.NewSize.Height;
-
-            ScrollBorder.Width = e.NewSize.Width;
-            ScrollBorder.Height = e.NewSize.Height;
-        }
-
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
             base.OnManipulationStarted(e);

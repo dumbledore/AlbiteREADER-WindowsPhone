@@ -12,18 +12,16 @@
     x:Name="ReaderRoot">
 
     <Grid x:Name="LayoutRoot">
-        <Canvas x:Name="ScrollCanvas" SizeChanged="ScrollCanvas_SizeChanged">
-            <phone:WebBrowser x:Name="WebBrowser"
-                IsHitTestVisible="False"
-                IsScriptEnabled="True"
-                Navigated="WebBrowser_Navigated"
-                Navigating="WebBrowser_Navigating"
-                NavigationFailed="WebBrowser_NavigationFailed"
-                ScriptNotify="WebBrowser_ScriptNotify"
-                SizeChanged="WebBrowser_SizeChanged"
-                Loaded="WebBrowser_Loaded"
-                Unloaded="WebBrowser_Unloaded" />
-            <Border x:Name="ScrollBorder" Background="Transparent" />
-        </Canvas>
+        <phone:WebBrowser x:Name="WebBrowser"
+            IsHitTestVisible="False"
+            IsScriptEnabled="True"
+            Navigated="WebBrowser_Navigated"
+            Navigating="WebBrowser_Navigating"
+            NavigationFailed="WebBrowser_NavigationFailed"
+            ScriptNotify="WebBrowser_ScriptNotify"
+            SizeChanged="WebBrowser_SizeChanged"
+            Loaded="WebBrowser_Loaded"
+            Unloaded="WebBrowser_Unloaded" />
+        <Border x:Name="ScrollBorder" Background="Transparent" />
     </Grid>
 </UserControl>

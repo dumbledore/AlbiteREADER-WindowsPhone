@@ -300,7 +300,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             Log.D(tag, string.Format("UpdateDimensions: {0}x{1}", viewportWidth, viewportHeight));
 
-            int width = viewportWidth / 3;
+            int width = viewportWidth;
             int height = viewportHeight;
             mainPageTemplate.FullPageWidth = width;
             mainPageTemplate.ViewportWidth = viewportWidth;
