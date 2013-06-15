@@ -28,9 +28,13 @@ namespace SvetlinAnkov.Albite.Core.Test
         {
             Log(@"/== Running ==\");
 
+            DateTime start = DateTime.Now;
             TestImplementation();
+            DateTime end = DateTime.Now;
+
             Passed = true;
 
+            Log("Test took {0} ms", end.Subtract(start).TotalMilliseconds);
             Log("\\==  Passed ==/\n");
         }
 
@@ -43,7 +47,6 @@ namespace SvetlinAnkov.Albite.Core.Test
         {
             Utils.Log.D(tag, string.Format(format, args));
         }
-
 
         protected abstract void TestImplementation();
 
