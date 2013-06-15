@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\EpubTests.cs" />
     <Compile Include="Test\BrowserEngine\TemplateTest.cs" />
+    <Compile Include="Test\GCTests.cs" />
     <Compile Include="Test\Model\Container\EpubContainerTestWrapper.cs" />
     <Compile Include="Test\Model\LibraryTest.cs" />
     <Compile Include="Test\Model\Container\EpubContainerTest.cs" />
