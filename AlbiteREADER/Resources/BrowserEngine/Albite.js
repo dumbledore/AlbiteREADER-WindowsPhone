@@ -39,6 +39,13 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     this.getPageForLocation = getPageForLocation;
 
     /*
+     * Pointer event handling
+     */
+    this.press      = press;
+    this.move       = move;
+    this.release    = release;
+
+    /*
      * Functions for debugging
      */
     function log(msg, isError) {
@@ -415,6 +422,25 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
      */
     function resetWindow() {
         window.scrollTo(pageWidth);
+    }
+
+    /*
+     * Touch handling
+     */
+    var moved = false;
+
+    function press(x, y) {
+        moved = false;
+        log("[press] at (" + x + ", " + y + ")");
+    }
+
+    function move(dx, dy) {
+        moved = true;
+        log("[move] at (" + dx + ", " + dy + ")");
+    }
+
+    function release(x, y, velocityX, velocityY) {
+        log("[release] at (" + x + ", " + y + ") with velocity (" + velocityX + ", " + velocityY + ")");
     }
 
     /*

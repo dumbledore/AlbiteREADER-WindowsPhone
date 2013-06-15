@@ -341,6 +341,31 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         }
         #endregion
 
+        #region Touch Event Handling
+
+        public void PointerPressed(int x, int y)
+        {
+            Controller.SendCommand("albite_press", new string[] {
+                x.ToString(), y.ToString()
+            });
+        }
+
+        public void PointerMoved(int dx, int dy)
+        {
+            Controller.SendCommand("albite_move", new string[] {
+                dx.ToString(), dy.ToString()
+            });
+        }
+
+        public void PointerReleased(int x, int y, int velocityX, int velocityY)
+        {
+            Controller.SendCommand("albite_release", new string[] {
+                x.ToString(), y.ToString(),
+                velocityX.ToString(), velocityY.ToString()
+            });
+        }
+        #endregion
+
         #region Handling Command from the JS Client
 
         private static readonly string debugCommand = "{debug}";

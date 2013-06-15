@@ -157,6 +157,8 @@ namespace SvetlinAnkov.Albite.READER.Controls
             controller.Engine.UpdateDimensions();
         }
 
+        private Point manipulationOrigin;
+
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
             base.OnManipulationStarted(e);
@@ -171,6 +173,15 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 Log.D(tag, "Still loading, dropping event");
                 return;
             }
+
+            // Need to cache the manipulation origin from the started event
+            // for the one in the completed event *IS WRONG*.
+            manipulationOrigin = e.ManipulationOrigin;
+
+            int x = (int) e.ManipulationOrigin.X;
+            int y = (int) e.ManipulationOrigin.Y;
+
+            controller.Engine.PointerPressed(x, y);
         }
 
         protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
@@ -188,6 +199,11 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 Log.D(tag, "Still loading, dropping event");
                 return;
             }
+
+            int dx = (int) e.DeltaManipulation.Translation.X;
+            int dy = (int) e.DeltaManipulation.Translation.Y;
+
+            controller.Engine.PointerMoved(dx, dy);
         }
 
         protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
@@ -197,14 +213,21 @@ namespace SvetlinAnkov.Albite.READER.Controls
             threadCheck.Check();
 
             Log.D(tag, string.Format("OnManipulationCompleted: ({0}, {1})",
-                e.TotalManipulation.Translation.X,
-                e.TotalManipulation.Translation.Y));
+                manipulationOrigin.X + e.TotalManipulation.Translation.X,
+                manipulationOrigin.Y + e.TotalManipulation.Translation.Y));
 
             if (controller == null || controller.IsLoading)
             {
                 Log.D(tag, "Still loading, dropping event");
                 return;
             }
+
+            int x = (int) (manipulationOrigin.X + e.TotalManipulation.Translation.X);
+            int y = (int) (manipulationOrigin.Y + e.TotalManipulation.Translation.Y);
+            int velocityX = (int) e.FinalVelocities.LinearVelocity.X;
+            int velocityY = (int) e.FinalVelocities.LinearVelocity.Y;
+
+            controller.Engine.PointerReleased(x, y, velocityX, velocityY);
         }
         #endregion
 

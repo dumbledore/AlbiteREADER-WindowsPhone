@@ -16,7 +16,7 @@
             function albite_goToPage1(page) {
                 /*
                  * All input values are strings.
-                 * Don't forget to convert the to numbers!
+                 * Don't forget to convert them to numbers!
                  */
                 albite.goToPage(parseInt(page));
             }
@@ -34,6 +34,20 @@
                 var t = parseInt(textOffset);
 
                 return albite_return(albite.getPageForLocation(e, t));
+            }
+
+            function albite_press(x, y) {
+                albite.press(parseInt(x), parseInt(y));
+            }
+
+            function albite_move(dx, dy) {
+                albite.move(parseInt(dx), parseInt(dy));
+            }
+
+            function albite_release(x, y, velocityX, velocityY) {
+                albite.release(
+                    parseInt(x), parseInt(y),
+                    parseInt(velocityX), parseInt(velocityY));
             }
 
             /*
