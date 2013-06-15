@@ -154,23 +154,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         private void goToPage(int pageNumber)
         {
             pageNumber = validatePageNumber(pageNumber);
-
-            // This will update the current page to have the same content as the
-            // page going to
-            Controller.SendCommand("albite_goToPage1", new string[] { pageNumber.ToString() });
-
-            // Wait for the browser to keep up with rendering so that there wouldn't
-            // be any visible tearing.
-            // Unfortunately, there doesn't seem to be any better way of doing this
-            // on WindowsPhone 7.5
-            Thread.Sleep(150);
-
-            // Reset position to current page
-            Controller.ResetScrollPosition();
-
-            // Now update the previous/next pages as well.
-            Controller.SendCommand("albite_goToPage2");
-
+            Controller.SendCommand("albite_goToPage", new string[] { pageNumber.ToString() });
             currentPage = pageNumber;
         }
         #endregion
@@ -420,8 +404,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             string BasePath { get; set; }
             Uri SourceUri { get; set; }
-
-            void ResetScrollPosition();
 
             string SendCommand(string command);
             string SendCommand(string command, string[] args);

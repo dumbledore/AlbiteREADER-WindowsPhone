@@ -19,21 +19,11 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     this.contentLoaded  = contentLoaded;
 
     /*
-     * Go to a particular page. Step #1
+     * Go to a particular page.
      *
      * This updates the current page.
-     *
-     * After that, the Server will scroll to the current page
-     * without the user noticing the difference
      */
-    this.goToPage1       = goToPage1;
-
-    /*
-     * Go to a particular page. Step #2
-     *
-     * This updates the previous/next pages.
-     */
-    this.goToPage2       = goToPage2;
+    this.goToPage       = goToPage;
 
     /*
      * Get the amount of available pages
@@ -394,18 +384,11 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     }
 
     function goToPage(pageNumber) {
-        goToPage1(pageNumber);
-        goToPage2();
-    }
-
-    function goToPage1(pageNumber) {
         currentPageNumber = validatePageNumber(pageNumber);
 
         currentPage.setPage(booklet[pageNumber]);
         currentPage.setPosition(CURRENT_PAGE_POSITION);
-    }
 
-    function goToPage2() {
         previousPage.setPage(booklet[currentPageNumber - 1]);
         nextPage.setPage(booklet[currentPageNumber + 1]);
 
