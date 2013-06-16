@@ -157,8 +157,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
             controller.Engine.UpdateDimensions();
         }
 
-        private Point manipulationOrigin;
-
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
             base.OnManipulationStarted(e);
@@ -173,10 +171,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 Log.D(tag, "Still loading, dropping event");
                 return;
             }
-
-            // Need to cache the manipulation origin from the started event
-            // for the one in the completed event *IS WRONG*.
-            manipulationOrigin = e.ManipulationOrigin;
 
             int x = (int) e.ManipulationOrigin.X;
             int y = (int) e.ManipulationOrigin.Y;
@@ -213,8 +207,8 @@ namespace SvetlinAnkov.Albite.READER.Controls
             threadCheck.Check();
 
             Log.D(tag, string.Format("OnManipulationCompleted: ({0}, {1})",
-                manipulationOrigin.X + e.TotalManipulation.Translation.X,
-                manipulationOrigin.Y + e.TotalManipulation.Translation.Y));
+                e.TotalManipulation.Translation.X,
+                e.TotalManipulation.Translation.Y));
 
             if (controller == null || controller.IsLoading)
             {
@@ -222,12 +216,12 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 return;
             }
 
-            int x = (int) (manipulationOrigin.X + e.TotalManipulation.Translation.X);
-            int y = (int) (manipulationOrigin.Y + e.TotalManipulation.Translation.Y);
+            int dx = (int) e.TotalManipulation.Translation.X;
+            int dy = (int) e.TotalManipulation.Translation.Y;
             int velocityX = (int) e.FinalVelocities.LinearVelocity.X;
             int velocityY = (int) e.FinalVelocities.LinearVelocity.Y;
 
-            controller.Engine.PointerReleased(x, y, velocityX, velocityY);
+            controller.Engine.PointerReleased(dx, dy, velocityX, velocityY);
         }
         #endregion
 

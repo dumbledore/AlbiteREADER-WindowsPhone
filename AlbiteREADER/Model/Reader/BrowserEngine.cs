@@ -357,10 +357,10 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             });
         }
 
-        public void PointerReleased(int x, int y, int velocityX, int velocityY)
+        public void PointerReleased(int dx, int dy, int velocityX, int velocityY)
         {
             Controller.SendCommand("albite_release", new string[] {
-                x.ToString(), y.ToString(),
+                dx.ToString(), dy.ToString(),
                 velocityX.ToString(), velocityY.ToString()
             });
         }

@@ -428,9 +428,14 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
      * Touch handling
      */
     var moved = false;
+    var origin = {"x" : 0, "y" : 0};
 
     function press(x, y) {
         moved = false;
+
+        origin.x = x;
+        origin.y = y;
+
         log("[press] at (" + x + ", " + y + ")");
     }
 
@@ -439,8 +444,8 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
         log("[move] at (" + dx + ", " + dy + ")");
     }
 
-    function release(x, y, velocityX, velocityY) {
-        log("[release] at (" + x + ", " + y + ") with velocity (" + velocityX + ", " + velocityY + ")");
+    function release(dx, dy, velocityX, velocityY) {
+        log("[release] at (" + dx + ", " + dy + ") with velocity (" + velocityX + ", " + velocityY + ")");
     }
 
     /*
