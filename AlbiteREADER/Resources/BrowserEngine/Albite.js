@@ -95,9 +95,17 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
      */
     var currentPageNumber = 1;
 
-    var PREVIOUS_PAGE_POSITION  = "0px";
-    var CURRENT_PAGE_POSITION   = pageWidth + "px";
-    var NEXT_PAGE_POSITION      = (pageWidth * 2) + "px";
+    var PagePositions = {
+        "previous" : 0,
+        "current"  : pageWidth,
+        "next"     : (pageWidth * 2),
+    };
+
+    var PagePositionStrings = {
+        "previous" : PagePositions.previous + "px",
+        "current"  : PagePositions.current  + "px",
+        "next"     : PagePositions.next     + "px",
+    };
 
     var CONTENT_CSS_FILE_NAME   = "/albite/content.css";
 
@@ -398,15 +406,15 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
         currentPageNumber = validatePageNumber(pageNumber);
 
         currentPage.setPage(booklet[pageNumber]);
-        currentPage.setPosition(CURRENT_PAGE_POSITION);
+        currentPage.setPosition(PagePositionStrings.current);
 
         previousPage.setPage(booklet[currentPageNumber - 1]);
         nextPage.setPage(booklet[currentPageNumber + 1]);
 
-        previousPage.setPosition(PREVIOUS_PAGE_POSITION);
-        nextPage.setPosition(NEXT_PAGE_POSITION);
+        previousPage.setPosition(PagePositionStrings.previous);
+        nextPage.setPosition(PagePositionStrings.next);
 
-        resetWindow();
+        resetScrollPosition();
     }
 
     function getPageCount() {
@@ -420,8 +428,130 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     /*
      * Scrolling and animation
      */
-    function resetWindow() {
-        window.scrollTo(pageWidth);
+
+    // If the total delta is within these bounds
+    // the scroll will be back to the current page
+    var NO_SCROLL_INTERVAL_RATIO = 0.075;
+    var noScrollInterval = pageWidth * NO_SCROLL_INTERVAL_RATIO;
+
+    // Velocity under this amount will not be
+    // considered important even if it's in
+    // the opposite direction of the drag
+    var NEGLIGIBLE_VELOCITY_RATIO = 0.075;
+    var negligibleVelocity = pageWidth * NEGLIGIBLE_VELOCITY_RATIO;
+
+    var SAME_PAGE_VELOCITY_RATIO = 2.0;
+
+    var PageType = { "previous" : 0 , "current" : 1, "next" : 2 }
+
+    function resetScrollPosition() {
+        window.scrollTo(PagePositions.current);
+    }
+
+    function scrollPageDelta(dx) {
+        // As we are scrolling the window rather than moving the content
+        // we are actually doing it in the opposite direction
+        window.scrollBy(-dx, 0);
+    }
+
+    function scrollPageStart(xDelta, xVelocity) {
+        // Scroll back to the current page if:
+        //   1. The drag was too insignificant, most probably a mistake
+        //   2. There's a considerable amount of velocity and it's in the direction
+        //      opposite of the drag
+        if (Math.abs(xDelta) <= noScrollInterval
+            || (Math.abs(xVelocity) > negligibleVelocity && sign(xVelocity) != sign(xDelta)))
+        {
+            scrollToPage(PageType.current, SAME_PAGE_VELOCITY_RATIO);
+            return;
+        }
+
+        // If xDelta is negative, then the user is dragging left
+        // and therefore wants to go to the next page
+        var pageType = xDelta < 0 ? PageType.next : PageType.previous;
+
+        // The duration of the animation should reflect the current position
+        var ratio = Math.abs(pageWidth + Math.abs(xDelta)) / pageWidth;
+        // TODO: ^ this will not be used in the javascript version, as
+        // animation here is handled differently
+
+        // Take into account the velocity of the flick
+        var velocityRatio = Math.abs(xVelocity) / pageWidth;
+
+        // Clamp the velocity into some sane limits. It definitely shouldn't
+        // go under 1.0, i.e. shouldn't be able to slow down the animation
+        // only speed it up.
+        velocityRatio = clamp(velocityRatio, 1.0, 3.0);
+
+        // Ready to scroll
+        scrollToPage(pageType, ratio * velocityRatio);
+    }
+
+    function scrollPageTouch(x) {
+        // TODO: Handle touches:
+        // 1. Ask the engine if there's anything to touch (like a link)
+        // 2. if not, check if ok to scroll left/right.
+    }
+
+    function scrollToPage(pageType, speedRatio) {
+        var to;
+
+        switch (pageType)
+        {
+            case PageType.previous:
+                to = PagePositions.previous;
+                break;
+
+            case PageType.current:
+                to = PagePositions.current;
+                break;
+
+            case PageType.next:
+                to = PagePositions.next;
+                break;
+
+            default:
+                throw("Bad page type");
+        }
+
+        // TODO: set up animation
+        // scrollPageType = pageType;
+
+        // scrollAnimation.From = translate.X;
+        // scrollAnimation.To = to;
+        // scrollAnimation.SpeedRatio = speedRatio;
+
+        // Log.D(tag, string.Format("Scrolling from {0} to {1} in {2} msec",
+        //     scrollAnimation.From, scrollAnimation.To,
+        //     scrollAnimation.Duration.TimeSpan.Milliseconds / scrollAnimation.SpeedRatio));
+
+        // scrollStoryboard.Begin();
+    }
+
+    var animation = null;
+
+    function isAnimating() {
+        return animation != null;
+    }
+
+    function cancelAnimation() {
+        if (animation != null) {
+            clearInterval(animation);
+            animation = null;
+        }
+    }
+
+    function animationCompleted() {
+        log("animation completed");
+        // choose strategy
+    }
+
+    function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+    function sign(value) {
+        return value ? value < 0 ? -1 : 1 : 0;
     }
 
     /*
@@ -436,16 +566,31 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
         origin.x = x;
         origin.y = y;
 
-        log("[press] at (" + x + ", " + y + ")");
+        if (isAnimating()) {
+            return;
+        }
     }
 
     function move(dx, dy) {
         moved = true;
-        log("[move] at (" + dx + ", " + dy + ")");
+
+        if (isAnimating()) {
+            return;
+        }
+
+        scrollPageDelta(dx);
     }
 
     function release(dx, dy, velocityX, velocityY) {
-        log("[release] at (" + dx + ", " + dy + ") with velocity (" + velocityX + ", " + velocityY + ")");
+        if (isAnimating()) {
+            return;
+        }
+
+        if (moved) {
+            scrollPageStart(dx, velocityX);
+        } else {
+            scrollPageTouch(origin.x + dx, origin.y + dy);
+        }
     }
 
     /*
