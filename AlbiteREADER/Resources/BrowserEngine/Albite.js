@@ -3,7 +3,7 @@
  * the classes that use this are going to be available in very small counts,
  * thus speed and encapsulation are more important than small memory concerns.
  */
-function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
+function Albite(mainWindow, pageWidth, initialLocation, isFirstChapter, isLastChapter, debugEnabled) {
     /*
      * Attach the error handler for the main window
      */
@@ -21,7 +21,7 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     /*
      * Go to a particular page.
      */
-    this.goToPage       = goToPage;
+    this.goToPage       = goToPagePublic;
 
     /*
      * Get the amount of available pages
@@ -402,6 +402,14 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
         return pageNumber;
     }
 
+    function goToPagePublic(pageNumber) {
+        if (goToTimer != null) {
+            return;
+        }
+
+        goToPage(pageNumber);
+    }
+
     function goToPage(pageNumber) {
         currentPageNumber = validatePageNumber(pageNumber);
 
@@ -417,6 +425,36 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
         resetScrollPosition();
     }
 
+    // We need to postpone the second part of the algorithm so that the draw
+    // operation will be able to take place on the event thread. However, we
+    // need to add some delay as well as there are still artifacts without
+    // delay. Looks like the web engine doesn't synchronise with WPF rendering.
+    //
+    // This is used for "synchronizing". That is, events won't be valid
+    // until the second part has finished. This needs to go to most
+    // public API methods.
+    var goToTimer = null;
+
+    function goToPageSynced(pageNumber) {
+        currentPageNumber = validatePageNumber(pageNumber);
+
+        currentPage.setPage(booklet[pageNumber]);
+        currentPage.setPosition(PagePositionStrings.current);
+
+        // Set timer
+        goToTimer = setTimeout(function() {
+            resetScrollPosition();
+
+            previousPage.setPage(booklet[currentPageNumber - 1]);
+            nextPage.setPage(booklet[currentPageNumber + 1]);
+
+            previousPage.setPosition(PagePositionStrings.previous);
+            nextPage.setPosition(PagePositionStrings.next);
+
+            goToTimer = null;
+        }, 500);
+    }
+
     function getPageCount() {
         return booklet.length;
     }
@@ -428,6 +466,82 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     /*
      * Scrolling and animation
      */
+    function Animation() {
+        var DEFAULT_FPS = 30;
+
+        this.fps        = DEFAULT_FPS;
+        this.duration   = 0; // in ms
+        this.speedRatio = 1;
+        this.from       = 1;
+        this.to         = 1;
+
+        this.easingFunction     = null;
+        this.animatingFunction  = null;
+        this.finishedFunction   = null;
+
+        var timer               = null;
+
+        function isRunning() {
+            return timer != null;
+        }
+
+        function start() {
+            stop();
+
+            var updateTime = 1000 / this.fps; // in ms
+
+            // actual duration
+            var duration = this.duration / this.speedRatio;
+
+            // cache the values
+            var from                = this.from;
+            var to                  = this.to;
+            var easingFunction      = this.easingFunction;
+            var animatingFunction   = this.animatingFunction;
+            var finishedFunction    = this.finishedFunction;
+
+            var distance = to - from;
+            var startTime = Date.now();
+
+            timer = setInterval(function() {
+                var now = Date.now();
+                var elapsed = now - startTime;
+                var normalisedTime = elapsed / duration;
+                var finished = false;
+
+                if (easingFunction != null) {
+                    normalisedTime = easingFunction(normalisedTime);
+                }
+
+                if (normalisedTime >= 1) {
+                    normalisedTime = 1;
+                    finished = true;
+                }
+
+                var value = from + normalisedTime * distance;
+                animatingFunction(value);
+
+                if (finished) {
+                    stop();
+                    if (finishedFunction != null) {
+                        finishedFunction();
+                    }
+                }
+            }, updateTime);
+        }
+
+        function stop() {
+            if (timer != null) {
+                clearInterval(timer);
+                timer = null;
+            }
+        }
+
+        // Animation API
+        this.isRunning  = isRunning;
+        this.start      = start;
+        this.stop       = stop;
+    }
 
     // If the total delta is within these bounds
     // the scroll will be back to the current page
@@ -472,8 +586,6 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
 
         // The duration of the animation should reflect the current position
         var ratio = Math.abs(pageWidth + Math.abs(xDelta)) / pageWidth;
-        // TODO: ^ this will not be used in the javascript version, as
-        // animation here is handled differently
 
         // Take into account the velocity of the flick
         var velocityRatio = Math.abs(xVelocity) / pageWidth;
@@ -514,37 +626,87 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
                 throw("Bad page type");
         }
 
-        // TODO: set up animation
-        // scrollPageType = pageType;
-
-        // scrollAnimation.From = translate.X;
-        // scrollAnimation.To = to;
-        // scrollAnimation.SpeedRatio = speedRatio;
-
-        // Log.D(tag, string.Format("Scrolling from {0} to {1} in {2} msec",
-        //     scrollAnimation.From, scrollAnimation.To,
-        //     scrollAnimation.Duration.TimeSpan.Milliseconds / scrollAnimation.SpeedRatio));
-
-        // scrollStoryboard.Begin();
+        animation.from          = window.pageXOffset;
+        animation.to            = to;
+        animation.speedRatio    = speedRatio;
+        animation.start();
     }
 
-    var animation = null;
+    var animation = new Animation();
 
-    function isAnimating() {
-        return animation != null;
-    }
+    // Set up the animation
+    animation.duration = 500;
 
-    function cancelAnimation() {
-        if (animation != null) {
-            clearInterval(animation);
-            animation = null;
+    var HALF_PI = Math.PI / 2;
+
+    animation.easingFunction = function(x) {
+        return Math.sin(x) * HALF_PI;
+    };
+
+    animation.animatingFunction = function(x) {
+        window.scrollTo(x);
+    };
+
+    animation.finishedFunction = function() {
+        var x = window.pageXOffset - PagePositions.current;
+        var pageType = x < 0 ? PageType.previous : x > 0 ? PageType.next : PageType.current;
+
+        switch (pageType) {
+            case PageType.current:
+                break;
+
+            case PageType.previous:
+                var pageNumber = currentPageNumber - 1;
+
+                if (isFirstPage(pageNumber))
+                {
+                    if (!isFirstChapter)
+                    {
+                        // TODO: go to previous chapter
+                        log("Going to previous chapter");
+                        break;
+                    }
+                    else
+                    {
+                        // That's the first chapter.
+                        log("That's the first chapter. Going to same page");
+                        scrollToPage(PageType.current, SAME_PAGE_VELOCITY_RATIO);
+                        break;
+                    }
+                }
+
+                log("Going to the previous page #" + pageNumber);
+                goToPageSynced(pageNumber);
+                break;
+
+            case PageType.next:
+                var pageNumber = currentPageNumber + 1;
+
+                if (isLastPage(pageNumber))
+                {
+                    if (!isLastChapter)
+                    {
+                        // TODO: go to next chapter
+                        log("Going to the next chapter");
+                        break;
+                    }
+                    else
+                    {
+                        // That's the last chapter.
+                        log("That's the last chapter. Going to same page");
+                        scrollToPage(PageType.current, SAME_PAGE_VELOCITY_RATIO);
+                        break;
+                    }
+                }
+
+                log("Going to the next page #" + pageNumber);
+                goToPageSynced(pageNumber);
+                break;
+
+            default:
+                throw new InvalidOperationException("Bad page type");
         }
-    }
-
-    function animationCompleted() {
-        log("animation completed");
-        // choose strategy
-    }
+    };
 
     function clamp(value, min, max) {
         return Math.min(Math.max(value, min), max);
@@ -566,7 +728,7 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
         origin.x = x;
         origin.y = y;
 
-        if (isAnimating()) {
+        if (animation.isRunning() || goToTimer != null) {
             return;
         }
     }
@@ -574,7 +736,7 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     function move(dx, dy) {
         moved = true;
 
-        if (isAnimating()) {
+        if (animation.isRunning() || goToTimer != null) {
             return;
         }
 
@@ -582,7 +744,7 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     }
 
     function release(dx, dy, velocityX, velocityY) {
-        if (isAnimating()) {
+        if (animation.isRunning() || goToTimer != null) {
             return;
         }
 
