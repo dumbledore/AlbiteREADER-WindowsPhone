@@ -55,13 +55,13 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
              */
             var msgType = isError ? "{error}" : "{debug}";
             notifyServer(msgType + msg);
-        } catch (e) {
+        } catch (e1) {
             try {
                 /*
                  * Try the console (e.g. Chrome)
                  */
                 console.log(msg);
-            } catch (e) {
+            } catch (e2) {
                 /*
                  * Last resort
                  */
@@ -70,12 +70,12 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
         }
     }
 
-    function sleep(millis)
-    {
+    function sleep(millis) {
         var date = new Date();
         var curDate = null;
-        do { curDate = new Date(); }
-        while(curDate - date < millis);
+        do {
+            curDate = new Date();
+        } while (curDate - date < millis);
     }
 
     function handleError(msg, url, line) {
@@ -157,7 +157,7 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
      * pagination process.
      */
     function PageMetrics(pageNumber, offsetTop, offsetBottom, startNode) {
-        this.pageNumber = pageNumber
+        this.pageNumber = pageNumber;
         this.offsetTop  = offsetTop;
         this.clipHeight = offsetBottom - offsetTop + 1;
         this.startNode  = startNode;
@@ -189,7 +189,7 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
          * This works because layout/render and javascript are synchronized
          * by running on the same thread.
          */
-        numberOfFramesLoaded++;
+        numberOfFramesLoaded += 1;
 
         switch (numberOfFramesLoaded) {
             case 1:
@@ -260,7 +260,7 @@ function Albite(mainWindow, pageWidth, initialLocation, debugEnabled) {
     }
 
     function setupInitialLocation() {
-        var type = typeof(initialLocation);
+        var type = typeof initialLocation;
         switch (type) {
             case "number":
                 goToPage(initialLocation);
