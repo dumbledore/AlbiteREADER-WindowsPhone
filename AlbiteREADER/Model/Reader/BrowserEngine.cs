@@ -239,6 +239,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             mainPageTemplate = new MainPageTemplate(enginePath);
 #if DEBUG
             mainPageTemplate.Debug = true;
+#else
+            mainPageTemplate.Debug = false;
 #endif
             baseStylesTemplate = new BaseStylesTemplate(enginePath);
             contentStylesTemplate = new ContentStylesTemplate(enginePath);
