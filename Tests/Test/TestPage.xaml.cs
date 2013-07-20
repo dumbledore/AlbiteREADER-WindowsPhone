@@ -66,5 +66,10 @@ namespace SvetlinAnkov.Albite.Tests.Test
             // Now run the actual test
             new ReaderPageTest("Test/epub/aliceDynamic.epub", NavigationService).Test();
         }
+
+        private void SpeechSynthesisTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            new SpeechSynthesisTest().Test();
+        }
     }
 }

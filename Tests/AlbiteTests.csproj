@@ -110,6 +110,7 @@
     <Compile Include="Test\Model\LibraryTest.cs" />
     <Compile Include="Test\Model\Container\EpubContainerTest.cs" />
     <Compile Include="Test\Model\LibraryAddBookTest.cs" />
+    <Compile Include="Test\SpeechSynthesisTest.cs" />
     <Compile Include="Test\UtilsTests.cs" />
     <Compile Include="Test\Utils\AlbiteIsolatedContainerTest.cs" />
     <Compile Include="Test\Utils\AlbiteIsolatedContainerTestWrapper.cs" />

@@ -54,6 +54,11 @@
                         <TextBlock Text="Reader Page Test" />
                     </StackPanel>
                 </Button>
+                <Button x:Name="SpeechSynthesisTestButton" Click="SpeechSynthesisTestButton_Click">
+                    <StackPanel>
+                        <TextBlock Text="Speech Synthesis Test" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>
