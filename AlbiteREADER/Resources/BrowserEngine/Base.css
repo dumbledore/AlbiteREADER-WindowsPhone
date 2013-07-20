@@ -1,60 +1,52 @@
+/*
+ * Albite READER
+ *
+ * Copyright (c) 2013 Svetlin Ankov
+ * All Rights Reserved
+ *
+ * This product is protected by copyright and distributed under
+ * licenses restricting copying, distribution, and decompilation.
+ */
+
 body {
-	font-family: "Arial", sans-serif;
-	font-size: 28px;
+  font-family:      "Arial", sans-serif;
+  font-size:        28px; /* No need to make it dynamic */
+
+  -ms-touch-action: none;
+  -ms-user-select:  none;
 }
 
 html, body {
-	margin: 0;
-
-	/*
-	 * The viewport width is 3 times the page width,
-	 * because it will cover three pages
-	 */
-	width: %{viewport_width}px; /* Default 3xPageWidth, so most probably 1440 */
-	height: 100%;
+  margin: 0;
+  width:  #(width)px;
+  height: 100%;
 }
 
-/*
- * Hide the body. It will be shown by the JS, when all iframes have
- * finished loading and pagination is complete.
- */
-body {
-	visibility: hidden;
+#page {
+  width:      #(width)px;
+  height:     #(height)px;
+  position:   absolute;
+  visibility: hidden;
 }
 
-div.page {
-	padding-top:    %{page_margin_top}px;    /* Default: 30  */
-	padding-bottom: %{page_margin_bottom}px; /* Default: 30  */
-	padding-left:   %{page_margin_left}px;   /* Default: 30  */
-	padding-right:  %{page_margin_right}px;  /* Default: 40  */
-	width:          %{page_width}px;         /* Default: 410 */
-	height:         %{page_height}px;        /* Default: 668 */
-	position:       absolute;
-}
-
-.page_content_box {
-	width: 100%;
-	height: 100%;
-}
-
-.page_content_clipper {
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
+#page_content_box {
+  width:    100%;
+  height:   100%;
+  overflow: hidden;
 }
 
 /*
  * Theme
  */
 html {
-	background-color: %{control_background}; /* Default: black */
-	color:            %{text_color};         /* Default: black */
+  background-color: #(background_color);
+  color:            #(text_color);         /* Default: black */
 }
 
-div.page {
-	background-color: %{background_color};	 /* Default: white */
+#page {
+  background-color: #(background_color);  /* Default: white */
 }
 
 hr {
-	border-bottom-color: %{text_color};
+  border-bottom-color: #(text_color);
 }

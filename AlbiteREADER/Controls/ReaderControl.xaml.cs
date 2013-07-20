@@ -156,99 +156,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
             controller.Engine.UpdateDimensions();
         }
-
-        protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
-        {
-            base.OnManipulationStarted(e);
-
-            threadCheck.Check();
-
-            Log.D(tag, string.Format("OnManipulationStarted: ({0}, {1})",
-                e.ManipulationOrigin.X, e.ManipulationOrigin.Y));
-
-            if (controller == null || controller.IsLoading)
-            {
-                Log.D(tag, "Still loading, dropping event");
-                return;
-            }
-
-            int x = (int) e.ManipulationOrigin.X;
-            int y = (int) e.ManipulationOrigin.Y;
-
-            controller.Engine.PointerPressed(x, y);
-        }
-
-        protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
-        {
-            base.OnManipulationDelta(e);
-
-            threadCheck.Check();
-
-            Log.D(tag, string.Format("OnManipulationDelta: ({0}, {1})",
-                e.DeltaManipulation.Translation.X,
-                e.DeltaManipulation.Translation.Y));
-
-            if (controller == null || controller.IsLoading)
-            {
-                Log.D(tag, "Still loading, dropping event");
-                return;
-            }
-
-            int dx = (int) e.DeltaManipulation.Translation.X;
-            int dy = (int) e.DeltaManipulation.Translation.Y;
-
-            controller.Engine.PointerMoved(dx, dy);
-        }
-
-        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
-        {
-            base.OnManipulationCompleted(e);
-
-            threadCheck.Check();
-
-            Log.D(tag, string.Format("OnManipulationCompleted: ({0}, {1})",
-                e.TotalManipulation.Translation.X,
-                e.TotalManipulation.Translation.Y));
-
-            if (controller == null || controller.IsLoading)
-            {
-                Log.D(tag, "Still loading, dropping event");
-                return;
-            }
-
-            int dx = (int) e.TotalManipulation.Translation.X;
-            int dy = (int) e.TotalManipulation.Translation.Y;
-            int velocityX = (int) e.FinalVelocities.LinearVelocity.X;
-            int velocityY = (int) e.FinalVelocities.LinearVelocity.Y;
-
-            controller.Engine.PointerReleased(dx, dy, velocityX, velocityY);
-        }
-        #endregion
-
-        #region Misc
-
-        private static double clamp(double value, double min, double max)
-        {
-            if (value < min)
-            {
-                value = min;
-            }
-            else if (value > max)
-            {
-                value = max;
-            }
-            return value;
-        }
-
-        private void onError(string message)
-        {
-            Log.E(tag, "ReaderError: " + message);
-
-            if (ReaderError != null)
-            {
-                ReaderError(this, EventArgs.Empty);
-            }
-        }
         #endregion
 
         #region Public API
@@ -377,19 +284,24 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
             public void LoadingStarted()
             {
-                IsLoading = true;
-                waitPopup.IsOpen = true;
+                //IsLoading = true;
+                //waitPopup.IsOpen = true;
             }
 
             public void LoadingCompleted()
             {
-                waitPopup.IsOpen = false;
-                IsLoading = false;
+                //waitPopup.IsOpen = false;
+                //IsLoading = false;
             }
 
             public void OnError(string message)
             {
-                control.onError(message);
+                Log.E(tag, "ReaderError: " + message);
+
+                if (control.ReaderError != null)
+                {
+                    control.ReaderError(this, EventArgs.Empty);
+                }
             }
         }
         #endregion

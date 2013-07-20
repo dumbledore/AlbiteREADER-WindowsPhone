@@ -1,45 +1,97 @@
-body
-{
-	margin: 0 !important;
-	padding: 0 !important;
-	line-height: %{line_height}% !important;                    /* default: 140% */
-	font-size: %{font_size}px !important;            /* default: 28 */
-	font-family: "%{font_family}", serif !important; /* default: Georgia */
-	/*
-	 * This is here, so that there would be at least a page amount
-	 * of free space at the bottom, which is needed so that the last
-	 * page could be scrolled. Using the WP8 value just in case
-	 */
-	padding-bottom: 1280px !important;
-	word-wrap: break-word !important;
+/*
+ * Albite READER
+ *
+ * Copyright (c) 2013 Svetlin Ankov
+ * All Rights Reserved
+ *
+ * This product is protected by copyright and distributed under
+ * licenses restricting copying, distribution, and decompilation.
+ */
+html, body {
+  margin:   0 !important;
+  padding:  0 !important;
+}
+
+body {
+  margin-top:     #(margin_top)px         !important;
+  margin-bottom:  #(margin_bottom)px      !important;
+  width:          #(width)px              !important;
+  height:         #(content_height)px     !important;
+
+  line-height:    #(line_height)%         !important; /* default: 140%    */
+  font-size:      #(font_size)px          !important; /* default: 28      */
+  font-family:    "#(font_family)", serif !important; /* default: Georgia */
+  word-wrap:      break-word              !important;
+
+  background-color: green;  /* TODO: REMOVE */
+}
+
+#albite_reader_root {
+  padding:        0;
+  padding-left:   #(margin_left)px;
+  padding-right:  #(margin_right)px;
+
+  background-color: yellow; /* TODO: REMOVE */
+  border: 1px solid black;  /* TODO: REMOVE */
+}
+
+#albite_reader_start {
+  width:        10px;
+  height:       10px;
+  break-after:  column;
+
+  background-color: blue;   /* TODO: REMOVE */
+}
+
+#albite_reader_end {
+  width:        10px;
+  height:       10px;
+  break-before: column;
+
+  background-color: purple; /* TODO: REMOVE */
+}
+
+body {
+  columns:      1 #(content_width)px  !important;
+  column-gap:   0px                   !important;
+  column-rule:  none                  !important;
+  column-fill:  auto                  !important;
+}
+
+body {
+  -ms-hyphens: auto !important;
+}
+
+pre {
+  white-space: pre-wrap !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	margin: 0;
-	padding: 0;
-	margin-left: 5%;
-	margin-right: 5%;
-	line-height: 120%;
-	font-size: 100%;
+  margin:       0;
+  padding:      0;
+  margin-left:  5%;
+  margin-right: 5%;
+  line-height:  120%;
+  font-size:    100%;
 }
 
 h1 {
-	font-size: 200%
+  font-size: 200%
 }
 
 h2 {
-	font-size: 150%;
+  font-size: 150%;
 }
 
 h3 {
-	font-size: 115%;
+  font-size: 115%;
 }
 
 p {
-	text-align: %{text_align} !important; /* default: justify */
-	text-indent: 5%;
-	padding: 0;
-	margin: 0;
+  text-align:   #(text_align) !important; /* default: justify */
+  text-indent:  5%            !important;
+  padding:      0;
+  margin:       0;
 }
 
 /*
@@ -47,33 +99,43 @@ p {
  * should actually make them look more aesthetic on the small screen,
  * as it won't leave small piece of text dangling around.
  */
-img {
-	max-width: 90% !important;
-	height: auto !important;
 
-	margin: auto;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	display: block;
+img {
+  max-width:      90%   !important;
+  height:         auto  !important;
+
+  margin:         auto;
+  margin-top:     20px;
+  margin-bottom:  20px;
+
+  /*
+   * We need to enforce those 2 properties as
+   * IE10 doesn't properly split images and the
+   * only solution is to remove any floats thus
+   * forcing images to go to the next page if
+   * they are too big to fit on the current one
+   */
+  display:        block !important;
+  float:          none  !important;
 }
 
 hr {
-    border: 0;
-    border-bottom: 1px solid black;
+  border:         0;
+  border-bottom:  1px solid black;
 }
 
 /*
  *  Theme
  */
 html {
-	background-color: %{background_color} !important; /* Default: white */
-	color:            %{text_color} !important;       /* Default: black */
+  background-color: #(background_color) !important; /* Default: white */
+  color:            #(text_color)       !important; /* Default: black */
 }
 
 i, em {
-	color: %{accent_color} !important; /* Default: #634F3B */
+  color: #(accent_color) !important; /* Default: #634F3B */
 }
 
 hr {
-	border-bottom-color: %{text_color} !important;
+  border-bottom-color: #(text_color) !important;
 }

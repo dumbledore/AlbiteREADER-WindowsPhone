@@ -39,21 +39,21 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         public void SetChapterFirstPage(Chapter chapter)
         {
-            mainPageTemplate.InitialLocation = "\"first\"";
+            mainPageTemplate.InitialLocation = "'first'";
             SetChapter(chapter);
         }
 
         public void SetChapterLastPage(Chapter chapter)
         {
-            mainPageTemplate.InitialLocation = "\"last\"";
+            mainPageTemplate.InitialLocation = "'last'";
             SetChapter(chapter);
         }
 
         public void SetChapterDomLocation(Chapter chapter, DomLocation location)
         {
             mainPageTemplate.InitialLocation
-                = string.Format("{{elementIndex: {0}, textOffset:{1} }}",
-                location.ElementIndex, location.TextOffset);
+                = string.Format("{{elementPath: '{0}', textOffset:{1} }}",
+                location.ElementPath, location.TextOffset);
 
             SetChapter(chapter);
         }
@@ -78,20 +78,18 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             {
                 //TODO: Write JScript code that will tell the current reading location
                 //      using ScriptNotify() and window.external.notify().
-                return new DomLocation(0, 0);
+                return new DomLocation("", 0);
             }
 
             set { goToDomLocation(value); }
         }
-
-        private int currentPage;
 
         /// <summary>
         /// Gets / sets the current page
         /// </summary>
         public int Page
         {
-            get { return currentPage; }
+            get { return 0 /* TODO: Ask JS Client */; }
             set { goToPage(value); }
         }
 
@@ -110,27 +108,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         //Note: there are always AT LEAST 3 pages
         public int FirstPageNumber { get { return 1; } }
         public int LastPageNumber { get { return PageCount - 2; } }
-
-        public bool IsFirstPage { get { return currentPage <= FirstPageNumber; } }
-        public bool IsLastPage { get { return currentPage >= LastPageNumber; } }
         #endregion
 
         #region Location implementation
-
-        private int validatePageNumber(int pageNumber)
-        {
-            if (pageNumber <= FirstPageNumber)
-            {
-                pageNumber = FirstPageNumber;
-            }
-
-            if (pageNumber >= LastPageNumber)
-            {
-                pageNumber = LastPageNumber;
-            }
-
-            return pageNumber;
-        }
 
         private void goToDomLocation(DomLocation location)
         {
@@ -139,23 +119,12 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 return;
             }
 
-            // setup the arguments
-            string[] args = {
-                location.ElementIndex.ToString(), location.TextOffset.ToString()
-            };
-
-            // get the page for this dom location
-            string page = Controller.SendCommand("albite_getPageForLocation", args);
-
-            // finally, simply go to this page
-            goToPage(int.Parse(page));
+            // TODO
         }
 
         private void goToPage(int pageNumber)
         {
-            pageNumber = validatePageNumber(pageNumber);
-            Controller.SendCommand("albite_goToPage", new string[] { pageNumber.ToString() });
-            currentPage = pageNumber;
+            // TODO
         }
         #endregion
 
@@ -238,9 +207,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             // Load the templates
             mainPageTemplate = new MainPageTemplate(enginePath);
 #if DEBUG
-            mainPageTemplate.Debug = true;
+            mainPageTemplate.DebugEnabled = true;
 #else
-            mainPageTemplate.Debug = false;
+            mainPageTemplate.DebugEnabled = false;
 #endif
             baseStylesTemplate = new BaseStylesTemplate(enginePath);
             contentStylesTemplate = new ContentStylesTemplate(enginePath);
@@ -257,7 +226,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         private void updateTheme()
         {
-            baseStylesTemplate.ControlBackground = settings.ControlBackground;
             baseStylesTemplate.BackgroundColor = settings.Theme.BackgroundColor;
             baseStylesTemplate.TextColor = settings.Theme.FontColor;
             baseStylesTemplate.SaveToStorage();
@@ -302,31 +270,29 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             Log.D(tag, string.Format("UpdateDimensions: {0}x{1}", viewportWidth, viewportHeight));
 
-            int width = viewportWidth;
-            int height = viewportHeight;
-            mainPageTemplate.FullPageWidth = width;
-            mainPageTemplate.ViewportWidth = viewportWidth;
+            mainPageTemplate.Width = viewportWidth;
+            mainPageTemplate.Height = viewportHeight;
             mainPageTemplate.SaveToStorage();
 
-            int viewportReference = Math.Max(width, height);
+            baseStylesTemplate.Width = viewportWidth;
+            baseStylesTemplate.Height = viewportHeight;
+            baseStylesTemplate.SaveToStorage();
+
+            int viewportReference = Math.Max(viewportWidth, viewportWidth);
             int marginLeft = (int) (settings.MarginLeft * viewportReference);
             int marginRight = (int) (settings.MarginRight * viewportReference);
             int marginTop = (int) (settings.MarginTop * viewportReference);
             int marginBottom = (int) (settings.MarginBottom * viewportReference);
 
-            baseStylesTemplate.MarginTop = marginTop;
-            baseStylesTemplate.MarginBottom = marginBottom;
-            baseStylesTemplate.MarginLeft = marginLeft;
-            baseStylesTemplate.MarginRight = marginRight;
+            contentStylesTemplate.MarginTop = marginTop;
+            contentStylesTemplate.MarginBottom = marginBottom;
+            contentStylesTemplate.MarginLeft = marginLeft;
+            contentStylesTemplate.MarginRight = marginRight;
 
-            int pageWidth = width - (marginLeft + marginRight);
-            int pageHeight = height - (marginTop + marginBottom);
+            contentStylesTemplate.Width = viewportWidth;
+            contentStylesTemplate.Height = viewportHeight;
 
-            baseStylesTemplate.ViewportWidth = viewportWidth;
-            baseStylesTemplate.PageWidth = pageWidth;
-            baseStylesTemplate.PageHeight = pageHeight;
-
-            baseStylesTemplate.SaveToStorage();
+            contentStylesTemplate.SaveToStorage();
 
             actualViewportWidth = viewportWidth;
             actualViewportHeight = viewportHeight;
@@ -340,31 +306,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             contentStylesTemplate.TextAlign = settings.TextAlign;
 
             contentStylesTemplate.SaveToStorage();
-        }
-        #endregion
-
-        #region Touch Event Handling
-
-        public void PointerPressed(int x, int y)
-        {
-            Controller.SendCommand("albite_press", new string[] {
-                x.ToString(), y.ToString()
-            });
-        }
-
-        public void PointerMoved(int dx, int dy)
-        {
-            Controller.SendCommand("albite_move", new string[] {
-                dx.ToString(), dy.ToString()
-            });
-        }
-
-        public void PointerReleased(int dx, int dy, int velocityX, int velocityY)
-        {
-            Controller.SendCommand("albite_release", new string[] {
-                dx.ToString(), dy.ToString(),
-                velocityX.ToString(), velocityY.ToString()
-            });
         }
         #endregion
 
@@ -399,11 +340,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             // Inform the EngineController that it's ready
             Controller.LoadingCompleted();
 
-            // Now get the page count
-            PageCount = int.Parse(Controller.SendCommand("albite_getPageCount"));
-
-            // Get the current page number
-            currentPage = int.Parse(Controller.SendCommand("albite_getCurrentPageNumber"));
+            // Now get the page count // TODO
+            //PageCount = int.Parse(Controller.SendCommand("albite_getPageCount"));
 
             // Handle missed orientations
             UpdateDimensions();

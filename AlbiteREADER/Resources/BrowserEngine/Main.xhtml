@@ -1,72 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>Albite READER</title>
-        <meta name="viewport" content="width=%{viewport_width}, user-scalable=no, initial-zoom=1" />
-        <link rel="stylesheet" type="text/css" href="Base.css" />
-        <link rel="stylesheet" type="text/css" href="Theme.css" />
-        <script type="text/javascript" src="Albite.js" />
-        <script type="text/javascript">
-            albite = new Albite(window, %{full_page_width}, %{initial_location}, true, true, %{debug});
+  <head>
+    <title>Albite READER</title>
+    <meta name="viewport" content="width=#(width), user-scalable=no, initial-zoom=1" />
+    <link rel="stylesheet" type="text/css" href="Base.css" />
+    <script type="text/javascript" src="Albite.js" />
+    <script type="text/javascript">
+      albite = new Albite.Main({
+        "mainWindow"      : window,
+        "width"           : #(width),
+        "height"          : #(height),
+        "debugEnabled"    : #(debug_enabled),
+        "initialLocation" : #(initial_location),
+        "cssLocation"     : "/albite/Content.css"
+      });
 
-            /*
-             * Export Albite functions to WebBrowser.InvokeScript
-             */
-            function albite_goToPage1(page) {
-                /*
-                 * All input values are strings.
-                 * Don't forget to convert them to numbers!
-                 */
-                albite.goToPage(parseInt(page));
-            }
+      // This is needed so that the host (WP8's IE10) will be able to call
+      // Albite functions as it cannot call properties, only global functions
+      albite_notify = function(message) {
+        albite.notify(message);
+      };
+    </script>
+  </head>
+  <body>
+    <div id="page">
+      <div id="page_content_box">
+        <iframe
+          src="#(chapter_file)"
+          onload="albite.contentLoaded(this);"
 
-            function albite_getPageCount() {
-                return albite_return(albite.getPageCount());
-            }
-
-            function albite_getCurrentPageNumber() {
-                return albite_return(albite.getCurrentPageNumber());
-            }
-
-            function albite_getPageForLocation(elementIndex, textOffset) {
-                var e = parseInt(elementIndex);
-                var t = parseInt(textOffset);
-
-                return albite_return(albite.getPageForLocation(e, t));
-            }
-
-            function albite_press(x, y) {
-                albite.press(parseInt(x), parseInt(y));
-            }
-
-            function albite_move(dx, dy) {
-                albite.move(parseInt(dx), parseInt(dy));
-            }
-
-            function albite_release(dx, dy, velocityX, velocityY) {
-                albite.release(
-                    parseInt(dx), parseInt(dy),
-                    parseInt(velocityX), parseInt(velocityY));
-            }
-
-            /*
-             * All returned values to the host MUST
-             * be converted to strings first or otherwise
-             * InvokeScript returns an empty string.
-             */
-            function albite_return(val) {
-                return "" + val;
-            }
-        </script>
-    </head>
-    <body>
-        <div class="page">
-            <div class="page_content_box">
-                <div class="page_content_clipper">
-                    <iframe class="page_content_frame" src="%{chapter_file}" marginWidth="0" marginHeight="0" scrolling="no" width="100%" height="100%" frameborder="0" onload="albite.contentLoaded(this);"/>
-                </div>
-            </div>
-        </div>
-    </body>
+          id="page_content_frame"
+          width="100%" height="100%"
+          marginWidth="0" marginHeight="0"
+          scrolling="no" frameborder="0" />
+      </div>
+    </div>
+  </body>
 </html>

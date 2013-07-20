@@ -13,7 +13,7 @@
 
     <Grid x:Name="LayoutRoot">
         <phone:WebBrowser x:Name="WebBrowser"
-            IsHitTestVisible="False"
+            IsHitTestVisible="True"
             IsScriptEnabled="True"
             Navigated="WebBrowser_Navigated"
             Navigating="WebBrowser_Navigating"
@@ -22,6 +22,5 @@
             SizeChanged="WebBrowser_SizeChanged"
             Loaded="WebBrowser_Loaded"
             Unloaded="WebBrowser_Unloaded" />
-        <Border x:Name="ScrollBorder" Background="Transparent" />
     </Grid>
 </UserControl>

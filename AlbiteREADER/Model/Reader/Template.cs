@@ -25,9 +25,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
     /// </summary>
     public class Template
     {
-        private const string PlaceholderRegex = "%{([^}]*)}";
-        private const string PlaceholderLeftSide = "%{";
-        private const string PlaceholderRightSide = "}";
+        private const string PlaceholderRegex = "#\\(([^\\)]*)\\)";
+        private const string PlaceholderLeftSide = "#(";
+        private const string PlaceholderRightSide = ")";
 
         private readonly string template;
         private Dictionary<string, string> placeholders = new Dictionary<string,string>();

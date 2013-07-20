@@ -153,9 +153,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\BrowserEngine\Albite.js" />
-    <Resource Include="Resources\BrowserEngine\Content.css" />
-    <Resource Include="Resources\BrowserEngine\Main.xhtml" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
@@ -168,7 +165,6 @@
     <Content Include="Resources\Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\BrowserEngine\Base.css" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +198,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\BrowserEngine\Albite.js" />
+    <Resource Include="Resources\BrowserEngine\Base.css" />
+    <Resource Include="Resources\BrowserEngine\Content.css" />
+    <Resource Include="Resources\BrowserEngine\Main.xhtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

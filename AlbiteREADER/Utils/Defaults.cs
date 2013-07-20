@@ -37,7 +37,6 @@ namespace SvetlinAnkov.Albite.READER.Utils
                     settings.MarginBottom = float.Parse(LayoutDefaults.MarginBottom);
                     settings.MarginLeft = float.Parse(LayoutDefaults.MarginLeft);
                     settings.MarginRight = float.Parse(LayoutDefaults.MarginRight);
-                    settings.ControlBackground = LayoutDefaults.ControlBackground;
                     settings.Theme = DefaultTheme;
 
                     return settings;

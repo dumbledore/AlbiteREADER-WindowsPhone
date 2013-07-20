@@ -14,29 +14,19 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
     public class DomLocation
     {
         /// <summary>
-        /// This is the Unique element ID, got using the related IE API.
-        /// To serialize:
-        ///     ElementIndex = this.sourceIndex
-        ///
-        /// To deserialize:
-        ///     document.getElementsByTagName('*')[ElementIndex]
-        ///
-        /// Or Even better:
-        ///     document.all[ElementIndex]
+        /// This is the Elementh Path
         /// </summary>
-        public int ElementIndex { get; private set; }
+        public string ElementPath { get; private set; }
 
         /// <summary>
-        /// If the element was of type Text, this is the offset in
-        /// the text so that the correct line would be selected.
-        ///
-        /// If it was not a Text element, TextOffset should be -1.
+        /// This is the offset in the text so that
+        /// the correct line would be selected.
         /// </summary>
         public int TextOffset { get; private set; }
 
-        public DomLocation(int index, int offset)
+        public DomLocation(string path, int offset)
         {
-            ElementIndex = index;
+            ElementPath = path;
             TextOffset = offset;
         }
     }

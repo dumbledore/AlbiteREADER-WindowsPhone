@@ -4,15 +4,23 @@ using System.Windows;
 using System.Reflection;
 using SvetlinAnkov.Albite.Core.Utils;
 using System.IO;
+using System.Linq;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
     public class EngineTemplate : TemplateResource
     {
-        public EngineTemplate(string path, string enginePath)
+        private readonly string[] updateTriggers;
+
+        public EngineTemplate(string path, string enginePath, string[] updateTriggers)
             : base(getTemplate(path), GetOutputPath(path, enginePath))
         {
+            this.updateTriggers = updateTriggers;
         }
+
+        public EngineTemplate(string path, string enginePath)
+            : this(path, enginePath, null)
+        { }
 
         private static string assemblyName;
         private static string getAssemblyName()
@@ -47,11 +55,49 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         protected void set(string name, string value)
         {
             this[name] = value;
+            checkDepencies(name);
         }
 
         protected void set(string name, object value)
         {
-            this[name] = value.ToString();
+            set(name, value.ToString());
+        }
+
+        private void checkDepencies(string name)
+        {
+            if (updateTriggers != null && updateTriggers.Contains(name))
+            {
+                UpdateDependencies();
+            }
+        }
+
+        // Called when setting values
+        protected virtual void UpdateDependencies() { }
+
+        protected static class RegisteredNames
+        {
+            public static readonly string DebugEnabled = "debug_enabled";
+            public static readonly string InitialLocation = "initial_location";
+            public static readonly string ChapterFile = "chapter_file";
+
+            public static readonly string Width = "width";
+            public static readonly string Height = "height";
+            public static readonly string MarginTop = "margin_top";
+            public static readonly string MarginBottom = "margin_bottom";
+            public static readonly string MarginLeft = "margin_left";
+            public static readonly string MarginRight = "margin_right";
+
+            public static readonly string ContentWidth = "content_width";
+            public static readonly string ContentHeight = "content_height";
+
+            public static readonly string BackgroundColor = "background_color";
+            public static readonly string TextColor = "text_color";
+            public static readonly string AccentColor = "accent_color";
+
+            public static readonly string LineHeight = "line_height";
+            public static readonly string FontSize = "font_size";
+            public static readonly string FontFamily = "font_family";
+            public static readonly string TextAlign = "text_align";
         }
     }
 
@@ -61,36 +107,39 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             : base(Paths.MainPage, enginePath)
         { }
 
-        private bool debug = false;
-        public bool Debug
+        private bool debugEnabled = false;
+        public bool DebugEnabled
         {
-            get { return debug; }
+            get { return debugEnabled; }
             set
             {
-                set("debug", value ? "true" : "false");
-                debug = value;
+                // Note: Always update the value first as set() might
+                // call UpdateDependencies() which might need to use it,
+                // otherwise they'll use a stale value.
+                debugEnabled = value;
+                set(RegisteredNames.DebugEnabled, value ? "true" : "false");
             }
         }
 
-        private int fullPageWidth;
-        public int FullPageWidth
+        private int width;
+        public int Width
         {
-            get { return fullPageWidth; }
+            get { return width; }
             set
             {
-                set("full_page_width", value);
-                fullPageWidth = value;
+                width = value;
+                set(RegisteredNames.Width, value);
             }
         }
 
-        private int viewportWidth;
-        public int ViewportWidth
+        private int height;
+        public int Height
         {
-            get { return viewportWidth; }
+            get { return height; }
             set
             {
-                set("viewport_width", value);
-                viewportWidth = value;
+                height = value;
+                set(RegisteredNames.Height, value);
             }
         }
 
@@ -100,8 +149,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return initialLocation; }
             set
             {
-                set("initial_location", value);
                 initialLocation = value;
+                set(RegisteredNames.InitialLocation, value);
             }
         }
 
@@ -111,8 +160,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return chapterFile; }
             set
             {
-                set("chapter_file", value);
                 chapterFile = value;
+                set(RegisteredNames.ChapterFile, value);
             }
         }
     }
@@ -124,25 +173,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         { }
 
         // Colors
-        private string controlBackground;
-        public string ControlBackground
-        {
-            get { return controlBackground; }
-            set
-            {
-                set("control_background", value);
-                controlBackground = value;
-            }
-        }
-
         private string backgroundColor;
         public string BackgroundColor
         {
             get { return backgroundColor; }
             set
             {
-                set("background_color", value);
                 backgroundColor = value;
+                set(RegisteredNames.BackgroundColor, value);
             }
         }
 
@@ -152,95 +190,48 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return textColor; }
             set
             {
-                set("text_color", value);
                 textColor = value;
-            }
-        }
-
-        // Margins
-        private int marginTop;
-        public int MarginTop
-        {
-            get { return marginTop; }
-            set
-            {
-                set("page_margin_top", value);
-                marginTop = value;
-            }
-        }
-
-        private int marginBottom;
-        public int MarginBottom
-        {
-            get { return marginBottom; }
-            set
-            {
-                set("page_margin_bottom", value);
-                marginBottom = value;
-            }
-        }
-
-        private int marginLeft;
-        public int MarginLeft
-        {
-            get { return marginLeft; }
-            set
-            {
-                set("page_margin_left", value);
-                marginLeft = value;
-            }
-        }
-
-        private int marginRight;
-        public int MarginRight
-        {
-            get { return marginRight; }
-            set
-            {
-                set("page_margin_right", value);
-                marginRight = value;
+                set(RegisteredNames.TextColor, value);
             }
         }
 
         // Page Dimensions
-        private int pageWidth;
-        public int PageWidth
+        private int width;
+        public int Width
         {
-            get { return pageWidth; }
+            get { return width; }
             set
             {
-                set("page_width", value);
-                pageWidth = value;
+                width = value;
+                set(RegisteredNames.Width, value);
             }
         }
 
-        private int pageHeight;
-        public int PageHeight
+        private int height;
+        public int Height
         {
-            get { return pageHeight; }
+            get { return height; }
             set
             {
-                set("page_height", value);
-                pageHeight = value;
-            }
-        }
-
-        private int viewportWidth;
-        public int ViewportWidth
-        {
-            get { return viewportWidth; }
-            set
-            {
-                set("viewport_width", value);
-                viewportWidth = value;
+                height = value;
+                set(RegisteredNames.Height, value);
             }
         }
     }
 
     public class ContentStylesTemplate : EngineTemplate
     {
+        private static readonly string[] triggers = {
+            RegisteredNames.Width,
+            RegisteredNames.Height,
+            RegisteredNames.MarginTop,
+            RegisteredNames.MarginBottom,
+            RegisteredNames.MarginLeft,
+            RegisteredNames.MarginRight,
+        };
+
         public ContentStylesTemplate(string enginePath)
-            : base(Paths.ContentStyles, enginePath)
+            : base(Paths.ContentStyles, enginePath, triggers)
         { }
 
         // Colors
@@ -250,8 +241,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return backgroundColor; }
             set
             {
-                set("background_color", value);
                 backgroundColor = value;
+                set(RegisteredNames.BackgroundColor, value);
             }
         }
 
@@ -261,8 +252,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return textColor; }
             set
             {
-                set("text_color", value);
                 textColor = value;
+                set(RegisteredNames.TextColor, value);
             }
         }
 
@@ -272,8 +263,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return accentColor; }
             set
             {
-                set("accent_color", value);
                 accentColor = value;
+                set(RegisteredNames.AccentColor, value);
             }
         }
 
@@ -284,8 +275,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return lineHeight; }
             set
             {
-                set("line_height", value);
                 lineHeight = value;
+                set(RegisteredNames.LineHeight, value);
             }
         }
 
@@ -295,8 +286,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return fontSize; }
             set
             {
-                set("font_size", value);
                 fontSize = value;
+                set(RegisteredNames.FontSize, value);
             }
         }
 
@@ -306,8 +297,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return fontFamily; }
             set
             {
-                set("font_family", value);
                 fontFamily = value;
+                set(RegisteredNames.FontFamily, value);
             }
         }
 
@@ -317,9 +308,89 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return textAligh; }
             set
             {
-                set("text_align", value);
                 textAligh = value;
+                set(RegisteredNames.TextAlign, value);
             }
+        }
+
+        // Margins
+        private int marginTop;
+        public int MarginTop
+        {
+            get { return marginTop; }
+            set
+            {
+                marginTop = value;
+                set(RegisteredNames.MarginTop, value);
+            }
+        }
+
+        private int marginBottom;
+        public int MarginBottom
+        {
+            get { return marginBottom; }
+            set
+            {
+                marginBottom = value;
+                set(RegisteredNames.MarginBottom, value);
+            }
+        }
+
+        private int marginLeft;
+        public int MarginLeft
+        {
+            get { return marginLeft; }
+            set
+            {
+                marginLeft = value;
+                set(RegisteredNames.MarginLeft, value);
+            }
+        }
+
+        private int marginRight;
+        public int MarginRight
+        {
+            get { return marginRight; }
+            set
+            {
+                marginRight = value;
+                set(RegisteredNames.MarginRight, value);
+            }
+        }
+
+        // Page Dimensions
+        private int width;
+        public int Width
+        {
+            get { return width; }
+            set
+            {
+                width = value;
+                set(RegisteredNames.Width, value);
+            }
+        }
+
+        private int height;
+        public int Height
+        {
+            get { return height; }
+            set
+            {
+                height = value;
+
+                //It's not really there, but it's the contentType
+                // depends on it, so emulate it.
+                UpdateDependencies();
+            }
+        }
+
+        protected override void UpdateDependencies()
+        {
+            int contentWidth = Width - (MarginLeft + MarginRight);
+            set(RegisteredNames.ContentWidth, contentWidth);
+
+            int contentHeight = Height - (MarginTop + MarginBottom);
+            set(RegisteredNames.ContentHeight, contentHeight);
         }
     }
 }
