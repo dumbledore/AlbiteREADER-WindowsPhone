@@ -15,32 +15,41 @@ namespace SvetlinAnkov.Albite.Tests.Test.Utils.Messaging
     {
         protected override void TestImplementation()
         {
+            Type[] expectedTypes = new Type[] {
+                typeof(Message1),
+                typeof(Message2),
+                typeof(Message3),
+                typeof(Message4),
+            };
             // We want the client/host messages to be the same
-            JsonMessenger messenger = new JsonMessenger(
-                new Type[] { typeof(Message1), typeof(Message2), typeof(Message3) },
-                new Type[] { typeof(Message1), typeof(Message2), typeof(Message3) }
-            );
+            JsonMessenger messenger
+                = new JsonMessenger(expectedTypes, expectedTypes);
 
-            Message1 msg1Original = new Message1(4, 16);
-            string msg1String = messenger.Encode(msg1Original);
-            Log("Message1 : {0}", msg1String);
-            Message1 msg1Deserialized = (Message1)messenger.Decode(msg1String);
-            Log("Message1 : {{ info1 : {0}, info2 : {1} }}",
-                msg1Deserialized.Info1, msg1Deserialized.Info2);
+            testMessage(messenger, new Message1(4, 16));
+            testMessage(messenger, new Message2(64, 256));
+            testMessage(messenger, new Message3("Sample data"));
+            testMessage(messenger, new Message4(
+                "Sample data",
+                new Message4.Helper("snooker", 100, 147)
+            ));
+            testMessage(messenger, new Message4(
+                null,
+                new Message4.Helper("snooker", 100, 147)
+            ));
+            testMessage(messenger, new Message4(
+                "Sample Data",
+                null
+            ));
+            testMessage(messenger, null);
+        }
 
-            Message2 msg2Original = new Message2(64, 256);
-            string msg2String = messenger.Encode(msg2Original);
-            Log("Message2 : {0}", msg2String);
-            Message2 msg2Deserialized = (Message2)messenger.Decode(msg2String);
-            Log("Message2 : {{ info1 : {0}, info2 : {1} }}",
-                msg2Deserialized.Info1, msg2Deserialized.Info2);
-
-            Message3 msg3Original = new Message3("Sample data");
-            string msg3String = messenger.Encode(msg3Original);
-            Log("Message3 : {0}", msg3String);
-            Message3 msg3Deserialized = (Message3)messenger.Decode(msg3String);
-            Log("Message3 : {{ data : {0} }}",
-                msg3Deserialized.Data);
+        private void testMessage(
+            JsonMessenger messenger, JsonMessenger.JsonMessage message)
+        {
+            string encoded = messenger.Encode(message);
+            Log("Encoded {0}: {1}", message != null ? message.GetType().Name : "null", encoded);
+            JsonMessenger.JsonMessage decoded = messenger.Decode(encoded);
+            Log("{0} : {1}", decoded != null ? decoded.GetType().Name : "null", decoded);
         }
 
         [DataContract]
@@ -56,6 +65,14 @@ namespace SvetlinAnkov.Albite.Tests.Test.Utils.Messaging
             {
                 Info1 = info1;
                 Info2 = info2;
+            }
+
+            public override string ToString()
+            {
+                return string.Format(
+                    "{{ info1 : {0}, info2 : {1} }}",
+                    Info1, Info2
+                );
             }
         }
 
@@ -73,6 +90,14 @@ namespace SvetlinAnkov.Albite.Tests.Test.Utils.Messaging
                 Info1 = info1;
                 Info2 = info2;
             }
+
+            public override string ToString()
+            {
+                return string.Format(
+                    "{{ info1 : {0}, info2 : {1} }}",
+                    Info1, Info2
+                );
+            }
         }
 
         [DataContract]
@@ -84,6 +109,63 @@ namespace SvetlinAnkov.Albite.Tests.Test.Utils.Messaging
             public Message3(string data)
             {
                 Data = data;
+            }
+
+            public override string ToString()
+            {
+                return string.Format("{{ data : {0} }}", Data);
+            }
+        }
+
+        [DataContract]
+        private class Message4 : JsonMessenger.JsonMessage
+        {
+            [DataMember(Name = "data")]
+            public string Data { get; private set; }
+
+            [DataMember(Name = "extra")]
+            public Helper Extra { get; private set; }
+
+            public Message4(string data, Helper extra)
+            {
+                Data = data;
+                Extra = extra;
+            }
+
+            public override string ToString()
+            {
+                return string.Format(
+                    "Message4 : {{ data : {0}, extra : {1} }}",
+                    Data, Extra
+                );
+            }
+
+            [DataContract]
+            public class Helper
+            {
+                [DataMember(Name = "data")]
+                public string Data { get; private set; }
+
+                [DataMember(Name = "info1")]
+                public int Info1 { get; private set; }
+
+                [DataMember(Name = "info2")]
+                public int Info2 { get; private set; }
+
+                public Helper(string data, int info1, int info2)
+                {
+                    Data = data;
+                    Info1 = info1;
+                    Info2 = info2;
+                }
+
+                public override string ToString()
+                {
+                    return string.Format(
+                        "{{ data : {0}, info1 : {1}, info2 : {2} }}",
+                        Data, Info1, Info2
+                    );
+                }
             }
         }
     }
