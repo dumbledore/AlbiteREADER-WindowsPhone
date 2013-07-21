@@ -17,11 +17,17 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
     {
         private static readonly string tag = "BrowserEngine";
 
+        private AlbiteMessenger messenger;
+
         #region Constructors
         public BrowserEngine(IEngineController controller, Settings settings)
         {
             this.Controller = controller;
             this.settings = settings;
+            messenger = new AlbiteMessenger(
+                new ClientMessenger(controller),
+                new HostMessenger(this)
+            );
 
             prepare();
         }
@@ -307,52 +313,48 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         }
         #endregion
 
-        #region Handling Command from the JS Client
+        #region Handling Messages from the JS Client
 
-        private static readonly string debugCommand = "{debug}";
-        private static readonly string errorCommand = "{error}";
-        private static readonly string loadedCommand = "{loaded}";
-
-        public void ReceiveCommand(string command)
+        public void ReceiveMessage(string message)
         {
-            if (command.StartsWith(loadedCommand))
+            messenger.NotifyHost(message);
+        }
+
+        private class HostMessenger: AlbiteMessenger.IHostMessenger
+        {
+            private readonly BrowserEngine engine;
+
+            public HostMessenger(BrowserEngine engine)
             {
-                handleLoadedCommand();
+                this.engine = engine;
             }
-            else if (command.StartsWith(debugCommand))
+
+            public void ClientLoaded(int page, int pageCount)
             {
-                handleDebugCommand(command.Substring(debugCommand.Length));
-            }
-            else if (command.StartsWith(errorCommand))
-            {
-                handleErrorCommand(command.Substring(errorCommand.Length));
-            }
-            else
-            {
-                Controller.OnError("Unknown command: " + command);
+                // Inform the EngineController that it's ready
+                engine.Controller.LoadingCompleted();
+
+                // Now get the page count
+                engine.PageCount = pageCount;
+
+                // Handle missed orientations
+                engine.UpdateDimensions();
             }
         }
 
-        private void handleLoadedCommand()
+        private class ClientMessenger : AlbiteMessenger.IClientMessenger
         {
-            // Inform the EngineController that it's ready
-            Controller.LoadingCompleted();
+            private readonly IEngineController controller;
 
-            // Now get the page count // TODO
-            //PageCount = int.Parse(Controller.SendCommand("albite_getPageCount"));
+            public ClientMessenger(IEngineController controller)
+            {
+                this.controller = controller;
+            }
 
-            // Handle missed orientations
-            UpdateDimensions();
-        }
-
-        private void handleDebugCommand(string message)
-        {
-            Log.I(tag, "JavaScript: " + message);
-        }
-
-        private void handleErrorCommand(string message)
-        {
-            Controller.OnError("JavaScript Error: " + message);
+            public string NotifyClient(string message)
+            {
+                return controller.SendMessage(message);
+            }
         }
         #endregion
 
@@ -368,8 +370,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             string BasePath { get; set; }
             Uri SourceUri { get; set; }
 
-            string SendCommand(string command);
-            string SendCommand(string command, string[] args);
+            string SendMessage(string message);
 
             Book.Presenter Presenter { get; }
 

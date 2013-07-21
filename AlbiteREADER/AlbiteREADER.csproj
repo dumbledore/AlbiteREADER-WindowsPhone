@@ -112,6 +112,7 @@
     </Compile>
     <Compile Include="Controls\WaitPopup.cs" />
     <Compile Include="IAlbiteApplication.cs" />
+    <Compile Include="Model\Reader\AlbiteMessenger.cs" />
     <Compile Include="Model\Reader\BrowserEngine.cs" />
     <Compile Include="Model\Reader\EngineTemplate.cs" />
     <Compile Include="Model\Reader\Paths.cs" />

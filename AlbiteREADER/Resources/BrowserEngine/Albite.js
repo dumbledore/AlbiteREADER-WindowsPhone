@@ -34,10 +34,6 @@ Albite.Debug = {
 
   // Log a message
   log: function(msg) {
-    if (this.isMobile()) {
-      return window.alert(msg);
-    }
-
     try {
       // Try the console (e.g. Chrome)
       console.log(msg);
@@ -1368,7 +1364,7 @@ Albite.PresentationController = function(context) {
 Albite.HostAdapter = function(mainWindow) {
 
   function send(message) {
-    Albite.Debug.log("sending to host: " + message);
+    window.external.notify(message);
   }
 
   // Public API

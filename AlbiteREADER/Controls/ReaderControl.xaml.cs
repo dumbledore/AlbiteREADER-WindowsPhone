@@ -140,7 +140,14 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 return;
             }
 
-            controller.Engine.ReceiveCommand(e.Value);
+            try
+            {
+                controller.Engine.ReceiveMessage(e.Value);
+            }
+            catch (Exception ex)
+            {
+                controller.OnError(ex.Message);
+            }
         }
 
         public void WebBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -264,14 +271,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 engine = null;
             }
 
-            public string SendCommand(string command)
+            public string SendMessage(string message)
             {
-                return SendCommand(command, new string[0]);
-            }
-
-            public string SendCommand(string command, string[] args)
-            {
-                Log.D(tag, "sendcommand: " + command);
+                Log.D(tag, "SendMessage: " + message);
 
                 if (IsLoading)
                 {
@@ -279,19 +281,20 @@ namespace SvetlinAnkov.Albite.READER.Controls
                     return null;
                 }
 
-                return (string) control.WebBrowser.InvokeScript(command, args);
+                return (string)control.WebBrowser.InvokeScript(
+                    "albite_notify", new string[] { message });
             }
 
             public void LoadingStarted()
             {
-                //IsLoading = true;
-                //waitPopup.IsOpen = true;
+                IsLoading = true;
+                waitPopup.IsOpen = true;
             }
 
             public void LoadingCompleted()
             {
-                //waitPopup.IsOpen = false;
-                //IsLoading = false;
+                waitPopup.IsOpen = false;
+                IsLoading = false;
             }
 
             public void OnError(string message)
