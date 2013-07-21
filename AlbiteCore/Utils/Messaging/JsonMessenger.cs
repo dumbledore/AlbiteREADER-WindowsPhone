@@ -11,25 +11,19 @@ namespace SvetlinAnkov.Albite.Core.Utils.Messaging
 {
     public class JsonMessenger
     {
-        private readonly DataContractJsonSerializer clientSerializer;
-        private readonly DataContractJsonSerializer hostSerializer;
+        private readonly DataContractJsonSerializer serializer;
 
-        public JsonMessenger(
-            IEnumerable<Type> clientMessages,
-            IEnumerable<Type> hostMessages)
+        public JsonMessenger(IEnumerable<Type> messageTypes)
         {
-            clientSerializer = new DataContractJsonSerializer(
-                typeof(JsonMessage), clientMessages);
-
-            hostSerializer = new DataContractJsonSerializer(
-                typeof(JsonMessage), hostMessages);
+            serializer = new DataContractJsonSerializer(
+                typeof(JsonMessage), messageTypes);
         }
 
         public string Encode(JsonMessage message)
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                hostSerializer.WriteObject(stream, message);
+                serializer.WriteObject(stream, message);
                 stream.Position = 0;
                 StreamReader reader = new StreamReader(stream);
                 return reader.ReadToEnd();
@@ -40,7 +34,7 @@ namespace SvetlinAnkov.Albite.Core.Utils.Messaging
         {
             using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(data)))
             {
-                JsonMessage message = (JsonMessage)clientSerializer.ReadObject(stream);
+                JsonMessage message = (JsonMessage)serializer.ReadObject(stream);
                 return (JsonMessage)message;
             }
         }

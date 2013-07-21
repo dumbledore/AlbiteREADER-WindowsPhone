@@ -22,8 +22,7 @@ namespace SvetlinAnkov.Albite.Tests.Test.Utils.Messaging
                 typeof(Message4),
             };
             // We want the client/host messages to be the same
-            JsonMessenger messenger
-                = new JsonMessenger(expectedTypes, expectedTypes);
+            JsonMessenger messenger = new JsonMessenger(expectedTypes);
 
             testMessage(messenger, new Message1(4, 16));
             testMessage(messenger, new Message2(64, 256));
