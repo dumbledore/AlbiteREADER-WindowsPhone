@@ -1433,6 +1433,8 @@ Albite.Host = function(context) {
 
   function notifyLoaded() {
     var message = new Message(ClientMessages.loaded);
+    message.page = context.pager.getCurrentPage();
+    message.pageCount = context.pager.getPageCount();
     message.send();
   }
 
@@ -1465,6 +1467,8 @@ Albite.Host = function(context) {
 
   // Messages from host
   var HostMessages = {
+    "getPageCount"        : "getPageCount",
+    "getPage"             : "getPage",
     "goToPage"            : "goToPage",
     "goToDomLocation"     : "goToDomLocation",
     "getDomLocation"      : "getDomLocation",
@@ -1490,6 +1494,14 @@ Albite.Host = function(context) {
     var returnMessage = new Message("result_" + type);
 
     switch(type) {
+      case HostMessages.getPageCount:
+        returnMessage.pageCount = context.pager.getPageCount();
+        break;
+
+      case HostMessages.getPage:
+        returnMessage.page = context.pager.getCurrentPage();
+        break;
+
       case HostMessages.goToPage:
         context.pager.goToPage(message.page);
         break;
@@ -1501,8 +1513,6 @@ Albite.Host = function(context) {
       case HostMessages.getDomLocation:
         returnMessage.DomLocation = context.pager.getDomLocation();
         break;
-
-
 
       case HostMessages.findText:
         returnMessage.pages = context.pager.findPagesForText(message.text);
