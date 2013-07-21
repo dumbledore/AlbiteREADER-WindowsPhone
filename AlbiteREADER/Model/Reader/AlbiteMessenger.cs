@@ -16,6 +16,15 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             typeof(GetPageMessage),
             typeof(GetPageResultMessage),
             typeof(GoToPageMessage),
+            typeof(GetDomLocationMessage),
+            typeof(GetDomLocationResultMessage),
+            typeof(GoToDomLocationMessage),
+            typeof(GoToElementByIdMessage),
+            typeof(GetBookmarkMessage),
+            typeof(GetBookmarkResultMessage),
+
+            // Used by the Host Messages
+            typeof(Bookmark),
 
             // Client Messages
             typeof(ClientMessage),
@@ -60,6 +69,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                     = (GetPageResultMessage)requestFromClient(requestMessage);
                 return resultMessage.Page;
             }
+
             set
             {
                 GoToPageMessage requestMessage = new GoToPageMessage(value);
@@ -67,37 +77,62 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
         }
 
-        public int PageCount
-        {
-            get { return 0; }
-        }
+        public int PageCount { get; private set; }
 
         public string DomLocation
         {
-            get { return null; }
-            set { }
+            get
+            {
+                GetDomLocationMessage requestMessage = new GetDomLocationMessage();
+                GetDomLocationResultMessage resultMessage
+                    = (GetDomLocationResultMessage)requestFromClient(requestMessage);
+                return resultMessage.Location;
+            }
+
+            set
+            {
+                GoToDomLocationMessage requestMessage = new GoToDomLocationMessage(value);
+                sendToClient(requestMessage);
+            }
         }
 
-        public string ElementById
+        public void GoToElementById(string id)
         {
-            set { }
+            GoToElementByIdMessage requestMessage = new GoToElementByIdMessage(id);
+            sendToClient(requestMessage);
         }
 
-        // TODO: Bookmark
+        [DataContract(Name="bookmark")]
+        public class Bookmark
+        {
+            [DataMember(Name="text")]
+            public string Text { get; private set; }
+
+            [DataMember(Name="location")]
+            public string Location { get; private set; }
+        }
+
+        public Bookmark GetBookmark()
+        {
+            GetBookmarkMessage requestMessage = new GetBookmarkMessage();
+            GetBookmarkResultMessage resultMessage
+                = (GetBookmarkResultMessage)requestFromClient(requestMessage);
+            return resultMessage.Bookmark;
+        }
 
         // Host Messages
         [DataContract(Name = "getPage")]
-        public class GetPageMessage : JsonMessenger.JsonMessage { }
+        private class GetPageMessage : JsonMessenger.JsonMessage { }
 
         [DataContract(Name = "result_getPage")]
-        public class GetPageResultMessage : JsonMessenger.JsonMessage
+        private class GetPageResultMessage : JsonMessenger.JsonMessage
         {
             [DataMember(Name = "page")]
             public int Page { get; private set; }
         }
 
         [DataContract(Name = "goToPage")]
-        public class GoToPageMessage : JsonMessenger.JsonMessage
+        private class GoToPageMessage : JsonMessenger.JsonMessage
         {
             [DataMember(Name = "page")]
             public int Page { get; private set; }
@@ -106,6 +141,50 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             {
                 Page = page;
             }
+        }
+
+        [DataContract(Name = "getDomLocation")]
+        private class GetDomLocationMessage : JsonMessenger.JsonMessage { }
+
+        [DataContract(Name = "result_getDomLocation")]
+        private class GetDomLocationResultMessage : JsonMessenger.JsonMessage
+        {
+            [DataMember(Name = "location")]
+            public string Location { get; private set; }
+        }
+
+        [DataContract(Name = "goToDomLocation")]
+        private class GoToDomLocationMessage : JsonMessenger.JsonMessage
+        {
+            [DataMember(Name = "page")]
+            public string Location { get; private set; }
+
+            public GoToDomLocationMessage(string location)
+            {
+                Location = location;
+            }
+        }
+
+        [DataContract(Name = "goToElementById")]
+        private class GoToElementByIdMessage : JsonMessenger.JsonMessage
+        {
+            [DataMember(Name = "id")]
+            public string Id { get; private set; }
+
+            public GoToElementByIdMessage(string id)
+            {
+                Id = id;
+            }
+        }
+
+        [DataContract(Name = "getBookmark")]
+        private class GetBookmarkMessage : JsonMessenger.JsonMessage { }
+
+        [DataContract(Name = "result_getBookmark")]
+        private class GetBookmarkResultMessage : JsonMessenger.JsonMessage
+        {
+            [DataMember(Name = "bookmark")]
+            public Bookmark Bookmark { get; private set; }
         }
 
         public void NotifyHost(string encodedMessage)
@@ -118,13 +197,13 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         // Client Messages
         [DataContract]
-        public class ClientMessage : JsonMessenger.JsonMessage
+        private class ClientMessage : JsonMessenger.JsonMessage
         {
             public AlbiteMessenger Messenger { get; set; }
         }
 
         [DataContract(Name = "client_loaded")]
-        public class ClientLoadedMessage : ClientMessage
+        private class ClientLoadedMessage : ClientMessage
         {
             [DataMember(Name = "page")]
             public int Page { get; private set; }
@@ -134,6 +213,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             public override void Callback()
             {
+                Messenger.PageCount = PageCount;
                 Messenger.hostMessenger.ClientLoaded(Page, PageCount);
             }
         }
