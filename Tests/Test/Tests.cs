@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using SvetlinAnkov.Albite.Tests.Test.BrowserEngine;
 using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.Tests.Test.Utils;
+using SvetlinAnkov.Albite.Tests.Test.Utils.Messaging;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
@@ -24,6 +25,7 @@ namespace SvetlinAnkov.Albite.Tests.Test
                 new UtilsTests(),
                 new EpubTests(),
                 new TemplateTest("Test/Template/Main.xhtml"),
+                new JsonMessengerTest(),
             };
         }
     }
