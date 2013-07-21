@@ -48,6 +48,19 @@ namespace SvetlinAnkov.Albite.Core.Test
             Utils.Log.D(tag, string.Format(format, args));
         }
 
+        protected void Assert(bool expression)
+        {
+            if (!expression)
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        protected void Assert(object o)
+        {
+            Assert(o != null);
+        }
+
         protected abstract void TestImplementation();
 
         public virtual int NumberOfTests { get { return 1; } }
