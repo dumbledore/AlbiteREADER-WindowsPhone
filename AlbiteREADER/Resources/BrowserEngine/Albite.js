@@ -549,6 +549,7 @@ Albite.Pager = function(context) {
   }
 
   function getDomLocation() {
+    var location = getTextLocation();
     var domLocation = makeDomLocation(location.node, location.textOffset);
     return JSON.stringify(domLocation);
   }
@@ -648,7 +649,7 @@ Albite.Pager = function(context) {
   function getBookmark() {
     var location = getTextLocation();
     return {
-      "location"  : makeDomLocation(location.node, location.textOffset),
+      "location"  : JSON.stringify(makeDomLocation(location.node, location.textOffset)),
       "text"      : getBookmarkText(location.node, location.textOffset)
     };
   }
@@ -1507,7 +1508,7 @@ Albite.Host = function(context) {
         break;
 
       case HostMessages.getDomLocation:
-        returnMessage.DomLocation = context.pager.getDomLocation();
+        returnMessage.location = context.pager.getDomLocation();
         break;
 
       case HostMessages.findText:
