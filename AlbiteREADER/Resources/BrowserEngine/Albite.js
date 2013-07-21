@@ -1390,34 +1390,45 @@ Albite.HostAdapter = function(mainWindow) {
 Albite.Host = function(context) {
   var hostAdapter = new Albite.HostAdapter(context.mainWindow);
 
-  // Client to Host
-  function serialize(obj) {
-    return JSON.stringify(obj);
-  }
-
-  // Host to Client
-  function deserialize(str) {
-    return JSON.parse(str);
-  }
+  var typeField       = context.typeField;
+  var typeNamespace   = context.typeNamespace;
 
   var Message = function(type) {
-    this.type = type;
+    // Note that on IE after serialisation, i.e. after calling JSON.stringify
+    // the properties are serialised in the order they had been defined
+    // Thefore the type property would be the first property in the
+    // serialised output. This is especially important when working with
+    // WCF as they required it this way:
+    //   Type Hint Position in JSON Objects
+    //     Note that the type hint must appear first in the JSON representation.
+    //     This is the only case where order of key/value pairs is important in
+    //     JSON processing. For example, the following is not a valid way to
+    //     specify the type hint.
+    // Source: http://msdn.microsoft.com/en-us/library/bb412170.aspx
+    this[typeField] = type + typeNamespace;
+
+    var me = this;
 
     function send() {
-      hostAdapter.send(serialize(this));
+      hostAdapter.send(serialize());
     }
 
-    this.send = send;
+    function serialize() {
+      return JSON.stringify(me);
+    }
+
+    this.send       = send;
+    this.serialize  = serialize;
   };
 
   // Messages from client
   var ClientMessages = {
-    "loaded"              : 0,
-    "goToPreviousChapter" : 1,
-    "goToNextChapter"     : 2,
-    "navigate"            : 3,
-    "toggleFullscreen"    : 4,
-    "contextMenu"         : 5
+    "loaded"              : "client_loaded",
+    "goToPreviousChapter" : "client_goToPreviousChapter",
+    "goToNextChapter"     : "client_goToNextChapter",
+    "navigate"            : "client_navigate",
+    "toggleFullscreen"    : "client_toggleFullscreen",
+    "contextMenu"         : "client_contextMenu"
   };
 
   function notifyLoaded() {
@@ -1454,49 +1465,62 @@ Albite.Host = function(context) {
 
   // Messages from host
   var HostMessages = {
-    "goToPage"        : 0,
-    "goToDomLocation" : 1,
-    "getDomLocation"  : 2,
-    "findText"        : 3,
-    "goToElementById" : 4,
-    "getBookmark"     : 5
+    "goToPage"            : "goToPage",
+    "goToDomLocation"     : "goToDomLocation",
+    "getDomLocation"      : "getDomLocation",
+    "findText"            : "findText",
+    "goToElementById"     : "goToElementById",
+    "getBookmark"         : "getBookmark"
   };
 
   function receive(message) {
-    var result = serialize(processReceive(deserialize(message)));
+    // deserialize
+    message = JSON.parse(message);
 
-    if (typeof result !== 'string') {
-      // In case serialization failed, e.g. for undefined values, i.e.
-      // for methods returning void, return the empty string
-      result = "";
+    // normalise the type
+    var type  = message[typeField];
+    var end   = type.length - typeNamespace.length;
+
+    if (end <= 0 || end > type.length) {
+      throw new Error(0, "Invalid type: " + type);
     }
 
-    return result;
-  }
+    type = type.substr(0, end);
 
-  function processReceive(message) {
-    switch(message.type) {
+    var returnMessage = new Message("result_" + type);
+
+    switch(type) {
       case HostMessages.goToPage:
-        return context.pager.goToPage(message.page);
+        context.pager.goToPage(message.page);
+        break;
 
       case HostMessages.goToDomLocation:
-        return context.pager.goToDomLocation(message.location);
+        context.pager.goToDomLocation(message.location);
+        break;
 
       case HostMessages.getDomLocation:
-        return context.pager.getDomLocation();
+        returnMessage.DomLocation = context.pager.getDomLocation();
+        break;
+
+
 
       case HostMessages.findText:
-        return context.pager.findPagesForText(message.text);
+        returnMessage.pages = context.pager.findPagesForText(message.text);
+        break;
 
       case HostMessages.goToElementById:
-        return context.pager.goToElementById(message.elementId);
+        context.pager.goToElementById(message.elementId);
+        break;
 
       case HostMessages.getBookmark:
-        return context.pager.getBookmark();
+        returnMessage.bookmark = context.pager.getBookmark();
+        break;
 
       default:
         throw new Error(0, "Host sent message with unknown type: " + message.type);
     }
+
+    return returnMessage.serialize();
   }
 
   // Public API
@@ -1543,7 +1567,11 @@ Albite.Main = function(options) {
     "negligibleVelocityRatio" : 0.075,
     "samePageVelocityRatio"   : 1.5,
     "pageTapRatio"            : 0.3,
-    "animationDuration"       : 800
+    "animationDuration"       : 800,
+
+    // messaging
+    "typeField"       : "__type",
+    "typeNamespace"   : ""
   };
 
   Albite.Helpers.validateOptions(options, requiredOptions);
