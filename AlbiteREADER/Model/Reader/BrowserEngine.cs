@@ -49,11 +49,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             SetChapter(chapter);
         }
 
-        public void SetChapterDomLocation(Chapter chapter, DomLocation location)
+        public void SetChapterDomLocation(Chapter chapter, string location)
         {
-            mainPageTemplate.InitialLocation
-                = string.Format("{{elementPath: '{0}', textOffset:{1} }}",
-                location.ElementPath, location.TextOffset);
+            mainPageTemplate.InitialLocation = string.Format("'{0}'", location);
 
             SetChapter(chapter);
         }
@@ -72,13 +70,13 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             navigateBrowser();
         }
 
-        public DomLocation DomLocation
+        public string DomLocation
         {
             get
             {
                 //TODO: Write JScript code that will tell the current reading location
                 //      using ScriptNotify() and window.external.notify().
-                return new DomLocation("", 0);
+                return "";
             }
 
             set { goToDomLocation(value); }
@@ -112,7 +110,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         #region Location implementation
 
-        private void goToDomLocation(DomLocation location)
+        private void goToDomLocation(string location)
         {
             if (Controller.IsLoading)
             {
@@ -138,7 +136,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
 
             // Get the current location
-            DomLocation location = DomLocation;
+            string location = DomLocation;
 
             // reload
             navigateBrowser();

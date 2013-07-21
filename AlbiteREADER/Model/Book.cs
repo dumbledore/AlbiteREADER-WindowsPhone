@@ -48,10 +48,7 @@ namespace SvetlinAnkov.Albite.READER.Model
         private int currentChapterIndex { get; set; }
 
         [Column]
-        private string locationPath { get; set; }
-
-        [Column]
-        private int locationOffset { get; set; }
+        private string locationString { get; set; }
 
         // Chapters
         private EntitySet<Chapter> chaptersSet = new EntitySet<Chapter>();
@@ -114,7 +111,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                 // Set bookLocation
                 bookLocation = new BookLocation(
                     spine[Book.currentChapterIndex],
-                    new DomLocation(Book.locationPath, Book.locationOffset));
+                    Book.locationString);
             }
 
             private SpineElement[] prepareSpine()
@@ -150,8 +147,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                 {
                     bookLocation = value;
                     Book.currentChapterIndex = bookLocation.SpineElement.Number;
-                    Book.locationPath = bookLocation.DomLocation.ElementPath;
-                    Book.locationOffset = bookLocation.DomLocation.TextOffset;
+                    Book.locationString = bookLocation.DomLocation;
                 }
             }
 
@@ -222,9 +218,9 @@ namespace SvetlinAnkov.Albite.READER.Model
         public class BookLocation
         {
             public SpineElement SpineElement { get; private set; }
-            public DomLocation DomLocation { get; private set; }
+            public string DomLocation { get; private set; }
 
-            public BookLocation(SpineElement spineElement, DomLocation domLocation)
+            public BookLocation(SpineElement spineElement, string domLocation)
             {
                 SpineElement = spineElement;
                 DomLocation = domLocation;

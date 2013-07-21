@@ -553,8 +553,8 @@ Albite.Pager = function(context) {
   }
 
   function getDomLocation() {
-    var location = getTextLocation();
-    return makeDomLocation(location.node, location.textOffset);
+    var domLocation = makeDomLocation(location.node, location.textOffset);
+    return JSON.stringify(domLocation);
   }
 
   function getBookmarkText(node, textOffset) {
@@ -657,7 +657,14 @@ Albite.Pager = function(context) {
     };
   }
 
-  function goToDomLocation(location) {
+  function goToDomLocation(locationString) {
+    try {
+      var location = JSON.parse(location);
+    } catch (e) {
+      Albite.Debug.log("Failed parsing location from JSON");
+      return;
+    }
+
     goToPage(getPageForLocation(location));
   }
 
@@ -1523,7 +1530,7 @@ Albite.Main = function(options) {
   var requiredOptions = [ "mainWindow", "width", "height", "cssLocation" ];
 
   var defaultOptions = {
-    "initialLocation" : { },
+    "initialLocation" : "",
     "isFirstChapter"  : true,
     "isLastChapter"   : true,
     "debugEnabled"    : false,
@@ -1608,27 +1615,23 @@ Albite.Main = function(options) {
     switch (type) {
       case "number":
         context.pager.goToPage(initialLocation);
-        break;
+        return;
 
       case "string":
         switch(initialLocation.toLowerCase()) {
           case "first":
             context.pager.goToFirstPage();
-            break;
+            return;
 
           case "last":
             context.pager.goToLastPage();
-            break;
+            return;
 
           default:
-            throw new Error(0,
-              "Invalid string for the initial location: " + initialLocation);
+            // The location is a JSON string for portability
+            context.pager.goToDomLocation(initialLocation);
+            return;
         }
-        break;
-
-      case "object":
-        context.pager.goToDomLocation(initialLocation);
-        break;
 
       default:
         throw new Error(0, "Invalid type for the initial location: " + type);
