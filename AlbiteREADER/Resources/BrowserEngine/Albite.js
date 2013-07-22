@@ -655,8 +655,10 @@ Albite.Pager = function(context) {
   }
 
   function goToDomLocation(locationString) {
+    var location;
+
     try {
-      var location = JSON.parse(location);
+      location = JSON.parse(locationString);
     } catch (e) {
       Albite.Debug.log("Failed parsing location from JSON");
       return;
@@ -1462,6 +1464,20 @@ Albite.Host = function(context) {
     message.send();
   }
 
+  // Error reporting to host
+  function makeErrorMessage(exception) {
+    var message = new Message("error");
+    message.name = exception.name ? exception.name : "";
+    message.message = exception.message ? exception.message : "";
+    message.stack = exception.stack ? exception.stack : "";
+    return message;
+  }
+
+  function reportError(exception) {
+    var message = makeErrorMessage(exception);
+    message.send();
+  }
+
   // Messages from host
   var HostMessages = {
     "getPageCount"        : "getPageCount",
@@ -1475,56 +1491,62 @@ Albite.Host = function(context) {
   };
 
   function receive(message) {
-    // deserialize
-    message = JSON.parse(message);
+    var returnMessage;
 
-    // normalise the type
-    var type  = message[typeField];
-    var end   = type.length - typeNamespace.length;
+    try {
+      // deserialize
+      message = JSON.parse(message);
 
-    if (end <= 0 || end > type.length) {
-      throw new Error(0, "Invalid type: " + type);
-    }
+      // normalise the type
+      var type  = message[typeField];
+      var end   = type.length - typeNamespace.length;
 
-    type = type.substr(0, end);
+      if (end <= 0 || end > type.length) {
+        throw new Error(0, "Invalid type: " + type);
+      }
 
-    var returnMessage = new Message("result_" + type);
+      type = type.substr(0, end);
 
-    switch(type) {
-      case HostMessages.getPageCount:
-        returnMessage.pageCount = context.pager.getPageCount();
-        break;
+      returnMessage = new Message("result_" + type);
 
-      case HostMessages.getPage:
-        returnMessage.page = context.pager.getCurrentPage();
-        break;
+      switch(type) {
+        case HostMessages.getPageCount:
+          returnMessage.pageCount = context.pager.getPageCount();
+          break;
 
-      case HostMessages.goToPage:
-        context.pager.goToPage(message.page);
-        break;
+        case HostMessages.getPage:
+          returnMessage.page = context.pager.getCurrentPage();
+          break;
 
-      case HostMessages.goToDomLocation:
-        context.pager.goToDomLocation(message.location);
-        break;
+        case HostMessages.goToPage:
+          context.pager.goToPage(message.page);
+          break;
 
-      case HostMessages.getDomLocation:
-        returnMessage.location = context.pager.getDomLocation();
-        break;
+        case HostMessages.goToDomLocation:
+          context.pager.goToDomLocation(message.location);
+          break;
 
-      case HostMessages.findText:
-        returnMessage.pages = context.pager.findPagesForText(message.text);
-        break;
+        case HostMessages.getDomLocation:
+          returnMessage.location = context.pager.getDomLocation();
+          break;
 
-      case HostMessages.goToElementById:
-        context.pager.goToElementById(message.elementId);
-        break;
+        case HostMessages.findText:
+          returnMessage.pages = context.pager.findPagesForText(message.text);
+          break;
 
-      case HostMessages.getBookmark:
-        returnMessage.bookmark = context.pager.getBookmark();
-        break;
+        case HostMessages.goToElementById:
+          context.pager.goToElementById(message.elementId);
+          break;
 
-      default:
-        throw new Error(0, "Host sent message with unknown type: " + message.type);
+        case HostMessages.getBookmark:
+          returnMessage.bookmark = context.pager.getBookmark();
+          break;
+
+        default:
+          throw new Error(0, "Host sent message with unknown type: " + message.type);
+      }
+    } catch (exception) {
+      returnMessage = makeErrorMessage(exception);
     }
 
     return returnMessage.serialize();
@@ -1542,6 +1564,9 @@ Albite.Host = function(context) {
 
   // Receive from Host
   this.receive  = receive;
+
+  // Errors
+  this.reportError = reportError;
 };
 
 /*
@@ -1587,43 +1612,51 @@ Albite.Main = function(options) {
   // We want to add new properties and we want them private
   context = Albite.Helpers.copyOptions(options);
 
+  // Set up the host early on so that one could send
+  // error reports
+  context.host = new Albite.Host(context);
+
   function contentLoaded(contentFrame) {
-    // Add a div around the content in order to fix the problem
-    // with the margins
-    var doc = contentFrame.contentWindow.document;
-    var rootElement = doc.createElement('div');
-    rootElement.id = 'albite_reader_root';
+    try {
+      // Add a div around the content in order to fix the problem
+      // with the margins
+      var doc = contentFrame.contentWindow.document;
+      var rootElement = doc.createElement('div');
+      rootElement.id = 'albite_reader_root';
 
-    // Add a div at the start and one at the end
-    // which have break-before/after CSS styling
-    // in order to add the first/last dummy pages
-    var startPage = doc.createElement('div');
-    startPage.id = 'albite_reader_start';
+      // Add a div at the start and one at the end
+      // which have break-before/after CSS styling
+      // in order to add the first/last dummy pages
+      var startPage = doc.createElement('div');
+      startPage.id = 'albite_reader_start';
 
-    var endPage = doc.createElement('div');
-    endPage.id = 'albite_reader_end';
+      var endPage = doc.createElement('div');
+      endPage.id = 'albite_reader_end';
 
-    // Add the separator for the first dummy page
-    rootElement.appendChild(startPage);
+      // Add the separator for the first dummy page
+      rootElement.appendChild(startPage);
 
-    // Append all the current children
-    while (doc.body.firstChild) {
-      rootElement.appendChild(doc.body.firstChild);
+      // Append all the current children
+      while (doc.body.firstChild) {
+        rootElement.appendChild(doc.body.firstChild);
+      }
+
+      // Add the last dummy page
+      rootElement.appendChild(endPage);
+
+      // Now add back the element to the body
+      doc.body.appendChild(rootElement);
+
+      // Finally load the CSS that will apply the rules
+      // for pagination
+      Albite.Helpers.loadCssFile(
+        options.cssLocation,
+        contentFrame.contentWindow.document,
+        function() { loadingCompleted(contentFrame); }
+      );
+    } catch (exception) {
+      context.host.reportError(exception);
     }
-
-    // Add the last dummy page
-    rootElement.appendChild(endPage);
-
-    // Now add back the element to the body
-    doc.body.appendChild(rootElement);
-
-    // Finally load the CSS that will apply the rules
-    // for pagination
-    Albite.Helpers.loadCssFile(
-      options.cssLocation,
-      contentFrame.contentWindow.document,
-      function() { loadingCompleted(contentFrame); }
-    );
   }
 
   function getElement(id) {
@@ -1650,23 +1683,24 @@ Albite.Main = function(options) {
     switch (type) {
       case "number":
         context.pager.goToPage(initialLocation);
-        return;
+        break;
 
       case "string":
         switch(initialLocation.toLowerCase()) {
           case "first":
             context.pager.goToFirstPage();
-            return;
+            break;
 
           case "last":
             context.pager.goToLastPage();
-            return;
+            break;
 
           default:
             // The location is a JSON string for portability
             context.pager.goToDomLocation(initialLocation);
-            return;
+            break;
         }
+        break;
 
       default:
         throw new Error(0, "Invalid type for the initial location: " + type);
@@ -1674,35 +1708,35 @@ Albite.Main = function(options) {
   }
 
   function loadingCompleted(contentFrame) {
-    var pageElement = getElement("page");
-    context.contentWindow = contentFrame.contentWindow;
+    try {
+      var pageElement = getElement("page");
+      context.contentWindow = contentFrame.contentWindow;
 
-    // Set up the scroller
-    context.scroller = new Albite.WindowScroller(context.contentWindow);
+      // Set up the scroller
+      context.scroller = new Albite.WindowScroller(context.contentWindow);
 
-    // Set up page handler
-    context.pager = new Albite.Pager(context);
+      // Set up page handler
+      context.pager = new Albite.Pager(context);
 
-    // Go to the page location specified by the host
-    setupInitialLocation(context.initialLocation);
+      // Go to the page location specified by the host
+      setupInitialLocation(context.initialLocation);
 
-    // Set up the presentation controller
-    context.controller = new Albite.PresentationController(context);
+      // Set up the presentation controller
+      context.controller = new Albite.PresentationController(context);
 
-    // Set up the anchors of the content document: They should not be
-    // clickable and rather report to the navigation to the host
-    setUpAnchors(context.contentWindow.document);
+      // Set up the anchors of the content document: They should not be
+      // clickable and rather report to the navigation to the host
+      setUpAnchors(context.contentWindow.document);
 
-    // Set up the host
-    context.host = new Albite.Host(context);
+      // Unhide the content
+      pageElement.show();
 
-    // Unhide the content
-    pageElement.show();
+      // Notify the host we are done
+      context.host.notifyLoaded();
 
-    // Notify the host
-    context.host.notifyLoaded();
-
-    Albite.Debug.log("Loading completed.");
+    } catch (exception) {
+      context.host.reportError(exception);
+    }
   }
 
   function notify(message) {
