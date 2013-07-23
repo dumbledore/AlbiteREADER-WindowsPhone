@@ -42,7 +42,7 @@ namespace SvetlinAnkov.Albite.Core.Utils.Messaging
         [DataContract]
         public class JsonMessage
         {
-            public virtual void Callback() { }
+            public virtual void Callback(object data) { }
         }
     }
 }
