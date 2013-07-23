@@ -73,6 +73,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             Chapter = chapter;
 
             // Set up the main.xhtml
+            mainPageTemplate.IsFirstChapter = IsFirstChapter;
+            mainPageTemplate.IsLastChapter = IsLastChapter;
             mainPageTemplate.ChatperFile = Path.Combine("/" + Controller.Presenter.RelativeContentPath, chapter.Url);
             mainPageTemplate.SaveToStorage();
 

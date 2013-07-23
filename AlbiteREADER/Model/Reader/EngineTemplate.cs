@@ -63,6 +63,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             set(name, value.ToString());
         }
 
+        // Boolean.ToString() returns True or False,
+        // i.e. with capital letters. That's not OK
+        // with Javascript
+        protected void set(string name, bool value)
+        {
+            set(name, value ? "true" : "false");
+        }
+
         private void checkDepencies(string name)
         {
             if (updateTriggers != null && updateTriggers.Contains(name))
@@ -78,6 +86,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             public static readonly string DebugEnabled = "debug_enabled";
             public static readonly string InitialLocation = "initial_location";
+            public static readonly string IsFirstChapter = "is_first_chapter";
+            public static readonly string IsLastChapter = "is_last_chapter";
             public static readonly string ChapterFile = "chapter_file";
 
             public static readonly string Width = "width";
@@ -151,6 +161,28 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             {
                 initialLocation = value;
                 set(RegisteredNames.InitialLocation, value);
+            }
+        }
+
+        private bool isFirstChapter;
+        public bool IsFirstChapter
+        {
+            get { return isFirstChapter; }
+            set
+            {
+                isFirstChapter = value;
+                set(RegisteredNames.IsFirstChapter, value);
+            }
+        }
+
+        private bool isLastChapter;
+        public bool IsLastChapter
+        {
+            get { return isLastChapter; }
+            set
+            {
+                isLastChapter = value;
+                set(RegisteredNames.IsLastChapter, value);
             }
         }
 
