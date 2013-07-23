@@ -33,6 +33,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         }
         #endregion
 
+        #region Abstract Members
+        public abstract bool IsFirstChapter { get; }
+        public abstract bool IsLastChapter { get; }
+        #endregion
+
         #region Public API
 
         public Chapter Chapter { get; private set; }

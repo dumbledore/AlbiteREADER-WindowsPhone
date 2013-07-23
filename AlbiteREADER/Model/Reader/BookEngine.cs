@@ -38,12 +38,12 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
         }
 
-        public bool IsFirstChapter
+        public override bool IsFirstChapter
         {
             get { return current.Previous == null; }
         }
 
-        public bool IsLastChapter
+        public override bool IsLastChapter
         {
             get { return current.Next == null; }
         }
