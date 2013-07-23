@@ -27,7 +27,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             typeof(Bookmark),
 
             // Client Messages
-            typeof(ClientMessage),
             typeof(ClientLoadedMessage),
         };
 
@@ -189,21 +188,19 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         public void NotifyHost(string encodedMessage)
         {
-            ClientMessage message
-                = (ClientMessage) messenger.Decode(encodedMessage);
-            message.Messenger = this;
-            message.Callback();
+            // Receiving a notification from client
+            // Decode to JsonMessage
+            JsonMessenger.JsonMessage message
+                = messenger.Decode(encodedMessage);
+
+            // Running the callback will make sure
+            // the message does its job
+            message.Callback(this);
         }
 
         // Client Messages
-        [DataContract]
-        private class ClientMessage : JsonMessenger.JsonMessage
-        {
-            public AlbiteMessenger Messenger { get; set; }
-        }
-
         [DataContract(Name = "client_loaded")]
-        private class ClientLoadedMessage : ClientMessage
+        private class ClientLoadedMessage : JsonMessenger.JsonMessage
         {
             [DataMember(Name = "page")]
             public int Page { get; private set; }
@@ -211,10 +208,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             [DataMember(Name = "pageCount")]
             public int PageCount { get; private set; }
 
-            public override void Callback()
+            public override void Callback(object data)
             {
-                Messenger.PageCount = PageCount;
-                Messenger.hostMessenger.ClientLoaded(Page, PageCount);
+                AlbiteMessenger messenger = (AlbiteMessenger)data;
+                messenger.PageCount = PageCount;
+                messenger.hostMessenger.ClientLoaded(Page, PageCount);
             }
         }
 
