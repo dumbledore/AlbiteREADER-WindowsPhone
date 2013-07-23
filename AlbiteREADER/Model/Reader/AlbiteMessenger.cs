@@ -156,7 +156,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         [DataContract(Name = "goToDomLocation")]
         private class GoToDomLocationMessage : JsonMessenger.JsonMessage
         {
-            [DataMember(Name = "page")]
+            [DataMember(Name = "location")]
             public string Location { get; private set; }
 
             public GoToDomLocationMessage(string location)
