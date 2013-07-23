@@ -141,14 +141,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 return;
             }
 
-            // Get the current location
-            string location = DomLocation;
-
-            // reload
-            navigateBrowser();
-
-            // Set to the same location
-            DomLocation = location;
+            // Navigate to the same chapter and the
+            // current DomLocation
+            SetChapterDomLocation(Chapter, DomLocation);
         }
 
         private void navigateBrowser()
@@ -265,7 +260,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 return;
             }
 
-            Controller.LoadingStarted();
             updateDimensions(viewportWidth, viewportHeight);
             reloadBrowser();
         }
