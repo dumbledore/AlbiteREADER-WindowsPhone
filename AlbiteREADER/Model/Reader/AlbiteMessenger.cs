@@ -12,14 +12,20 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
     public class AlbiteMessenger
     {
         private static readonly Type[] expectedTypes = new Type[] {
+            // Error
+            typeof(ErrorMessage),
+
             // Host Messages
             typeof(GetPageMessage),
             typeof(GetPageResultMessage),
             typeof(GoToPageMessage),
+            typeof(GoToPageResultMessage),
             typeof(GetDomLocationMessage),
             typeof(GetDomLocationResultMessage),
             typeof(GoToDomLocationMessage),
+            typeof(GoToDomLocationResultMessage),
             typeof(GoToElementByIdMessage),
+            typeof(GoToElementByIdResultMessage),
             typeof(GetBookmarkMessage),
             typeof(GetBookmarkResultMessage),
 
@@ -47,15 +53,19 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         private JsonMessenger.JsonMessage requestFromClient(
             JsonMessenger.JsonMessage requestMessage)
         {
+            // Encode the JsonMessage to a string
             string requestEncoded = messenger.Encode(requestMessage);
-            string resultEncoded = clientMessenger.NotifyClient(requestEncoded);
-            return messenger.Decode(resultEncoded);
-        }
 
-        private void sendToClient(JsonMessenger.JsonMessage requestMessage)
-        {
-            string requestEncoded = messenger.Encode(requestMessage);
-            clientMessenger.NotifyClient(requestEncoded);
+            // Send the encoded message to the client and retrieve the result
+            string resultEncoded = clientMessenger.NotifyClient(requestEncoded);
+
+            // Decode back to a JsonMessage
+            JsonMessenger.JsonMessage result = messenger.Decode(resultEncoded);
+
+            // Run the callback before processing the result
+            result.Callback(this);
+
+            return result;
         }
 
         // Public API for notifying the client
@@ -72,7 +82,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             set
             {
                 GoToPageMessage requestMessage = new GoToPageMessage(value);
-                sendToClient(requestMessage);
+                requestFromClient(requestMessage);
             }
         }
 
@@ -91,14 +101,14 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             set
             {
                 GoToDomLocationMessage requestMessage = new GoToDomLocationMessage(value);
-                sendToClient(requestMessage);
+                requestFromClient(requestMessage);
             }
         }
 
         public void GoToElementById(string id)
         {
             GoToElementByIdMessage requestMessage = new GoToElementByIdMessage(id);
-            sendToClient(requestMessage);
+            requestFromClient(requestMessage);
         }
 
         [DataContract(Name="bookmark")]
@@ -117,6 +127,39 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             GetBookmarkResultMessage resultMessage
                 = (GetBookmarkResultMessage)requestFromClient(requestMessage);
             return resultMessage.Bookmark;
+        }
+
+        // Error
+        public class MessengerException : Exception
+        {
+            public MessengerException(string message)
+                : base(message) { }
+
+            public MessengerException(
+                string name,
+                string message,
+                string stack)
+            : this(string.Format("Name: {0}\nMessage: {1}\nStack:\n{2}",
+                name, message, stack)) { }
+        }
+
+        [DataContract(Name = "error")]
+        private class ErrorMessage : JsonMessenger.JsonMessage
+        {
+            [DataMember(Name = "name")]
+            public string Name { get; private set; }
+
+            [DataMember(Name = "message")]
+            public string Message { get; private set; }
+
+            [DataMember(Name = "stack")]
+            public string Stack { get; private set; }
+
+            public override void Callback(object data)
+            {
+                throw new MessengerException(
+                    Name, Message, Stack);
+            }
         }
 
         // Host Messages
@@ -142,6 +185,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
         }
 
+        [DataContract(Name = "result_goToPage")]
+        private class GoToPageResultMessage : JsonMessenger.JsonMessage { }
+
         [DataContract(Name = "getDomLocation")]
         private class GetDomLocationMessage : JsonMessenger.JsonMessage { }
 
@@ -164,6 +210,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
         }
 
+        [DataContract(Name = "result_goToDomLocation")]
+        private class GoToDomLocationResultMessage : JsonMessenger.JsonMessage { }
+
         [DataContract(Name = "goToElementById")]
         private class GoToElementByIdMessage : JsonMessenger.JsonMessage
         {
@@ -175,6 +224,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 Id = id;
             }
         }
+
+        [DataContract(Name = "result_goToElementById")]
+        private class GoToElementByIdResultMessage : JsonMessenger.JsonMessage { }
 
         [DataContract(Name = "getBookmark")]
         private class GetBookmarkMessage : JsonMessenger.JsonMessage { }
