@@ -37,7 +37,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         public Chapter Chapter { get; private set; }
 
-        public void SetChapter(Chapter chapter, int page)
+        public void SetChapterPage(Chapter chapter, int page)
         {
             mainPageTemplate.InitialLocation = page.ToString();
             SetChapter(chapter);
@@ -58,7 +58,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         public void SetChapterDomLocation(Chapter chapter, string location)
         {
             mainPageTemplate.InitialLocation = string.Format("'{0}'", location);
-
             SetChapter(chapter);
         }
 
@@ -78,14 +77,8 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         public string DomLocation
         {
-            get
-            {
-                //TODO: Write JScript code that will tell the current reading location
-                //      using ScriptNotify() and window.external.notify().
-                return "";
-            }
-
-            set { goToDomLocation(value); }
+            get { return messenger.DomLocation; }
+            set { messenger.DomLocation = value; }
         }
 
         /// <summary>
@@ -93,25 +86,34 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         /// </summary>
         public int Page
         {
-            get { return 0 /* TODO: Ask JS Client */; }
-            set { goToPage(value); }
+            get { return messenger.Page; }
+            set { messenger.Page = value; }
         }
 
-        public int PageCount { get; private set; }
+        public int PageCount
+        {
+            get { return messenger.PageCount; }
+        }
 
         public void GoToFirstPage()
         {
-            goToPage(FirstPageNumber);
+            Page = FirstPage;
         }
 
         public void GoToLastPage()
         {
-            goToPage(LastPageNumber);
+            Page = LastPage;
         }
 
-        //Note: there are always AT LEAST 3 pages
-        public int FirstPageNumber { get { return 1; } }
-        public int LastPageNumber { get { return PageCount - 2; } }
+        public int FirstPage
+        {
+            get { return messenger.FirstPage; }
+        }
+
+        public int LastPage
+        {
+            get { return messenger.LastPage; }
+        }
         #endregion
 
         #region Location implementation
@@ -325,11 +327,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             public void ClientLoaded(int page, int pageCount)
             {
+                // Don't update Page as it will cause a GoToPageMessage
+                // No need to do it anyway
+
                 // Inform the EngineController that it's ready
                 engine.Controller.LoadingCompleted();
-
-                // Now get the page count
-                engine.PageCount = pageCount;
 
                 // Handle missed orientations
                 engine.UpdateDimensions();

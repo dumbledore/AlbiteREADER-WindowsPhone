@@ -88,6 +88,10 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         public int PageCount { get; private set; }
 
+        public int FirstPage { get { return 1; } }
+
+        public int LastPage { get { return PageCount; } }
+
         public string DomLocation
         {
             get
@@ -263,6 +267,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             public override void Callback(object data)
             {
                 AlbiteMessenger messenger = (AlbiteMessenger)data;
+
+                // Don't update Page as it will cause a GoToPageMessage
+                // We don't need to update it anyway
+
+                // Update  the PageCount as it's cached locally
                 messenger.PageCount = PageCount;
                 messenger.hostMessenger.ClientLoaded(Page, PageCount);
             }
