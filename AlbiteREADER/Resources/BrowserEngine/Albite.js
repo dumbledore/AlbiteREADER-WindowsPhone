@@ -28,12 +28,25 @@ var Albite = {};
 
 Albite.Debug = {
 
+  debugEnabled : false,
+
   isMobile: function() {
     return navigator.userAgent.match(/Windows Phone/i);
   },
 
   // Log a message
   log: function(msg) {
+    if (!this.debugEnabled) {
+      // Don't print logs for non-debug versions
+      return;
+    }
+
+    if (this.isMobile()) {
+      // Using an alert is convenient
+      window.alert(msg);
+      return;
+    }
+
     try {
       // Try the console (e.g. Chrome)
       console.log(msg);
@@ -91,11 +104,19 @@ Albite.Debug = {
  */
 
 Albite.Helpers = {
+  createElement: function(element, doc) {
+    var ns = doc.documentElement.namespaceURI;
+    if (ns) {
+      return doc.createElementNS(ns, element);
+    } else {
+      return doc.createElement(element);
+    }
+  },
 
   // Inject a CSS file into a document at runtime
   // and call a callback after that
   loadCssFile: function(filename, doc, callback) {
-    var linkElement = doc.createElement("link");
+    var linkElement = this.createElement("link", doc);
 
     linkElement.setAttribute("rel", "stylesheet");
     linkElement.setAttribute("type", "text/css");
@@ -1612,6 +1633,9 @@ Albite.Main = function(options) {
   // We want to add new properties and we want them private
   context = Albite.Helpers.copyOptions(options);
 
+  // Setup debug state
+  Albite.Debug.debugEnabled = context.debugEnabled;
+
   // Set up the host early on so that one could send
   // error reports
   context.host = new Albite.Host(context);
@@ -1621,16 +1645,16 @@ Albite.Main = function(options) {
       // Add a div around the content in order to fix the problem
       // with the margins
       var doc = contentFrame.contentWindow.document;
-      var rootElement = doc.createElement('div');
+      var rootElement = Albite.Helpers.createElement('div', doc);
       rootElement.id = 'albite_reader_root';
 
       // Add a div at the start and one at the end
       // which have break-before/after CSS styling
       // in order to add the first/last dummy pages
-      var startPage = doc.createElement('div');
+      var startPage = Albite.Helpers.createElement('div', doc);
       startPage.id = 'albite_reader_start';
 
-      var endPage = doc.createElement('div');
+      var endPage = Albite.Helpers.createElement('div', doc);
       endPage.id = 'albite_reader_end';
 
       // Add the separator for the first dummy page
