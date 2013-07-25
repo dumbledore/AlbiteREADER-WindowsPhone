@@ -48,7 +48,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             get { return current.Next == null; }
         }
 
-        public void GoToPreviousChapter()
+        public override void GoToPreviousChapter()
         {
             if (IsFirstChapter)
             {
@@ -60,7 +60,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             SetChapterLastPage(current.Chapter);
         }
 
-        public void GoToNextChapter()
+        public override void GoToNextChapter()
         {
             if (IsLastChapter)
             {

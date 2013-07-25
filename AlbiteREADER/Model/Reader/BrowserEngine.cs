@@ -36,6 +36,9 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         #region Abstract Members
         public abstract bool IsFirstChapter { get; }
         public abstract bool IsLastChapter { get; }
+
+        public abstract void GoToPreviousChapter();
+        public abstract void GoToNextChapter();
         #endregion
 
         #region Public API
@@ -324,6 +327,16 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
                 // Handle missed orientations
                 engine.UpdateDimensions();
+            }
+
+            public void GoToPreviousChapter()
+            {
+                engine.GoToPreviousChapter();
+            }
+
+            public void GoToNextChapter()
+            {
+                engine.GoToNextChapter();
             }
         }
 
