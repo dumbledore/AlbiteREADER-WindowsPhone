@@ -123,24 +123,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         }
         #endregion
 
-        #region Location implementation
-
-        private void goToDomLocation(string location)
-        {
-            if (Controller.IsLoading)
-            {
-                return;
-            }
-
-            // TODO
-        }
-
-        private void goToPage(int pageNumber)
-        {
-            // TODO
-        }
-        #endregion
-
         #region Browser Navigation
 
         private void reloadBrowser()
