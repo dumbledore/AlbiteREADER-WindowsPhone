@@ -17,8 +17,10 @@ namespace SvetlinAnkov.Albite.Core.Utils.Logging
 
         protected static string LogAsString(Log.Level level, string tag, string message, Exception exception)
         {
-            return string.Format("{0} {1}/{2}: {3} {4} {5}",
-                            DateTime.Now, level, tag, message,
+            DateTime now = DateTime.Now;
+
+            return string.Format("{0}.{1} {2}/{3}: {4} {5} {6}",
+                            now, now.Millisecond, level, tag, message,
                             exception == null ? null : exception.Message,
                             exception == null ? null : exception.StackTrace);
         }
