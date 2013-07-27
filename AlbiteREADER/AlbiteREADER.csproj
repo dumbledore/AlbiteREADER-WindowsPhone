@@ -142,6 +142,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\EpubContainerTest.cs" />
+    <Compile Include="Test\EpubContainerTestWrapper.cs" />
+    <Compile Include="Test\TemplateTest.cs" />
     <Compile Include="Utils\Defaults.cs" />
     <Compile Include="View\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>

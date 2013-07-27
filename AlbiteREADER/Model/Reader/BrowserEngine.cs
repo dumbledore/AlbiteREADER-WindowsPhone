@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
-    public abstract class BrowserEngine
+    internal abstract class BrowserEngine
     {
         private static readonly string tag = "BrowserEngine";
 

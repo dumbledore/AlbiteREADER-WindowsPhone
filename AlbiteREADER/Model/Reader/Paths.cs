@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
-    public static class Paths
+    internal static class Paths
     {
         public static string BasePath
         {

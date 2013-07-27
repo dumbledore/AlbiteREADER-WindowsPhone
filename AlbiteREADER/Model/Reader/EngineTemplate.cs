@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
-    public class EngineTemplate : TemplateResource
+    internal class EngineTemplate : TemplateResource
     {
         private readonly string[] updateTriggers;
 
@@ -111,7 +111,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         }
     }
 
-    public class MainPageTemplate : EngineTemplate
+    internal class MainPageTemplate : EngineTemplate
     {
         public MainPageTemplate(string enginePath)
             : base(Paths.MainPage, enginePath)
@@ -198,7 +198,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         }
     }
 
-    public class BaseStylesTemplate : EngineTemplate
+    internal class BaseStylesTemplate : EngineTemplate
     {
         public BaseStylesTemplate(string enginePath)
             : base(Paths.BaseStyles, enginePath)
@@ -251,7 +251,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         }
     }
 
-    public class ContentStylesTemplate : EngineTemplate
+    internal class ContentStylesTemplate : EngineTemplate
     {
         private static readonly string[] triggers = {
             RegisteredNames.Width,

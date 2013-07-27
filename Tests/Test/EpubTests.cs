@@ -8,10 +8,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using SvetlinAnkov.Albite.Tests.Test.Model.Container;
 using SvetlinAnkov.Albite.Core.Test;
 using System.IO;
 using SvetlinAnkov.Albite.READER.Model.Container;
+using SvetlinAnkov.Albite.READER.Test;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {

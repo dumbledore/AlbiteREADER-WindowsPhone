@@ -9,7 +9,7 @@ using SvetlinAnkov.Albite.Core.Utils.Messaging;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
-    public class AlbiteMessenger
+    internal class AlbiteMessenger
     {
         private static readonly Type[] expectedTypes = new Type[] {
             // Error

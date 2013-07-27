@@ -7,7 +7,7 @@ using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
-    public class BookEngine : BrowserEngine
+    internal class BookEngine : BrowserEngine
     {
         private static readonly string tag = "BookEngine";
 
