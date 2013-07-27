@@ -22,33 +22,24 @@ body {
   font-size:      #(font_size)px          !important; /* default: 28      */
   font-family:    "#(font_family)", serif !important; /* default: Georgia */
   word-wrap:      break-word              !important;
-
-  background-color: green;  /* TODO: REMOVE */
 }
 
 #albite_reader_root {
   padding:        0;
   padding-left:   #(margin_left)px;
   padding-right:  #(margin_right)px;
-
-  background-color: yellow; /* TODO: REMOVE */
-  border: 1px solid black;  /* TODO: REMOVE */
 }
 
 #albite_reader_start {
   width:        10px;
   height:       10px;
   break-after:  column;
-
-  background-color: blue;   /* TODO: REMOVE */
 }
 
 #albite_reader_end {
   width:        10px;
   height:       10px;
   break-before: column;
-
-  background-color: purple; /* TODO: REMOVE */
 }
 
 body {
