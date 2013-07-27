@@ -29,7 +29,7 @@ namespace SvetlinAnkov.Albite.Tests.Test.View
             Library library = context.Library;
 
             // Add the book
-            AddBook(library, book);
+            AddBook(library, new Descriptor(book, Book.ContainerType.Epub));
 
             // Navigate
             navigation.Navigate(new Uri("/AlbiteREADER;component/View/ReaderPage.xaml?id=1", UriKind.Relative));

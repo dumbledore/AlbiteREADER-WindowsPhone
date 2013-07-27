@@ -12,21 +12,34 @@ namespace SvetlinAnkov.Albite.Tests.Test
 {
     public abstract class LibraryTest : TestCase
     {
-        protected void AddBook(Library library, string epubPath)
+        public sealed class Descriptor
         {
-            Log("Opening ePub {0}", epubPath);
+            public string Path { get; private set; }
+            public Book.ContainerType Type { get; private set; }
 
-            using (AlbiteResourceStorage res = new AlbiteResourceStorage(epubPath))
+            public Descriptor(
+                string path, Book.ContainerType type)
+            {
+                Path = path;
+                Type = type;
+            }
+        }
+
+        protected void AddBook(Library library, Descriptor descriptor)
+        {
+            Log("Opening book {0}", descriptor.Path);
+
+            using (AlbiteResourceStorage res = new AlbiteResourceStorage(descriptor.Path))
             {
                 using (Stream inputStream = res.GetStream(FileAccess.Read))
                 {
                     using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
                     {
-                        // Create the ePub
-                        using (EpubContainer epub = new EpubContainer(zip))
+                        using (Book.Descriptor bookDescriptor
+                            = new Book.Descriptor(zip, descriptor.Type))
                         {
                             // Add to the library
-                            library.Books.Add(epub);
+                            library.Books.Add(bookDescriptor);
                         }
                     }
                 }

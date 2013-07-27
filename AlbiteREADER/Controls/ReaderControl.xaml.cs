@@ -18,7 +18,7 @@ using System.Threading;
 
 namespace SvetlinAnkov.Albite.READER.Controls
 {
-    public partial class ReaderControl : UserControl, IDisposable
+    public partial class ReaderControl : UserControl
     {
         private static readonly string tag = "ReaderControl";
 
@@ -58,16 +58,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
             // Call LoadingCompleted so to hide the popup
             // and cancel the animation.
             controller.LoadingCompleted();
-            controller.Dispose();
             controller = null;
-        }
-
-        public void Dispose()
-        {
-            if (controller != null)
-            {
-                controller.Dispose();
-            }
         }
         #endregion
 
@@ -182,7 +173,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
         #endregion
 
         #region EngineController
-        private class EngineController : BrowserEngine.IEngineController, IDisposable
+        private class EngineController : BrowserEngine.IEngineController
         {
             private readonly ReaderControl control;
             private WaitPopup waitPopup = new WaitPopup();
@@ -257,18 +248,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
             public void CloseBook()
             {
                 // TODO: Book persistance
-                Dispose();
-            }
-
-            public void Dispose()
-            {
-                if (presenter != null)
-                {
-                    presenter.Dispose();
-                }
-
-                presenter = null;
-                engine = null;
             }
 
             public string SendMessage(string message)

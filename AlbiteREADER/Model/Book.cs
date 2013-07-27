@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER.Model.Container;
 using SvetlinAnkov.Albite.READER.Model.Reader;
+using SvetlinAnkov.Albite.READER.Model.Container.Epub;
 
 namespace SvetlinAnkov.Albite.READER.Model
 {
@@ -75,13 +76,12 @@ namespace SvetlinAnkov.Albite.READER.Model
             }
         }
 
-        public class Presenter : IDisposable
+        public class Presenter
         {
             private readonly Library.BookManager manager;
             private readonly Library.PersistDelegate persist;
 
             public Book Book { get; private set; }
-            public BookContainer Container { get; private set; }
 
             private readonly Object myLock = new Object();
 
@@ -89,24 +89,23 @@ namespace SvetlinAnkov.Albite.READER.Model
             // TODO: ToC
             // TODO: Lists
 
-            public Presenter(
+            internal Presenter(
                 Book book,
                 BookContainer container,
                 Library.BookManager manager,
                 Library.PersistDelegate persist)
             {
                 this.Book = book;
-                this.Container = container;
                 this.manager = manager;
                 this.persist = persist;
 
-                prepare();
+                prepare(container);
             }
 
-            private void prepare()
+            private void prepare(BookContainer container)
             {
                 // Load all the spine elements
-                spine = prepareSpine();
+                spine = prepareSpine(container);
 
                 // Set bookLocation
                 bookLocation = new BookLocation(
@@ -114,14 +113,14 @@ namespace SvetlinAnkov.Albite.READER.Model
                     Book.locationString);
             }
 
-            private SpineElement[] prepareSpine()
+            private SpineElement[] prepareSpine(BookContainer container)
             {
                 List<SpineElement> spine = new List<SpineElement>();
                 SpineElement previous = null;
                 SpineElement current = null;
                 int number = 0;
 
-                foreach (string url in Container.Spine)
+                foreach (string url in container.Spine)
                 {
                     // Add the chapter to the spine
                     current = new SpineElement(number++,
@@ -180,11 +179,6 @@ namespace SvetlinAnkov.Albite.READER.Model
             {
                 persist();
             }
-
-            public void Dispose()
-            {
-                Container.Dispose();
-            }
         }
 
         public class SpineElement
@@ -224,6 +218,40 @@ namespace SvetlinAnkov.Albite.READER.Model
             {
                 SpineElement = spineElement;
                 DomLocation = domLocation;
+            }
+        }
+
+        public enum ContainerType
+        {
+            Epub,
+        }
+
+        public sealed class Descriptor : IDisposable
+        {
+            public IAlbiteContainer Container { get; private set; }
+            public ContainerType Type { get; private set; }
+
+            public Descriptor(
+                IAlbiteContainer container, ContainerType type)
+            {
+                Container = container;
+                Type = type;
+            }
+
+            internal BookContainer GetContainer()
+            {
+                switch (Type)
+                {
+                    case ContainerType.Epub:
+                        return new EpubContainer(Container);
+                }
+
+                throw new InvalidOperationException("Unknown container type");
+            }
+
+            public void Dispose()
+            {
+                Container.Dispose();
             }
         }
     }

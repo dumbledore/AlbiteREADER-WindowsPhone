@@ -19,7 +19,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
     /// <summary>
     /// Check http://idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.4.1
     /// </summary>
-    public class NavigationControlFile : EpubXmlFile
+    internal class NavigationControlFile : EpubXmlFile
     {
         public static string XmlNamespace { get { return "{http://www.daisy.org/z3986/2005/ncx/}"; } }
 

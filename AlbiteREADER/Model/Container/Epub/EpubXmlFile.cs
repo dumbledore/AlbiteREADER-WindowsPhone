@@ -16,7 +16,7 @@ using SvetlinAnkov.Albite.Core.Utils.Xml;
 
 namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
 {
-    public abstract class EpubXmlFile
+    internal abstract class EpubXmlFile
     {
         protected IAlbiteContainer Container { get; private set; }
         protected string Filename { get; private set; }

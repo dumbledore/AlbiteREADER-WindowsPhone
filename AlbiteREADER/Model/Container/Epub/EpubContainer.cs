@@ -19,7 +19,7 @@ using SvetlinAnkov.Albite.Core.Utils.Xml;
 
 namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
 {
-    public class EpubContainer : BookContainer
+    internal class EpubContainer : BookContainer
     {
         private static readonly string tag = "EpubContainer";
 

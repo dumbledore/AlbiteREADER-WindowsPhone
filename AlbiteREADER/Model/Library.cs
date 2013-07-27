@@ -79,14 +79,16 @@ namespace SvetlinAnkov.Albite.READER.Model
                 booksTempPath = Path.Combine(booksPath, "Temp");
             }
 
-            public Book Add(BookContainer container)
+            public Book Add(Book.Descriptor descriptor)
             {
+                BookContainer bookContainer = descriptor.GetContainer();
+
                 Book book = new Book();
 
                 // Fill in the defaults so that if there's
                 // a problem with the metadata it would
                 // fail gracefully.
-                book.Title = container.Title;
+                book.Title = bookContainer.Title;
 
                 //TODO: Fill in the metadata,
                 //incl author and info from Freebase.
@@ -103,7 +105,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                     }
 
                     // Unpack
-                    container.Install(booksTempPath);
+                    bookContainer.Install(booksTempPath);
 
                     lock (library.db)
                     {
@@ -119,7 +121,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                         // Create the chapters
                         List<string> urls = new List<string>();
 
-                        foreach (string url in container.Spine)
+                        foreach (string url in bookContainer.Spine)
                         {
                             if (urls.Contains(url))
                             {

@@ -20,9 +20,9 @@ namespace SvetlinAnkov.Albite.Tests.Test.Model
     public class LibraryAddBookTest : LibraryTest
     {
         private string location;
-        private string[] books;
+        private Descriptor[] books;
 
-        public LibraryAddBookTest(string location, string[] books)
+        public LibraryAddBookTest(string location, Descriptor[] books)
         {
             this.location = location;
             this.books = books;
@@ -33,7 +33,7 @@ namespace SvetlinAnkov.Albite.Tests.Test.Model
             // Start using the library
             using (Library library = new Library(location))
             {
-                foreach (string book in books)
+                foreach (Descriptor book in books)
                 {
                     // Add a book
                     AddBook(library, book);

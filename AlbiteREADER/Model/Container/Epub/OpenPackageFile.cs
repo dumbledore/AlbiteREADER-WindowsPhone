@@ -19,7 +19,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
     /// <summary>
     /// Check http://idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.0
     /// </summary>
-    public class OpenPackageFile : EpubXmlFile
+    internal class OpenPackageFile : EpubXmlFile
     {
         public static string XmlNamespaceOpf { get { return "{http://www.idpf.org/2007/opf}"; } }
         public static string XmlNamespaceDc { get { return "{http://purl.org/dc/elements/1.1/}"; } }

@@ -5,6 +5,7 @@ using SvetlinAnkov.Albite.Tests.Test.Model;
 using SvetlinAnkov.Albite.Tests.Test.View;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER;
+using SvetlinAnkov.Albite.READER.Model;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
@@ -48,9 +49,10 @@ namespace SvetlinAnkov.Albite.Tests.Test
             // Remove all local data
             removeStore();
 
-            string[] books
+            LibraryTest.Descriptor[] books
                 = {
-                      "Test/epub/aliceDynamic.epub"
+                      new LibraryTest.Descriptor(
+                          "Test/epub/aliceDynamic.epub", Book.ContainerType.Epub)
                   };
             new LibraryAddBookTest("Test/Library/", books).Test();
         }

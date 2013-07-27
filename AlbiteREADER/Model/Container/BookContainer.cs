@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace SvetlinAnkov.Albite.READER.Model.Container
 {
-    public abstract class BookContainer : IAlbiteContainer
+    internal abstract class BookContainer : IAlbiteContainer
     {
         private static readonly string tag = "BookContainer";
 

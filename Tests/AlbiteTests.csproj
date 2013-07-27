@@ -108,7 +108,6 @@
     <Compile Include="Test\GCTests.cs" />
     <Compile Include="Test\Model\Container\EpubContainerTestWrapper.cs" />
     <Compile Include="Test\Model\LibraryTest.cs" />
-    <Compile Include="Test\Model\Container\EpubContainerTest.cs" />
     <Compile Include="Test\Model\LibraryAddBookTest.cs" />
     <Compile Include="Test\SpeechSynthesisTest.cs" />
     <Compile Include="Test\UtilsTests.cs" />
