@@ -1341,11 +1341,12 @@ Albite.PresentationController = function(context) {
 
     // The host needs to know the coords so that they'll know where to
     // show the menu.
-    options["position"] = { "x" : x, "y" : y };
+    options["position_x"] = x;
+    options["position_y"] = y;
 
     // Add extra info
-    options["image"]    = image   ? { "url" : image.href  } : null;
-    options["anchor"]   = anchor  ? { "url" : anchor.href } : null;
+    options["image"]  = image   ? image.href : null;
+    options["anchor"] = anchor  ? anchor.href  : null;
 
     // Notify the host
     context.host.contextMenu(options);

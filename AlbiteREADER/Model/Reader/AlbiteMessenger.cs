@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using SvetlinAnkov.Albite.Core.Utils.Messaging;
+using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
     internal class AlbiteMessenger
     {
+        private static readonly string tag = "AlbiteMessenger";
+
         private static readonly Type[] expectedTypes = new Type[] {
             // Error
             typeof(ErrorMessage),
@@ -37,6 +40,12 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             typeof(ClientLoadingMessage),
             typeof(GoToPrevoiusChapterMessage),
             typeof(GoToNextChapterMessage),
+            typeof(ClientToggleFullscreenMessage),
+            typeof(ClientNavigateMessage),
+            typeof(ClientContextMenuMessage),
+
+            // Used by the Client Messages
+            typeof(ContextMenuOptions),
         };
 
         private readonly JsonMessenger messenger
@@ -312,6 +321,68 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 AlbiteMessenger messenger = (AlbiteMessenger)data;
                 messenger.hostMessenger.GoToNextChapter();
             }
+        }
+
+        [DataContract(Name = "client_navigate")]
+        private class ClientNavigateMessage : JsonMessenger.JsonMessage
+        {
+            [DataMember(Name = "url")]
+            public string Url { get; private set; }
+
+            public override void Callback(object data)
+            {
+                AlbiteMessenger messenger = (AlbiteMessenger)data;
+
+                //TODO
+                Log.D(tag, string.Format("navigate(url={0})", Url));
+            }
+        }
+
+        [DataContract(Name = "client_toggleFullscreen")]
+        private class ClientToggleFullscreenMessage : JsonMessenger.JsonMessage
+        {
+            public override void Callback(object data)
+            {
+                AlbiteMessenger messenger = (AlbiteMessenger)data;
+
+                //TODO
+                Log.D(tag, "toggleFullScreen()");
+            }
+        }
+
+        [DataContract(Name = "client_contextMenu")]
+        private class ClientContextMenuMessage : JsonMessenger.JsonMessage
+        {
+            [DataMember(Name = "options")]
+            public ContextMenuOptions Options { get; private set; }
+
+            public override void Callback(object data)
+            {
+                AlbiteMessenger messenger = (AlbiteMessenger)data;
+
+                // TODO:
+                Log.D(tag, string.Format(
+                    "ContextMenu(options: ({0}, {1}) image={2} anchor={3})",
+                    Options.PositionX, Options.PositionY,
+                    Options.Image,
+                    Options.Anchor));
+            }
+        }
+
+        [DataContract(Name = "contextMenuOptions")]
+        public class ContextMenuOptions
+        {
+            [DataMember(Name = "position_x")]
+            public int PositionX { get; private set; }
+
+            [DataMember(Name = "position_y")]
+            public int PositionY { get; private set; }
+
+            [DataMember(Name = "image")]
+            public string Image { get; private set; }
+
+            [DataMember(Name = "anchor")]
+            public string Anchor { get; private set; }
         }
 
         public interface IClientMessenger
