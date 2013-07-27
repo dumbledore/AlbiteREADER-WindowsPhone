@@ -1755,8 +1755,8 @@ Albite.Main = function(options) {
       // Unhide the content
       pageElement.show();
 
-      // Notify the host we are done
-      context.host.notifyLoaded();
+      // Notify the host we are done, but after it has rendered it all
+      requestAnimationFrame(function() { context.host.notifyLoaded(); });
 
     } catch (exception) {
       context.host.reportError(exception);
