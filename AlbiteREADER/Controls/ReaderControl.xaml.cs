@@ -267,12 +267,17 @@ namespace SvetlinAnkov.Albite.READER.Controls
             public void LoadingStarted()
             {
                 IsLoading = true;
-                waitPopup.IsOpen = true;
+                waitPopup.Start();
+            }
+
+            public void LoadingProgressed(int progress)
+            {
+                waitPopup.Progress = progress;
             }
 
             public void LoadingCompleted()
             {
-                waitPopup.IsOpen = false;
+                waitPopup.Finish();
                 IsLoading = false;
             }
 

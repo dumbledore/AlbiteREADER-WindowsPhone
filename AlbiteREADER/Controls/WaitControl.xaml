@@ -14,9 +14,16 @@
             Background="{StaticResource PhoneBackgroundBrush}">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock
+                    x:Name="LoadingText"
                     FontSize="{StaticResource PhoneFontSizeLarge}"
                     HorizontalAlignment="Center"
-                    Margin="10">Loading</TextBlock>
+                    Margin="5">Loading</TextBlock>
+                <ProgressBar
+                    x:Name="ProgressBar"
+                    Width="{Binding Path=ActualWidth, ElementName=LoadingText}"
+                    Height="2"
+                    Margin="5"
+                    Padding="0" />
                 <TextBlock
                     FontSize="{StaticResource PhoneFontSizeSmall}"
                     Foreground="{StaticResource PhoneAccentBrush}"

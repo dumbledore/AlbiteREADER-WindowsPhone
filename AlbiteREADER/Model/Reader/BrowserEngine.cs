@@ -329,6 +329,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 engine.UpdateDimensions();
             }
 
+            public void ClientLoading(int progress)
+            {
+                engine.Controller.LoadingProgressed(progress);
+            }
+
             public void GoToPreviousChapter()
             {
                 engine.GoToPreviousChapter();
@@ -374,6 +379,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             bool IsLoading { get; }
             void LoadingStarted();
+            void LoadingProgressed(int progress);
             void LoadingCompleted();
 
             void OnError(string message);

@@ -34,6 +34,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             // Client Messages
             typeof(ClientLoadedMessage),
+            typeof(ClientLoadingMessage),
             typeof(GoToPrevoiusChapterMessage),
             typeof(GoToNextChapterMessage),
         };
@@ -279,6 +280,20 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
         }
 
+        [DataContract(Name = "client_loading")]
+        private class ClientLoadingMessage : JsonMessenger.JsonMessage
+        {
+            [DataMember(Name = "progress")]
+            public int Progress { get; private set; }
+
+            public override void Callback(object data)
+            {
+                AlbiteMessenger messenger = (AlbiteMessenger)data;
+
+                messenger.hostMessenger.ClientLoading(Progress);
+            }
+        }
+
         [DataContract(Name="client_goToPreviousChapter")]
         private class GoToPrevoiusChapterMessage : JsonMessenger.JsonMessage
         {
@@ -308,6 +323,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         {
             // Notifications from client to host
             void ClientLoaded(int page, int pageCount);
+            void ClientLoading(int progress);
             void GoToPreviousChapter();
             void GoToNextChapter();
         }

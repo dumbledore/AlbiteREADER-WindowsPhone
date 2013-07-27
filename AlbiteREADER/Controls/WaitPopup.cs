@@ -18,49 +18,52 @@ namespace SvetlinAnkov.Albite.READER.Controls
 
     public class WaitPopup
     {
+        public static readonly int Minimum = 0;
+        public static readonly int Maximum = 100;
+
         Popup popup;
+        WaitControl control;
 
         public WaitPopup()
         {
             Size size = Application.Current.RootVisual.RenderSize;
 
-            WaitControl waitControl = new WaitControl();
-            waitControl.Width = size.Width;
-            waitControl.Height = size.Height;
+            control = new WaitControl();
+            control.Width = size.Width;
+            control.Height = size.Height;
+            control.ProgressBar.Maximum = 100;
+            control.ProgressBar.Value = 0;
 
             popup = new Popup();
-            popup.Child = waitControl;
+            popup.Child = control;
         }
 
-        public bool IsOpen
+        private int progress;
+        public int Progress
         {
-            get { return popup.IsOpen; }
+            get { return progress; }
             set
             {
-                hideBars();
-                popup.IsOpen = value;
+                // Clamp it
+                progress = value < Minimum
+                    ? Minimum
+                    : value > Maximum ? Maximum : value;
+
+                // Update the progress bar
+                control.ProgressBar.Value = progress;
             }
         }
 
-        private void hideBars()
+        public void Start()
         {
-            if (DesignerProperties.IsInDesignTool)
-            {
-                // Setting SystemTray.IsVisible causes exceptions in design mode,
-                // so skipping it, if used in VS, Expression Blend, etc.
-                // For more info, check: http://stackoverflow.com/a/834332/348183
-                return;
-            }
+            Progress = 0;
+            popup.IsOpen = true;
+        }
 
-            // Hide the top bar
-            SystemTray.IsVisible = false;
-
-            // Hide the bottom bar
-            IApplicationBar bar = AppUtils.ApplicationBar;
-            if (bar != null)
-            {
-                bar.IsVisible = false;
-            }
+        public void Finish()
+        {
+            Progress = 100;
+            popup.IsOpen = false;
         }
     }
 }

@@ -1444,6 +1444,7 @@ Albite.Host = function(context) {
   // Messages from client
   var ClientMessages = {
     "loaded"              : "client_loaded",
+    "loading"             : "client_loading",
     "goToPreviousChapter" : "client_goToPreviousChapter",
     "goToNextChapter"     : "client_goToNextChapter",
     "navigate"            : "client_navigate",
@@ -1455,6 +1456,12 @@ Albite.Host = function(context) {
     var message = new Message(ClientMessages.loaded);
     message.page = context.pager.getCurrentPage();
     message.pageCount = context.pager.getPageCount();
+    message.send();
+  }
+
+  function notifyLoading(progress) {
+    var message = new Message(ClientMessages.loading);
+    message.progress = progress;
     message.send();
   }
 
@@ -1577,6 +1584,7 @@ Albite.Host = function(context) {
 
   // Send to Host
   this.notifyLoaded         = notifyLoaded;
+  this.notifyLoading        = notifyLoading;
   this.goToPreviousChapter  = goToPreviousChapter;
   this.goToNextChapter      = goToNextChapter;
   this.navigate             = navigate;
@@ -1640,8 +1648,14 @@ Albite.Main = function(options) {
   // error reports
   context.host = new Albite.Host(context);
 
+  // The host has started parsing the Javascript: 20% ready.
+  context.host.notifyLoading(20);
+
   function contentLoaded(contentFrame) {
     try {
+      // Loaded the ieframe. It was a tough task, so 50% ready.
+      context.host.notifyLoading(50);
+
       // Add a div around the content in order to fix the problem
       // with the margins
       var doc = contentFrame.contentWindow.document;
@@ -1670,6 +1684,9 @@ Albite.Main = function(options) {
 
       // Now add back the element to the body
       doc.body.appendChild(rootElement);
+
+      // Adding the CSS: 60% ready.
+      context.host.notifyLoading(60);
 
       // Finally load the CSS that will apply the rules
       // for pagination
@@ -1733,6 +1750,9 @@ Albite.Main = function(options) {
 
   function loadingCompleted(contentFrame) {
     try {
+      // CSS Loaded: 70% done.
+      context.host.notifyLoading(70);
+
       var pageElement = getElement("page");
       context.contentWindow = contentFrame.contentWindow;
 
@@ -1752,8 +1772,14 @@ Albite.Main = function(options) {
       // clickable and rather report to the navigation to the host
       setUpAnchors(context.contentWindow.document);
 
+      // Left only to lift the curtains: 90% done.
+      context.host.notifyLoading(90);
+
       // Unhide the content
       pageElement.show();
+
+      // Last moment before showing up: 100%.
+      context.host.notifyLoading(100);
 
       // Notify the host we are done, but after it has rendered it all
       requestAnimationFrame(function() { context.host.notifyLoaded(); });
