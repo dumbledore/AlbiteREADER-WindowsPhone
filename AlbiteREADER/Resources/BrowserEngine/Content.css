@@ -43,10 +43,10 @@ body {
 }
 
 body {
-  columns:      1 #(content_width)px  !important;
-  column-gap:   0px                   !important;
-  column-rule:  none                  !important;
-  column-fill:  auto                  !important;
+  columns:      1 #(width)px  !important;
+  column-gap:   0px           !important;
+  column-rule:  none          !important;
+  column-fill:  auto          !important;
 }
 
 body {
@@ -92,8 +92,8 @@ p {
  */
 
 img {
-  max-width:      90%   !important;
-  height:         auto  !important;
+  max-width:      90%                 !important;
+  max-height:     #(content_height)px !important;
 
   margin:         auto;
   margin-top:     20px;

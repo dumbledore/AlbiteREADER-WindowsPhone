@@ -317,6 +317,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
                 this.engine = engine;
             }
 
+            public void ClientLog(string message)
+            {
+                Log.D(tag, "Client: " + message);
+            }
+
             public void ClientLoaded(int page, int pageCount)
             {
                 // Don't update Page as it will cause a GoToPageMessage

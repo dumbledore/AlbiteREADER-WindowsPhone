@@ -418,9 +418,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         protected override void UpdateDependencies()
         {
-            int contentWidth = Width - (MarginLeft + MarginRight);
-            set(RegisteredNames.ContentWidth, contentWidth);
-
             int contentHeight = Height - (MarginTop + MarginBottom);
             set(RegisteredNames.ContentHeight, contentHeight);
         }

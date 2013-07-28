@@ -26,71 +26,60 @@ var Albite = {};
  * licenses restricting copying, distribution, and decompilation.
  */
 
-Albite.Debug = {
-
-  debugEnabled : false,
-
-  isMobile: function() {
-    return navigator.userAgent.match(/Windows Phone/i);
-  },
+Albite.Debug = function(context) {
 
   // Log a message
-  log: function(msg) {
-    if (!this.debugEnabled) {
+  function log(msg) {
+    if (!context.debugEnabled) {
       // Don't print logs for non-debug versions
       return;
     }
 
-    if (this.isMobile()) {
-      // Using an alert is convenient
-      window.alert(msg);
-      return;
-    }
+    context.host.log(msg);
+  }
 
-    try {
-      // Try the console (e.g. Chrome)
-      console.log(msg);
-    } catch (e) {
-      // Last resort
-      window.alert(msg);
-    }
-  },
-
-  printProperties: function(element) {
+  function printProperties(element) {
     this.log("typeof: " + typeof element);
     for (var key in element) {
       this.log(key + ": " + element[key]);
     }
-  },
-
-  Benchmark: function() {
-    this.start = function() {
-      if (this.running) {
-        throw new Error(0, "Benchmark already running");
-      }
-
-      this.running = true;
-      this.startTime = Date.now();
-    };
-
-    this.end = function() {
-      if (!this.running) {
-        throw new Error(0, "Benchmark not running");
-      }
-
-      this.elapsedTime = this.elapsed();
-      this.running = false;
-      return this.elapsedTime;
-    };
-
-    this.elapsed = function() {
-      if (this.running) {
-        return Date.now() - this.startTime;
-      } else {
-        return this.elapsedTime;
-      }
-    };
   }
+
+  this.log              = log;
+  this.printProperties  = printProperties;
+};
+
+Albite.Debug.isMobile = function() {
+  return navigator.userAgent.match(/Windows Phone/i);
+};
+
+Albite.Benchmark = function() {
+  this.start = function() {
+    if (this.running) {
+      throw new Error(0, "Benchmark already running");
+    }
+
+    this.running = true;
+    this.startTime = Date.now();
+  };
+
+  this.end = function() {
+    if (!this.running) {
+      throw new Error(0, "Benchmark not running");
+    }
+
+    this.elapsedTime = this.elapsed();
+    this.running = false;
+    return this.elapsedTime;
+  };
+
+  this.elapsed = function() {
+    if (this.running) {
+      return Date.now() - this.startTime;
+    } else {
+      return this.elapsedTime;
+    }
+  };
 };
 
 /*
@@ -230,7 +219,7 @@ Albite.Pager = function(context) {
 
     // Warn if pagination worked incorrectly
     if (pages % 1 !== 0) {
-      Albite.Debug.log("Warning: Page count is not integer: " +
+      throw new Error(0, "Page count is not integer: " +
         pages + " pages x " + pageWidth + " = " + bodyWidth);
     }
 
@@ -681,7 +670,7 @@ Albite.Pager = function(context) {
     try {
       location = JSON.parse(locationString);
     } catch (e) {
-      Albite.Debug.log("Failed parsing location from JSON");
+      context.debug.log("Failed parsing location from JSON");
       return;
     }
 
@@ -913,21 +902,20 @@ Albite.Animation = function() {
 
 Albite.GestureHandler = function(targetElement) {
 
-  var handler   = this;
-  var origin    = {"x" : 0, "y" : 0};
-  var timestamp = 0;
+  function GestureAPI(handler) {
+    var origin      = {"x" : 0, "y" : 0};
+    var timestamp   = 0;
+    var canHold     = false;
+    var isInertial  = false;
+    var gesture     = new MSGesture();
 
-  // Add gesture support for IE10 on Windows 8 and WP8
-  if (typeof MSGesture !== "undefined") {
-    var gesture = new MSGesture();
     gesture.target = targetElement;
-
-    var isInertial = false;
 
     targetElement.addEventListener(
       "MSPointerDown",
       function(evt) {
         timestamp = Date.now();
+        canHold = true;
         gesture.addPointer(evt.pointerId);
       },
       false
@@ -1003,19 +991,26 @@ Albite.GestureHandler = function(targetElement) {
     targetElement.addEventListener(
       "MSGestureHold",
       function(evt) {
-        if (handler.onHold) {
-          handler.onHold(evt.clientX, evt.clientY);
+
+        if (canHold) {
+          canHold = false;
+
+          if (handler.onHold) {
+            handler.onHold(evt.clientX, evt.clientY);
+          }
         }
       },
       false
     );
-  } else {
-    // Doesn't support the gesture API
+  }
 
-    var lastMove = {"x" : 0, "y" : 0};
-
-    var down = false;
-    var moved = false;
+  function LegacyAPI(handler) {
+    var origin          = {"x" : 0, "y" : 0};
+    var lastMove        = {"x" : 0, "y" : 0};
+    var timestamp       = 0;
+    var onHoldTreshold  = 1000;
+    var down            = false;
+    var moved           = false;
 
     targetElement.addEventListener(
       "mousedown",
@@ -1032,6 +1027,7 @@ Albite.GestureHandler = function(targetElement) {
         timestamp = Date.now();
 
         down = true;
+        moved = false;
 
         if (handler.onStart) {
           handler.onStart(x, y);
@@ -1063,14 +1059,25 @@ Albite.GestureHandler = function(targetElement) {
     targetElement.addEventListener(
       "mouseup",
       function(evt) {
-        if (!moved && handler.onTap) {
-          var elapsed = Date.now() - timestamp;
-          handler.onTap(evt.clientX, evt.clientY, elapsed);
-        } else if (moved && handler.onEnd) {
-          var dx = origin.x - evt.clientX;
-          var dy = origin.y - evt.clientY;
+        var dx, dy, elapsed;
 
-          handler.onEnd(dx, dy, 1, 1);
+        if (moved) {
+          if (handler.onEnd) {
+            dx = origin.x - evt.clientX;
+            dy = origin.y - evt.clientY;
+            handler.onEnd(dx, dy, 1, 1);
+          }
+        } else {
+          elapsed = Date.now() - timestamp;
+          if (elapsed > onHoldTreshold) {
+            if (handler.onHold) {
+              handler.onHold(evt.clientX, evt.clientY);
+            }
+          } else {
+            if (handler.onTap) {
+              handler.onTap(evt.clientX, evt.clientY, elapsed);
+            }
+          }
         }
 
         down = false;
@@ -1078,6 +1085,15 @@ Albite.GestureHandler = function(targetElement) {
       },
       false
     );
+  }
+
+  // Add gesture support for IE10 on Windows 8 and WP8
+  var api;
+
+  if (typeof MSGesture !== "undefined") {
+    api = new GestureAPI(this);
+  } else {
+    api = new LegacyAPI(this);
   }
 
   this.onStart        = null;
@@ -1444,6 +1460,7 @@ Albite.Host = function(context) {
 
   // Messages from client
   var ClientMessages = {
+    "log"                 : "client_log",
     "loaded"              : "client_loaded",
     "loading"             : "client_loading",
     "goToPreviousChapter" : "client_goToPreviousChapter",
@@ -1452,6 +1469,12 @@ Albite.Host = function(context) {
     "toggleFullscreen"    : "client_toggleFullscreen",
     "contextMenu"         : "client_contextMenu"
   };
+
+  function log(msg) {
+    var message = new Message(ClientMessages.log);
+    message.message = msg;
+    message.send();
+  }
 
   function notifyLoaded() {
     var message = new Message(ClientMessages.loaded);
@@ -1584,6 +1607,7 @@ Albite.Host = function(context) {
   // Public API
 
   // Send to Host
+  this.log                  = log;
   this.notifyLoaded         = notifyLoaded;
   this.notifyLoading        = notifyLoading;
   this.goToPreviousChapter  = goToPreviousChapter;
@@ -1642,12 +1666,12 @@ Albite.Main = function(options) {
   // We want to add new properties and we want them private
   context = Albite.Helpers.copyOptions(options);
 
-  // Setup debug state
-  Albite.Debug.debugEnabled = context.debugEnabled;
-
   // Set up the host early on so that one could send
   // error reports
   context.host = new Albite.Host(context);
+
+  // Setup debug
+  context.debug = new Albite.Debug(context);
 
   // The host has started parsing the Javascript: 20% ready.
   context.host.notifyLoading(20);
@@ -1657,9 +1681,12 @@ Albite.Main = function(options) {
       // Loaded the ieframe. It was a tough task, so 50% ready.
       context.host.notifyLoading(50);
 
+      // Add the contentFrame from the start
+      context.contentWindow = contentFrame.contentWindow;
+
       // Add a div around the content in order to fix the problem
       // with the margins
-      var doc = contentFrame.contentWindow.document;
+      var doc = context.contentWindow.document;
       var rootElement = Albite.Helpers.createElement('div', doc);
       rootElement.id = 'albite_reader_root';
 
@@ -1693,8 +1720,8 @@ Albite.Main = function(options) {
       // for pagination
       Albite.Helpers.loadCssFile(
         options.cssLocation,
-        contentFrame.contentWindow.document,
-        function() { loadingCompleted(contentFrame); }
+        context.contentWindow.document,
+        cssLoaded
       );
     } catch (exception) {
       context.host.reportError(exception);
@@ -1749,13 +1776,25 @@ Albite.Main = function(options) {
     }
   }
 
-  function loadingCompleted(contentFrame) {
+  function cssLoaded() {
+    // CSS Loaded: 70% done.
+    context.host.notifyLoading(70);
+
+    // On some occasions, the CSS is not applied atomically, i.e.
+    // some columns are created, but not all of them at the same time,
+    // the effect being Albite.Pager reporting a lesser number of pages.
+    // There doesn't seem to be any certain way to fix this, looks more like
+    // a race condition. Practice showed that waiting for a render
+    // generally fixed this.
+    requestAnimationFrame(cssApplied);
+  }
+
+  function cssApplied() {
     try {
-      // CSS Loaded: 70% done.
-      context.host.notifyLoading(70);
+      // CSS Applied: 80% done.
+      context.host.notifyLoading(80);
 
       var pageElement = getElement("page");
-      context.contentWindow = contentFrame.contentWindow;
 
       // Set up the scroller
       context.scroller = new Albite.WindowScroller(context.contentWindow);
@@ -1783,7 +1822,7 @@ Albite.Main = function(options) {
       context.host.notifyLoading(100);
 
       // Notify the host we are done, but after it has rendered it all
-      requestAnimationFrame(function() { context.host.notifyLoaded(); });
+      requestAnimationFrame(context.host.notifyLoaded);
 
     } catch (exception) {
       context.host.reportError(exception);
