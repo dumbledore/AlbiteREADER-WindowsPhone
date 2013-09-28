@@ -176,7 +176,6 @@ namespace SvetlinAnkov.Albite.READER.Controls
         private class EngineController : BrowserEngine.IEngineController
         {
             private readonly ReaderControl control;
-            private WaitPopup waitPopup = new WaitPopup();
 
             private Book.Presenter presenter;
             private BookEngine engine;
@@ -267,17 +266,17 @@ namespace SvetlinAnkov.Albite.READER.Controls
             public void LoadingStarted()
             {
                 IsLoading = true;
-                waitPopup.Start();
+                control.WaitControl.Start();
             }
 
             public void LoadingProgressed(int progress)
             {
-                waitPopup.Progress = progress;
+                control.WaitControl.Progress = progress;
             }
 
             public void LoadingCompleted()
             {
-                waitPopup.Finish();
+                control.WaitControl.Finish();
                 IsLoading = false;
             }
 

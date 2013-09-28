@@ -110,7 +110,6 @@
     <Compile Include="Controls\WaitControl.xaml.cs">
       <DependentUpon>WaitControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\WaitPopup.cs" />
     <Compile Include="IAlbiteApplication.cs" />
     <Compile Include="Model\Reader\AlbiteMessenger.cs" />
     <Compile Include="Model\Reader\BrowserEngine.cs" />

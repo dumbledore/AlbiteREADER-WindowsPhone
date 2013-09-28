@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     mc:Ignorable="d"
+    xmlns:albite="clr-namespace:SvetlinAnkov.Albite.READER.Controls"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -22,5 +23,6 @@
             SizeChanged="WebBrowser_SizeChanged"
             Loaded="WebBrowser_Loaded"
             Unloaded="WebBrowser_Unloaded" />
+        <albite:WaitControl x:Name="WaitControl" />
     </Grid>
 </UserControl>

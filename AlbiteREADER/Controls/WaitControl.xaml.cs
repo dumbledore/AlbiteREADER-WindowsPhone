@@ -18,5 +18,33 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             InitializeComponent();
         }
+
+        public double Progress
+        {
+            get { return ProgressBar.Value; }
+            set { ProgressBar.Value = value; }
+        }
+
+        public double Minimum
+        {
+            get { return ProgressBar.Minimum; }
+        }
+
+        public double Maximum
+        {
+            get { return ProgressBar.Maximum; }
+        }
+
+        public void Start()
+        {
+            Progress = Minimum;
+            Visibility = Visibility.Visible;
+        }
+
+        public void Finish()
+        {
+            Progress = Maximum;
+            Visibility = Visibility.Collapsed;
+        }
     }
 }
