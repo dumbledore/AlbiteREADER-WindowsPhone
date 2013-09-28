@@ -49,9 +49,9 @@ namespace SvetlinAnkov.Albite.Tests.Test
             // Remove all local data
             removeStore();
 
-            LibraryTest.Descriptor[] books
+            Book.PathDescriptor[] books
                 = {
-                      new LibraryTest.Descriptor(
+                      new Book.PathDescriptor(
                           "Test/epub/aliceDynamic.epub", Book.ContainerType.Epub)
                   };
             new LibraryAddBookTest("Test/Library/", books).Test();

@@ -17,12 +17,12 @@ using SvetlinAnkov.Albite.READER.Model.Container;
 
 namespace SvetlinAnkov.Albite.Tests.Test.Model
 {
-    public class LibraryAddBookTest : LibraryTest
+    public class LibraryAddBookTest : TestCase
     {
         private string location;
-        private Descriptor[] books;
+        private Book.PathDescriptor[] books;
 
-        public LibraryAddBookTest(string location, Descriptor[] books)
+        public LibraryAddBookTest(string location, Book.PathDescriptor[] books)
         {
             this.location = location;
             this.books = books;
@@ -33,10 +33,10 @@ namespace SvetlinAnkov.Albite.Tests.Test.Model
             // Start using the library
             using (Library library = new Library(location))
             {
-                foreach (Descriptor book in books)
+                foreach (Book.PathDescriptor book in books)
                 {
                     // Add a book
-                    AddBook(library, book);
+                    library.Books.Add(book);
                 }
             }
         }

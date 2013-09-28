@@ -226,12 +226,12 @@ namespace SvetlinAnkov.Albite.READER.Model
             Epub,
         }
 
-        public sealed class Descriptor : IDisposable
+        public sealed class ContainerDescriptor : IDisposable
         {
             public IAlbiteContainer Container { get; private set; }
             public ContainerType Type { get; private set; }
 
-            public Descriptor(
+            public ContainerDescriptor(
                 IAlbiteContainer container, ContainerType type)
             {
                 Container = container;
@@ -252,6 +252,18 @@ namespace SvetlinAnkov.Albite.READER.Model
             public void Dispose()
             {
                 Container.Dispose();
+            }
+        }
+
+        public sealed class PathDescriptor
+        {
+            public string Path { get; private set; }
+            public ContainerType Type { get; private set; }
+
+            public PathDescriptor(string path, ContainerType type)
+            {
+                Path = path;
+                Type = type;
             }
         }
     }

@@ -105,7 +105,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\EpubTests.cs" />
     <Compile Include="Test\GCTests.cs" />
-    <Compile Include="Test\Model\LibraryTest.cs" />
     <Compile Include="Test\Model\LibraryAddBookTest.cs" />
     <Compile Include="Test\SpeechSynthesisTest.cs" />
     <Compile Include="Test\UtilsTests.cs" />

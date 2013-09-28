@@ -79,7 +79,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                 booksTempPath = Path.Combine(booksPath, "Temp");
             }
 
-            public Book Add(Book.Descriptor descriptor)
+            public Book Add(Book.ContainerDescriptor descriptor)
             {
                 BookContainer bookContainer = descriptor.GetContainer();
 
@@ -163,6 +163,27 @@ namespace SvetlinAnkov.Albite.READER.Model
                 }
 
                 return book;
+            }
+
+            public Book Add(Book.PathDescriptor descriptor)
+            {
+                Log.D(tag, "Opening book " + descriptor.Path);
+
+                using (AlbiteResourceStorage res = new AlbiteResourceStorage(descriptor.Path))
+                {
+                    using (Stream inputStream = res.GetStream(FileAccess.Read))
+                    {
+                        using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
+                        {
+                            using (Book.ContainerDescriptor bookDescriptor
+                                = new Book.ContainerDescriptor(zip, descriptor.Type))
+                            {
+                                // Add to the library
+                                return Add(bookDescriptor);
+                            }
+                        }
+                    }
+                }
             }
 
             public void Delete(Book book)
