@@ -236,6 +236,20 @@ namespace SvetlinAnkov.Albite.READER.Model
                 }
             }
 
+            public Book[] All
+            {
+                get
+                {
+                    lock (library.db)
+                    {
+                        // We'd rather return it as an array
+                        // or we would be exporting the
+                        // whole live table!
+                        return library.db.Books.ToArray();
+                    }
+                }
+            }
+
             public Book.Presenter GetPresenter(Book book)
             {
                 return new Book.Presenter(
