@@ -79,6 +79,16 @@ namespace SvetlinAnkov.Albite.READER.Model
                 booksTempPath = Path.Combine(booksPath, "Temp");
             }
 
+            private void removeDirectory(string path)
+            {
+                using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(path))
+                {
+                    // Deleting a non-existent directory won't
+                    // throw an exception
+                    s.Delete();
+                }
+            }
+
             public Book Add(Book.ContainerDescriptor descriptor)
             {
                 BookContainer bookContainer = descriptor.GetContainer();
@@ -99,10 +109,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                 try
                 {
                     // Remove the temp folder
-                    using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(booksTempPath))
-                    {
-                        s.Delete();
-                    }
+                    removeDirectory(booksTempPath);
 
                     // Unpack
                     bookContainer.Install(booksTempPath);
