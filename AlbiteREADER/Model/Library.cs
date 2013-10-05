@@ -120,7 +120,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                         // Add to the database
                         library.db.Books.InsertOnSubmit(book);
 
-                        // If there's an error, with the database
+                        // If there's an error with the database,
                         // it will roll back the changes
                         // and thrown an Exception
                         library.db.SubmitChanges();
