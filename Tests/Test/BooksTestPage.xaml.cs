@@ -32,20 +32,17 @@ namespace SvetlinAnkov.Albite.Tests.Test
         public BooksTestPage()
         {
             InitializeComponent();
-            initializeLibrary();
             initializeWorker();
         }
 
-        private AlbiteContext context;
-        private Library library;
-
-        private void initializeLibrary()
+        private AlbiteContext getContext()
         {
-            // Get the context
-            context = ((IAlbiteApplication) App.Current).CurrentContext;
+            return ((IAlbiteApplication)App.Current).CurrentContext;
+        }
 
-            // Get the library
-            library = context.Library;
+        private void releaseContext()
+        {
+            ((IAlbiteApplication)App.Current).DisposeContext();
         }
 
         private void initializeWorker()
@@ -63,6 +60,8 @@ namespace SvetlinAnkov.Albite.Tests.Test
             // Remove all buttons
             ContentPanel.Children.Clear();
 
+            Library library = getContext().Library;
+
             // Add all books
             Book[] books = library.Books.All;
             foreach (Book book in books)
@@ -76,6 +75,8 @@ namespace SvetlinAnkov.Albite.Tests.Test
 
         private void addBooks(BackgroundWorker worker, DoWorkEventArgs e)
         {
+            Library library = getContext().Library;
+
             int step = 100 / bookPaths.Length;
             int progress = 0;
 
@@ -95,6 +96,8 @@ namespace SvetlinAnkov.Albite.Tests.Test
 
         private void removeBooks(BackgroundWorker worker, DoWorkEventArgs e)
         {
+            Library library = getContext().Library;
+
             Book[] books = library.Books.All;
 
             int step = 100 / books.Length;
@@ -196,6 +199,11 @@ namespace SvetlinAnkov.Albite.Tests.Test
         private void ApplicationBarIconButton_RefreshList(object sender, EventArgs e)
         {
             refreshBookList();
+        }
+
+        private void ApplicationBarMenuItem_ReleaseContext(object sender, EventArgs e)
+        {
+            releaseContext();
         }
 
         private class BookButton : Button
