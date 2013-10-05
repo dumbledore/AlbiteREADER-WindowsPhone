@@ -103,6 +103,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\BooksTestPage.xaml.cs">
+      <DependentUpon>BooksTestPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Test\EpubTests.cs" />
     <Compile Include="Test\GCTests.cs" />
     <Compile Include="Test\Model\LibraryAddBookTest.cs" />
@@ -135,6 +138,9 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Resources\Images\add.png" />
+    <Content Include="Resources\Images\delete.png" />
+    <Content Include="Resources\Images\refresh.png" />
     <Content Include="Resources\Test\Epub\aliceDynamic.epub" />
     <Content Include="Resources\Test\Epub\idpf.epub" />
     <Content Include="Resources\Test\Epub\Invalid\Fail\01.epub" />
@@ -169,6 +175,10 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Test\BooksTestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Test\TestPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
