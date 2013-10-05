@@ -28,11 +28,13 @@ namespace SvetlinAnkov.Albite.READER.Controls
         public double Minimum
         {
             get { return ProgressBar.Minimum; }
+            set { ProgressBar.Minimum = value; }
         }
 
         public double Maximum
         {
             get { return ProgressBar.Maximum; }
+            set { ProgressBar.Maximum = value; }
         }
 
         public void Start()
