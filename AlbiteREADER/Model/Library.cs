@@ -211,6 +211,15 @@ namespace SvetlinAnkov.Albite.READER.Model
                 // it will roll back the changes
                 // and thrown an Exception
                 library.db.Books.DeleteOnSubmit(book);
+
+                // Remove all chapters for this book
+                var chapters = from chapter in library.db.Chapters
+                               where (chapter.Book == book)
+                               select chapter;
+
+                library.db.Chapters.DeleteAllOnSubmit(chapters);
+
+                // Commit changes to the DB
                 library.db.SubmitChanges();
             }
 
