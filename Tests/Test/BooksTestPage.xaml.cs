@@ -21,7 +21,6 @@ namespace SvetlinAnkov.Albite.Tests.Test
         private string[] bookPaths = new string[]
         {
             "Test/epub/aliceDynamic.epub",
-            "Test/epub/idpf.epub",
         };
 
         private enum WorkType
