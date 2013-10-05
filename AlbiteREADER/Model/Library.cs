@@ -148,7 +148,8 @@ namespace SvetlinAnkov.Albite.READER.Model
                 }
                 catch (Exception e)
                 {
-                    // TODO: Try removing the storage
+                    // Remove from the storage
+                    removeDirectory(booksTempPath);
 
                     // Throw the error again so that it
                     // would be properly handled
@@ -165,7 +166,12 @@ namespace SvetlinAnkov.Albite.READER.Model
                 }
                 catch (Exception e)
                 {
-                    // Move failed. TODO
+                    // Move failed (very unlikely), still
+                    // remove from the database as it was
+                    // just added there.
+                    Remove(book);
+
+                    // Don't forget to throw the error
                     throw e;
                 }
 
@@ -193,11 +199,19 @@ namespace SvetlinAnkov.Albite.READER.Model
                 }
             }
 
-            public void Delete(Book book)
+            public void Remove(Book book)
             {
-                // Delete the storage
+                // Remove from the storage
+                // No need to catch exceptions,
+                // they shall go up
+                removeDirectory(GetPath(book));
 
-                // Delete from the data base
+                // Remove from the data base
+                // If there's an error with the database,
+                // it will roll back the changes
+                // and thrown an Exception
+                library.db.Books.DeleteOnSubmit(book);
+                library.db.SubmitChanges();
             }
 
             public void Archive(Book book)
