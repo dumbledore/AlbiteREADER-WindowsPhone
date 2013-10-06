@@ -34,7 +34,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             set
             {
                 current = value.SpineElement;
-                SetChapterDomLocation(value.SpineElement.Chapter, value.DomLocation);
+                SetChapterDomLocation(value.SpineElement.Url, value.DomLocation);
             }
         }
 
@@ -57,7 +57,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
 
             current = current.Previous;
-            SetChapterLastPage(current.Chapter);
+            SetChapterLastPage(current.Url);
         }
 
         public override void GoToNextChapter()
@@ -69,7 +69,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             }
 
             current = current.Next;
-            SetChapterFirstPage(current.Chapter);
+            SetChapterFirstPage(current.Url);
         }
 
         // Private API

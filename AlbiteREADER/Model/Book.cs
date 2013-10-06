@@ -51,30 +51,7 @@ namespace SvetlinAnkov.Albite.READER.Model
         [Column]
         private string locationString { get; set; }
 
-        // Chapters
-        private EntitySet<Chapter> chaptersSet = new EntitySet<Chapter>();
 
-        [Association(Storage="chaptersSet", OtherKey="bookId")]
-        public EntitySet<Chapter> Chapters
-        {
-            get { return chaptersSet; }
-            set { chaptersSet.Assign(value); }
-        }
-
-        public Chapter this[string url]
-        {
-            get
-            {
-                IEnumerable<Chapter> chapters = Chapters.Where(c => c.Url == url);
-
-                if (chapters.Count() > 0)
-                {
-                    return chapters.First();
-                }
-
-                return null;
-            }
-        }
 
         public class Presenter
         {
@@ -124,7 +101,7 @@ namespace SvetlinAnkov.Albite.READER.Model
                 {
                     // Add the chapter to the spine
                     current = new SpineElement(number++,
-                            Book[url],
+                            url,
                             previous,
                             null
                     );
@@ -184,16 +161,16 @@ namespace SvetlinAnkov.Albite.READER.Model
         public class SpineElement
         {
             public int Number { get; private set; }
-            public Chapter Chapter { get; private set; }
+            public string Url { get; private set; }
             public SpineElement Previous { get; private set; }
             public SpineElement Next { get; private set; }
 
             internal SpineElement(
-                int number, Chapter chapter,
+                int number, string url,
                 SpineElement previous, SpineElement next)
             {
                 Number = number;
-                Chapter = chapter;
+                Url = url;
                 Previous = previous;
                 Next = next;
 

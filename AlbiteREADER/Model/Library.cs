@@ -124,26 +124,6 @@ namespace SvetlinAnkov.Albite.READER.Model
                         // it will roll back the changes
                         // and thrown an Exception
                         library.db.SubmitChanges();
-
-                        // Create the chapters
-                        List<string> urls = new List<string>();
-
-                        foreach (string url in bookContainer.Spine)
-                        {
-                            if (urls.Contains(url))
-                            {
-                                Log.W(tag, "Chapter " + url + " already there");
-                                continue;
-                            }
-
-                            urls.Add(url);
-
-                            // Add it to the book at last
-                            book.Chapters.Add(new Chapter(book, url));
-                        }
-
-                        // Submit again, this time the chapters
-                        library.db.SubmitChanges();
                     }
                 }
                 catch (Exception e)
@@ -211,13 +191,6 @@ namespace SvetlinAnkov.Albite.READER.Model
                 // it will roll back the changes
                 // and thrown an Exception
                 library.db.Books.DeleteOnSubmit(book);
-
-                // Remove all chapters for this book
-                var chapters = from chapter in library.db.Chapters
-                               where (chapter.Book == book)
-                               select chapter;
-
-                library.db.Chapters.DeleteAllOnSubmit(chapters);
 
                 // Commit changes to the DB
                 library.db.SubmitChanges();
@@ -300,7 +273,6 @@ namespace SvetlinAnkov.Albite.READER.Model
         private class LibraryDataContext : DataContext
         {
             public Table<Book> Books;
-            public Table<Chapter> Chapters;
 
             public LibraryDataContext(string location, int maxSize = 128) : base(getConnection(location, maxSize)) { }
 

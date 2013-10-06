@@ -43,42 +43,42 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         #region Public API
 
-        public Chapter Chapter { get; private set; }
+        public string FileUrl { get; private set; }
 
-        public void SetChapterPage(Chapter chapter, int page)
+        public void SetChapterPage(string fileUrl, int page)
         {
             mainPageTemplate.InitialLocation = page.ToString();
-            SetChapter(chapter);
+            SetChapter(fileUrl);
         }
 
-        public void SetChapterFirstPage(Chapter chapter)
+        public void SetChapterFirstPage(string fileUrl)
         {
             mainPageTemplate.InitialLocation = "'first'";
-            SetChapter(chapter);
+            SetChapter(fileUrl);
         }
 
-        public void SetChapterLastPage(Chapter chapter)
+        public void SetChapterLastPage(string fileUrl)
         {
             mainPageTemplate.InitialLocation = "'last'";
-            SetChapter(chapter);
+            SetChapter(fileUrl);
         }
 
-        public void SetChapterDomLocation(Chapter chapter, string location)
+        public void SetChapterDomLocation(string fileUrl, string location)
         {
             mainPageTemplate.InitialLocation = string.Format("'{0}'", location);
-            SetChapter(chapter);
+            SetChapter(fileUrl);
         }
 
-        private void SetChapter(Chapter chapter)
+        private void SetChapter(string fileUrl)
         {
             Controller.LoadingStarted();
 
-            Chapter = chapter;
+            FileUrl = fileUrl;
 
             // Set up the main.xhtml
             mainPageTemplate.IsFirstChapter = IsFirstChapter;
             mainPageTemplate.IsLastChapter = IsLastChapter;
-            mainPageTemplate.ChatperFile = Path.Combine("/" + Controller.Presenter.RelativeContentPath, chapter.Url);
+            mainPageTemplate.ChatperFile = Path.Combine("/" + Controller.Presenter.RelativeContentPath, fileUrl);
             mainPageTemplate.SaveToStorage();
 
             // Now navigate the web browser
@@ -137,7 +137,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             // Navigate to the same chapter and the
             // current DomLocation
-            SetChapterDomLocation(Chapter, DomLocation);
+            SetChapterDomLocation(FileUrl, DomLocation);
         }
 
         private void navigateBrowser()
