@@ -45,13 +45,21 @@ namespace SvetlinAnkov.Albite.READER.Model
 
         // Reading Persistance
 
-        [Column]
-        private int currentChapterIndex { get; set; }
+        [Column(Name="SpineIndex")]
+        private int spineIndex { get; set; }
 
-        [Column]
-        private string locationString { get; set; }
+        [Column(Name="DomLocation")]
+        private string domLocation { get; set; }
 
+        // Notes
+        private EntitySet<Note> notesSet = new EntitySet<Note>();
 
+        [Association(Storage="notesSet", OtherKey="bookId")]
+        public EntitySet<Note> Notes
+        {
+            get { return notesSet; }
+            //set { notesSet.Assign(value); }
+        }
 
         public class Presenter
         {
@@ -81,11 +89,6 @@ namespace SvetlinAnkov.Albite.READER.Model
             {
                 // Load all the spine elements
                 spine = prepareSpine(container);
-
-                // Set bookLocation
-                bookLocation = new BookLocation(
-                    spine[Book.currentChapterIndex],
-                    Book.locationString);
             }
 
             private SpineElement[] prepareSpine(BookContainer container)
@@ -110,18 +113,25 @@ namespace SvetlinAnkov.Albite.READER.Model
                 return spine.ToArray();
             }
 
-            private BookLocation bookLocation;
+            public SpineElement this[int index]
+            {
+                get
+                {
+                    return spine[index];
+                }
+            }
+
             public BookLocation BookLocation
             {
                 get
                 {
-                    return bookLocation;
+                    return new BookLocation(
+                        spine[Book.spineIndex], Book.domLocation);
                 }
                 set
                 {
-                    bookLocation = value;
-                    Book.currentChapterIndex = bookLocation.SpineElement.Number;
-                    Book.locationString = bookLocation.DomLocation;
+                    Book.spineIndex = value.SpineElement.Number;
+                    Book.domLocation = value.DomLocation;
                 }
             }
 

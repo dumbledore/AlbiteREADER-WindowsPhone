@@ -122,6 +122,7 @@
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\Reader\BookEngine.cs" />
     <Compile Include="Model\Container\BookContainer.cs" />
+    <Compile Include="Model\Note.cs" />
     <Compile Include="Model\Container\Epub\EpubContainer.cs" />
     <Compile Include="Model\Container\Epub\EpubXmlFile.cs" />
     <Compile Include="Model\Container\Epub\NavigationControlFile.cs" />
