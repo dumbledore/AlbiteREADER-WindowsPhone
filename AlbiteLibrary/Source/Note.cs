@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Net;
 using System.Windows;
-using System.Windows.Controls;
 using System.Linq;
 using System.Data.Linq.Mapping;
 using System.Data.Linq;
 
-namespace SvetlinAnkov.Albite.READER.Model
+namespace SvetlinAnkov.Albite.Library
 {
-
     /// <summary>
     /// An XHTML resource from a book.
     /// </summary>
@@ -49,7 +47,7 @@ namespace SvetlinAnkov.Albite.READER.Model
         internal Note() { }
 
         // Used when creating a new entity
-        public Note(Book book, Book.BookLocation location, string text)
+        public Note(Book book, BookPresenter.Location location, string text)
         {
             Book = book;
             spineIndex = location.SpineElement.Number;
@@ -57,16 +55,15 @@ namespace SvetlinAnkov.Albite.READER.Model
             Text = text;
         }
 
-        public Book.BookLocation GetBookLocation(Book.Presenter presenter)
+        public BookPresenter.Location GetBookLocation(BookPresenter presenter)
         {
             if (presenter.Book.Id != Book.Id)
             {
                 throw new InvalidOperationException();
             }
 
-            return null;//new Book.BookLocation(presenter[], domLocation);
+            return null;
         }
-
         // TODO: Chapter Bookmarks, Highlights and Notes
     }
 }

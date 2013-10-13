@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.READER.Model.Container.Epub;
+using SvetlinAnkov.Albite.Container.Epub;
 
-namespace SvetlinAnkov.Albite.READER.Test
+namespace SvetlinAnkov.Albite.Container.Test
 {
     public class EpubContainerTest : TestCase
     {

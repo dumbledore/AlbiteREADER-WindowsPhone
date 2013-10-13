@@ -1,20 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.IO;
 using SvetlinAnkov.Albite.Core.Utils;
-using System.Collections.Generic;
+using SvetlinAnkov.Albite.Container.Epub;
 
-namespace SvetlinAnkov.Albite.READER.Model.Container
+namespace SvetlinAnkov.Albite.Container
 {
-    internal abstract class BookContainer : IAlbiteContainer
+    public abstract class BookContainer : IAlbiteContainer
     {
         private static readonly string tag = "BookContainer";
 
@@ -107,11 +101,16 @@ namespace SvetlinAnkov.Albite.READER.Model.Container
         {
             Container.Dispose();
         }
-    }
 
-    public class BookContainerException : Exception
-    {
-        public BookContainerException(string message) : base(message) { }
-        public BookContainerException(string message, Exception innerException) : base(message, innerException) { }
+        public static BookContainer GetContainer(IAlbiteContainer container, BookContainerType type)
+        {
+            switch (type)
+            {
+                case BookContainerType.Epub:
+                    return new EpubContainer(container);
+            }
+
+            throw new InvalidOperationException("Unknown container type");
+        }
     }
 }

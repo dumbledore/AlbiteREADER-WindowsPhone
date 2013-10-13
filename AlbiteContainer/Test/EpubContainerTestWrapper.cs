@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.Albite.READER.Test
+namespace SvetlinAnkov.Albite.Container.Test
 {
     public class EpubContainerTestWrapper : TestPrepareWrapper
     {

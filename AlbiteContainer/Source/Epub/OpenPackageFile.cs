@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Linq;
 using System.Diagnostics;
 using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.Albite.READER.Model.Container.Epub
+namespace SvetlinAnkov.Albite.Container.Epub
 {
     /// <summary>
     /// Check http://idpf.org/epub/20/spec/OPF_2.0.1_draft.htm#Section2.0

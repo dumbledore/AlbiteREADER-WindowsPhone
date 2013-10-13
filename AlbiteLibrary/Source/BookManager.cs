@@ -1,0 +1,188 @@
+﻿using SvetlinAnkov.Albite.Container;
+using SvetlinAnkov.Albite.Core.Utils;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SvetlinAnkov.Albite.Library
+{
+    public class BookManager : EntityManager<Book>
+    {
+        private static readonly string tag = "BookManager";
+
+        private string booksPath;
+        private string booksTempPath;
+
+        internal BookManager(Library library)
+            : base(library)
+        {
+            booksPath = Path.Combine(library.LibraryPath, "Books");
+            booksTempPath = Path.Combine(booksPath, "Temp");
+        }
+
+        public Book Add(IAlbiteContainer container, BookContainerType type)
+        {
+            using (LibraryDataContext dc = Library.GetDataContext())
+            {
+                Book book = new Book();
+
+                // Should not wrap the container in a using() {}
+                // statement as it is not under our control,
+                // but under the control of the caller.
+                BookContainer bookContainer
+                    = BookContainer.GetContainer(container, type);
+
+                // Fill in the defaults so that if there's
+                // a problem with the metadata it would
+                // fail gracefully.
+                book.Title = bookContainer.Title;
+
+                try
+                {
+                    // Remove the temp folder
+                    removeDirectory(booksTempPath);
+
+                    // Unpack
+                    bookContainer.Install(booksTempPath);
+
+                    // Add to the database
+                    dc.Books.InsertOnSubmit(book);
+
+                    // If there's an error with the database,
+                    // it will roll back the changes
+                    // and thrown an Exception
+                    dc.SubmitChanges();
+                }
+                catch (Exception e)
+                {
+                    // Remove from the storage
+                    removeDirectory(booksTempPath);
+
+                    // Throw the error again so that it
+                    // would be properly handled
+                    throw e;
+                }
+
+                // TODO: Fill in the other metadata,
+                // incl author and info from Freebase.
+
+                try
+                {
+                    // Move the book to the real folder
+                    using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(booksTempPath))
+                    {
+                        s.Move(GetContentPath(book));
+                    }
+                }
+                catch (Exception e)
+                {
+                    // Move failed (very unlikely), still
+                    // remove from the database as it was
+                    // just added there.
+                    Remove(book);
+
+                    // Don't forget to throw the error
+                    throw e;
+                }
+
+                return book;
+            }
+        }
+
+        public Book Add(Book.Descriptor descriptor)
+        {
+            Log.D(tag, "Opening book " + descriptor.Path);
+
+            using (AlbiteResourceStorage res = new AlbiteResourceStorage(descriptor.Path))
+            {
+                using (Stream inputStream = res.GetStream(FileAccess.Read))
+                {
+                    using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
+                    {
+                        // Add to the library
+                        return Add(zip, descriptor.Type);
+                    }
+                }
+            }
+        }
+
+        public override void Remove(Book book)
+        {
+            using (LibraryDataContext dc = Library.GetDataContext())
+            {
+                // Remove from the storage
+                // No need to catch exceptions,
+                // they shall go up
+                removeDirectory(GetPath(book));
+
+                // Remove from the data base
+                // If there's an error with the database,
+                // it will roll back the changes
+                // and thrown an Exception
+                dc.Books.DeleteOnSubmit(book);
+
+                // Commit changes to the DB
+                dc.SubmitChanges();
+            }
+        }
+
+        public override Book this[int id]
+        {
+            get
+            {
+                using (LibraryDataContext dc = Library.GetDataContext())
+                {
+                    Book book = dc.Books.Single(b => b.Id == id);
+                    return SetEntity(book);
+                }
+            }
+        }
+
+        public override IList<Book> GetAll()
+        {
+            using (LibraryDataContext dc = Library.GetDataContext())
+            {
+                Book[] books = dc.Books.ToArray();
+                return SetEntites(books);
+            }
+        }
+
+        private void removeDirectory(string path)
+        {
+            using (AlbiteIsolatedStorage s = new AlbiteIsolatedStorage(path))
+            {
+                // Deleting a non-existent directory won't
+                // throw an exception
+                s.Delete();
+            }
+        }
+
+        public static string RelativeContentPath
+        {
+            get { return "content"; }
+        }
+
+        public static string RelativeEnginePath
+        {
+            get { return "albite"; }
+        }
+
+        public string GetPath(Book book)
+        {
+            return Path.Combine(booksPath, book.Id.ToString());
+        }
+
+        public string GetContentPath(Book book)
+        {
+            return Path.Combine(GetPath(book), RelativeContentPath);
+        }
+
+        public string GetEnginePath(Book book)
+        {
+            return Path.Combine(GetPath(book), RelativeEnginePath);
+        }
+    }
+}

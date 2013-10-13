@@ -99,36 +99,27 @@
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AlbiteContext.cs" />
-    <Compile Include="App.xaml.cs">
+    <Compile Include="Source\AlbiteContext.cs" />
+    <Compile Include="Source\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppUtils.cs" />
-    <Compile Include="Controls\ReaderControl.xaml.cs">
+    <Compile Include="Source\AppUtils.cs" />
+    <Compile Include="Source\View\Controls\ReaderControl.xaml.cs">
       <DependentUpon>ReaderControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\WaitControl.xaml.cs">
+    <Compile Include="Source\View\Controls\WaitControl.xaml.cs">
       <DependentUpon>WaitControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IAlbiteApplication.cs" />
-    <Compile Include="Model\Reader\AlbiteMessenger.cs" />
-    <Compile Include="Model\Reader\BrowserEngine.cs" />
-    <Compile Include="Model\Reader\EngineTemplate.cs" />
-    <Compile Include="Model\Reader\Paths.cs" />
-    <Compile Include="Model\Reader\Settings.cs" />
-    <Compile Include="Model\Reader\Template.cs" />
-    <Compile Include="Model\Reader\TemplateResource.cs" />
-    <Compile Include="Model\Reader\Theme.cs" />
-    <Compile Include="Model\Book.cs" />
-    <Compile Include="Model\Reader\BookEngine.cs" />
-    <Compile Include="Model\Container\BookContainer.cs" />
-    <Compile Include="Model\Note.cs" />
-    <Compile Include="Model\Container\Epub\EpubContainer.cs" />
-    <Compile Include="Model\Container\Epub\EpubXmlFile.cs" />
-    <Compile Include="Model\Container\Epub\NavigationControlFile.cs" />
-    <Compile Include="Model\Container\Epub\OpenContainerFile.cs" />
-    <Compile Include="Model\Container\Epub\OpenPackageFile.cs" />
-    <Compile Include="Model\Library.cs" />
+    <Compile Include="Source\IAlbiteApplication.cs" />
+    <Compile Include="Source\Model\Reader\AlbiteMessenger.cs" />
+    <Compile Include="Source\Model\Reader\BrowserEngine.cs" />
+    <Compile Include="Source\Model\Reader\EngineTemplate.cs" />
+    <Compile Include="Source\Model\Reader\Paths.cs" />
+    <Compile Include="Source\Model\Reader\Settings.cs" />
+    <Compile Include="Source\Model\Reader\Template.cs" />
+    <Compile Include="Source\Model\Reader\TemplateResource.cs" />
+    <Compile Include="Source\Model\Reader\Theme.cs" />
+    <Compile Include="Source\Model\Reader\BookEngine.cs" />
     <Compile Include="Resources\Defaults\LayoutDefaults.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -140,16 +131,14 @@
       <DependentUpon>ApplicationDefaults.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test\EpubContainerTest.cs" />
-    <Compile Include="Test\EpubContainerTestWrapper.cs" />
     <Compile Include="Test\TemplateTest.cs" />
-    <Compile Include="Utils\Defaults.cs" />
-    <Compile Include="View\ReaderPage.xaml.cs">
+    <Compile Include="Source\Utils\Defaults.cs" />
+    <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="Source\App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
@@ -170,15 +159,15 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\ReaderControl.xaml">
+    <Page Include="Source\View\Controls\ReaderControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\WaitControl.xaml">
+    <Page Include="Source\View\Controls\WaitControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ReaderPage.xaml">
+    <Page Include="Source\View\Pages\ReaderPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -194,9 +183,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AlbiteContainer\AlbiteContainer.csproj">
+      <Project>{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}</Project>
+      <Name>AlbiteContainer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AlbiteCore\AlbiteCore.csproj">
       <Project>{85084981-FCBE-4271-A231-6D8CC83CA774}</Project>
       <Name>AlbiteCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AlbiteLibrary\AlbiteLibrary.csproj">
+      <Project>{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}</Project>
+      <Name>AlbiteLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbiteTests", "Tests\Albite
 		{CB6FF657-56D3-43B4-BA40-BD707F6403F7} = {CB6FF657-56D3-43B4-BA40-BD707F6403F7}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbiteLibrary", "AlbiteLibrary\AlbiteLibrary.csproj", "{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbiteContainer", "AlbiteContainer\AlbiteContainer.csproj", "{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +76,30 @@ Global
 		{6CE58526-B4C4-4433-9671-9E2081E45193}.Release|x86.ActiveCfg = Release|x86
 		{6CE58526-B4C4-4433-9671-9E2081E45193}.Release|x86.Build.0 = Release|x86
 		{6CE58526-B4C4-4433-9671-9E2081E45193}.Release|x86.Deploy.0 = Release|x86
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Debug|ARM.ActiveCfg = Debug|ARM
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Debug|ARM.Build.0 = Debug|ARM
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Debug|x86.ActiveCfg = Debug|x86
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Debug|x86.Build.0 = Debug|x86
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Release|ARM.ActiveCfg = Release|ARM
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Release|ARM.Build.0 = Release|ARM
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Release|x86.ActiveCfg = Release|x86
+		{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}.Release|x86.Build.0 = Release|x86
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Debug|ARM.ActiveCfg = Debug|ARM
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Debug|ARM.Build.0 = Debug|ARM
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Debug|x86.ActiveCfg = Debug|x86
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Debug|x86.Build.0 = Debug|x86
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Release|ARM.ActiveCfg = Release|ARM
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Release|ARM.Build.0 = Release|ARM
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Release|x86.ActiveCfg = Release|x86
+		{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
