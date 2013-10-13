@@ -20,7 +20,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         /// <summary>
         /// Setting this property would cause the engine
-        /// to load into the specified book loacation
+        /// to load into the specified book location
         /// </summary>
         public Book.BookLocation BookLocation
         {
