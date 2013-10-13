@@ -60,8 +60,6 @@ namespace SvetlinAnkov.Albite.READER.Model
 
             public Book Book { get; private set; }
 
-            private readonly Object myLock = new Object();
-
             private SpineElement[] spine;
             // TODO: ToC
             // TODO: Lists
