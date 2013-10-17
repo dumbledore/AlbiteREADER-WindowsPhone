@@ -15,6 +15,11 @@ namespace SvetlinAnkov.Albite.Library
     {
         // Public API
         public BookManager Books { get; private set; }
+        // TODO:
+        // Authors
+        // Genres
+        // Subjects
+
         public string LibraryPath { get; private set; }
 
         // Private Implementation
