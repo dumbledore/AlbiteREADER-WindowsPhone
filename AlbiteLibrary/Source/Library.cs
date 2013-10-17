@@ -23,7 +23,6 @@ namespace SvetlinAnkov.Albite.Library
         public string LibraryPath { get; private set; }
 
         // Private Implementation
-        private LibraryDataContext db;
         private string dbPath;
         private string dbConnectionString;
 
