@@ -16,17 +16,17 @@ namespace SvetlinAnkov.Albite.Library
             Library = library;
         }
 
-        protected TEntity SetEntity(TEntity entity)
+        protected sealed TEntity PrepareEntity(TEntity entity)
         {
             entity.Library = Library;
             return entity;
         }
 
-        protected IList<TEntity> SetEntites(TEntity[] entities)
+        protected sealed IList<TEntity> PrepareEntities(TEntity[] entities)
         {
             foreach (TEntity entity in entities)
             {
-                SetEntity(entity);
+                PrepareEntity(entity);
             }
 
             return Array.AsReadOnly(entities);

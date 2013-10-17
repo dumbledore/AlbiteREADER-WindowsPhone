@@ -136,7 +136,7 @@ namespace SvetlinAnkov.Albite.Library
                 using (LibraryDataContext dc = Library.GetDataContext())
                 {
                     Book book = dc.Books.Single(b => b.Id == id);
-                    return SetEntity(book);
+                    return PrepareEntity(book);
                 }
             }
         }
@@ -146,7 +146,7 @@ namespace SvetlinAnkov.Albite.Library
             using (LibraryDataContext dc = Library.GetDataContext())
             {
                 Book[] books = dc.Books.ToArray();
-                return SetEntites(books);
+                return PrepareEntities(books);
             }
         }
 
