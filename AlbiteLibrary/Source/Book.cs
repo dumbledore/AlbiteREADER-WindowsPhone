@@ -66,7 +66,8 @@ namespace SvetlinAnkov.Albite.Library
 
         internal Book() { }
 
-        public override void Remove()        {
+        public override void Remove()
+        {
             Library.Books.Remove(this);
         }
 
