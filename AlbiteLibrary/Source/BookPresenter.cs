@@ -29,6 +29,8 @@ namespace SvetlinAnkov.Albite.Library
                     spine = prepareSpine(container);
                 }
             }
+
+            // TODO: Get the current location from the database
         }
 
         private SpineElement[] prepareSpine(BookContainer container)
@@ -90,6 +92,11 @@ namespace SvetlinAnkov.Albite.Library
             }
         }
 
+        public void Persist()
+        {
+            //TODO
+        }
+
         // Helper methods
         public string Path
         {
@@ -115,7 +122,6 @@ namespace SvetlinAnkov.Albite.Library
         {
             get { return Book.Library.Books.GetEnginePath(Book); }
         }
-
 
         public class SpineElement
         {
