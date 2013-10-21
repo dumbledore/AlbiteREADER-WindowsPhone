@@ -1,5 +1,6 @@
 ﻿using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.Library.DataContext;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +28,7 @@ namespace SvetlinAnkov.Albite.Library
         {
             using (LibraryDataContext dc = Library.GetDataContext())
             {
-                Book book = new Book();
+                BookEntity bookEntity = new BookEntity();
 
                 // Should not wrap the container in a using() {}
                 // statement as it is not under our control,
@@ -38,7 +39,7 @@ namespace SvetlinAnkov.Albite.Library
                 // Fill in the defaults so that if there's
                 // a problem with the metadata it would
                 // fail gracefully.
-                book.Title = bookContainer.Title;
+                bookEntity.Title = bookContainer.Title;
 
                 try
                 {
@@ -49,7 +50,7 @@ namespace SvetlinAnkov.Albite.Library
                     bookContainer.Install(booksTempPath);
 
                     // Add to the database
-                    dc.Books.InsertOnSubmit(book);
+                    dc.Books.InsertOnSubmit(bookEntity);
 
                     // If there's an error with the database,
                     // it will roll back the changes
@@ -68,6 +69,9 @@ namespace SvetlinAnkov.Albite.Library
 
                 // TODO: Fill in the other metadata,
                 // incl author and info from Freebase.
+
+                // Working with the Book class now
+                Book book = new Book(Library, bookEntity);
 
                 try
                 {
@@ -113,6 +117,9 @@ namespace SvetlinAnkov.Albite.Library
         {
             using (LibraryDataContext dc = Library.GetDataContext())
             {
+                BookEntity bookEntity
+                    = dc.Books.Single(b => b.Id == book.Id);
+
                 // Remove from the storage
                 // No need to catch exceptions,
                 // they shall go up
@@ -122,7 +129,7 @@ namespace SvetlinAnkov.Albite.Library
                 // If there's an error with the database,
                 // it will roll back the changes
                 // and thrown an Exception
-                dc.Books.DeleteOnSubmit(book);
+                dc.Books.DeleteOnSubmit(bookEntity);
 
                 // Commit changes to the DB
                 dc.SubmitChanges();
@@ -135,8 +142,8 @@ namespace SvetlinAnkov.Albite.Library
             {
                 using (LibraryDataContext dc = Library.GetDataContext())
                 {
-                    Book book = dc.Books.Single(b => b.Id == id);
-                    return PrepareEntity(book);
+                    BookEntity bookEntity = dc.Books.Single(b => b.Id == id);
+                    return new Book(Library, bookEntity);
                 }
             }
         }
@@ -145,8 +152,15 @@ namespace SvetlinAnkov.Albite.Library
         {
             using (LibraryDataContext dc = Library.GetDataContext())
             {
-                Book[] books = dc.Books.ToArray();
-                return PrepareEntities(books);
+                int count = dc.Books.Count();
+                List<Book> books = new List<Book>(count);
+
+                foreach (BookEntity bookEntity in dc.Books)
+                {
+                    books.Add(new Book(Library, bookEntity));
+                }
+
+                return books.ToArray();
             }
         }
 

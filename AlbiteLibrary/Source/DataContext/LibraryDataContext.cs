@@ -9,8 +9,8 @@ namespace SvetlinAnkov.Albite.Library.DataContext
 {
     internal class LibraryDataContext : System.Data.Linq.DataContext
     {
-        public Table<Book> Books;
-        public Table<Note> Notes;
+        public Table<BookEntity> Books;
+        public Table<NoteEntity> Notes;
 
         public LibraryDataContext(string fileOrConnection)
             : base(fileOrConnection) { }

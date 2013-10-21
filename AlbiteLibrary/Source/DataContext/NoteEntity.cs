@@ -20,7 +20,7 @@ namespace SvetlinAnkov.Albite.Library.DataContext
         private EntityRef<BookEntity> bookRef;
 
         [Association(Storage = "bookRef", ThisKey = "bookId")]
-        public Book Book
+        public BookEntity Book
         {
             get { return bookRef.Entity; }
             private set
@@ -42,10 +42,10 @@ namespace SvetlinAnkov.Albite.Library.DataContext
         private string domLocation { get; set; }
 
         // Used by LinqToSql for deserialization
-        internal Note() { }
+        internal NoteEntity() { }
 
         // Used when creating a new entity
-        public Note(BookPresenter.Location location, string text)
+        public NoteEntity(BookPresenter.Location location, string text)
         {
             Book = location.SpineElement.Book;
             spineIndex = location.SpineElement.Number;

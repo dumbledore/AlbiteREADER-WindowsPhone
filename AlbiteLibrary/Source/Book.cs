@@ -23,11 +23,6 @@ namespace SvetlinAnkov.Albite.Library
             Library.Books.Remove(this);
         }
 
-        public BookPresenter GetPresenter()
-        {
-            return new BookPresenter(this);
-        }
-
         public sealed class Descriptor
         {
             public string Path { get; private set; }

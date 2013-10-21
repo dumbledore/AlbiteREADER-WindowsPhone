@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.Library.DataContext;
 
 namespace SvetlinAnkov.Albite.Library
 {
@@ -28,6 +29,8 @@ namespace SvetlinAnkov.Albite.Library
                 {
                     spine = prepareSpine(container);
                 }
+
+                bookLocation = prepareLocation();
             }
 
             // TODO: Get the current location from the database
@@ -64,19 +67,30 @@ namespace SvetlinAnkov.Albite.Library
             }
         }
 
-        public Location BookLocation
+        private Location prepareLocation()
         {
-            get
+            using (LibraryDataContext dc = Book.Library.GetDataContext())
             {
-                if (Book.SpineIndex < 0 || Book.SpineIndex >= spine.Length)
+                BookEntity bookEntity = dc.Books.Single(b => b.Id == Book.Id);
+
+                if (bookEntity.SpineIndex < 0 || bookEntity.SpineIndex >= spine.Length)
                 {
                     throw new EntityInvalidException(
                         "Persisted spine value is invalid");
                 }
 
-                SpineElement element = spine[Book.SpineIndex];
+                SpineElement element = spine[bookEntity.SpineIndex];
                 return element.CreateLocation(
-                    Book.DomLocation, Book.TextLocation);
+                    bookEntity.DomLocation, bookEntity.TextLocation);
+            }
+        }
+
+        private Location bookLocation;
+        public Location BookLocation
+        {
+            get
+            {
+                return bookLocation;
             }
             set
             {
@@ -86,15 +100,22 @@ namespace SvetlinAnkov.Albite.Library
                         "Bad location: Spine is not from this book");
                 }
 
-                Book.SpineIndex = value.SpineElement.Number;
-                Book.DomLocation = value.DomLocation;
-                Book.TextLocation = value.TextLocation;
+                bookLocation = value;
             }
         }
 
         public void Persist()
         {
-            //TODO
+            using (LibraryDataContext dc = Book.Library.GetDataContext())
+            {
+                BookEntity bookEntity = dc.Books.Single(b => b.Id == Book.Id);
+
+                bookEntity.SpineIndex = bookLocation.SpineElement.Number;
+                bookEntity.TextLocation = bookLocation.TextLocation;
+                bookEntity.DomLocation = bookLocation.DomLocation;
+
+                dc.SubmitChanges();
+            }
         }
 
         // Helper methods

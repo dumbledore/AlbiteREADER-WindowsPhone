@@ -8,6 +8,7 @@ using System.Linq;
 using System.Data.Linq;
 using System.Diagnostics.CodeAnalysis;
 using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.Library.DataContext;
 
 namespace SvetlinAnkov.Albite.Library
 {
