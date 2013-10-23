@@ -71,18 +71,25 @@ namespace SvetlinAnkov.Albite.Library
         {
             using (LibraryDataContext dc = Book.Library.GetDataContext())
             {
-                BookEntity bookEntity = dc.Books.Single(b => b.Id == Book.Id);
-
-                if (bookEntity.SpineIndex < 0 || bookEntity.SpineIndex >= spine.Length)
-                {
-                    throw new EntityInvalidException(
-                        "Persisted spine value is invalid");
-                }
-
-                SpineElement element = spine[bookEntity.SpineIndex];
-                return element.CreateLocation(
-                    bookEntity.DomLocation, bookEntity.TextLocation);
+                BookEntity bookEntity = getEntity(dc);
+                return CreateLocation(
+                    bookEntity.SpineIndex,
+                    bookEntity.DomLocation,
+                    bookEntity.TextLocation);
             }
+        }
+
+        internal Location CreateLocation(
+            int spineIndex, string domLocation, int textLocation)
+        {
+            if (spineIndex < 0 || spineIndex >= spine.Length)
+            {
+                throw new EntityInvalidException("Spine value is out of range");
+            }
+
+            SpineElement element = spine[spineIndex];
+            return element.CreateLocation(
+                domLocation, textLocation);
         }
 
         private Location bookLocation;
@@ -108,7 +115,7 @@ namespace SvetlinAnkov.Albite.Library
         {
             using (LibraryDataContext dc = Book.Library.GetDataContext())
             {
-                BookEntity bookEntity = dc.Books.Single(b => b.Id == Book.Id);
+                BookEntity bookEntity = getEntity(dc);
 
                 bookEntity.SpineIndex = bookLocation.SpineElement.Number;
                 bookEntity.TextLocation = bookLocation.TextLocation;
@@ -198,6 +205,11 @@ namespace SvetlinAnkov.Albite.Library
                 DomLocation = domLocation;
                 TextLocation = textLocation;
             }
+        }
+
+        private BookEntity getEntity(LibraryDataContext dc)
+        {
+            return BookManager.GetEntity(dc, Book.Id);
         }
     }
 }

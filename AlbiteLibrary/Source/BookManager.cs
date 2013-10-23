@@ -71,7 +71,7 @@ namespace SvetlinAnkov.Albite.Library
                 // incl author and info from Freebase.
 
                 // Working with the Book class now
-                Book book = new Book(Library, bookEntity);
+                Book book = new Book(this, bookEntity);
 
                 try
                 {
@@ -117,8 +117,7 @@ namespace SvetlinAnkov.Albite.Library
         {
             using (LibraryDataContext dc = Library.GetDataContext())
             {
-                BookEntity bookEntity
-                    = dc.Books.Single(b => b.Id == book.Id);
+                BookEntity bookEntity = GetEntity(dc, book.Id);
 
                 // Remove from the storage
                 // No need to catch exceptions,
@@ -142,8 +141,7 @@ namespace SvetlinAnkov.Albite.Library
             {
                 using (LibraryDataContext dc = Library.GetDataContext())
                 {
-                    BookEntity bookEntity = dc.Books.Single(b => b.Id == id);
-                    return new Book(Library, bookEntity);
+                    return new Book(this, GetEntity(dc, id));
                 }
             }
         }
@@ -157,7 +155,7 @@ namespace SvetlinAnkov.Albite.Library
 
                 foreach (BookEntity bookEntity in dc.Books)
                 {
-                    books.Add(new Book(Library, bookEntity));
+                    books.Add(new Book(this, bookEntity));
                 }
 
                 return books.ToArray();
@@ -172,6 +170,11 @@ namespace SvetlinAnkov.Albite.Library
                 // throw an exception
                 s.Delete();
             }
+        }
+
+        internal static BookEntity GetEntity(LibraryDataContext dc, int id)
+        {
+            return dc.Books.Single(b => b.Id == id);
         }
 
         public static string RelativeContentPath

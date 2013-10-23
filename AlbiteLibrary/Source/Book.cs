@@ -12,15 +12,17 @@ namespace SvetlinAnkov.Albite.Library
 {
     public class Book : LibraryEntity
     {
-        internal Book(Library library, BookEntity entity)
-            : base(library, entity)
-        {
-            // TODO: Reading persistance
-        }
+        public BookManager Manager { get; private set; }
 
-        public override void Remove()
+        public string Title { get; private set; }
+
+        internal Book(BookManager manager, BookEntity entity)
+            : base(manager.Library, entity)
         {
-            Library.Books.Remove(this);
+            Manager = manager;
+
+            // Other entity fields
+            Title = entity.Title;
         }
 
         public sealed class Descriptor

@@ -9,11 +9,25 @@ using System.Threading.Tasks;
 namespace SvetlinAnkov.Albite.Library.DataContext
 {
     [Table(Name = "Notes")]
-    internal class NoteEntity
+    internal class NoteEntity : Entity
     {
+        // For DC
+        public NoteEntity() { }
+
+        // When creating a new one through NoteManager
+        public NoteEntity(BookEntity bookEntity,
+            BookPresenter.Location location, string text)
+        {
+            Book = bookEntity;
+            SpineIndex = location.SpineElement.Number;
+            DomLocation = location.DomLocation;
+            TextLocation = location.TextLocation;
+            Text = text;
+        }
+
         // ID
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "int NOT NULL IDENTITY")]
-        public int Id { get; private set; }
+        public override int Id { get; protected set; }
 
         [Column(IsPrimaryKey = true)]
         private int bookId;
@@ -33,35 +47,15 @@ namespace SvetlinAnkov.Albite.Library.DataContext
         }
 
         [Column]
+        public int SpineIndex { get; set; }
+
+        [Column]
+        public string DomLocation { get; set; }
+
+        [Column]
+        public int TextLocation { get; set; }
+
+        [Column]
         public string Text { get; set; }
-
-        [Column(Name = "SpineIndex")]
-        private int spineIndex { get; set; }
-
-        [Column(Name = "DomLocation")]
-        private string domLocation { get; set; }
-
-        // Used by LinqToSql for deserialization
-        internal NoteEntity() { }
-
-        // Used when creating a new entity
-        public NoteEntity(BookPresenter.Location location, string text)
-        {
-            Book = location.SpineElement.Book;
-            spineIndex = location.SpineElement.Number;
-            domLocation = location.DomLocation;
-            Text = text;
-        }
-
-        public BookPresenter.Location GetBookLocation(BookPresenter presenter)
-        {
-            if (presenter.Book.Id != Book.Id)
-            {
-                throw new InvalidOperationException();
-            }
-
-            return null;
-        }
-        // TODO: Chapter Bookmarks, Highlights and Notes
     }
 }

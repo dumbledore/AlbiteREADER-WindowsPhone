@@ -9,7 +9,7 @@ namespace SvetlinAnkov.Albite.Library
     public abstract class EntityManager<TEntity>
         where TEntity : LibraryEntity
     {
-        protected readonly Library Library;
+        public Library Library { get; private set; }
 
         public EntityManager(Library library)
         {
