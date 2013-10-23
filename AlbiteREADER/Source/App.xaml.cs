@@ -26,40 +26,8 @@ namespace SvetlinAnkov.Albite.READER
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
 
-        private readonly object myLock = new Object();
-
-        private AlbiteContext context;
-        public AlbiteContext CurrentContext
-        {
-            get
-            {
-                lock (myLock)
-                {
-                    if (context == null)
-                    {
-                        context = new AlbiteContext("Library/");
-                    }
-                    return context;
-                }
-            }
-        }
-
-        public void DisposeContext()
-        {
-            lock (myLock)
-            {
-                if (context != null)
-                {
-                    context.Dispose();
-                    context = null;
-                }
-            }
-        }
-
-        public void Dispose()
-        {
-            DisposeContext();
-        }
+        private AlbiteContext context = new AlbiteContext("Library/");
+        public AlbiteContext CurrentContext { get { return context; } }
 
         /// <summary>
         /// Helper function that returns the AlbiteContext
@@ -106,11 +74,6 @@ namespace SvetlinAnkov.Albite.READER
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-        }
-
-        ~App()
-        {
-            Dispose();
         }
 
         // Code to execute when the application is launching (eg, from Start)
