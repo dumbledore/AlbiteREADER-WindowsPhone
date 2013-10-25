@@ -10,8 +10,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using SvetlinAnkov.Albite.Core.Test;
 using System.IO;
-using SvetlinAnkov.Albite.READER.Model.Container;
+using SvetlinAnkov.Albite.Container.Test;
 using SvetlinAnkov.Albite.READER.Test;
+using SvetlinAnkov.Albite.Container;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {

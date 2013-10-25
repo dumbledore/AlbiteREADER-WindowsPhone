@@ -12,17 +12,16 @@ using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER.Model;
 using System.IO;
-using SvetlinAnkov.Albite.READER.Model.Container.Epub;
-using SvetlinAnkov.Albite.READER.Model.Container;
+using SvetlinAnkov.Albite.BookLibrary;
 
 namespace SvetlinAnkov.Albite.Tests.Test.Model
 {
     public class LibraryAddBookTest : TestCase
     {
         private string location;
-        private Book.PathDescriptor[] books;
+        private Book.Descriptor[] books;
 
-        public LibraryAddBookTest(string location, Book.PathDescriptor[] books)
+        public LibraryAddBookTest(string location, Book.Descriptor[] books)
         {
             this.location = location;
             this.books = books;
@@ -31,13 +30,11 @@ namespace SvetlinAnkov.Albite.Tests.Test.Model
         protected override void TestImplementation()
         {
             // Start using the library
-            using (Library library = new Library(location))
+            BookLibrary.Library library = new BookLibrary.Library(location);
+            foreach (Book.Descriptor book in books)
             {
-                foreach (Book.PathDescriptor book in books)
-                {
-                    // Add a book
-                    library.Books.Add(book);
-                }
+                // Add a book
+                library.Books.Add(book);
             }
         }
     }

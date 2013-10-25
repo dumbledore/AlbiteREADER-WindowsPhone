@@ -6,6 +6,8 @@ using SvetlinAnkov.Albite.Tests.Test.View;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER;
 using SvetlinAnkov.Albite.READER.Model;
+using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.Container;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
@@ -49,19 +51,16 @@ namespace SvetlinAnkov.Albite.Tests.Test
             // Remove all local data
             removeStore();
 
-            Book.PathDescriptor[] books
+            Book.Descriptor[] books
                 = {
-                      new Book.PathDescriptor(
-                          "Test/epub/aliceDynamic.epub", Book.ContainerType.Epub)
+                      new Book.Descriptor(
+                          "Test/epub/aliceDynamic.epub", BookContainerType.Epub)
                   };
             new LibraryAddBookTest("Test/Library/", books).Test();
         }
 
         private void ReaderPageTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            // Release the context
-            ((IAlbiteApplication) App.Current).DisposeContext();
-
             // Remove all local data
             removeStore();
 

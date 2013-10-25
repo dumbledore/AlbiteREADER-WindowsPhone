@@ -194,9 +194,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AlbiteContainer\AlbiteContainer.csproj">
+      <Project>{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}</Project>
+      <Name>AlbiteContainer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AlbiteCore\AlbiteCore.csproj">
       <Project>{85084981-FCBE-4271-A231-6D8CC83CA774}</Project>
       <Name>AlbiteCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AlbiteLibrary\AlbiteLibrary.csproj">
+      <Project>{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}</Project>
+      <Name>AlbiteLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\AlbiteREADER\AlbiteREADER.csproj">
       <Project>{CB6FF657-56D3-43B4-BA40-BD707F6403F7}</Project>

@@ -43,9 +43,6 @@
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/add.png" Text="Add Books" Click="ApplicationBarIconButton_AddBooks"/>
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/delete.png" Text="Remove All" Click="ApplicationBarIconButton_RemoveBooks"/>
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/refresh.png" Text="Refresh" Click="ApplicationBarIconButton_RefreshList"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Click="ApplicationBarMenuItem_ReleaseContext" Text="Release the context"/>
-            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

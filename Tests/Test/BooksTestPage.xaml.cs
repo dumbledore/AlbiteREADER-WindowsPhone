@@ -11,6 +11,8 @@ using Microsoft.Phone.Shell;
 using SvetlinAnkov.Albite.READER;
 using SvetlinAnkov.Albite.READER.Model;
 using System.ComponentModel;
+using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.Container;
 
 namespace SvetlinAnkov.Albite.Tests.Test
 {
@@ -40,11 +42,6 @@ namespace SvetlinAnkov.Albite.Tests.Test
             return ((IAlbiteApplication)App.Current).CurrentContext;
         }
 
-        private void releaseContext()
-        {
-            ((IAlbiteApplication)App.Current).DisposeContext();
-        }
-
         private void initializeWorker()
         {
             // Set up the background worker
@@ -60,10 +57,10 @@ namespace SvetlinAnkov.Albite.Tests.Test
             // Remove all buttons
             ContentPanel.Children.Clear();
 
-            Library library = getContext().Library;
+            BookLibrary.Library library = getContext().Library;
 
             // Add all books
-            Book[] books = library.Books.All;
+            IList<Book> books = library.Books.GetAll();
             foreach (Book book in books)
             {
                 BookButton button = new BookButton(book.Id);
@@ -88,7 +85,7 @@ namespace SvetlinAnkov.Albite.Tests.Test
                     return;
                 }
 
-                library.Books.Add(new Book.PathDescriptor(bookPath, Book.ContainerType.Epub));
+                library.Books.Add(new Book.Descriptor(bookPath, BookContainerType.Epub));
                 progress += step;
                 worker.ReportProgress(progress);
             }
@@ -98,9 +95,9 @@ namespace SvetlinAnkov.Albite.Tests.Test
         {
             Library library = getContext().Library;
 
-            Book[] books = library.Books.All;
+            IList<Book> books = library.Books.GetAll();
 
-            int step = 100 / books.Length;
+            int step = 100 / books.Count();
             int progress = 0;
 
             foreach (Book book in books)
@@ -199,11 +196,6 @@ namespace SvetlinAnkov.Albite.Tests.Test
         private void ApplicationBarIconButton_RefreshList(object sender, EventArgs e)
         {
             refreshBookList();
-        }
-
-        private void ApplicationBarMenuItem_ReleaseContext(object sender, EventArgs e)
-        {
-            releaseContext();
         }
 
         private class BookButton : Button

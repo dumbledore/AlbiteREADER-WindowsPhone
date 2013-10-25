@@ -6,6 +6,8 @@ using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.READER;
 using SvetlinAnkov.Albite.READER.Model;
 using System.Windows.Navigation;
+using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.Container;
 
 namespace SvetlinAnkov.Albite.Tests.Test.View
 {
@@ -26,10 +28,10 @@ namespace SvetlinAnkov.Albite.Tests.Test.View
             AlbiteContext context = ((IAlbiteApplication) App.Current).CurrentContext;
 
             // Get the library
-            Library library = context.Library;
+            BookLibrary.Library library = context.Library;
 
             // Add the book
-            library.Books.Add(new Book.PathDescriptor(book, Book.ContainerType.Epub));
+            library.Books.Add(new Book.Descriptor(book, BookContainerType.Epub));
 
             // Navigate
             navigation.Navigate(new Uri("/AlbiteREADER;component/View/ReaderPage.xaml?id=1", UriKind.Relative));
