@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.Library.DataContext;
+using SvetlinAnkov.Albite.BookLibrary.DataContext;
 
-namespace SvetlinAnkov.Albite.Library
+namespace SvetlinAnkov.Albite.BookLibrary
 {
     public class BookPresenter
     {

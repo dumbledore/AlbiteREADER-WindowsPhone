@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvetlinAnkov.Albite.Library.DataContext
+namespace SvetlinAnkov.Albite.BookLibrary.DataContext
 {
     internal class LibraryDataContext : System.Data.Linq.DataContext
     {

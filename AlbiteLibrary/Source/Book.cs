@@ -6,9 +6,9 @@ using System.Data.Linq;
 using System.Collections.Generic;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.Container;
-using SvetlinAnkov.Albite.Library.DataContext;
+using SvetlinAnkov.Albite.BookLibrary.DataContext;
 
-namespace SvetlinAnkov.Albite.Library
+namespace SvetlinAnkov.Albite.BookLibrary
 {
     public class Book : LibraryEntity
     {

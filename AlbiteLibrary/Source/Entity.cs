@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvetlinAnkov.Albite.Library
+namespace SvetlinAnkov.Albite.BookLibrary
 {
     public abstract class Entity
     {

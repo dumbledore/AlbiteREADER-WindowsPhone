@@ -8,9 +8,9 @@ using System.Linq;
 using System.Data.Linq;
 using System.Diagnostics.CodeAnalysis;
 using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.Library.DataContext;
+using SvetlinAnkov.Albite.BookLibrary.DataContext;
 
-namespace SvetlinAnkov.Albite.Library
+namespace SvetlinAnkov.Albite.BookLibrary
 {
     public class Library
     {

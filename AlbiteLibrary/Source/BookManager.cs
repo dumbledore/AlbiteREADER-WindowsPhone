@@ -1,6 +1,6 @@
 ﻿using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.Library.DataContext;
+using SvetlinAnkov.Albite.BookLibrary.DataContext;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvetlinAnkov.Albite.Library
+namespace SvetlinAnkov.Albite.BookLibrary
 {
     public class BookManager : EntityManager<Book>
     {

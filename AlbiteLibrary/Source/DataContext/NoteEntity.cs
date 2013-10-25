@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvetlinAnkov.Albite.Library.DataContext
+namespace SvetlinAnkov.Albite.BookLibrary.DataContext
 {
     [Table(Name = "Notes")]
     internal class NoteEntity : Entity

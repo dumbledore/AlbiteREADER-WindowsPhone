@@ -1,4 +1,4 @@
-﻿using SvetlinAnkov.Albite.Library.DataContext;
+﻿using SvetlinAnkov.Albite.BookLibrary.DataContext;
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvetlinAnkov.Albite.Library
+namespace SvetlinAnkov.Albite.BookLibrary
 {
     public class NoteManager : EntityManager<Note>
     {
