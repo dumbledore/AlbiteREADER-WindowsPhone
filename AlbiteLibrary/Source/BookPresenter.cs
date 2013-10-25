@@ -17,7 +17,7 @@ namespace SvetlinAnkov.Albite.Library
         // TODO: ToC
         // TODO: Lists
 
-        internal BookPresenter(Book book)
+        public BookPresenter(Book book)
         {
             this.Book = book;
 
