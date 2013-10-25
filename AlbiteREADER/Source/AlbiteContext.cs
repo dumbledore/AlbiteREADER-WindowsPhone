@@ -4,17 +4,17 @@ using System.Windows;
 using System.Windows.Controls;
 using SvetlinAnkov.Albite.READER.Model;
 using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.Library;
+using SvetlinAnkov.Albite.BookLibrary;
 
 namespace SvetlinAnkov.Albite.READER
 {
     public class AlbiteContext
     {
-        public Library.Library Library { get; private set; }
+        public Library Library { get; private set; }
 
         public AlbiteContext(string libraryPath)
         {
-            Library = new Library.Library(libraryPath);
+            Library = new BookLibrary.Library(libraryPath);
         }
     }
 }

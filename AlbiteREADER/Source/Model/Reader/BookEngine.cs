@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Phone.Controls;
 using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.BookLibrary;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
@@ -16,13 +17,13 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         // TODO: Add history stack
 
-        Book.SpineElement current;
+        BookPresenter.SpineElement current;
 
         /// <summary>
         /// Setting this property would cause the engine
         /// to load into the specified book location
         /// </summary>
-        public Book.BookLocation BookLocation
+        public BookPresenter.Location BookLocation
         {
             get
             {

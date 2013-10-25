@@ -15,6 +15,7 @@ using SvetlinAnkov.Albite.READER.Utils;
 using SvetlinAnkov.Albite.Core.Utils;
 using System.Diagnostics;
 using System.Threading;
+using SvetlinAnkov.Albite.BookLibrary;
 
 namespace SvetlinAnkov.Albite.READER.Controls
 {
@@ -177,7 +178,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
         {
             private readonly ReaderControl control;
 
-            private Book.Presenter presenter;
+            private BookPresenter bookPresenter;
             private BookEngine engine;
 
             public bool IsLoading { get; private set; }
@@ -215,9 +216,9 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 set { control.WebBrowser.Navigate(value); }
             }
 
-            public Book.Presenter Presenter
+            public BookPresenter BookPresenter
             {
-                get { return presenter; }
+                get { return bookPresenter; }
             }
 
             public void OpenBook(int bookId)
@@ -232,7 +233,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 Book book = library.Books[bookId];
 
                 // Get the presenter
-                presenter = library.Books.GetPresenter(book);
+                bookPresenter = new BookPresenter(book);
 
                 // TODO: The component background color needs to be data-bound
                 //       to Resources["PhoneBackgroundBrush"]
@@ -241,7 +242,7 @@ namespace SvetlinAnkov.Albite.READER.Controls
                 engine = new BookEngine(this, Defaults.Layout.DefaultSettings);
 
                 // Go to the last reading location
-                engine.BookLocation = presenter.BookLocation;
+                engine.BookLocation = bookPresenter.BookLocation;
             }
 
             public void CloseBook()

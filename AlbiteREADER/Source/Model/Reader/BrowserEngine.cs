@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Threading;
+using SvetlinAnkov.Albite.BookLibrary;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {
@@ -78,7 +79,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
             // Set up the main.xhtml
             mainPageTemplate.IsFirstChapter = IsFirstChapter;
             mainPageTemplate.IsLastChapter = IsLastChapter;
-            mainPageTemplate.ChatperFile = Path.Combine("/" + Controller.Presenter.RelativeContentPath, fileUrl);
+            mainPageTemplate.ChatperFile = Path.Combine("/" + Controller.BookPresenter.RelativeContentPath, fileUrl);
             mainPageTemplate.SaveToStorage();
 
             // Now navigate the web browser
@@ -181,11 +182,11 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         private void prepare()
         {
-            Controller.BasePath = Controller.Presenter.Path;
+            Controller.BasePath = Controller.BookPresenter.Path;
 
-            mainUri = new Uri(Path.Combine(Controller.Presenter.RelativeEnginePath, Paths.MainPage), UriKind.Relative);
+            mainUri = new Uri(Path.Combine(Controller.BookPresenter.RelativeEnginePath, Paths.MainPage), UriKind.Relative);
 
-            string enginePath = Controller.Presenter.EnginePath;
+            string enginePath = Controller.BookPresenter.EnginePath;
 
             // Copy the JSEngine to the Isolated Storage
             using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(
@@ -380,7 +381,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
             string SendMessage(string message);
 
-            Book.Presenter Presenter { get; }
+            BookPresenter BookPresenter { get; }
 
             bool IsLoading { get; }
             void LoadingStarted();
