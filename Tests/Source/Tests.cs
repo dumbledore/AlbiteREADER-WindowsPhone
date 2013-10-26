@@ -10,11 +10,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using SvetlinAnkov.Albite.Core.Test;
-using SvetlinAnkov.Albite.Tests.Test.Utils;
-using SvetlinAnkov.Albite.Tests.Test.Utils.Messaging;
+using SvetlinAnkov.Albite.Tests.Utils;
+using SvetlinAnkov.Albite.Tests.Utils.Messaging;
 using SvetlinAnkov.Albite.READER.Test;
 
-namespace SvetlinAnkov.Albite.Tests.Test
+namespace SvetlinAnkov.Albite.Tests
 {
     public class Tests : TestCollection
     {

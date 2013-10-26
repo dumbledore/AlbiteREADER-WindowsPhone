@@ -3,7 +3,7 @@ using System.Net;
 using System.Windows;
 using SvetlinAnkov.Albite.Core.Test;
 
-namespace SvetlinAnkov.Albite.Tests.Test
+namespace SvetlinAnkov.Albite.Tests
 {
     public class GCTests : TestCollection
     {

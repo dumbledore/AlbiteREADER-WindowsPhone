@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.IO;
 
-namespace SvetlinAnkov.Albite.Tests.Test.Utils.Messaging
+namespace SvetlinAnkov.Albite.Tests.Utils.Messaging
 {
     class JsonMessengerTest : TestCase
     {

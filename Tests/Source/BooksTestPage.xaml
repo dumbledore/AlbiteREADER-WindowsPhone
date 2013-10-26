@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="SvetlinAnkov.Albite.Tests.Test.BooksTestPage"
+    x:Class="SvetlinAnkov.Albite.Tests.BooksTestPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:albite="clr-namespace:SvetlinAnkov.Albite.READER.View.Controls;assembly=AlbiteREADER"

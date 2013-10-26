@@ -12,7 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using SvetlinAnkov.Albite.Core.Utils;
 
-namespace SvetlinAnkov.Albite.Tests.Test
+namespace SvetlinAnkov.Albite.Tests
 {
     public partial class WebBrowserSecurityTestPage : PhoneApplicationPage
     {

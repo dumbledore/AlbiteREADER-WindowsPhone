@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Phone.Speech.Synthesis;
 
-namespace SvetlinAnkov.Albite.Tests.Test
+namespace SvetlinAnkov.Albite.Tests
 {
     class SpeechSynthesisTest : TestCase
     {

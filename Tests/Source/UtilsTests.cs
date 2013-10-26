@@ -3,9 +3,9 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using SvetlinAnkov.Albite.Core.Test;
-using SvetlinAnkov.Albite.Tests.Test.Utils;
+using SvetlinAnkov.Albite.Tests.Utils;
 
-namespace SvetlinAnkov.Albite.Tests.Test
+namespace SvetlinAnkov.Albite.Tests
 {
     public class UtilsTests : TestCollection
     {

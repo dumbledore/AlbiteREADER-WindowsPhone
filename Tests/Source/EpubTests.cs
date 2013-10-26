@@ -14,7 +14,7 @@ using SvetlinAnkov.Albite.Container.Test;
 using SvetlinAnkov.Albite.READER.Test;
 using SvetlinAnkov.Albite.Container;
 
-namespace SvetlinAnkov.Albite.Tests.Test
+namespace SvetlinAnkov.Albite.Tests
 {
     public class EpubTests : TestCollection
     {

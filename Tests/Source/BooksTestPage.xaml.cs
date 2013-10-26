@@ -14,7 +14,7 @@ using System.ComponentModel;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Container;
 
-namespace SvetlinAnkov.Albite.Tests.Test
+namespace SvetlinAnkov.Albite.Tests
 {
     public partial class BooksTestPage : PhoneApplicationPage
     {

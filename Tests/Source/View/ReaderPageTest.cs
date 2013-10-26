@@ -9,7 +9,7 @@ using System.Windows.Navigation;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Container;
 
-namespace SvetlinAnkov.Albite.Tests.Test.View
+namespace SvetlinAnkov.Albite.Tests.View
 {
     public class ReaderPageTest : TestCase
     {

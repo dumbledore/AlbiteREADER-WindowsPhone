@@ -12,7 +12,7 @@ using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.Core.Utils;
 using System.IO;
 
-namespace SvetlinAnkov.Albite.Tests.Test.Utils
+namespace SvetlinAnkov.Albite.Tests.Utils
 {
     public class AlbiteIsolatedStorageTest : TestCase
     {

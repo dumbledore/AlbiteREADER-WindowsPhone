@@ -14,7 +14,7 @@ using SvetlinAnkov.Albite.READER.Model;
 using System.IO;
 using SvetlinAnkov.Albite.BookLibrary;
 
-namespace SvetlinAnkov.Albite.Tests.Test.Model
+namespace SvetlinAnkov.Albite.Tests.Model
 {
     public class LibraryAddBookTest : TestCase
     {

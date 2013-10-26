@@ -104,27 +104,27 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test\BooksTestPage.xaml.cs">
+    <Compile Include="Source\BooksTestPage.xaml.cs">
       <DependentUpon>BooksTestPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Test\EpubTests.cs" />
-    <Compile Include="Test\GCTests.cs" />
-    <Compile Include="Test\Model\LibraryAddBookTest.cs" />
-    <Compile Include="Test\SpeechSynthesisTest.cs" />
-    <Compile Include="Test\UtilsTests.cs" />
-    <Compile Include="Test\Utils\AlbiteIsolatedContainerTest.cs" />
-    <Compile Include="Test\Utils\AlbiteIsolatedContainerTestWrapper.cs" />
-    <Compile Include="Test\Utils\AlbiteIsolatedStorageTest.cs" />
-    <Compile Include="Test\Utils\Messaging\JsonMessengerTest.cs" />
-    <Compile Include="Test\View\ReaderPageTest.cs" />
-    <Compile Include="Test\TestPage.xaml.cs">
+    <Compile Include="Source\EpubTests.cs" />
+    <Compile Include="Source\GCTests.cs" />
+    <Compile Include="Source\Model\LibraryAddBookTest.cs" />
+    <Compile Include="Source\SpeechSynthesisTest.cs" />
+    <Compile Include="Source\UtilsTests.cs" />
+    <Compile Include="Source\Utils\AlbiteIsolatedContainerTest.cs" />
+    <Compile Include="Source\Utils\AlbiteIsolatedContainerTestWrapper.cs" />
+    <Compile Include="Source\Utils\AlbiteIsolatedStorageTest.cs" />
+    <Compile Include="Source\Utils\Messaging\JsonMessengerTest.cs" />
+    <Compile Include="Source\View\ReaderPageTest.cs" />
+    <Compile Include="Source\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Test\Tests.cs" />
-    <Compile Include="Test\WebBrowserSecurityTestPage.xaml.cs">
+    <Compile Include="Source\Tests.cs" />
+    <Compile Include="Source\WebBrowserSecurityTestPage.xaml.cs">
       <DependentUpon>WebBrowserSecurityTestPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Test\WebBrowserStabilityTestPage.xaml.cs">
+    <Compile Include="Source\WebBrowserStabilityTestPage.xaml.cs">
       <DependentUpon>WebBrowserStabilityTestPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -176,19 +176,19 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Test\BooksTestPage.xaml">
+    <Page Include="Source\BooksTestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Test\TestPage.xaml">
+    <Page Include="Source\TestPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Test\WebBrowserSecurityTestPage.xaml">
+    <Page Include="Source\WebBrowserSecurityTestPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Test\WebBrowserStabilityTestPage.xaml">
+    <Page Include="Source\WebBrowserStabilityTestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
