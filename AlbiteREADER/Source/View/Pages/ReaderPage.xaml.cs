@@ -16,7 +16,7 @@ using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER.Model.Reader;
 using SvetlinAnkov.Albite.READER.Utils;
 
-namespace SvetlinAnkov.Albite.READER.View
+namespace SvetlinAnkov.Albite.READER.View.Pages
 {
     public partial class ReaderPage : PhoneApplicationPage
     {

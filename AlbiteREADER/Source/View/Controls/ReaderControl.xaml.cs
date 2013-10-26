@@ -17,7 +17,7 @@ using System.Diagnostics;
 using System.Threading;
 using SvetlinAnkov.Albite.BookLibrary;
 
-namespace SvetlinAnkov.Albite.READER.Controls
+namespace SvetlinAnkov.Albite.READER.View.Controls
 {
     public partial class ReaderControl : UserControl
     {

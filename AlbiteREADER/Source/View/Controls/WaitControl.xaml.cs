@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace SvetlinAnkov.Albite.READER.Controls
+namespace SvetlinAnkov.Albite.READER.View.Controls
 {
     public partial class WaitControl : UserControl
     {
