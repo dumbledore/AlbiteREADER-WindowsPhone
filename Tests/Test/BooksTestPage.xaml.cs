@@ -159,7 +159,7 @@ namespace SvetlinAnkov.Albite.Tests.Test
             BookButton button = (BookButton)sender;
 
             // Navigate
-            NavigationService.Navigate(new Uri("/AlbiteREADER;component/View/ReaderPage.xaml?id=" + button.Id, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/ReaderPage.xaml?id=" + button.Id, UriKind.Relative));
         }
 
         private void ContentPanel_Loaded(object sender, RoutedEventArgs e)

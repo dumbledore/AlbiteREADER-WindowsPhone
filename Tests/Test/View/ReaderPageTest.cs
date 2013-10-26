@@ -34,7 +34,7 @@ namespace SvetlinAnkov.Albite.Tests.Test.View
             library.Books.Add(new Book.Descriptor(book, BookContainerType.Epub));
 
             // Navigate
-            navigation.Navigate(new Uri("/AlbiteREADER;component/View/ReaderPage.xaml?id=1", UriKind.Relative));
+            navigation.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/ReaderPage.xaml?id=1", UriKind.Relative));
         }
     }
 }
