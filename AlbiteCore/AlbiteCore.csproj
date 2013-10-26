@@ -105,7 +105,6 @@
     <Compile Include="Source\Utils\AlbiteZipContainer.cs" />
     <Compile Include="Source\Utils\IAlbiteContainer.cs" />
     <Compile Include="Source\Utils\Log.cs" />
-    <Compile Include="Source\Utils\LogCollector.cs" />
     <Compile Include="Source\Utils\Logging\AbstractLog.cs" />
     <Compile Include="Source\Utils\Logging\DebugLog.cs" />
     <Compile Include="Source\Utils\Logging\IsolatedStorageLog.cs" />
