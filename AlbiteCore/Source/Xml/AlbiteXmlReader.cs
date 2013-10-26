@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml;
 
-namespace SvetlinAnkov.Albite.Core.Utils.Xml
+namespace SvetlinAnkov.Albite.Core.Xml
 {
     /// <summary>
     /// This class is a tiny wrapper around an XmlReader.

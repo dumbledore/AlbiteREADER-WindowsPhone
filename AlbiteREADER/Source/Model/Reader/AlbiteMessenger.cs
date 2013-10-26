@@ -1,5 +1,5 @@
 ﻿using SvetlinAnkov.Albite.Core.Diagnostics;
-using SvetlinAnkov.Albite.Core.Utils.Messaging;
+using SvetlinAnkov.Albite.Core.Json;
 using System;
 using System.Runtime.Serialization;
 

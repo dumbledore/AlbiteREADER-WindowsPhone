@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace SvetlinAnkov.Albite.Core.Utils.Messaging
+namespace SvetlinAnkov.Albite.Core.Json
 {
     public class JsonMessenger
     {

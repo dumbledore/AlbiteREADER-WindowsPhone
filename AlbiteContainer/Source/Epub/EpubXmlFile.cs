@@ -1,6 +1,5 @@
 ﻿using SvetlinAnkov.Albite.Core.IO;
-using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.Core.Utils.Xml;
+using SvetlinAnkov.Albite.Core.Xml;
 using System;
 using System.IO;
 using System.Xml;

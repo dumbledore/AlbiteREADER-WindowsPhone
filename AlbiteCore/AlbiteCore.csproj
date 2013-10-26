@@ -108,9 +108,9 @@
     <Compile Include="Source\Diagnostics\AbstractLog.cs" />
     <Compile Include="Source\Diagnostics\DebugLog.cs" />
     <Compile Include="Source\Diagnostics\IsolatedStorageLog.cs" />
-    <Compile Include="Source\Utils\Messaging\JsonMessenger.cs" />
-    <Compile Include="Source\Utils\ThreadCheck.cs" />
-    <Compile Include="Source\Utils\Xml\AlbiteXmlReader.cs" />
+    <Compile Include="Source\Json\JsonMessenger.cs" />
+    <Compile Include="Source\Diagnostics\ThreadCheck.cs" />
+    <Compile Include="Source\Xml\AlbiteXmlReader.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
