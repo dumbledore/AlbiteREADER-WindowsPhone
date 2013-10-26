@@ -42,7 +42,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 using (LibraryDataContext dc = Library.GetDataContext())
                 {
                     NoteEntity noteEntity = dc.Notes.Single(
-                        n => n.Id == id && n.Book.Id == BookPresenter.Book.Id);
+                        n => n.MappedId == id && n.Book.MappedId == BookPresenter.Book.Id);
                     return new Note(this, noteEntity);
                 }
             }

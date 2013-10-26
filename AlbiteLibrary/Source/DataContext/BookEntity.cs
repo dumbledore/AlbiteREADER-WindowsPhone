@@ -11,9 +11,14 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
     [Table(Name = "Books")]
     internal class BookEntity : Entity
     {
-        // ID
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "int NOT NULL IDENTITY")]
-        public override int Id { get; protected set; }
+        [Column(Name = "Id", IsPrimaryKey = true, IsDbGenerated = true, DbType = "int NOT NULL IDENTITY")]
+        internal int MappedId { get; private set; }
+
+        public override int Id
+        {
+            get { return MappedId; }
+            protected set { MappedId = value; }
+        }
 
         [Column]
         public string Title { get; internal set; }

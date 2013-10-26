@@ -174,7 +174,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         internal static BookEntity GetEntity(LibraryDataContext dc, int id)
         {
-            return dc.Books.Single(b => b.Id == id);
+            return dc.Books.Single(b => b.MappedId == id);
         }
 
         public static string RelativeContentPath
