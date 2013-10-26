@@ -22,8 +22,6 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
         private readonly string template;
         private Dictionary<string, string> placeholders = new Dictionary<string,string>();
 
-        protected Template() { }
-
         public Template(string template)
         {
             this.template = template;
