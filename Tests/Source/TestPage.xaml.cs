@@ -1,13 +1,11 @@
 ﻿using Microsoft.Phone.Controls;
-using System;
-using System.IO.IsolatedStorage;
-using SvetlinAnkov.Albite.Tests.Model;
-using SvetlinAnkov.Albite.Tests.View;
-using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.READER;
-using SvetlinAnkov.Albite.READER.Model;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Container;
+using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.Tests.Model;
+using SvetlinAnkov.Albite.Tests.View;
+using System;
+using System.IO.IsolatedStorage;
 
 namespace SvetlinAnkov.Albite.Tests
 {

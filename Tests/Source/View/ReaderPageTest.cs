@@ -1,13 +1,9 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
+﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.READER;
-using SvetlinAnkov.Albite.READER.Model;
+using System;
 using System.Windows.Navigation;
-using SvetlinAnkov.Albite.BookLibrary;
-using SvetlinAnkov.Albite.Container;
 
 namespace SvetlinAnkov.Albite.Tests.View
 {

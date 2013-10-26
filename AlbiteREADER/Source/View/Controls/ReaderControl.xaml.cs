@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.READER.Model.Reader;
+using SvetlinAnkov.Albite.READER.Utils;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using SvetlinAnkov.Albite.READER.Model.Reader;
-using SvetlinAnkov.Albite.READER.Model;
-using SvetlinAnkov.Albite.READER.Utils;
-using SvetlinAnkov.Albite.Core.Utils;
-using System.Diagnostics;
-using System.Threading;
-using SvetlinAnkov.Albite.BookLibrary;
 
 namespace SvetlinAnkov.Albite.READER.View.Controls
 {

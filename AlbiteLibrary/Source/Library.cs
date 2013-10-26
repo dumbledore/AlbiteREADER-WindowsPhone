@@ -1,14 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Data.Linq;
-using System.Diagnostics.CodeAnalysis;
+﻿using SvetlinAnkov.Albite.BookLibrary.DataContext;
 using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.BookLibrary.DataContext;
+using System.IO;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {

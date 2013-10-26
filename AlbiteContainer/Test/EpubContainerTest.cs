@@ -1,9 +1,7 @@
-﻿using System.IO;
-using System.Diagnostics;
-using System.Collections.Generic;
+﻿using SvetlinAnkov.Albite.Container.Epub;
 using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.Container.Epub;
+using System.IO;
 
 namespace SvetlinAnkov.Albite.Container.Test
 {

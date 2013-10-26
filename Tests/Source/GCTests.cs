@@ -1,7 +1,5 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using SvetlinAnkov.Albite.Core.Test;
+﻿using SvetlinAnkov.Albite.Core.Test;
+using System;
 
 namespace SvetlinAnkov.Albite.Tests
 {

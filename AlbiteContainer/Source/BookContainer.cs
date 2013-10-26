@@ -1,10 +1,8 @@
-﻿using System;
+﻿using SvetlinAnkov.Albite.Container.Epub;
+using SvetlinAnkov.Albite.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Windows;
-using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.Container.Epub;
 
 namespace SvetlinAnkov.Albite.Container
 {

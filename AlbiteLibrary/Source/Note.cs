@@ -1,9 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Linq;
-using System.Data.Linq;
-using SvetlinAnkov.Albite.BookLibrary.DataContext;
+﻿using SvetlinAnkov.Albite.BookLibrary.DataContext;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {

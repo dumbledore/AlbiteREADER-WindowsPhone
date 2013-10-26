@@ -1,9 +1,5 @@
-﻿using System;
-using System.Net;
+﻿using System.IO;
 using System.IO.IsolatedStorage;
-using System.Windows.Resources;
-using System.IO;
-using System.Text;
 
 namespace SvetlinAnkov.Albite.Core.Utils
 {

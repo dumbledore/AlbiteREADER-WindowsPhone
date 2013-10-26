@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.Container;
+using SvetlinAnkov.Albite.READER;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using SvetlinAnkov.Albite.READER;
-using SvetlinAnkov.Albite.READER.Model;
-using System.ComponentModel;
-using SvetlinAnkov.Albite.BookLibrary;
-using SvetlinAnkov.Albite.Container;
 
 namespace SvetlinAnkov.Albite.Tests
 {

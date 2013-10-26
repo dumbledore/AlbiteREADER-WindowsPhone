@@ -1,8 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using SvetlinAnkov.Albite.Core.Test;
+﻿using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.Core.Utils;
 
 namespace SvetlinAnkov.Albite.Container.Test

@@ -1,10 +1,5 @@
 ﻿using Microsoft.Phone.Shell;
 using SvetlinAnkov.Albite.Core.Test;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Phone.Speech.Synthesis;
 
 namespace SvetlinAnkov.Albite.Tests

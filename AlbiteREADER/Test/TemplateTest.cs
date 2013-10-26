@@ -1,6 +1,6 @@
-﻿using SvetlinAnkov.Albite.READER.Model.Reader;
-using SvetlinAnkov.Albite.Core.Test;
+﻿using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.READER.Model.Reader;
 
 namespace SvetlinAnkov.Albite.READER.Test
 {

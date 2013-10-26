@@ -1,10 +1,5 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using Microsoft.Phone.Controls;
+﻿using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Core.Utils;
-using SvetlinAnkov.Albite.BookLibrary;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {

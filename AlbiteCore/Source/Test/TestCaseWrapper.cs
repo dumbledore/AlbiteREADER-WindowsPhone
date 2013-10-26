@@ -1,9 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace SvetlinAnkov.Albite.Core.Test
+﻿namespace SvetlinAnkov.Albite.Core.Test
 {
     public abstract class TestCaseWrapper : TestCase
     {

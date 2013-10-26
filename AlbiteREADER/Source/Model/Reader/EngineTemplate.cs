@@ -1,10 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Reflection;
-using SvetlinAnkov.Albite.Core.Utils;
+﻿using SvetlinAnkov.Albite.Core.Utils;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace SvetlinAnkov.Albite.READER.Model.Reader
 {

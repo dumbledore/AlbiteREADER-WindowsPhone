@@ -1,9 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using Microsoft.Phone.Controls;
+﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Windows;
 
 namespace SvetlinAnkov.Albite.READER
 {
