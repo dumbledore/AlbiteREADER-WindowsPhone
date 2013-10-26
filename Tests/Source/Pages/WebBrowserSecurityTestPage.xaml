@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="SvetlinAnkov.Albite.Tests.TestPage"
+    x:Class="SvetlinAnkov.Albite.Tests.Pages.WebBrowserSecurityTestPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -23,43 +23,19 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="Albite READER" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="Test Page" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="PageTitle" Text="WebBrowser Security Check" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel>
-                <Button x:Name="AutomatedTestsButton" Click="AutomatedTestsButton_Click">
-                    <StackPanel>
-                        <TextBlock Text="Automated Tests" />
-                    </StackPanel>
-                </Button>
-                <Button x:Name="WebBrowserSecurityTestButton" Click="WebBrowserSecurityTestButton_Click">
-                    <StackPanel>
-                        <TextBlock Text="WebBrowser Security Test" />
-                    </StackPanel>
-                </Button>
-                <Button x:Name="WebBrowserStabilityTestButton" Click="WebBrowserStabilityTestButton_Click">
-                    <StackPanel>
-                        <TextBlock Text="WebBrowser Stability Test" />
-                    </StackPanel>
-                </Button>
-                <Button x:Name="LibraryTestButton" Click="LibraryTestButton_Click">
-                    <StackPanel>
-                        <TextBlock Text="Library Test" />
-                    </StackPanel>
-                </Button>
-                <Button x:Name="ReaderPageTestButton" Click="ReaderPageTestButton_Click">
-                    <StackPanel>
-                        <TextBlock Text="Reader Page Test" />
-                    </StackPanel>
-                </Button>
-                <Button x:Name="SpeechSynthesisTestButton" Click="SpeechSynthesisTestButton_Click">
-                    <StackPanel>
-                        <TextBlock Text="Speech Synthesis Test" />
-                    </StackPanel>
-                </Button>
-            </StackPanel>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <phone:WebBrowser x:Name="BadBrowser" Grid.Row="0" Loaded="BadBrowser_Loaded" />
+            <phone:WebBrowser x:Name="GoodBrowser" Grid.Row="1" Loaded="GoodBrowser_Loaded" NavigationFailed="GoodBrowser_NavigationFailed" Navigating="GoodBrowser_Navigating" Navigated="GoodBrowser_Navigated" />
+            <phone:WebBrowser x:Name="AlbiteBrowser" Grid.Row="2" Loaded="AlbiteBrowser_Loaded" Navigated="AlbiteBrowser_Navigated" Navigating="AlbiteBrowser_Navigating" />
         </Grid>
     </Grid>
  

@@ -111,6 +111,10 @@
     <Compile Include="Source\Json\JsonMessenger.cs" />
     <Compile Include="Source\Diagnostics\ThreadCheck.cs" />
     <Compile Include="Source\Xml\AlbiteXmlReader.cs" />
+    <Compile Include="Test\AlbiteIsolatedContainerTest.cs" />
+    <Compile Include="Test\AlbiteIsolatedContainerTestWrapper.cs" />
+    <Compile Include="Test\AlbiteIsolatedStorageTest.cs" />
+    <Compile Include="Test\JsonMessengerTest.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

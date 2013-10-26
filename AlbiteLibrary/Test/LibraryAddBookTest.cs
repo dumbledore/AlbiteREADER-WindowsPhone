@@ -1,7 +1,7 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Core.Test;
 
-namespace SvetlinAnkov.Albite.Tests.Model
+namespace SvetlinAnkov.Albite.BookLibrary.Test
 {
     public class LibraryAddBookTest : TestCase
     {

@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
-namespace SvetlinAnkov.Albite.Tests
+namespace SvetlinAnkov.Albite.Tests.Pages
 {
     public partial class BooksTestPage : PhoneApplicationPage
     {

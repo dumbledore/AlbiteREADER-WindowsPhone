@@ -1,13 +1,12 @@
 ﻿using Microsoft.Phone.Controls;
 using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Test;
 using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.Diagnostics;
-using SvetlinAnkov.Albite.Tests.Model;
-using SvetlinAnkov.Albite.Tests.View;
 using System;
 using System.IO.IsolatedStorage;
 
-namespace SvetlinAnkov.Albite.Tests
+namespace SvetlinAnkov.Albite.Tests.Pages
 {
     public partial class TestPage : PhoneApplicationPage
     {
@@ -36,12 +35,12 @@ namespace SvetlinAnkov.Albite.Tests
 
         private void WebBrowserSecurityTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Source/WebBrowserSecurityTestPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Source/Pages/WebBrowserSecurityTestPage.xaml", UriKind.Relative));
         }
 
         private void WebBrowserStabilityTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Source/WebBrowserStabilityTestPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Source/Pages/WebBrowserStabilityTestPage.xaml", UriKind.Relative));
         }
 
         private void LibraryTestButton_Click(object sender, System.Windows.RoutedEventArgs e)

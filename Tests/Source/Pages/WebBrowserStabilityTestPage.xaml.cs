@@ -4,7 +4,7 @@ using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.Windows;
 
-namespace SvetlinAnkov.Albite.Tests
+namespace SvetlinAnkov.Albite.Tests.Pages
 {
     public partial class WebBrowserStabilityTestPage : PhoneApplicationPage
     {

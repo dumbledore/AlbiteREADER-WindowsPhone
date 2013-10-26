@@ -3,9 +3,9 @@ using SvetlinAnkov.Albite.Core.Test;
 using System;
 using System.Runtime.Serialization;
 
-namespace SvetlinAnkov.Albite.Tests.Utils.Messaging
+namespace SvetlinAnkov.Albite.Core.Test
 {
-    class JsonMessengerTest : TestCase
+    public class JsonMessengerTest : TestCase
     {
         protected override void TestImplementation()
         {

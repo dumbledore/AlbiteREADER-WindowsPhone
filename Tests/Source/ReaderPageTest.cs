@@ -5,7 +5,7 @@ using SvetlinAnkov.Albite.READER;
 using System;
 using System.Windows.Navigation;
 
-namespace SvetlinAnkov.Albite.Tests.View
+namespace SvetlinAnkov.Albite.Tests
 {
     public class ReaderPageTest : TestCase
     {

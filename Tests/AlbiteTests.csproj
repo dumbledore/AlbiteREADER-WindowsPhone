@@ -104,27 +104,22 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\BooksTestPage.xaml.cs">
+    <Compile Include="Source\Pages\BooksTestPage.xaml.cs">
       <DependentUpon>BooksTestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\EpubTests.cs" />
     <Compile Include="Source\GCTests.cs" />
-    <Compile Include="Source\Model\LibraryAddBookTest.cs" />
     <Compile Include="Source\SpeechSynthesisTest.cs" />
-    <Compile Include="Source\UtilsTests.cs" />
-    <Compile Include="Source\Utils\AlbiteIsolatedContainerTest.cs" />
-    <Compile Include="Source\Utils\AlbiteIsolatedContainerTestWrapper.cs" />
-    <Compile Include="Source\Utils\AlbiteIsolatedStorageTest.cs" />
-    <Compile Include="Source\Utils\Messaging\JsonMessengerTest.cs" />
-    <Compile Include="Source\View\ReaderPageTest.cs" />
-    <Compile Include="Source\TestPage.xaml.cs">
+    <Compile Include="Source\CoreTests.cs" />
+    <Compile Include="Source\ReaderPageTest.cs" />
+    <Compile Include="Source\Pages\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Tests.cs" />
-    <Compile Include="Source\WebBrowserSecurityTestPage.xaml.cs">
+    <Compile Include="Source\Pages\WebBrowserSecurityTestPage.xaml.cs">
       <DependentUpon>WebBrowserSecurityTestPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\WebBrowserStabilityTestPage.xaml.cs">
+    <Compile Include="Source\Pages\WebBrowserStabilityTestPage.xaml.cs">
       <DependentUpon>WebBrowserStabilityTestPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -176,19 +171,19 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Source\BooksTestPage.xaml">
+    <Page Include="Source\Pages\BooksTestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\TestPage.xaml">
+    <Page Include="Source\Pages\TestPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Source\WebBrowserSecurityTestPage.xaml">
+    <Page Include="Source\Pages\WebBrowserSecurityTestPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Source\WebBrowserStabilityTestPage.xaml">
+    <Page Include="Source\Pages\WebBrowserStabilityTestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

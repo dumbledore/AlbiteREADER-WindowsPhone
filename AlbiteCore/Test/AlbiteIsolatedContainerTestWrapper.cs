@@ -1,8 +1,7 @@
 ﻿using SvetlinAnkov.Albite.Core.IO;
-using SvetlinAnkov.Albite.Core.Test;
 using System.IO;
 
-namespace SvetlinAnkov.Albite.Tests.Utils
+namespace SvetlinAnkov.Albite.Core.Test
 {
     public class AlbiteIsolatedContainerTestWrapper : TestPrepareWrapper
     {

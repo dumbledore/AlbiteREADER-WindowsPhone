@@ -1,9 +1,8 @@
 ﻿using SvetlinAnkov.Albite.Core.Test;
-using SvetlinAnkov.Albite.Tests.Utils;
 
 namespace SvetlinAnkov.Albite.Tests
 {
-    public class UtilsTests : TestCollection
+    public class CoreTests : TestCollection
     {
         protected override System.Collections.Generic.ICollection<TestCase> CreateTests()
         {
