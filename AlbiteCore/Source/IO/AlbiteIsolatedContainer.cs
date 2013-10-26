@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace SvetlinAnkov.Albite.Core.Utils
+namespace SvetlinAnkov.Albite.Core.IO
 {
     public class AlbiteIsolatedContainer : IAlbiteContainer
     {

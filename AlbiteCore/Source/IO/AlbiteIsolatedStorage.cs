@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.IO.IsolatedStorage;
 
-namespace SvetlinAnkov.Albite.Core.Utils
+namespace SvetlinAnkov.Albite.Core.IO
 {
     public class AlbiteIsolatedStorage : AlbiteStorage
     {

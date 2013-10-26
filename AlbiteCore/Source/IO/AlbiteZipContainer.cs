@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Resources;
 
-namespace SvetlinAnkov.Albite.Core.Utils
+namespace SvetlinAnkov.Albite.Core.IO
 {
     public class AlbiteZipContainer : IAlbiteContainer
     {

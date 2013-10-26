@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace SvetlinAnkov.Albite.Core.Utils
+namespace SvetlinAnkov.Albite.Core.IO
 {
     public abstract class AlbiteStorage : IDisposable
     {
