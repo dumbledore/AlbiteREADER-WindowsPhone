@@ -36,12 +36,12 @@ namespace SvetlinAnkov.Albite.Tests
 
         private void WebBrowserSecurityTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Test/WebBrowserSecurityTestPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Source/WebBrowserSecurityTestPage.xaml", UriKind.Relative));
         }
 
         private void WebBrowserStabilityTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Test/WebBrowserStabilityTestPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Source/WebBrowserStabilityTestPage.xaml", UriKind.Relative));
         }
 
         private void LibraryTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
