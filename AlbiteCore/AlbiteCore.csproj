@@ -104,14 +104,15 @@
     <Compile Include="Source\Utils\AlbiteStorage.cs" />
     <Compile Include="Source\Utils\AlbiteZipContainer.cs" />
     <Compile Include="Source\Utils\IAlbiteContainer.cs" />
-    <Compile Include="Source\Utils\Log.cs" />
-    <Compile Include="Source\Utils\Logging\AbstractLog.cs" />
-    <Compile Include="Source\Utils\Logging\DebugLog.cs" />
-    <Compile Include="Source\Utils\Logging\IsolatedStorageLog.cs" />
+    <Compile Include="Source\Diagnostics\Log.cs" />
+    <Compile Include="Source\Diagnostics\AbstractLog.cs" />
+    <Compile Include="Source\Diagnostics\DebugLog.cs" />
+    <Compile Include="Source\Diagnostics\IsolatedStorageLog.cs" />
     <Compile Include="Source\Utils\Messaging\JsonMessenger.cs" />
     <Compile Include="Source\Utils\ThreadCheck.cs" />
     <Compile Include="Source\Utils\Xml\AlbiteXmlReader.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />

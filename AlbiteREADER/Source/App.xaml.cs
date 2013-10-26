@@ -1,6 +1,6 @@
 ﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using SvetlinAnkov.Albite.Core.Utils;
+using SvetlinAnkov.Albite.Core.Diagnostics;
 using System.Windows;
 using System.Windows.Navigation;
 

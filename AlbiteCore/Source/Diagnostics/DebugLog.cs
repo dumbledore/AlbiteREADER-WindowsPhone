@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.Albite.Core.Utils.Logging
+namespace SvetlinAnkov.Albite.Core.Diagnostics
 {
     internal class DebugLog : AbstractLog
     {
-        public override void Log(Log.Level level, string tag, string message, Exception exception)
+        public override void Log(Level level, string tag, string message, Exception exception)
         {
             Debug.WriteLine(LogAsString(level, tag, message, exception));
         }

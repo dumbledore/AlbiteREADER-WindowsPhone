@@ -30,12 +30,12 @@ namespace SvetlinAnkov.Albite.Core.Test
 
         protected void Log(string message)
         {
-            Utils.Log.D(tag, message);
+            Diagnostics.Log.D(tag, message);
         }
 
         protected void Log(string format, params object[] args)
         {
-            Utils.Log.D(tag, string.Format(format, args));
+            Diagnostics.Log.D(tag, string.Format(format, args));
         }
 
         protected void Assert(bool expression)

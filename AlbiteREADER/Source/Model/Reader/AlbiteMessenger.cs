@@ -1,4 +1,4 @@
-﻿using SvetlinAnkov.Albite.Core.Utils;
+﻿using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.Utils.Messaging;
 using System;
 using System.Runtime.Serialization;

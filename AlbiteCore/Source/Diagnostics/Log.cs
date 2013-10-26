@@ -1,16 +1,19 @@
-﻿using SvetlinAnkov.Albite.Core.Utils.Logging;
-using System;
+﻿using System;
 using System.Diagnostics;
 
-namespace SvetlinAnkov.Albite.Core.Utils
+namespace SvetlinAnkov.Albite.Core.Diagnostics
 {
     public static class Log
     {
         private static readonly AbstractLog logger = createLog();
 
-        public static string LogLocation { get { return IsolatedStorageLog.DefaultLogLocation; } }
-
-        public enum Level { Error, Warning, Info, Debug }
+        public static string LogLocation
+        {
+            get
+            {
+                return IsolatedStorageLog.DefaultLogLocation;
+            }
+        }
 
         public static void E(string tag, string message)
         {

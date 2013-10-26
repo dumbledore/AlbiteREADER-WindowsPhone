@@ -1,12 +1,14 @@
 ﻿using System;
 
-namespace SvetlinAnkov.Albite.Core.Utils.Logging
+namespace SvetlinAnkov.Albite.Core.Diagnostics
 {
+    internal enum Level { Error, Warning, Info, Debug }
+
     internal abstract class AbstractLog : IDisposable
     {
-        public abstract void Log(Log.Level level, string tag, string message, Exception exception);
+        public abstract void Log(Level level, string tag, string message, Exception exception);
 
-        protected static string LogAsString(Log.Level level, string tag, string message, Exception exception)
+        protected static string LogAsString(Level level, string tag, string message, Exception exception)
         {
             DateTime now = DateTime.Now;
 

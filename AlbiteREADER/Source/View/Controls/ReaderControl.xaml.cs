@@ -1,4 +1,5 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.Utils;
 using SvetlinAnkov.Albite.READER.Model.Reader;
 using SvetlinAnkov.Albite.READER.Utils;

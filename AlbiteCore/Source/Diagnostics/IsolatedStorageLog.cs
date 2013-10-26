@@ -1,8 +1,9 @@
-﻿using System;
+﻿using SvetlinAnkov.Albite.Core.Utils;
+using System;
 using System.IO;
 using System.Text;
 
-namespace SvetlinAnkov.Albite.Core.Utils.Logging
+namespace SvetlinAnkov.Albite.Core.Diagnostics
 {
     internal class IsolatedStorageLog : AbstractLog
     {
@@ -32,7 +33,7 @@ namespace SvetlinAnkov.Albite.Core.Utils.Logging
         {
             store = new AlbiteIsolatedStorage(location);
             resetStream(FileMode.Append);
-            logInternal(Utils.Log.Level.Info, Tag, "=== Log Started ===", null);
+            logInternal(Level.Info, Tag, "=== Log Started ===", null);
         }
 
         private void resetStream(FileMode mode)
@@ -42,7 +43,7 @@ namespace SvetlinAnkov.Albite.Core.Utils.Logging
             writer = new BinaryWriter(stream);
         }
 
-        public override void Log(Log.Level level, string tag, string message, Exception exception)
+        public override void Log(Level level, string tag, string message, Exception exception)
         {
             lock (myLock)
             {
@@ -68,7 +69,7 @@ namespace SvetlinAnkov.Albite.Core.Utils.Logging
             }
 
             resetStream(FileMode.Open);
-            logInternal(Utils.Log.Level.Info, Tag, "=== Trimmed ===", null);
+            logInternal(Level.Info, Tag, "=== Trimmed ===", null);
 
             using (Stream inputStream = store.GetStream(FileAccess.Read, FileMode.Open, FileShare.ReadWrite))
             {
@@ -93,7 +94,7 @@ namespace SvetlinAnkov.Albite.Core.Utils.Logging
             }
         }
 
-        private void logInternal(Log.Level level, string tag, string message, Exception exception)
+        private void logInternal(Level level, string tag, string message, Exception exception)
         {
             writer.Write(encoding.GetBytes(LogAsString(level, tag, message, exception)));
             writer.Write('\n');
@@ -106,8 +107,17 @@ namespace SvetlinAnkov.Albite.Core.Utils.Logging
 
         public override void Dispose()
         {
-            if (stream != null) { stream.Dispose(); }
-            if (store != null) { store.Dispose(); }
+            if (stream != null)
+            {
+                stream.Dispose();
+                stream = null;
+            }
+
+            if (store != null)
+            {
+                store.Dispose();
+                store = null;
+            }
         }
     }
 }
