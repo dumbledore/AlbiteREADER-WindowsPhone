@@ -282,6 +282,16 @@ Albite.Pager = function(context) {
 
       // default the offset to 0,
       var offset = location.textOffset || 0;
+      if (offset >= node.length) {
+        // In case the offset was bad and range.setStart() would throw
+        // an exception. We'd rather be a little off the right spot
+        // than fail completely and go to the first page.
+        //
+        // Note also that for node.length the box returned would be
+        // empty, so it would again mean we'd go to the first page.
+        offset = node.length > 0 ? node.length - 1 : 0;
+      }
+
       var range = doc.createRange();
 
       range.setStart(node, offset);
@@ -467,15 +477,15 @@ Albite.Pager = function(context) {
           // Search right
           start += half;
         } else {
-          // Something's wrong
-          return makeLocation();
+          // Something's wrong. Default to the start of the found node
+          return makeLocation(node, 0);
         }
       }
 
       if (start >= end) {
         if (start !== end) {
-          // Something wrong with the algorithm
-          return makeLocation();
+          // Something's wrong. Default to the start of the found node
+          return makeLocation(node, 0);
         }
 
         // No point looking further
@@ -511,6 +521,8 @@ Albite.Pager = function(context) {
       c = content[0];
 
       // Use the last character's offset
+      // No need to care that Range.setStart() would fail as it would
+      // return an empty box. It will be remedied in getPageForLocation()
       return makeLocation(c.element, c.element.length);
     }
   }
