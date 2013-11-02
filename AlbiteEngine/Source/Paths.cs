@@ -1,12 +1,7 @@
-﻿namespace SvetlinAnkov.Albite.READER.Model.Reader
+﻿namespace SvetlinAnkov.Albite.Engine
 {
     internal static class Paths
     {
-        public static string BasePath
-        {
-            get { return "BrowserEngine"; }
-        }
-
         public static string BaseStyles
         {
             get { return "Base.css"; }

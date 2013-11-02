@@ -111,15 +111,6 @@
       <DependentUpon>WaitControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\IAlbiteApplication.cs" />
-    <Compile Include="Source\Model\Reader\AlbiteMessenger.cs" />
-    <Compile Include="Source\Model\Reader\BrowserEngine.cs" />
-    <Compile Include="Source\Model\Reader\EngineTemplate.cs" />
-    <Compile Include="Source\Model\Reader\Paths.cs" />
-    <Compile Include="Source\Model\Reader\Settings.cs" />
-    <Compile Include="Source\Model\Reader\Template.cs" />
-    <Compile Include="Source\Model\Reader\TemplateResource.cs" />
-    <Compile Include="Source\Model\Reader\Theme.cs" />
-    <Compile Include="Source\Model\Reader\BookEngine.cs" />
     <Compile Include="Resources\Defaults\LayoutDefaults.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -131,7 +122,6 @@
       <DependentUpon>ApplicationDefaults.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test\TemplateTest.cs" />
     <Compile Include="Source\Utils\Defaults.cs" />
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
@@ -191,18 +181,16 @@
       <Project>{85084981-FCBE-4271-A231-6D8CC83CA774}</Project>
       <Name>AlbiteCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AlbiteEngine\AlbiteEngine.csproj">
+      <Project>{31F7CE9E-1E66-49CA-AB5A-DC52C1441B60}</Project>
+      <Name>AlbiteEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AlbiteLibrary\AlbiteLibrary.csproj">
       <Project>{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}</Project>
       <Name>AlbiteLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Resource Include="Resources\BrowserEngine\Albite.js" />
-    <Resource Include="Resources\BrowserEngine\Base.css" />
-    <Resource Include="Resources\BrowserEngine\Content.css" />
-    <Resource Include="Resources\BrowserEngine\Main.xhtml" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

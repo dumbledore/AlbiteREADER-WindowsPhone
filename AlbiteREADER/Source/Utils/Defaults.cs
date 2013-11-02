@@ -1,4 +1,4 @@
-﻿using SvetlinAnkov.Albite.READER.Model.Reader;
+﻿using SvetlinAnkov.Albite.Engine;
 using SvetlinAnkov.Albite.READER.Resources.Defaults;
 
 namespace SvetlinAnkov.Albite.READER.Utils

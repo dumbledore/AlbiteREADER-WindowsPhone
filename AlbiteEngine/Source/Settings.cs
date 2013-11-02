@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SvetlinAnkov.Albite.READER.Model.Reader
+namespace SvetlinAnkov.Albite.Engine
 {
     public class Settings
     {

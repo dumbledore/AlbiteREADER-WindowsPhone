@@ -1,6 +1,6 @@
 ﻿using SvetlinAnkov.Albite.Core.IO;
 
-namespace SvetlinAnkov.Albite.READER.Model.Reader
+namespace SvetlinAnkov.Albite.Engine
 {
     public class TemplateResource : Template
     {

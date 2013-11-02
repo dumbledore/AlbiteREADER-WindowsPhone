@@ -4,9 +4,9 @@ using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.IO;
 
-namespace SvetlinAnkov.Albite.READER.Model.Reader
+namespace SvetlinAnkov.Albite.Engine
 {
-    internal abstract class BrowserEngine
+    public abstract class BrowserEngine
     {
         private static readonly string tag = "BrowserEngine";
 

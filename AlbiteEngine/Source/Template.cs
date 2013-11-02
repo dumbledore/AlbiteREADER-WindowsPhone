@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SvetlinAnkov.Albite.READER.Model.Reader
+namespace SvetlinAnkov.Albite.Engine
 {
     /// <summary>
     /// Represents a LayoutTemplate

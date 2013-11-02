@@ -1,8 +1,7 @@
 ﻿using SvetlinAnkov.Albite.Core.IO;
 using SvetlinAnkov.Albite.Core.Test;
-using SvetlinAnkov.Albite.READER.Model.Reader;
 
-namespace SvetlinAnkov.Albite.READER.Test
+namespace SvetlinAnkov.Albite.Engine.Test
 {
     public class TemplateTest : TestCase
     {

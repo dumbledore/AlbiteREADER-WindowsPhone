@@ -1,4 +1,4 @@
-﻿namespace SvetlinAnkov.Albite.READER.Model.Reader
+﻿namespace SvetlinAnkov.Albite.Engine
 {
     // For simpicity's sake themes should be immutable
     public class Theme

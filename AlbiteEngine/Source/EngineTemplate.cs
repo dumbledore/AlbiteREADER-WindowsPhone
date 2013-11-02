@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace SvetlinAnkov.Albite.READER.Model.Reader
+namespace SvetlinAnkov.Albite.Engine
 {
     internal class EngineTemplate : TemplateResource
     {
@@ -40,8 +40,7 @@ namespace SvetlinAnkov.Albite.READER.Model.Reader
 
         public static AlbiteStorage GetStorage(string path)
         {
-            string inputFilename = Path.Combine(Paths.BasePath, path);
-            return new AlbiteResourceStorage(inputFilename, getAssemblyName());
+            return new AlbiteResourceStorage(path, getAssemblyName());
         }
 
         public static string GetOutputPath(string path, string enginePath)

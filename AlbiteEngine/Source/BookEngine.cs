@@ -1,9 +1,9 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 
-namespace SvetlinAnkov.Albite.READER.Model.Reader
+namespace SvetlinAnkov.Albite.Engine
 {
-    internal class BookEngine : BrowserEngine
+    public class BookEngine : BrowserEngine
     {
         private static readonly string tag = "BookEngine";
 

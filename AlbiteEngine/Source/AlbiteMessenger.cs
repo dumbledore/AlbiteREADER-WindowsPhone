@@ -3,7 +3,7 @@ using SvetlinAnkov.Albite.Core.Json;
 using System;
 using System.Runtime.Serialization;
 
-namespace SvetlinAnkov.Albite.READER.Model.Reader
+namespace SvetlinAnkov.Albite.Engine
 {
     internal class AlbiteMessenger
     {
