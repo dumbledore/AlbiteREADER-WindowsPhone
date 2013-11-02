@@ -22,9 +22,6 @@ namespace SvetlinAnkov.Albite.Engine
         internal readonly EngineTemplateController TemplateController;
         internal readonly AlbiteMessenger Messenger;
 
-        private int actualWidth = 0;
-        private int actualHeight = 0;
-
         public AbstractEngine(
             IEngineController controller, BookPresenter bookPresenter, Settings settings)
         {
@@ -35,18 +32,14 @@ namespace SvetlinAnkov.Albite.Engine
             // Set up the base path
             Controller.BasePath = BookPresenter.Path;
 
+            // Uri of main.xhtml
             Uri = new Uri(
                 Path.Combine(BookPresenter.RelativeEnginePath, Paths.MainPage),
                 UriKind.Relative);
 
             TemplateController = getTemplateController();
-
             AbstractNavigator = GetNavigator();
             Messenger = getMessenger();
-
-            // Don't forget to update the cached dimensions
-            actualWidth = controller.Width;
-            actualHeight = controller.Height;
         }
 
         protected abstract AbstractNavigator GetNavigator();
@@ -77,8 +70,13 @@ namespace SvetlinAnkov.Albite.Engine
 
         public void UpdateDimensions()
         {
-            int width = Controller.Width;
-            int height = Controller.Height;
+            // Get current dimensions
+            int width = TemplateController.Width;
+            int height = TemplateController.Height;
+
+            // New dimensions
+            int newWidth = Controller.Width;
+            int newHeight = Controller.Height;
 
             if (Controller.IsLoading)
             {
@@ -86,19 +84,15 @@ namespace SvetlinAnkov.Albite.Engine
                 return;
             }
 
-            if (width == actualWidth
-                && height == actualHeight)
+            if (newWidth == width
+                && newHeight == height)
             {
                 Log.D(tag, "The dimensions haven't changed, no need to update.");
                 return;
             }
 
-            // Update the cached values
-            actualWidth = width;
-            actualHeight = height;
-
             // Update the templates
-            TemplateController.UpdateDimensions(width, height);
+            TemplateController.UpdateDimensions(newWidth, newHeight);
 
             // Reload to the current DomLocation
             AbstractNavigator.Reload();

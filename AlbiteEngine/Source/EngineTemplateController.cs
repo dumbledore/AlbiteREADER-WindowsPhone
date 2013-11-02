@@ -11,6 +11,11 @@ namespace SvetlinAnkov.Albite.Engine
 
         public Settings Settings { get; private set; }
 
+        // We can get the width from any of the templates,
+        // so it doesn't matter which one we use.
+        public int Width { get { return mainPageTemplate.Width; } }
+        public int Height { get { return mainPageTemplate.Height; } }
+
         private MainPageTemplate mainPageTemplate;
         private BaseStylesTemplate baseStylesTemplate;
         private ContentStylesTemplate contentStylesTemplate;
