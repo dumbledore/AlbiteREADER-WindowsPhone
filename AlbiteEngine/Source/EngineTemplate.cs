@@ -330,14 +330,15 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        private TextAlign textAligh;
-        public TextAlign TextAlign
+        private bool justified;
+        public bool Justified
         {
-            get { return textAligh; }
+            get { return justified; }
             set
             {
-                textAligh = value;
-                set(RegisteredNames.TextAlign, value);
+                justified = value;
+                string textAlign = value ? "justified" : "left";
+                set(RegisteredNames.TextAlign, textAlign);
             }
         }
 

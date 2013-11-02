@@ -106,6 +106,15 @@ namespace SvetlinAnkov.Albite.READER.Resources.Defaults {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to True.
+        /// </summary>
+        internal static string Justified {
+            get {
+                return ResourceManager.GetString("Justified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 140.
         /// </summary>
         internal static string LineHeight {
@@ -174,15 +183,6 @@ namespace SvetlinAnkov.Albite.READER.Resources.Defaults {
         internal static string NightThemeTextColor {
             get {
                 return ResourceManager.GetString("NightThemeTextColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to justify.
-        /// </summary>
-        internal static string TextAlign {
-            get {
-                return ResourceManager.GetString("TextAlign", resourceCulture);
             }
         }
     }

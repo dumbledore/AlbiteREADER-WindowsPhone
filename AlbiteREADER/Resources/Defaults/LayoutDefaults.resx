@@ -133,6 +133,9 @@
     <value>28</value>
     <comment>in px</comment>
   </data>
+  <data name="Justified" xml:space="preserve">
+    <value>True</value>
+  </data>
   <data name="LineHeight" xml:space="preserve">
     <value>140</value>
     <comment>in %</comment>
@@ -161,8 +164,5 @@
   </data>
   <data name="NightThemeTextColor" xml:space="preserve">
     <value>white</value>
-  </data>
-  <data name="TextAlign" xml:space="preserve">
-    <value>justify</value>
   </data>
 </root>

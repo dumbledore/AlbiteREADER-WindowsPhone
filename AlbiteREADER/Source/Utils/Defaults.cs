@@ -22,7 +22,7 @@ namespace SvetlinAnkov.Albite.READER.Utils
                     settings.LineHeight = int.Parse(LayoutDefaults.LineHeight);
                     settings.FontSize = int.Parse(LayoutDefaults.FontSize);
                     settings.FontFamily = LayoutDefaults.FontFamily;
-                    settings.TextAlign = TextAlign.FromString(LayoutDefaults.TextAlign);
+                    settings.Justified = bool.Parse(LayoutDefaults.Justified);
                     settings.MarginTop = float.Parse(LayoutDefaults.MarginTop);
                     settings.MarginBottom = float.Parse(LayoutDefaults.MarginBottom);
                     settings.MarginLeft = float.Parse(LayoutDefaults.MarginLeft);

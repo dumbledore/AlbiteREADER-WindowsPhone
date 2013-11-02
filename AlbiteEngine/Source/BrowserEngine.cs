@@ -288,7 +288,7 @@ namespace SvetlinAnkov.Albite.Engine
             contentStylesTemplate.LineHeight = settings.LineHeight;
             contentStylesTemplate.FontSize = settings.FontSize;
             contentStylesTemplate.FontFamily = settings.FontFamily;
-            contentStylesTemplate.TextAlign = settings.TextAlign;
+            contentStylesTemplate.Justified = settings.Justified;
 
             contentStylesTemplate.SaveToStorage();
         }
