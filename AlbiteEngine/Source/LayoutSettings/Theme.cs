@@ -1,22 +1,30 @@
-﻿namespace SvetlinAnkov.Albite.Engine.LayoutSettings
+﻿using System.Windows.Media;
+namespace SvetlinAnkov.Albite.Engine.LayoutSettings
 {
-    // For simpicity's sake themes should be immutable
     public class Theme
     {
-        private readonly string backgroundColor;
-        private readonly string fontColor;
-        private readonly string accentColor;
+        public ThemeColor BackgroundColor { get; private set; }
+        public ThemeColor TextColor { get; private set; }
+        public ThemeColor AccentColor { get; private set; }
 
         public Theme(
-            string backgroundColor, string fontColor, string accentColor)
+            ThemeColor backgroundColor, ThemeColor textColor, ThemeColor accentColor)
         {
-            this.backgroundColor = backgroundColor;
-            this.fontColor = fontColor;
-            this.accentColor = accentColor;
+            BackgroundColor = backgroundColor;
+            TextColor = textColor;
+            AccentColor = accentColor;
         }
 
-        public string BackgroundColor { get { return backgroundColor; } }
-        public string FontColor { get { return fontColor; } }
-        public string AccentColor { get { return accentColor; } }
+        public static Theme DefaultTheme { get; private set; }
+
+        static Theme()
+        {
+            ThemePalette palette = new ThemePalette();
+            palette.AddColor("White", Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF));
+            palette.AddColor("Black", Color.FromArgb(0xFF, 0x00, 0x00, 0x00));
+            palette.AddColor("Chocolate", Color.FromArgb(0xFF, 0x63, 0x4F, 0x3B));
+            DefaultTheme = new Theme(
+                palette["White"], palette["Black"], palette["Chocolate"]);
+        }
     }
 }

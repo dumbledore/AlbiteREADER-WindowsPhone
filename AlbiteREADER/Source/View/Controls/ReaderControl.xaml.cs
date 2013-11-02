@@ -1,7 +1,7 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Engine;
-using SvetlinAnkov.Albite.READER.Utils;
+using SvetlinAnkov.Albite.Engine.LayoutSettings;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -227,8 +227,9 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 // TODO: The component background color needs to be data-bound
                 //       to Resources["PhoneBackgroundBrush"]
 
-                // Load the engine
-                engine = new BookEngine(this, Defaults.Layout.DefaultSettings);
+                // Load the engine.
+                // This will initialise the settings with their default values.
+                engine = new BookEngine(this, new Settings());
 
                 // Go to the last reading location
                 engine.BookLocation = bookPresenter.BookLocation;

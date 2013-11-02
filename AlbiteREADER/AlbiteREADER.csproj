@@ -112,7 +112,6 @@
     </Compile>
     <Compile Include="Source\IAlbiteApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Utils\Defaults.cs" />
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
     </Compile>

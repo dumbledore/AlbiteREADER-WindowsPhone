@@ -5,16 +5,21 @@ namespace SvetlinAnkov.Albite.Engine.LayoutSettings
 {
     public class Settings
     {
-        public int LineHeight { get; set; }
-        public string FontFamily { get; set; }
-        public int FontSize { get; set; }
-        public bool Justified { get; set; }
+        public FontSettings FontSettings { get; set; }
+        public TextSettings TextSettings { get; set; }
+        public MarginSettings MarginSettings { get; set; }
 
-        public float MarginTop { get; set; }
-        public float MarginBottom { get; set; }
-        public float MarginLeft { get; set; }
-        public float MarginRight { get; set; }
-
+        /// <summary>
+        /// Color theme. Default is Theme.DefaultTheme
+        /// </summary>
         public Theme Theme { get; set; }
+
+        public Settings()
+        {
+            FontSettings = new FontSettings();
+            TextSettings = new TextSettings();
+            MarginSettings = new MarginSettings();
+            Theme = Theme.DefaultTheme;
+        }
     }
 }

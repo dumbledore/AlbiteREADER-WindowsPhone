@@ -213,13 +213,13 @@ namespace SvetlinAnkov.Albite.Engine
 
         private void updateTheme()
         {
-            baseStylesTemplate.BackgroundColor = settings.Theme.BackgroundColor;
-            baseStylesTemplate.TextColor = settings.Theme.FontColor;
+            baseStylesTemplate.BackgroundColor = settings.Theme.BackgroundColor.HtmlColor;
+            baseStylesTemplate.TextColor = settings.Theme.TextColor.HtmlColor;
             baseStylesTemplate.SaveToStorage();
 
-            contentStylesTemplate.BackgroundColor = settings.Theme.BackgroundColor;
-            contentStylesTemplate.TextColor = settings.Theme.FontColor;
-            contentStylesTemplate.AccentColor = settings.Theme.AccentColor;
+            contentStylesTemplate.BackgroundColor = settings.Theme.BackgroundColor.HtmlColor;
+            contentStylesTemplate.TextColor = settings.Theme.TextColor.HtmlColor;
+            contentStylesTemplate.AccentColor = settings.Theme.AccentColor.HtmlColor;
             contentStylesTemplate.SaveToStorage();
         }
 
@@ -265,10 +265,11 @@ namespace SvetlinAnkov.Albite.Engine
             baseStylesTemplate.SaveToStorage();
 
             int viewportReference = Math.Max(viewportWidth, viewportWidth);
-            int marginLeft = (int) (settings.MarginLeft * viewportReference);
-            int marginRight = (int) (settings.MarginRight * viewportReference);
-            int marginTop = (int) (settings.MarginTop * viewportReference);
-            int marginBottom = (int) (settings.MarginBottom * viewportReference);
+            MarginSettings margins = settings.MarginSettings;
+            int marginLeft = (margins.Left * viewportReference) / 100;
+            int marginRight = (margins.Right * viewportReference) / 100;
+            int marginTop = (margins.Top * viewportReference) / 100;
+            int marginBottom = (margins.Bottom * viewportReference) / 100;
 
             contentStylesTemplate.MarginTop = marginTop;
             contentStylesTemplate.MarginBottom = marginBottom;
@@ -286,10 +287,13 @@ namespace SvetlinAnkov.Albite.Engine
 
         private void updateLayout()
         {
-            contentStylesTemplate.LineHeight = settings.LineHeight;
-            contentStylesTemplate.FontSize = settings.FontSize;
-            contentStylesTemplate.FontFamily = settings.FontFamily;
-            contentStylesTemplate.Justified = settings.Justified;
+            FontSettings fontSettings = settings.FontSettings;
+            contentStylesTemplate.FontFamily = fontSettings.Family;
+            contentStylesTemplate.FontSize = fontSettings.Size;
+
+            TextSettings textSettings = settings.TextSettings;
+            contentStylesTemplate.LineHeight = textSettings.LineHeight;
+            contentStylesTemplate.Justified = textSettings.Justified;
 
             contentStylesTemplate.SaveToStorage();
         }
