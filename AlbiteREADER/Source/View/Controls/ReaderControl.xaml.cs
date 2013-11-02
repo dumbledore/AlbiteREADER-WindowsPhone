@@ -115,8 +115,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         {
             threadCheck.Check();
 
-            Log.D(tag, "ScriptNotify: " + e.Value);
-
             if (controller == null || controller.Engine == null)
             {
                 return;
