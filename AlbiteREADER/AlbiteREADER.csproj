@@ -111,16 +111,6 @@
       <DependentUpon>WaitControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\IAlbiteApplication.cs" />
-    <Compile Include="Resources\Defaults\LayoutDefaults.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LayoutDefaults.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Defaults\ApplicationDefaults.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ApplicationDefaults.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Utils\Defaults.cs" />
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
@@ -161,16 +151,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Defaults\LayoutDefaults.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>LayoutDefaults.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Defaults\ApplicationDefaults.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ApplicationDefaults.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlbiteContainer\AlbiteContainer.csproj">

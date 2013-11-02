@@ -1,15 +1,9 @@
 ﻿using SvetlinAnkov.Albite.Engine.LayoutSettings;
-using SvetlinAnkov.Albite.READER.Resources.Defaults;
 
 namespace SvetlinAnkov.Albite.READER.Utils
 {
     public static class Defaults
     {
-        public static class Application
-        {
-            // Non so far
-        }
-
         public static class Layout
         {
             // Default settings
@@ -19,15 +13,15 @@ namespace SvetlinAnkov.Albite.READER.Utils
                 {
                     Settings settings = new Settings();
 
-                    settings.LineHeight = int.Parse(LayoutDefaults.LineHeight);
-                    settings.FontSize = int.Parse(LayoutDefaults.FontSize);
-                    settings.FontFamily = LayoutDefaults.FontFamily;
-                    settings.Justified = bool.Parse(LayoutDefaults.Justified);
-                    settings.MarginTop = float.Parse(LayoutDefaults.MarginTop);
-                    settings.MarginBottom = float.Parse(LayoutDefaults.MarginBottom);
-                    settings.MarginLeft = float.Parse(LayoutDefaults.MarginLeft);
-                    settings.MarginRight = float.Parse(LayoutDefaults.MarginRight);
-                    settings.Theme = DefaultTheme;
+                    settings.LineHeight     = 140; // in %
+                    settings.FontSize       = 28; // in px
+                    settings.FontFamily     = "Georgia";
+                    settings.Justified      = true;
+                    settings.MarginTop      = 0.0375f; //in % of the longer side
+                    settings.MarginBottom   = 0.0375f; //in % of the longer side
+                    settings.MarginLeft     = 0.0375f; //in % of the longer side
+                    settings.MarginRight    = 0.0375f; //in % of the longer side
+                    settings.Theme          = DefaultTheme;
 
                     return settings;
                 }
@@ -35,16 +29,10 @@ namespace SvetlinAnkov.Albite.READER.Utils
 
             // Default themes
             public static readonly Theme DayTheme
-                = new Theme(
-                    LayoutDefaults.DayThemeBackroundColor,
-                    LayoutDefaults.DayThemeTextColor,
-                    LayoutDefaults.DayThemeAccentColor);
+                = new Theme("white", "black", "#634F3B");
 
             public static readonly Theme NightTheme
-                = new Theme(
-                    LayoutDefaults.NightThemeBackgroundColor,
-                    LayoutDefaults.NightThemeTextColor,
-                    LayoutDefaults.NightThemeAccentColor);
+                = new Theme("black", "white", "#634F3B");
 
             public static readonly Theme DefaultTheme = DayTheme;
 
