@@ -149,14 +149,11 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        private string initialLocation;
-        public string InitialLocation
+        public InitialLocation InitialLocation
         {
-            get { return initialLocation; }
             set
             {
-                initialLocation = value;
-                set(RegisteredNames.InitialLocation, value);
+                set(RegisteredNames.InitialLocation, value.ToEngineKeyword());
             }
         }
 

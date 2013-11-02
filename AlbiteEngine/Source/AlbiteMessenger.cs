@@ -96,10 +96,6 @@ namespace SvetlinAnkov.Albite.Engine
 
         public int PageCount { get; private set; }
 
-        public int FirstPage { get { return 1; } }
-
-        public int LastPage { get { return PageCount; } }
-
         public string DomLocation
         {
             get

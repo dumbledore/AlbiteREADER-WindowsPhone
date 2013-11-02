@@ -87,11 +87,12 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 return;
             }
 
-            if (controller.Engine.NavigateTo(e.Uri))
+            // Allow only the Engine Uri to be navigated to.
+            if (controller.Engine.Uri != e.Uri)
             {
-                // Handled internally, has to cancel
                 Log.D(tag, "Cancelling navigation");
                 e.Cancel = true;
+                return;
             }
 
             controller.LoadingStarted();
@@ -183,12 +184,12 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 get { return engine; }
             }
 
-            public int ViewportWidth
+            public int Width
             {
                 get { return (int) control.WebBrowser.ActualWidth; }
             }
 
-            public int ViewportHeight
+            public int Height
             {
                 get { return (int) control.WebBrowser.ActualHeight; }
             }
@@ -199,10 +200,10 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 set { control.WebBrowser.Base = value; }
             }
 
-            public Uri SourceUri
+            public void ReloadBrowser()
             {
-                get { return control.WebBrowser.Source; }
-                set { control.WebBrowser.Navigate(value); }
+                LoadingStarted();
+                control.WebBrowser.Navigate(Engine.Uri);
             }
 
             public BookPresenter BookPresenter
@@ -229,10 +230,10 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
                 // Load the engine.
                 // This will initialise the settings with their default values.
-                engine = new BookEngine(this, new Settings());
+                engine = new BookEngine(this, bookPresenter, new Settings());
 
                 // Go to the last reading location
-                engine.BookLocation = bookPresenter.BookLocation;
+                engine.Navigator.BookLocation = bookPresenter.BookLocation;
             }
 
             public void CloseBook()

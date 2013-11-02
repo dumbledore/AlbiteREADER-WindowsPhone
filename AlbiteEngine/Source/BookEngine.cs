@@ -4,71 +4,81 @@ using SvetlinAnkov.Albite.Engine.LayoutSettings;
 
 namespace SvetlinAnkov.Albite.Engine
 {
-    public class BookEngine : BrowserEngine
+    public class BookEngine : AbstractEngine
     {
         private static readonly string tag = "BookEngine";
 
-        public BookEngine(IEngineController controller, Settings settings)
-            : base(controller, settings) { }
+        public BookEngine(
+            IEngineController controller, BookPresenter bookPresenter, Settings settings)
+            : base(controller, bookPresenter, settings) { }
 
-        // TODO: Add history stack
-
-        BookPresenter.SpineElement current;
-
-        /// <summary>
-        /// Setting this property would cause the engine
-        /// to load into the specified book location
-        /// </summary>
-        public BookPresenter.Location BookLocation
+        protected override AbstractNavigator GetNavigator()
         {
-            get
+            return new BookNavigator(this);
+        }
+
+        private class BookNavigator : AbstractNavigator
+        {
+            public BookNavigator(BookEngine bookEngine)
+                : base(bookEngine) { }
+
+            // TODO: Add history stack
+
+            BookPresenter.SpineElement current;
+
+            /// <summary>
+            /// Setting this property would cause the engine
+            /// to load into the specified book location
+            /// </summary>
+            public override BookPresenter.Location BookLocation
             {
-                // TODO: What about when the current spine element
-                // is not the current chapter, and thus is not
-                return null;
+                get
+                {
+                    // TODO: What about when the current spine element
+                    // is not the current chapter, and thus is not
+                    return current.CreateLocation(DomLocation, 0 /* todo */);
+                }
+
+                set
+                {
+                    current = value.SpineElement;
+                    SetChapterDomLocation(value.SpineElement.Url, value.DomLocation);
+                }
             }
 
-            set
+            public override bool IsFirstChapter
             {
-                current = value.SpineElement;
-                SetChapterDomLocation(value.SpineElement.Url, value.DomLocation);
-            }
-        }
-
-        public override bool IsFirstChapter
-        {
-            get { return current.Previous == null; }
-        }
-
-        public override bool IsLastChapter
-        {
-            get { return current.Next == null; }
-        }
-
-        public override void GoToPreviousChapter()
-        {
-            if (IsFirstChapter)
-            {
-                Log.W(tag, "It's the first chapter already");
-                return;
+                get { return current.Previous == null; }
             }
 
-            current = current.Previous;
-            SetChapterLastPage(current.Url);
-        }
-
-        public override void GoToNextChapter()
-        {
-            if (IsLastChapter)
+            public override bool IsLastChapter
             {
-                Log.W(tag, "It's the last chapter already");
-                return;
+                get { return current.Next == null; }
             }
 
-            current = current.Next;
-            SetChapterFirstPage(current.Url);
-        }
+            public override void GoToPreviousChapter()
+            {
+                if (IsFirstChapter)
+                {
+                    Log.W(tag, "It's the first chapter already");
+                    return;
+                }
 
-        // Private API
+                current = current.Previous;
+                SetChapterLastPage(current.Url);
+            }
+
+            public override void GoToNextChapter()
+            {
+                if (IsLastChapter)
+                {
+                    Log.W(tag, "It's the last chapter already");
+                    return;
+                }
+
+                current = current.Next;
+                SetChapterFirstPage(current.Url);
+            }
+        }
     }
 }

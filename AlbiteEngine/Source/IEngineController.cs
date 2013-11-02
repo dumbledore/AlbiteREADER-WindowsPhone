@@ -8,12 +8,12 @@ namespace SvetlinAnkov.Albite.Engine
         /// <summary>
         /// The width of the viewport of the control
         /// </summary>
-        int ViewportWidth { get; }
+        int Width { get; }
 
         /// <summary>
         /// The height of the viewport of the control
         /// </summary>
-        int ViewportHeight { get; }
+        int Height { get; }
 
         /// <summary>
         /// Base path of the browser
@@ -21,33 +21,21 @@ namespace SvetlinAnkov.Albite.Engine
         string BasePath { get; set; }
 
         /// <summary>
-        /// Current Uri of the browser.
-        /// Used also to navigate the browser.
+        /// Reloads the browser
         /// </summary>
-        Uri SourceUri { get; set; }
+        void ReloadBrowser();
 
         /// <summary>
         /// Send message to the JS client.
         /// </summary>
-        /// <param name="message">Encoded message</param>
+        /// <param name="message">JSON-encoded message</param>
         /// <returns></returns>
         string SendMessage(string message);
-
-        // TODO: Move this to the Engine
-        /// <summary>
-        /// Current BookPresenter
-        /// </summary>
-        BookPresenter BookPresenter { get; }
 
         /// <summary>
         /// Indicates if the control is showing a loading screen
         /// </summary>
         bool IsLoading { get; }
-
-        /// <summary>
-        /// Inform the control that loading of a chapter has started
-        /// </summary>
-        void LoadingStarted();
 
         /// <summary>
         /// Inform the control what is the current progress
