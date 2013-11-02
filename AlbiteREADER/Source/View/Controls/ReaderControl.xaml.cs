@@ -163,7 +163,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         #endregion
 
         #region EngineController
-        private class EngineController : BrowserEngine.IEngineController
+        private class EngineController : IEngineController
         {
             private readonly ReaderControl control;
 

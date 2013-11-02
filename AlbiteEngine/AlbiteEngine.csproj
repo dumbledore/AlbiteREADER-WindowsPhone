@@ -87,6 +87,7 @@
     <Compile Include="Source\BookEngine.cs" />
     <Compile Include="Source\BrowserEngine.cs" />
     <Compile Include="Source\EngineTemplate.cs" />
+    <Compile Include="Source\IEngineController.cs" />
     <Compile Include="Source\LayoutSettings\FontSettings.cs" />
     <Compile Include="Source\LayoutSettings\MarginSettings.cs" />
     <Compile Include="Source\LayoutSettings\TextSettings.cs" />
