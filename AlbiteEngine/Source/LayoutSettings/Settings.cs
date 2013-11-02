@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SvetlinAnkov.Albite.Engine
+namespace SvetlinAnkov.Albite.Engine.LayoutSettings
 {
     public class Settings
     {

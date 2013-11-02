@@ -1,5 +1,6 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Core.Diagnostics;
+using SvetlinAnkov.Albite.Engine.LayoutSettings;
 
 namespace SvetlinAnkov.Albite.Engine
 {

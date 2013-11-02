@@ -1,4 +1,4 @@
-﻿namespace SvetlinAnkov.Albite.Engine
+﻿namespace SvetlinAnkov.Albite.Engine.LayoutSettings
 {
     // For simpicity's sake themes should be immutable
     public class Theme
