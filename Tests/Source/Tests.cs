@@ -13,7 +13,7 @@ namespace SvetlinAnkov.Albite.Tests
                 new CoreTests(),
                 new EpubTests(),
                 new TemplateTest("Test/Template/Main.xhtml"),
-                new JsonMessengerTest(),
+                new JsonSerializerTest(),
             };
         }
     }

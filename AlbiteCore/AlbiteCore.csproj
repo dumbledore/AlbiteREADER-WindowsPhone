@@ -93,6 +93,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Json\JsonMessenger.cs" />
+    <Compile Include="Source\Json\JsonSerializer.cs" />
+    <Compile Include="Source\Serialization\AlbiteSerializer.cs" />
+    <Compile Include="Source\Serialization\AlbiteMessenger.cs" />
+    <Compile Include="Source\Serialization\IClientNotifier.cs" />
     <Compile Include="Source\Test\TestCaseWrapper.cs" />
     <Compile Include="Source\Test\TestCase.cs" />
     <Compile Include="Source\Test\TestCollection.cs" />
@@ -108,13 +113,12 @@
     <Compile Include="Source\Diagnostics\AbstractLog.cs" />
     <Compile Include="Source\Diagnostics\DebugLog.cs" />
     <Compile Include="Source\Diagnostics\IsolatedStorageLog.cs" />
-    <Compile Include="Source\Json\JsonMessenger.cs" />
     <Compile Include="Source\Diagnostics\ThreadCheck.cs" />
     <Compile Include="Source\Xml\AlbiteXmlReader.cs" />
     <Compile Include="Test\AlbiteIsolatedContainerTest.cs" />
     <Compile Include="Test\AlbiteIsolatedContainerTestWrapper.cs" />
     <Compile Include="Test\AlbiteIsolatedStorageTest.cs" />
-    <Compile Include="Test\JsonMessengerTest.cs" />
+    <Compile Include="Test\JsonSerializerTest.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

@@ -31,8 +31,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             {
                 controller = new EngineController(this);
             }
-
-            controller.LoadingStarted();
         }
 
         private void unload()
@@ -174,7 +172,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             public EngineController(ReaderControl control)
             {
                 this.control = control;
-                IsLoading = true;
             }
 
             public BookEngine Engine

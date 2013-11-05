@@ -84,13 +84,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\AbstractNavigator.cs" />
-    <Compile Include="Source\AlbiteMessenger.cs" />
+    <Compile Include="Source\EngineMessenger.cs" />
     <Compile Include="Source\BookEngine.cs" />
     <Compile Include="Source\AbstractEngine.cs" />
-    <Compile Include="Source\ClientMessenger.cs" />
+    <Compile Include="Source\ClientNotifier.cs" />
     <Compile Include="Source\EngineTemplate.cs" />
     <Compile Include="Source\EngineTemplateController.cs" />
-    <Compile Include="Source\HostMessenger.cs" />
+    <Compile Include="Source\ClientHandler.cs" />
     <Compile Include="Source\IEngine.cs" />
     <Compile Include="Source\IEngineController.cs" />
     <Compile Include="Source\IEngineNavigator.cs" />

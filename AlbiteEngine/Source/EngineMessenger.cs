@@ -1,13 +1,14 @@
 ﻿using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.Json;
+using SvetlinAnkov.Albite.Core.Serialization;
 using System;
 using System.Runtime.Serialization;
 
 namespace SvetlinAnkov.Albite.Engine
 {
-    internal class AlbiteMessenger
+    internal class EngineMessenger : JsonMessenger<EngineMessenger.IClientHandler>
     {
-        private static readonly string tag = "AlbiteMessenger";
+        private static readonly string tag = "EngineMessenger";
 
         private static readonly Type[] expectedTypes = new Type[] {
             // Error
@@ -44,37 +45,10 @@ namespace SvetlinAnkov.Albite.Engine
             typeof(ContextMenuOptions),
         };
 
-        private readonly JsonMessenger messenger
-            = new JsonMessenger(expectedTypes);
-
-        private readonly IClientMessenger clientMessenger;
-        private readonly IHostMessenger hostMessenger;
-
-        public AlbiteMessenger(
-            IClientMessenger clientMessenger,
-            IHostMessenger hostMessenger)
-        {
-            this.clientMessenger = clientMessenger;
-            this.hostMessenger = hostMessenger;
-        }
-
-        private JsonMessenger.JsonMessage requestFromClient(
-            JsonMessenger.JsonMessage requestMessage)
-        {
-            // Encode the JsonMessage to a string
-            string requestEncoded = messenger.Encode(requestMessage);
-
-            // Send the encoded message to the client and retrieve the result
-            string resultEncoded = clientMessenger.NotifyClient(requestEncoded);
-
-            // Decode back to a JsonMessage
-            JsonMessenger.JsonMessage result = messenger.Decode(resultEncoded);
-
-            // Run the callback before processing the result
-            result.Callback(this);
-
-            return result;
-        }
+        public EngineMessenger(
+            IClientHandler handler,
+            IClientNotifier notifier)
+            : base(handler, notifier, expectedTypes) { }
 
         // Public API for notifying the client
         public int Page
@@ -83,18 +57,16 @@ namespace SvetlinAnkov.Albite.Engine
             {
                 GetPageMessage requestMessage = new GetPageMessage();
                 GetPageResultMessage resultMessage
-                    = (GetPageResultMessage)requestFromClient(requestMessage);
+                    = (GetPageResultMessage)NotifyClient(requestMessage);
                 return resultMessage.Page;
             }
 
             set
             {
                 GoToPageMessage requestMessage = new GoToPageMessage(value);
-                requestFromClient(requestMessage);
+                NotifyClient(requestMessage);
             }
         }
-
-        public int PageCount { get; private set; }
 
         public string DomLocation
         {
@@ -102,21 +74,21 @@ namespace SvetlinAnkov.Albite.Engine
             {
                 GetDomLocationMessage requestMessage = new GetDomLocationMessage();
                 GetDomLocationResultMessage resultMessage
-                    = (GetDomLocationResultMessage)requestFromClient(requestMessage);
+                    = (GetDomLocationResultMessage)NotifyClient(requestMessage);
                 return resultMessage.Location;
             }
 
             set
             {
                 GoToDomLocationMessage requestMessage = new GoToDomLocationMessage(value);
-                requestFromClient(requestMessage);
+                NotifyClient(requestMessage);
             }
         }
 
         public void GoToElementById(string id)
         {
             GoToElementByIdMessage requestMessage = new GoToElementByIdMessage(id);
-            requestFromClient(requestMessage);
+            NotifyClient(requestMessage);
         }
 
         [DataContract(Name="bookmark")]
@@ -133,7 +105,7 @@ namespace SvetlinAnkov.Albite.Engine
         {
             GetBookmarkMessage requestMessage = new GetBookmarkMessage();
             GetBookmarkResultMessage resultMessage
-                = (GetBookmarkResultMessage)requestFromClient(requestMessage);
+                = (GetBookmarkResultMessage)NotifyClient(requestMessage);
             return resultMessage.Bookmark;
         }
 
@@ -152,7 +124,7 @@ namespace SvetlinAnkov.Albite.Engine
         }
 
         [DataContract(Name = "error")]
-        private class ErrorMessage : JsonMessenger.JsonMessage
+        private class ErrorMessage : AlbiteMessage
         {
             [DataMember(Name = "name")]
             public string Name { get; private set; }
@@ -163,7 +135,7 @@ namespace SvetlinAnkov.Albite.Engine
             [DataMember(Name = "stack")]
             public string Stack { get; private set; }
 
-            public override void Callback(object data)
+            public override void Callback(IClientHandler handler)
             {
                 throw new MessengerException(
                     Name, Message, Stack);
@@ -172,17 +144,17 @@ namespace SvetlinAnkov.Albite.Engine
 
         // Host Messages
         [DataContract(Name = "getPage")]
-        private class GetPageMessage : JsonMessenger.JsonMessage { }
+        private class GetPageMessage : AlbiteMessage { }
 
         [DataContract(Name = "result_getPage")]
-        private class GetPageResultMessage : JsonMessenger.JsonMessage
+        private class GetPageResultMessage : AlbiteMessage
         {
             [DataMember(Name = "page")]
             public int Page { get; private set; }
         }
 
         [DataContract(Name = "goToPage")]
-        private class GoToPageMessage : JsonMessenger.JsonMessage
+        private class GoToPageMessage : AlbiteMessage
         {
             [DataMember(Name = "page")]
             public int Page { get; private set; }
@@ -194,20 +166,20 @@ namespace SvetlinAnkov.Albite.Engine
         }
 
         [DataContract(Name = "result_goToPage")]
-        private class GoToPageResultMessage : JsonMessenger.JsonMessage { }
+        private class GoToPageResultMessage : AlbiteMessage { }
 
         [DataContract(Name = "getDomLocation")]
-        private class GetDomLocationMessage : JsonMessenger.JsonMessage { }
+        private class GetDomLocationMessage : AlbiteMessage { }
 
         [DataContract(Name = "result_getDomLocation")]
-        private class GetDomLocationResultMessage : JsonMessenger.JsonMessage
+        private class GetDomLocationResultMessage : AlbiteMessage
         {
             [DataMember(Name = "location")]
             public string Location { get; private set; }
         }
 
         [DataContract(Name = "goToDomLocation")]
-        private class GoToDomLocationMessage : JsonMessenger.JsonMessage
+        private class GoToDomLocationMessage : AlbiteMessage
         {
             [DataMember(Name = "location")]
             public string Location { get; private set; }
@@ -219,10 +191,10 @@ namespace SvetlinAnkov.Albite.Engine
         }
 
         [DataContract(Name = "result_goToDomLocation")]
-        private class GoToDomLocationResultMessage : JsonMessenger.JsonMessage { }
+        private class GoToDomLocationResultMessage : AlbiteMessage { }
 
         [DataContract(Name = "goToElementById")]
-        private class GoToElementByIdMessage : JsonMessenger.JsonMessage
+        private class GoToElementByIdMessage : AlbiteMessage
         {
             [DataMember(Name = "id")]
             public string Id { get; private set; }
@@ -234,46 +206,33 @@ namespace SvetlinAnkov.Albite.Engine
         }
 
         [DataContract(Name = "result_goToElementById")]
-        private class GoToElementByIdResultMessage : JsonMessenger.JsonMessage { }
+        private class GoToElementByIdResultMessage : AlbiteMessage { }
 
         [DataContract(Name = "getBookmark")]
-        private class GetBookmarkMessage : JsonMessenger.JsonMessage { }
+        private class GetBookmarkMessage : AlbiteMessage { }
 
         [DataContract(Name = "result_getBookmark")]
-        private class GetBookmarkResultMessage : JsonMessenger.JsonMessage
+        private class GetBookmarkResultMessage : AlbiteMessage
         {
             [DataMember(Name = "bookmark")]
             public Bookmark Bookmark { get; private set; }
         }
 
-        public void NotifyHost(string encodedMessage)
-        {
-            // Receiving a notification from client
-            // Decode to JsonMessage
-            JsonMessenger.JsonMessage message
-                = messenger.Decode(encodedMessage);
-
-            // Running the callback will make sure
-            // the message does its job
-            message.Callback(this);
-        }
-
         // Client Messages
         [DataContract(Name = "client_log")]
-        private class ClientLogMessage : JsonMessenger.JsonMessage
+        private class ClientLogMessage : AlbiteMessage
         {
             [DataMember(Name = "message")]
             public string Message { get; private set; }
 
-            public override void Callback(object data)
+            public override void Callback(IClientHandler handler)
             {
-                AlbiteMessenger messenger = (AlbiteMessenger)data;
-                messenger.hostMessenger.ClientLog(Message);
+                handler.ClientLog(Message);
             }
         }
 
         [DataContract(Name = "client_loaded")]
-        private class ClientLoadedMessage : JsonMessenger.JsonMessage
+        private class ClientLoadedMessage : AlbiteMessage
         {
             [DataMember(Name = "page")]
             public int Page { get; private set; }
@@ -281,90 +240,75 @@ namespace SvetlinAnkov.Albite.Engine
             [DataMember(Name = "pageCount")]
             public int PageCount { get; private set; }
 
-            public override void Callback(object data)
+            public override void Callback(IClientHandler handler)
             {
-                AlbiteMessenger messenger = (AlbiteMessenger)data;
-
                 // Don't update Page as it will cause a GoToPageMessage
                 // We don't need to update it anyway
-
-                // Update  the PageCount as it's cached locally
-                messenger.PageCount = PageCount;
-                messenger.hostMessenger.ClientLoaded(Page, PageCount);
+                handler.ClientLoaded(Page, PageCount);
             }
         }
 
         [DataContract(Name = "client_loading")]
-        private class ClientLoadingMessage : JsonMessenger.JsonMessage
+        private class ClientLoadingMessage : AlbiteMessage
         {
             [DataMember(Name = "progress")]
             public int Progress { get; private set; }
 
-            public override void Callback(object data)
+            public override void Callback(IClientHandler handler)
             {
-                AlbiteMessenger messenger = (AlbiteMessenger)data;
-
-                messenger.hostMessenger.ClientLoading(Progress);
+                handler.ClientLoading(Progress);
             }
         }
 
         [DataContract(Name="client_goToPreviousChapter")]
-        private class GoToPrevoiusChapterMessage : JsonMessenger.JsonMessage
+        private class GoToPrevoiusChapterMessage : AlbiteMessage
         {
-            public override void Callback(object data)
+            public override void Callback(IClientHandler handler)
             {
-                AlbiteMessenger messenger = (AlbiteMessenger)data;
-                messenger.hostMessenger.GoToPreviousChapter();
+                handler.GoToPreviousChapter();
             }
         }
 
         [DataContract(Name = "client_goToNextChapter")]
-        private class GoToNextChapterMessage : JsonMessenger.JsonMessage
+        private class GoToNextChapterMessage : AlbiteMessage
         {
-            public override void Callback(object data)
+            public override void Callback(IClientHandler handler)
             {
-                AlbiteMessenger messenger = (AlbiteMessenger)data;
-                messenger.hostMessenger.GoToNextChapter();
+                handler.GoToNextChapter();
             }
         }
 
         [DataContract(Name = "client_navigate")]
-        private class ClientNavigateMessage : JsonMessenger.JsonMessage
+        private class ClientNavigateMessage : AlbiteMessage
         {
             [DataMember(Name = "url")]
             public string Url { get; private set; }
 
-            public override void Callback(object data)
+            public override void Callback(IClientHandler handler)
             {
-                AlbiteMessenger messenger = (AlbiteMessenger)data;
-
                 //TODO
                 Log.D(tag, string.Format("navigate(url={0})", Url));
             }
         }
 
         [DataContract(Name = "client_toggleFullscreen")]
-        private class ClientToggleFullscreenMessage : JsonMessenger.JsonMessage
+        private class ClientToggleFullscreenMessage : AlbiteMessage
         {
-            public override void Callback(object data)
+            public override void Callback(IClientHandler handler)
             {
-                AlbiteMessenger messenger = (AlbiteMessenger)data;
-
                 //TODO
                 Log.D(tag, "toggleFullScreen()");
             }
         }
 
         [DataContract(Name = "client_contextMenu")]
-        private class ClientContextMenuMessage : JsonMessenger.JsonMessage
+        private class ClientContextMenuMessage : AlbiteMessage
         {
             [DataMember(Name = "options")]
             public ContextMenuOptions Options { get; private set; }
 
-            public override void Callback(object data)
+            public override void Callback(IClientHandler handler)
             {
-                AlbiteMessenger messenger = (AlbiteMessenger)data;
-
                 // TODO:
                 Log.D(tag, string.Format(
                     "ContextMenu(options: ({0}, {1}) image={2} anchor={3})",
@@ -390,12 +334,7 @@ namespace SvetlinAnkov.Albite.Engine
             public string Anchor { get; private set; }
         }
 
-        public interface IClientMessenger
-        {
-            string NotifyClient(string message);
-        }
-
-        public interface IHostMessenger
+        public interface IClientHandler
         {
             // Notifications from client to host
             void ClientLog(string message);

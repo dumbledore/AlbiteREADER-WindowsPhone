@@ -12,7 +12,7 @@ namespace SvetlinAnkov.Albite.Engine
             IEngineController controller, BookPresenter bookPresenter, Settings settings)
             : base(controller, bookPresenter, settings) { }
 
-        protected override AbstractNavigator GetNavigator()
+        protected override AbstractNavigator CreateNavigator()
         {
             return new BookNavigator(this);
         }

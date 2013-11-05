@@ -26,10 +26,7 @@ namespace SvetlinAnkov.Albite.Engine
             set { engine.Messenger.Page = value; }
         }
 
-        public int PageCount
-        {
-            get { return engine.Messenger.PageCount; }
-        }
+        public int PageCount { get; internal set; }
 
         public void GoToFirstPage()
         {
@@ -38,7 +35,7 @@ namespace SvetlinAnkov.Albite.Engine
 
         public void GoToLastPage()
         {
-            Page = engine.Messenger.PageCount;
+            Page = PageCount;
         }
 
         protected void SetChapterPage(string fileUrl, int page)
@@ -70,7 +67,7 @@ namespace SvetlinAnkov.Albite.Engine
                 Path.Combine("/" + engine.BookPresenter.RelativeContentPath, fileUrl));
 
             // Now reload the web browser
-            engine.Controller.ReloadBrowser();
+            engine.EngineController.ReloadBrowser();
         }
 
         /// <summary>
@@ -82,7 +79,7 @@ namespace SvetlinAnkov.Albite.Engine
                 InitialLocation.GetDomLocation(DomLocation));
 
             // Now reload the web browser
-            engine.Controller.ReloadBrowser();
+            engine.EngineController.ReloadBrowser();
         }
 
         public abstract bool IsFirstChapter { get; }

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 namespace SvetlinAnkov.Albite.Core.Test
 {
-    public class JsonMessengerTest : TestCase
+    public class JsonSerializerTest : TestCase
     {
         protected override void TestImplementation()
         {
@@ -16,37 +16,41 @@ namespace SvetlinAnkov.Albite.Core.Test
                 typeof(Message4),
             };
             // We want the client/host messages to be the same
-            JsonMessenger messenger = new JsonMessenger(expectedTypes);
+            JsonSerializer<Message> serializer
+                = new JsonSerializer<Message>(expectedTypes);
 
-            testMessage(messenger, new Message1(4, 16));
-            testMessage(messenger, new Message2(64, 256));
-            testMessage(messenger, new Message3("Sample data"));
-            testMessage(messenger, new Message4(
+            testMessage(serializer, new Message1(4, 16));
+            testMessage(serializer, new Message2(64, 256));
+            testMessage(serializer, new Message3("Sample data"));
+            testMessage(serializer, new Message4(
                 "Sample data",
                 new Message4.Helper("snooker", 100, 147)
             ));
-            testMessage(messenger, new Message4(
+            testMessage(serializer, new Message4(
                 null,
                 new Message4.Helper("snooker", 100, 147)
             ));
-            testMessage(messenger, new Message4(
+            testMessage(serializer, new Message4(
                 "Sample Data",
                 null
             ));
-            testMessage(messenger, null);
+            testMessage(serializer, null);
         }
 
         private void testMessage(
-            JsonMessenger messenger, JsonMessenger.JsonMessage message)
+            JsonSerializer<Message> serializer, Message message)
         {
-            string encoded = messenger.Encode(message);
+            string encoded = serializer.Encode(message);
             Log("Encoded {0}: {1}", message != null ? message.GetType().Name : "null", encoded);
-            JsonMessenger.JsonMessage decoded = messenger.Decode(encoded);
+            Message decoded = serializer.Decode(encoded);
             Log("{0} : {1}", decoded != null ? decoded.GetType().Name : "null", decoded);
         }
 
         [DataContract]
-        private class Message1 : JsonMessenger.JsonMessage
+        private class Message { }
+
+        [DataContract]
+        private class Message1 : Message
         {
             [DataMember(Name = "info1")]
             public int Info1 { get; private set; }
@@ -70,7 +74,7 @@ namespace SvetlinAnkov.Albite.Core.Test
         }
 
         [DataContract]
-        private class Message2 : JsonMessenger.JsonMessage
+        private class Message2 : Message
         {
             [DataMember(Name = "info1")]
             public int Info1 { get; private set; }
@@ -94,7 +98,7 @@ namespace SvetlinAnkov.Albite.Core.Test
         }
 
         [DataContract]
-        private class Message3 : JsonMessenger.JsonMessage
+        private class Message3 : Message
         {
             [DataMember(Name = "data")]
             public string Data { get; private set; }
@@ -111,7 +115,7 @@ namespace SvetlinAnkov.Albite.Core.Test
         }
 
         [DataContract]
-        private class Message4 : JsonMessenger.JsonMessage
+        private class Message4 : Message
         {
             [DataMember(Name = "data")]
             public string Data { get; private set; }

@@ -1,10 +1,12 @@
-﻿namespace SvetlinAnkov.Albite.Engine
+﻿using SvetlinAnkov.Albite.Core.Serialization;
+
+namespace SvetlinAnkov.Albite.Engine
 {
-    internal class ClientMessenger : AlbiteMessenger.IClientMessenger
+    internal class ClientNotifier : IClientNotifier
     {
         private readonly IEngineController controller;
 
-        public ClientMessenger(IEngineController controller)
+        public ClientNotifier(IEngineController controller)
         {
             this.controller = controller;
         }

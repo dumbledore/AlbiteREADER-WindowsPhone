@@ -2,13 +2,13 @@
 
 namespace SvetlinAnkov.Albite.Engine
 {
-    internal class HostMessenger : AlbiteMessenger.IHostMessenger
+    internal class ClientHandler : EngineMessenger.IClientHandler
     {
-        private static readonly string tag = "HostMessenger";
+        private static readonly string tag = "HostHandler";
 
         private readonly AbstractEngine engine;
 
-        public HostMessenger(AbstractEngine engine)
+        public ClientHandler(AbstractEngine engine)
         {
             this.engine = engine;
         }
@@ -20,19 +20,12 @@ namespace SvetlinAnkov.Albite.Engine
 
         public void ClientLoaded(int page, int pageCount)
         {
-            // Don't update Page as it will cause a GoToPageMessage
-            // No need to do it anyway
-
-            // Inform the EngineController that it's ready
-            engine.Controller.LoadingCompleted();
-
-            // Handle missed orientations
-            engine.UpdateDimensions();
+            engine.OnClientLoaded(page, pageCount);
         }
 
         public void ClientLoading(int progress)
         {
-            engine.Controller.LoadingProgressed(progress);
+            engine.EngineController.LoadingProgressed(progress);
         }
 
         public void GoToPreviousChapter()
