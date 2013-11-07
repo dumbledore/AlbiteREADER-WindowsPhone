@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SvetlinAnkov.Albite.BookLibrary.Location;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,9 +26,9 @@ namespace SvetlinAnkov.Albite.Engine
             return new PageLocation(page);
         }
 
-        public static InitialLocation GetDomLocation(string domLocation)
+        public static InitialLocation GetDomLocation(DomLocation domLocation)
         {
-            return new DomLocation(domLocation);
+            return new DomInitialLocation(domLocation);
         }
 
         private class FirstLocation : InitialLocation
@@ -77,13 +78,13 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        private class DomLocation : InitialLocation
+        private class DomInitialLocation : InitialLocation
         {
             private readonly string location;
 
-            public DomLocation(string domLocation)
+            public DomInitialLocation(DomLocation domLocation)
             {
-                location = string.Format("'{0}'", domLocation);
+                location = string.Format("'{0}'", domLocation.ToString());
             }
 
             public override string ToEngineKeyword()

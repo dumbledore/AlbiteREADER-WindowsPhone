@@ -1,4 +1,4 @@
-﻿using SvetlinAnkov.Albite.BookLibrary;
+﻿using SvetlinAnkov.Albite.BookLibrary.Location;
 
 namespace SvetlinAnkov.Albite.Engine
 {
@@ -10,7 +10,7 @@ namespace SvetlinAnkov.Albite.Engine
         /// <summary>
         /// Get the current BookLocation
         /// </summary>
-        BookPresenter.Location BookLocation { get; set; }
+        BookLocation BookLocation { get; set; }
 
         /// <summary>
         /// Current page

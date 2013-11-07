@@ -1,4 +1,5 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary.DataContext;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
@@ -16,7 +17,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             BookPresenter = bookPresenter;
         }
 
-        public Note Add(BookPresenter.Location location, string text)
+        public Note Add(BookLocation location, string text)
         {
             using (LibraryDataContext dc = Library.GetDataContext())
             {

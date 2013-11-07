@@ -1,4 +1,5 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using System.IO;
 
 namespace SvetlinAnkov.Albite.Engine
@@ -12,9 +13,9 @@ namespace SvetlinAnkov.Albite.Engine
             this.engine = engine;
         }
 
-        public abstract BookPresenter.Location BookLocation { get; set; }
+        public abstract BookLocation BookLocation { get; set; }
 
-        internal string DomLocation
+        internal DomLocation DomLocation
         {
             get { return engine.Messenger.DomLocation; }
             set { engine.Messenger.DomLocation = value; }
@@ -53,9 +54,9 @@ namespace SvetlinAnkov.Albite.Engine
             SetChapter(InitialLocation.GetLastLocation(), fileUrl);
         }
 
-        protected void SetChapterDomLocation(string fileUrl, string location)
+        protected void SetChapterDomLocation(string fileUrl, DomLocation domLocation)
         {
-            SetChapter(InitialLocation.GetDomLocation(location), fileUrl);
+            SetChapter(InitialLocation.GetDomLocation(domLocation), fileUrl);
         }
 
         private void SetChapter(InitialLocation initialLocation, string fileUrl)

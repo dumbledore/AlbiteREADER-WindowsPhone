@@ -29,9 +29,6 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
         [Column]
         public string DomLocation { get; set; }
 
-        [Column]
-        public int TextLocation { get; set; }
-
         // Notes
         private EntitySet<NoteEntity> notesSet = new EntitySet<NoteEntity>();
 

@@ -1,4 +1,5 @@
-﻿using SvetlinAnkov.Albite.Core.Diagnostics;
+﻿using SvetlinAnkov.Albite.BookLibrary.Location;
+using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.Json;
 using SvetlinAnkov.Albite.Core.Serialization;
 using System;
@@ -30,6 +31,7 @@ namespace SvetlinAnkov.Albite.Engine
 
             // Used by the Host Messages
             typeof(Bookmark),
+            typeof(DomLocation),
 
             // Client Messages
             typeof(ClientLogMessage),
@@ -68,14 +70,14 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        public string DomLocation
+        public DomLocation DomLocation
         {
             get
             {
                 GetDomLocationMessage requestMessage = new GetDomLocationMessage();
                 GetDomLocationResultMessage resultMessage
                     = (GetDomLocationResultMessage)NotifyClient(requestMessage);
-                return resultMessage.Location;
+                return resultMessage.DomLocation;
             }
 
             set
@@ -98,7 +100,7 @@ namespace SvetlinAnkov.Albite.Engine
             public string Text { get; private set; }
 
             [DataMember(Name="location")]
-            public string Location { get; private set; }
+            public DomLocation DomLocation { get; private set; }
         }
 
         public Bookmark GetBookmark()
@@ -175,18 +177,18 @@ namespace SvetlinAnkov.Albite.Engine
         private class GetDomLocationResultMessage : AlbiteMessage
         {
             [DataMember(Name = "location")]
-            public string Location { get; private set; }
+            public DomLocation DomLocation { get; private set; }
         }
 
         [DataContract(Name = "goToDomLocation")]
         private class GoToDomLocationMessage : AlbiteMessage
         {
             [DataMember(Name = "location")]
-            public string Location { get; private set; }
+            public DomLocation DomLocation { get; private set; }
 
-            public GoToDomLocationMessage(string location)
+            public GoToDomLocationMessage(DomLocation domLocation)
             {
-                Location = location;
+                DomLocation = domLocation;
             }
         }
 

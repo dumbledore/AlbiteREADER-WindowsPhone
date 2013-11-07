@@ -1,4 +1,5 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Engine.LayoutSettings;
 
@@ -24,19 +25,19 @@ namespace SvetlinAnkov.Albite.Engine
 
             // TODO: Add history stack
 
-            BookPresenter.SpineElement current;
+            SpineElement current;
 
             /// <summary>
             /// Setting this property would cause the engine
             /// to load into the specified book location
             /// </summary>
-            public override BookPresenter.Location BookLocation
+            public override BookLocation BookLocation
             {
                 get
                 {
                     // TODO: What about when the current spine element
                     // is not the current chapter, and thus is not
-                    return current.CreateLocation(DomLocation, 0 /* todo */);
+                    return current.CreateLocation(DomLocation);
                 }
 
                 set

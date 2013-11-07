@@ -1,8 +1,10 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary.DataContext;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {
@@ -64,33 +66,35 @@ namespace SvetlinAnkov.Albite.BookLibrary
             }
         }
 
-        private Location prepareLocation()
+        private BookLocation prepareLocation()
         {
             using (LibraryDataContext dc = Book.Library.GetDataContext())
             {
                 BookEntity bookEntity = getEntity(dc);
+
                 return CreateLocation(
                     bookEntity.SpineIndex,
-                    bookEntity.DomLocation,
-                    bookEntity.TextLocation);
+                    bookEntity.DomLocation);
             }
         }
 
-        internal Location CreateLocation(
-            int spineIndex, string domLocation, int textLocation)
+        internal BookLocation CreateLocation(
+            int spineIndex, string domLocationString)
         {
             if (spineIndex < 0 || spineIndex >= spine.Length)
             {
                 throw new EntityInvalidException("Spine value is out of range");
             }
 
+            DomLocation domLocation =
+                DomLocation.FromString(domLocationString);
+
             SpineElement element = spine[spineIndex];
-            return element.CreateLocation(
-                domLocation, textLocation);
+            return element.CreateLocation(domLocation);
         }
 
-        private Location bookLocation;
-        public Location BookLocation
+        private BookLocation bookLocation;
+        public BookLocation BookLocation
         {
             get
             {
@@ -110,13 +114,14 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         public void Persist()
         {
+            string domLocation = bookLocation.DomLocation.ToString();
+
             using (LibraryDataContext dc = Book.Library.GetDataContext())
             {
                 BookEntity bookEntity = getEntity(dc);
 
                 bookEntity.SpineIndex = bookLocation.SpineElement.Number;
-                bookEntity.TextLocation = bookLocation.TextLocation;
-                bookEntity.DomLocation = bookLocation.DomLocation;
+                bookEntity.DomLocation = domLocation;
 
                 dc.SubmitChanges();
             }
@@ -146,62 +151,6 @@ namespace SvetlinAnkov.Albite.BookLibrary
         public string EnginePath
         {
             get { return Book.Library.Books.GetEnginePath(Book); }
-        }
-
-        public class SpineElement
-        {
-            public Book Book { get; private set; }
-            public int Number { get; private set; }
-            public string Url { get; private set; }
-            public SpineElement Previous { get; private set; }
-            public SpineElement Next { get; private set; }
-
-            internal SpineElement(
-                Book book,
-                int number,
-                string url,
-                SpineElement previous,
-                SpineElement next = null)
-            {
-                Book = book;
-                Number = number;
-                Url = url;
-                Previous = previous;
-                Next = next;
-
-                if (previous != null)
-                {
-                    previous.Next = this;
-                }
-
-                if (next != null)
-                {
-                    next.Previous = this;
-                }
-            }
-
-            public Location CreateLocation(string domLocation, int textLocation)
-            {
-                Location location = new Location(this, domLocation, textLocation);
-                return location;
-            }
-        }
-
-        public class Location
-        {
-            public SpineElement SpineElement { get; private set; }
-            public string DomLocation { get; private set; }
-            public int TextLocation { get; private set; }
-
-            internal Location(
-                SpineElement spineElement,
-                string domLocation,
-                int textLocation)
-            {
-                SpineElement = spineElement;
-                DomLocation = domLocation;
-                TextLocation = textLocation;
-            }
         }
 
         private BookEntity getEntity(LibraryDataContext dc)

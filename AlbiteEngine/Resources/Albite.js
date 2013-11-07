@@ -572,8 +572,7 @@ Albite.Pager = function(context) {
 
   function getDomLocation() {
     var location = getTextLocation();
-    var domLocation = makeDomLocation(location.node, location.textOffset);
-    return JSON.stringify(domLocation);
+    return makeDomLocation(location.node, location.textOffset);
   }
 
   function getBookmarkText(node, textOffset) {
@@ -671,21 +670,12 @@ Albite.Pager = function(context) {
   function getBookmark() {
     var location = getTextLocation();
     return {
-      "location"  : JSON.stringify(makeDomLocation(location.node, location.textOffset)),
+      "location"  : makeDomLocation(location.node, location.textOffset),
       "text"      : getBookmarkText(location.node, location.textOffset)
     };
   }
 
-  function goToDomLocation(locationString) {
-    var location;
-
-    try {
-      location = JSON.parse(locationString);
-    } catch (e) {
-      context.debug.log("Failed parsing location from JSON");
-      return;
-    }
-
+  function goToDomLocation(location) {
     goToPage(getPageForLocation(location));
   }
 

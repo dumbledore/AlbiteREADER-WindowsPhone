@@ -1,4 +1,5 @@
-﻿using System.Data.Linq;
+﻿using SvetlinAnkov.Albite.BookLibrary.Location;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 
 namespace SvetlinAnkov.Albite.BookLibrary.DataContext
@@ -11,12 +12,11 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
 
         // When creating a new one through NoteManager
         public NoteEntity(BookEntity bookEntity,
-            BookPresenter.Location location, string text)
+            BookLocation bookLocation, string text)
         {
             Book = bookEntity;
-            SpineIndex = location.SpineElement.Number;
-            DomLocation = location.DomLocation;
-            TextLocation = location.TextLocation;
+            SpineIndex = bookLocation.SpineElement.Number;
+            DomLocation = bookLocation.DomLocation.ToString();
             Text = text;
         }
 
@@ -51,9 +51,6 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
 
         [Column]
         public string DomLocation { get; set; }
-
-        [Column]
-        public int TextLocation { get; set; }
 
         [Column]
         public string Text { get; set; }

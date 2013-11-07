@@ -1,4 +1,5 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary.DataContext;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {
@@ -6,7 +7,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
     {
         public NoteManager Manager { get; private set; }
 
-        public BookPresenter.Location Location { get; private set; }
+        public BookLocation BookLocation { get; private set; }
         public string Text { get; private set; }
 
         internal Note(NoteManager manager, NoteEntity entity)
@@ -15,10 +16,9 @@ namespace SvetlinAnkov.Albite.BookLibrary
             Manager = manager;
 
             // Other fields
-            Location = manager.BookPresenter.CreateLocation(
+            BookLocation = manager.BookPresenter.CreateLocation(
                 entity.SpineIndex,
-                entity.DomLocation,
-                entity.TextLocation);
+                entity.DomLocation);
 
             Text = entity.Text;
         }

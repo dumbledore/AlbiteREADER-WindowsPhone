@@ -87,6 +87,7 @@
     <Compile Include="Source\BookManager.cs" />
     <Compile Include="Source\BookPresenter.cs" />
     <Compile Include="Source\DataContext\BookEntity.cs" />
+    <Compile Include="Source\Location\DomLocation.cs" />
     <Compile Include="Source\Entity.cs" />
     <Compile Include="Source\DataContext\NoteEntity.cs" />
     <Compile Include="Source\LibraryEntity.cs" />
@@ -94,6 +95,8 @@
     <Compile Include="Source\EntityManager.cs" />
     <Compile Include="Source\Library.cs" />
     <Compile Include="Source\DataContext\LibraryDataContext.cs" />
+    <Compile Include="Source\Location\BookLocation.cs" />
+    <Compile Include="Source\Location\SpineElement.cs" />
     <Compile Include="Source\Note.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\NoteManager.cs" />
