@@ -32,7 +32,7 @@ namespace SvetlinAnkov.Albite.Engine
 
         private class FirstLocation : InitialLocation
         {
-            private static FirstLocation instance = new FirstLocation();
+            private static readonly FirstLocation instance = new FirstLocation();
             public static FirstLocation Instance
             {
                 get { return instance; }
@@ -48,7 +48,7 @@ namespace SvetlinAnkov.Albite.Engine
 
         private class LastLocation : InitialLocation
         {
-            private static LastLocation instance = new LastLocation();
+            private static readonly LastLocation instance = new LastLocation();
             public static LastLocation Instance
             {
                 get { return instance; }
