@@ -39,50 +39,6 @@ namespace SvetlinAnkov.Albite.Engine
             Page = PageCount;
         }
 
-        protected void SetChapterPage(string fileUrl, int page)
-        {
-            SetChapter(InitialLocation.GetPageLocation(page), fileUrl);
-        }
-
-        protected void SetChapterFirstPage(string fileUrl)
-        {
-            SetChapter(InitialLocation.GetFirstLocation(), fileUrl);
-        }
-
-        protected void SetChapterLastPage(string fileUrl)
-        {
-            SetChapter(InitialLocation.GetLastLocation(), fileUrl);
-        }
-
-        protected void SetChapterDomLocation(string fileUrl, DomLocation domLocation)
-        {
-            SetChapter(InitialLocation.GetDomLocation(domLocation), fileUrl);
-        }
-
-        private void SetChapter(InitialLocation initialLocation, string fileUrl)
-        {
-            // Set up main.xhtml
-            engine.TemplateController.UpdateChapter(
-                initialLocation,
-                IsFirstChapter, IsLastChapter,
-                Path.Combine("/" + engine.BookPresenter.RelativeContentPath, fileUrl));
-
-            // Now reload the web browser
-            engine.EngineController.ReloadBrowser();
-        }
-
-        /// <summary>
-        /// Reload the current chapter and navigate to the current DomLocation
-        /// </summary>
-        public void Reload()
-        {
-            engine.TemplateController.UpdateInitialLocation(
-                InitialLocation.GetDomLocation(DomLocation));
-
-            // Now reload the web browser
-            engine.EngineController.ReloadBrowser();
-        }
-
         public abstract bool IsFirstChapter { get; }
         public abstract bool IsLastChapter { get; }
         public abstract void GoToPreviousChapter();

@@ -26,9 +26,10 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        internal readonly IEngineController EngineController;
-        internal readonly EngineTemplateController TemplateController;
-        internal readonly EngineMessenger Messenger;
+        internal IEngineController EngineController { get; private set; }
+        internal EngineMessenger Messenger { get; private set; }
+
+        private EngineTemplateController TemplateController;
 
         public AbstractEngine(
             IEngineController engineController, BookPresenter bookPresenter, Settings settings)
@@ -68,7 +69,7 @@ namespace SvetlinAnkov.Albite.Engine
             TemplateController.UpdateSettings();
 
             // Reload to the current DomLocation
-            AbstractNavigator.Reload();
+            Reload();
         }
 
         public void UpdateDimensions()
@@ -102,7 +103,7 @@ namespace SvetlinAnkov.Albite.Engine
             TemplateController.UpdateDimensions(newWidth, newHeight);
 
             // Reload to the current DomLocation
-            AbstractNavigator.Reload();
+            Reload();
         }
 
         public void ReceiveMessage(string message)
@@ -129,6 +130,33 @@ namespace SvetlinAnkov.Albite.Engine
 
             // Handle missed orientations
             UpdateDimensions();
+        }
+
+        internal void SetChapter(string fileUrl, InitialLocation initialLocation)
+        {
+            // Set up main.xhtml
+            TemplateController.UpdateChapter(
+                initialLocation,
+                Navigator.IsFirstChapter, Navigator.IsLastChapter,
+                Path.Combine("/" + BookPresenter.RelativeContentPath, fileUrl));
+
+            EngineController.ReloadBrowser();
+        }
+
+        /// <summary>
+        /// Reload the current chapter and navigate to the current DomLocation
+        /// </summary>
+        private void Reload()
+        {
+            // We *must* use the template mechanism because of the
+            // rendering synchronization of the page jump at start
+
+            InitialLocation initialLocation =
+                InitialLocation.GetDomLocation(AbstractNavigator.DomLocation);
+            TemplateController.UpdateInitialLocation(initialLocation);
+
+            // Now reload the web browser
+            EngineController.ReloadBrowser();
         }
     }
 }

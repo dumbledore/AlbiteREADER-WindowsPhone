@@ -8,7 +8,7 @@ namespace SvetlinAnkov.Albite.Engine
     public interface IEngineNavigator
     {
         /// <summary>
-        /// Get the current BookLocation
+        /// Current BookLocation
         /// </summary>
         BookLocation BookLocation { get; set; }
 

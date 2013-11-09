@@ -42,8 +42,19 @@ namespace SvetlinAnkov.Albite.Engine
 
                 set
                 {
-                    current = value.SpineElement;
-                    SetChapterDomLocation(value.SpineElement.Url, value.DomLocation);
+                    if (current == value.SpineElement)
+                    {
+                        // It's the same chapter, no need for reload
+                        // Only updat the dom location
+                        DomLocation = value.DomLocation;
+                    }
+                    else
+                    {
+                        current = value.SpineElement;
+                        engine.SetChapter(
+                            value.SpineElement.Url,
+                            InitialLocation.GetDomLocation(value.DomLocation));
+                    }
                 }
             }
 
@@ -66,7 +77,8 @@ namespace SvetlinAnkov.Albite.Engine
                 }
 
                 current = current.Previous;
-                SetChapterLastPage(current.Url);
+                engine.SetChapter(current.Url,
+                    InitialLocation.GetLastLocation());
             }
 
             public override void GoToNextChapter()
@@ -78,7 +90,8 @@ namespace SvetlinAnkov.Albite.Engine
                 }
 
                 current = current.Next;
-                SetChapterFirstPage(current.Url);
+                engine.SetChapter(current.Url,
+                    InitialLocation.GetFirstLocation());
             }
         }
     }
