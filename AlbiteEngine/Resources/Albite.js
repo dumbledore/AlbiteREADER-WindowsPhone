@@ -1767,8 +1767,10 @@ Albite.Main = function(options) {
             break;
 
           default:
-            // The location is a JSON string for portability
-            context.pager.goToDomLocation(initialLocation);
+            // The initial location is a JSON string
+            try {
+              context.pager.goToDomLocation(JSON.parse(initialLocation));
+            } catch (e) { }
             break;
         }
         break;
