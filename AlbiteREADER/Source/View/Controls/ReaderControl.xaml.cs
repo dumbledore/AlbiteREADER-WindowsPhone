@@ -55,7 +55,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         {
             threadCheck.Check();
 
-            Log.D(tag, "Loaded");
+            Log.D(tag, "WebBrowser Loaded");
             load();
         }
 
@@ -63,7 +63,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         {
             threadCheck.Check();
 
-            Log.D(tag, "Unloaded");
+            Log.D(tag, "WebBrowser Unloaded");
             unload();
         }
 
