@@ -23,11 +23,6 @@ namespace SvetlinAnkov.Albite.Engine
             engine.OnClientLoaded(page, pageCount);
         }
 
-        public void ClientLoading(int progress)
-        {
-            engine.EngineController.LoadingProgressed(progress);
-        }
-
         public void GoToPreviousChapter()
         {
             engine.Navigator.GoToPreviousChapter();

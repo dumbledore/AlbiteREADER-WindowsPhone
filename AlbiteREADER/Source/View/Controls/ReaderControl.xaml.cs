@@ -14,7 +14,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
         public event EventHandler ReaderError;
         public event EventHandler ContentLoadingStarted;
-        public event EventHandler<int> ContentLoadingProgressed;
         public event EventHandler ContentLoadingCompleted;
 
         private EngineController controller;
@@ -277,14 +276,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 if (control.ContentLoadingStarted != null)
                 {
                     control.ContentLoadingStarted(control, EventArgs.Empty);
-                }
-            }
-
-            public void LoadingProgressed(int progress)
-            {
-                if (control.ContentLoadingProgressed != null)
-                {
-                    control.ContentLoadingProgressed(control, progress);
                 }
             }
 

@@ -36,7 +36,6 @@ namespace SvetlinAnkov.Albite.Engine
             // Client Messages
             typeof(ClientLogMessage),
             typeof(ClientLoadedMessage),
-            typeof(ClientLoadingMessage),
             typeof(GoToPrevoiusChapterMessage),
             typeof(GoToNextChapterMessage),
             typeof(ClientToggleFullscreenMessage),
@@ -250,18 +249,6 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        [DataContract(Name = "client_loading")]
-        private class ClientLoadingMessage : AlbiteMessage
-        {
-            [DataMember(Name = "progress")]
-            public int Progress { get; private set; }
-
-            public override void Callback(IClientHandler handler)
-            {
-                handler.ClientLoading(Progress);
-            }
-        }
-
         [DataContract(Name="client_goToPreviousChapter")]
         private class GoToPrevoiusChapterMessage : AlbiteMessage
         {
@@ -341,7 +328,6 @@ namespace SvetlinAnkov.Albite.Engine
             // Notifications from client to host
             void ClientLog(string message);
             void ClientLoaded(int page, int pageCount);
-            void ClientLoading(int progress);
             void GoToPreviousChapter();
             void GoToNextChapter();
         }

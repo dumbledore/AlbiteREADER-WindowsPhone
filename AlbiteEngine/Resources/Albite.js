@@ -1485,12 +1485,6 @@ Albite.Host = function(context) {
     message.send();
   }
 
-  function notifyLoading(progress) {
-    var message = new Message(ClientMessages.loading);
-    message.progress = progress;
-    message.send();
-  }
-
   function goToPreviousChapter() {
     var message = new Message(ClientMessages.goToPreviousChapter);
     message.send();
@@ -1611,7 +1605,6 @@ Albite.Host = function(context) {
   // Send to Host
   this.log                  = log;
   this.notifyLoaded         = notifyLoaded;
-  this.notifyLoading        = notifyLoading;
   this.goToPreviousChapter  = goToPreviousChapter;
   this.goToNextChapter      = goToNextChapter;
   this.navigate             = navigate;
@@ -1675,14 +1668,8 @@ Albite.Main = function(options) {
   // Setup debug
   context.debug = new Albite.Debug(context);
 
-  // The host has started parsing the Javascript: 20% ready.
-  context.host.notifyLoading(20);
-
   function contentLoaded(contentFrame) {
     try {
-      // Loaded the ieframe. It was a tough task, so 50% ready.
-      context.host.notifyLoading(50);
-
       // Add the contentFrame from the start
       context.contentWindow = contentFrame.contentWindow;
 
@@ -1714,9 +1701,6 @@ Albite.Main = function(options) {
 
       // Now add back the element to the body
       doc.body.appendChild(rootElement);
-
-      // Adding the CSS: 60% ready.
-      context.host.notifyLoading(60);
 
       // Finally load the CSS that will apply the rules
       // for pagination
@@ -1781,9 +1765,6 @@ Albite.Main = function(options) {
   }
 
   function cssLoaded() {
-    // CSS Loaded: 70% done.
-    context.host.notifyLoading(70);
-
     // On some occasions, the CSS is not applied atomically, i.e.
     // some columns are created, but not all of them at the same time,
     // the effect being Albite.Pager reporting a lesser number of pages.
@@ -1795,9 +1776,6 @@ Albite.Main = function(options) {
 
   function cssApplied() {
     try {
-      // CSS Applied: 80% done.
-      context.host.notifyLoading(80);
-
       var pageElement = getElement("page");
 
       // Set up the scroller
@@ -1816,14 +1794,8 @@ Albite.Main = function(options) {
       // clickable and rather report to the navigation to the host
       setUpAnchors(context.contentWindow.document);
 
-      // Left only to lift the curtains: 90% done.
-      context.host.notifyLoading(90);
-
       // Unhide the content
       pageElement.show();
-
-      // Last moment before showing up: 100%.
-      context.host.notifyLoading(100);
 
       // Notify the host we are done, but after it has rendered it all
       requestAnimationFrame(context.host.notifyLoaded);

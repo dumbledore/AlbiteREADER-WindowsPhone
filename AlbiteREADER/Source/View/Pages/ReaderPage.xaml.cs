@@ -49,11 +49,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             WaitControl.Start();
         }
 
-        private void ReaderControl_ContentLoadingProgressed(object sender, int progress)
-        {
-            WaitControl.Progress = progress;
-        }
-
         private void ReaderControl_ContentLoadingCompleted(object sender, EventArgs e)
         {
             WaitControl.Finish();

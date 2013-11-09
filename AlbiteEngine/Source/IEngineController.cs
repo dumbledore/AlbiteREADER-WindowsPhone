@@ -38,12 +38,6 @@ namespace SvetlinAnkov.Albite.Engine
         bool IsLoading { get; }
 
         /// <summary>
-        /// Inform the control what is the current progress
-        /// </summary>
-        /// <param name="progress">Progress in 0..100</param>
-        void LoadingProgressed(int progress);
-
-        /// <summary>
         /// Inform the control that loading has completed
         /// </summary>
         void LoadingCompleted();
