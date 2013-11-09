@@ -1,9 +1,10 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary.DataContext;
 using SvetlinAnkov.Albite.BookLibrary.Location;
+using System;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {
-    public class Bookmark : LibraryEntity
+    public class Bookmark : LibraryEntity, IComparable<Bookmark>
     {
         public BookmarkManager Manager { get; private set; }
 
@@ -21,6 +22,11 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 entity.DomLocation);
 
             Text = entity.Text;
+        }
+
+        public int CompareTo(Bookmark other)
+        {
+            return BookLocation.CompareTo(other.BookLocation);
         }
     }
 }
