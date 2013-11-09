@@ -83,10 +83,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Source\AbstractNavigator.cs" />
+    <Compile Include="Source\EngineNavigator.cs" />
     <Compile Include="Source\EngineMessenger.cs" />
-    <Compile Include="Source\BookEngine.cs" />
-    <Compile Include="Source\AbstractEngine.cs" />
+    <Compile Include="Source\Engine.cs" />
     <Compile Include="Source\ClientNotifier.cs" />
     <Compile Include="Source\EngineTemplate.cs" />
     <Compile Include="Source\EngineTemplateController.cs" />

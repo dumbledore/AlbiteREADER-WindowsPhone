@@ -6,9 +6,9 @@ namespace SvetlinAnkov.Albite.Engine
     {
         private static readonly string tag = "HostHandler";
 
-        private readonly AbstractEngine engine;
+        private readonly AlbiteEngine engine;
 
-        public ClientHandler(AbstractEngine engine)
+        public ClientHandler(AlbiteEngine engine)
         {
             this.engine = engine;
         }

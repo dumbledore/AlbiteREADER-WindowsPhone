@@ -7,22 +7,22 @@ using System.IO;
 
 namespace SvetlinAnkov.Albite.Engine
 {
-    public abstract class AbstractEngine : IEngine
+    public class AlbiteEngine : IEngine
     {
-        private static readonly string tag = "AbstractEngine";
+        private static readonly string tag = "AlbiteEngine";
 
         public BookPresenter BookPresenter { get; private set; }
         public Settings Settings { get; private set; }
 
         public Uri Uri { get; private set; }
 
-        protected AbstractNavigator AbstractNavigator;
+        private EngineNavigator navigator;
         public IEngineNavigator Navigator
         {
             get
             {
                 EnsureValidState();
-                return AbstractNavigator;
+                return navigator;
             }
         }
 
@@ -31,7 +31,7 @@ namespace SvetlinAnkov.Albite.Engine
 
         private EngineTemplateController TemplateController;
 
-        public AbstractEngine(
+        public AlbiteEngine(
             IEngineController engineController, BookPresenter bookPresenter, Settings settings)
         {
             EngineController = engineController;
@@ -57,7 +57,7 @@ namespace SvetlinAnkov.Albite.Engine
                 new ClientNotifier(EngineController)
             );
 
-            AbstractNavigator = CreateNavigator();
+            navigator = new EngineNavigator(this);
         }
 
         public void UpdateLayout()
@@ -119,11 +119,9 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        protected abstract AbstractNavigator CreateNavigator();
-
         internal void OnClientLoaded(int page, int pageCount)
         {
-            AbstractNavigator.PageCount = pageCount;
+            navigator.PageCount = pageCount;
 
             // Inform the EngineController that it's ready
             EngineController.LoadingCompleted();
@@ -152,7 +150,7 @@ namespace SvetlinAnkov.Albite.Engine
             // rendering synchronization of the page jump at start
 
             InitialLocation initialLocation =
-                InitialLocation.GetDomLocation(AbstractNavigator.DomLocation);
+                InitialLocation.GetDomLocation(navigator.DomLocation);
             TemplateController.UpdateInitialLocation(initialLocation);
 
             // Now reload the web browser

@@ -165,7 +165,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             private readonly ReaderControl control;
 
             private BookPresenter bookPresenter;
-            private BookEngine engine;
+            private AlbiteEngine engine;
 
             public bool IsLoading { get; private set; }
 
@@ -174,7 +174,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 this.control = control;
             }
 
-            public BookEngine Engine
+            public AlbiteEngine Engine
             {
                 get { return engine; }
             }
@@ -225,7 +225,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
                 // Load the engine.
                 // This will initialise the settings with their default values.
-                engine = new BookEngine(this, bookPresenter, new Settings());
+                engine = new AlbiteEngine(this, bookPresenter, new Settings());
 
                 // Go to the last reading location
                 engine.Navigator.BookLocation = bookPresenter.BookLocation;
