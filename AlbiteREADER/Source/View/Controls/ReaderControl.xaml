@@ -23,6 +23,5 @@
             SizeChanged="WebBrowser_SizeChanged"
             Loaded="WebBrowser_Loaded"
             Unloaded="WebBrowser_Unloaded" />
-        <albite:WaitControl x:Name="WaitControl" />
     </Grid>
 </UserControl>

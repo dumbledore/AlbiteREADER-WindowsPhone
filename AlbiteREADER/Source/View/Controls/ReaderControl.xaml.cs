@@ -13,6 +13,9 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         private static readonly string tag = "ReaderControl";
 
         public event EventHandler ReaderError;
+        public event EventHandler ContentLoadingStarted;
+        public event EventHandler<int> ContentLoadingProgressed;
+        public event EventHandler ContentLoadingCompleted;
 
         private EngineController controller;
 
@@ -271,17 +274,26 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             public void LoadingStarted()
             {
                 IsLoading = true;
-                control.WaitControl.Start();
+                if (control.ContentLoadingStarted != null)
+                {
+                    control.ContentLoadingStarted(control, EventArgs.Empty);
+                }
             }
 
             public void LoadingProgressed(int progress)
             {
-                control.WaitControl.Progress = progress;
+                if (control.ContentLoadingProgressed != null)
+                {
+                    control.ContentLoadingProgressed(control, progress);
+                }
             }
 
             public void LoadingCompleted()
             {
-                control.WaitControl.Finish();
+                if (control.ContentLoadingCompleted != null)
+                {
+                    control.ContentLoadingCompleted(control, EventArgs.Empty);
+                }
                 IsLoading = false;
             }
 
@@ -291,7 +303,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
                 if (control.ReaderError != null)
                 {
-                    control.ReaderError(this, EventArgs.Empty);
+                    control.ReaderError(control, EventArgs.Empty);
                 }
             }
         }

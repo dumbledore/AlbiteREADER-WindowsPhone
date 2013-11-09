@@ -17,16 +17,13 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="0">
-            <albite:ReaderControl x:Name="ReaderControl"
-                    Loaded="ReaderControl_Loaded"
-                    ReaderError="ReaderControl_ReaderError" />
-        </Grid>
+        <albite:ReaderControl x:Name="ReaderControl"
+                Loaded="ReaderControl_Loaded"
+                ReaderError="ReaderControl_ReaderError"
+                ContentLoadingStarted="ReaderControl_ContentLoadingStarted"
+                ContentLoadingProgressed="ReaderControl_ContentLoadingProgressed"
+                ContentLoadingCompleted="ReaderControl_ContentLoadingCompleted" />
+        <albite:WaitControl x:Name="WaitControl" />
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>

@@ -44,6 +44,19 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             NavigationService.GoBack();
         }
 
-        // TODO: Add proper thread synchronization
+        private void ReaderControl_ContentLoadingStarted(object sender, EventArgs e)
+        {
+            WaitControl.Start();
+        }
+
+        private void ReaderControl_ContentLoadingProgressed(object sender, int progress)
+        {
+            WaitControl.Progress = progress;
+        }
+
+        private void ReaderControl_ContentLoadingCompleted(object sender, EventArgs e)
+        {
+            WaitControl.Finish();
+        }
     }
 }
