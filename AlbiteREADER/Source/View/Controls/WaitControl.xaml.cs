@@ -16,11 +16,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             set { LoadingText.Text = value; }
         }
 
-        public bool IsIndeterminate
-        {
-            get { return ProgressBar.IsIndeterminate; }
-            set { ProgressBar.IsIndeterminate = value; }
-        }
+        public bool IsIndeterminate { get; set; }
 
         public double Progress
         {
@@ -43,11 +39,18 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         public void Start()
         {
             Progress = Minimum;
+
+            if (IsIndeterminate)
+            {
+                ProgressBar.IsIndeterminate = true;
+            }
+
             Visibility = Visibility.Visible;
         }
 
         public void Finish()
         {
+            ProgressBar.IsIndeterminate = false;
             Progress = Maximum;
             Visibility = Visibility.Collapsed;
         }
