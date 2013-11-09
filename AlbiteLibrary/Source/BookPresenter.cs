@@ -97,8 +97,8 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         /// <summary>
         /// Get/set the persisted location.
-        /// Note that setting the location will actually
-        /// persist it to the library.
+        /// Note: Call Persist to actually
+        /// write the data to the library
         /// </summary>
         public BookLocation BookLocation
         {
@@ -115,18 +115,24 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 }
 
                 bookLocation = value;
+            }
+        }
 
-                string domLocation = bookLocation.DomLocation.ToString();
+        /// <summary>
+        /// Persist the location to the library
+        /// </summary>
+        public void Persist()
+        {
+            string domLocation = bookLocation.DomLocation.ToString();
 
-                using (LibraryDataContext dc = Book.Library.GetDataContext())
-                {
-                    BookEntity bookEntity = getEntity(dc);
+            using (LibraryDataContext dc = Book.Library.GetDataContext())
+            {
+                BookEntity bookEntity = getEntity(dc);
 
-                    bookEntity.SpineIndex = bookLocation.SpineElement.Number;
-                    bookEntity.DomLocation = domLocation;
+                bookEntity.SpineIndex = bookLocation.SpineElement.Number;
+                bookEntity.DomLocation = domLocation;
 
-                    dc.SubmitChanges();
-                }
+                dc.SubmitChanges();
             }
         }
 

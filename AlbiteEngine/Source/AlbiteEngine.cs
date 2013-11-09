@@ -1,6 +1,6 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
-using SvetlinAnkov.Albite.Core.IO;
 using SvetlinAnkov.Albite.Engine.LayoutSettings;
 using System;
 using System.IO;
@@ -111,6 +111,16 @@ namespace SvetlinAnkov.Albite.Engine
             Messenger.NotifyHost(message);
         }
 
+        /// <summary>
+        /// Once we have a valid client, i.e. after the first load
+        /// has completed, we can request the location
+        /// </summary>
+        private bool canGetDomLocation = false;
+
+        /// <summary>
+        /// This ensures that the client is in the right state,
+        /// i.e. loaded and responsive
+        /// </summary>
         protected void EnsureValidState()
         {
             if (EngineController.IsLoading)
@@ -126,12 +136,21 @@ namespace SvetlinAnkov.Albite.Engine
             // Inform the EngineController that it's ready
             EngineController.LoadingCompleted();
 
+            // We now have a working client
+            canGetDomLocation = true;
+
             // Handle missed orientations
             UpdateDimensions();
         }
 
         internal void SetChapter(string fileUrl, InitialLocation initialLocation)
         {
+            if (canGetDomLocation)
+            {
+                // Cache the location
+                BookPresenter.BookLocation = Navigator.BookLocation;
+            }
+
             // Set up main.xhtml
             TemplateController.UpdateChapter(
                 initialLocation,
@@ -149,8 +168,14 @@ namespace SvetlinAnkov.Albite.Engine
             // We *must* use the template mechanism because of the
             // rendering synchronization of the page jump at start
 
+            BookLocation bookLocation = Navigator.BookLocation;
+
+            // Update the location in the BookPresenter
+            BookPresenter.BookLocation = bookLocation;
+
             InitialLocation initialLocation =
-                InitialLocation.GetDomLocation(navigator.DomLocation);
+                InitialLocation.GetDomLocation(bookLocation.DomLocation);
+
             TemplateController.UpdateInitialLocation(initialLocation);
 
             // Now reload the web browser

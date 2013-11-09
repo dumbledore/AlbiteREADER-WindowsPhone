@@ -1,6 +1,7 @@
 ﻿using Microsoft.Phone.Controls;
 using System;
 using System.Windows;
+using System.Windows.Navigation;
 
 namespace SvetlinAnkov.Albite.READER.View.Pages
 {
@@ -15,12 +16,18 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) { }
 
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
             // Get the book id from the query string
             bookId = int.Parse(NavigationContext.QueryString["id"]);
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            ReaderControl.PersistBook();
+            base.OnNavigatingFrom(e);
         }
 
         private void ReaderControl_Loaded(object sender, RoutedEventArgs e)

@@ -40,9 +40,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 return;
             }
 
-            // Persist the book and release the files
-            controller.CloseBook();
-
             // Call LoadingCompleted so to hide the popup
             // and cancel the animation.
             controller.LoadingCompleted();
@@ -147,15 +144,23 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         public void OpenBook(int bookId)
         {
             threadCheck.Check();
+            if (controller == null)
+            {
+                return;
+            }
 
             controller.OpenBook(bookId);
         }
 
-        public void CloseBook()
+        public void PersistBook()
         {
             threadCheck.Check();
+            if (controller == null)
+            {
+                return;
+            }
 
-            controller.CloseBook();
+            controller.PersistBook();
         }
         #endregion
 
@@ -231,9 +236,22 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 engine.Navigator.BookLocation = bookPresenter.BookLocation;
             }
 
-            public void CloseBook()
+            public void PersistBook()
             {
-                bookPresenter.BookLocation = Engine.Navigator.BookLocation;
+                if (!IsLoading)
+                {
+                    // Can't get a book location when loading, so:
+                    // 1. If it's the first load, nothing to persist anyway
+                    // 2. Persist the location elsewhere before calling ReloadBrowser()
+                    // True, real jumps would actually miss the latest location,
+                    // e.g. when trying to persist while loading the next chapter,
+                    // but that's the only problem with this approach and I don't
+                    // see a better solution.
+                    // It should also work when tombstoning the app.
+                    bookPresenter.BookLocation = Engine.Navigator.BookLocation;
+                }
+
+                bookPresenter.Persist();
             }
 
             public string SendMessage(string message)
