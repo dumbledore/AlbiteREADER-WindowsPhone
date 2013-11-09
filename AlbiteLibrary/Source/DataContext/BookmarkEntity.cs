@@ -4,14 +4,14 @@ using System.Data.Linq.Mapping;
 
 namespace SvetlinAnkov.Albite.BookLibrary.DataContext
 {
-    [Table(Name = "Notes")]
-    internal class NoteEntity : Entity
+    [Table(Name = "Bookmarks")]
+    internal class BookmarkEntity : Entity
     {
         // For DC
-        public NoteEntity() { }
+        public BookmarkEntity() { }
 
-        // When creating a new one through NoteManager
-        public NoteEntity(BookEntity bookEntity,
+        // When creating a new one through BookmarkManager
+        public BookmarkEntity(BookEntity bookEntity,
             BookLocation bookLocation, string text)
         {
             Book = bookEntity;

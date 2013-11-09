@@ -29,14 +29,14 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
         [Column]
         public string DomLocation { get; set; }
 
-        // Notes
-        private EntitySet<NoteEntity> notesSet = new EntitySet<NoteEntity>();
+        // Bookmarks
+        private EntitySet<BookmarkEntity> bookmarksSet = new EntitySet<BookmarkEntity>();
 
-        [Association(Storage = "notesSet", OtherKey = "bookId")]
-        public EntitySet<NoteEntity> Notes
+        [Association(Storage = "bookmarksSet", OtherKey = "bookId")]
+        public EntitySet<BookmarkEntity> Bookmarks
         {
-            get { return notesSet; }
-            set { notesSet.Assign(value); }
+            get { return bookmarksSet; }
+            set { bookmarksSet.Assign(value); }
         }
     }
 }

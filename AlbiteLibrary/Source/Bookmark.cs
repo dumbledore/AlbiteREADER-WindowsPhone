@@ -3,14 +3,14 @@ using SvetlinAnkov.Albite.BookLibrary.Location;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {
-    public class Note : LibraryEntity
+    public class Bookmark : LibraryEntity
     {
-        public NoteManager Manager { get; private set; }
+        public BookmarkManager Manager { get; private set; }
 
         public BookLocation BookLocation { get; private set; }
         public string Text { get; private set; }
 
-        internal Note(NoteManager manager, NoteEntity entity)
+        internal Bookmark(BookmarkManager manager, BookmarkEntity entity)
             : base(manager.Library, entity)
         {
             Manager = manager;

@@ -7,62 +7,62 @@ using System.Linq;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {
-    public class NoteManager : EntityManager<Note>
+    public class BookmarkManager : EntityManager<Bookmark>
     {
         public BookPresenter BookPresenter { get; private set; }
 
-        internal NoteManager(BookPresenter bookPresenter)
+        internal BookmarkManager(BookPresenter bookPresenter)
             : base(bookPresenter.Book.Library)
         {
             BookPresenter = bookPresenter;
         }
 
-        public Note Add(BookLocation location, string text)
+        public Bookmark Add(BookLocation location, string text)
         {
             using (LibraryDataContext dc = Library.GetDataContext())
             {
                 BookEntity bookEntity = getBookEntity(dc);
-                NoteEntity noteEntity = new NoteEntity(bookEntity, location, text);
-                bookEntity.Notes.Add(noteEntity);
+                BookmarkEntity bookmarkEntity = new BookmarkEntity(bookEntity, location, text);
+                bookEntity.Bookmarks.Add(bookmarkEntity);
                 dc.SubmitChanges();
-                return new Note(this, noteEntity);
+                return new Bookmark(this, bookmarkEntity);
             }
         }
 
-        public override void Remove(Note entity)
+        public override void Remove(Bookmark entity)
         {
             throw new NotImplementedException();
         }
 
-        public override Note this[int id]
+        public override Bookmark this[int id]
         {
             get
             {
                 using (LibraryDataContext dc = Library.GetDataContext())
                 {
-                    NoteEntity noteEntity = dc.Notes.Single(
+                    BookmarkEntity bookmarkEntity = dc.Bookmarks.Single(
                         n => n.MappedId == id && n.Book.MappedId == BookPresenter.Book.Id);
-                    return new Note(this, noteEntity);
+                    return new Bookmark(this, bookmarkEntity);
                 }
             }
         }
 
-        public override IList<Note> GetAll()
+        public override IList<Bookmark> GetAll()
         {
             using (LibraryDataContext dc = Library.GetDataContext())
             {
                 BookEntity bookEntity = getBookEntity(dc);
-                EntitySet<NoteEntity> noteSet = bookEntity.Notes;
+                EntitySet<BookmarkEntity> bookmarkSet = bookEntity.Bookmarks;
 
-                int count = noteSet.Count();
-                List<Note> notes = new List<Note>(count);
+                int count = bookmarkSet.Count();
+                List<Bookmark> bookmarks = new List<Bookmark>(count);
 
-                foreach (NoteEntity noteEntity in noteSet)
+                foreach (BookmarkEntity bookmarkEntity in bookmarkSet)
                 {
-                    notes.Add(new Note(this, noteEntity));
+                    bookmarks.Add(new Bookmark(this, bookmarkEntity));
                 }
 
-                return notes.ToArray();
+                return bookmarks.ToArray();
             }
         }
 
