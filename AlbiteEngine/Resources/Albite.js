@@ -1768,10 +1768,18 @@ Albite.Main = function(options) {
     // On some occasions, the CSS is not applied atomically, i.e.
     // some columns are created, but not all of them at the same time,
     // the effect being Albite.Pager reporting a lesser number of pages.
-    // There doesn't seem to be any certain way to fix this, looks more like
-    // a race condition. Practice showed that waiting for a render
-    // generally fixed this.
-    requestAnimationFrame(cssApplied);
+    // There doesn't seem to be any certain way to fix this.
+
+    // Current solution checks if there's only one page. At a minimum
+    // there should be 2 pages because of the left/right separators
+    // we've just added and their style forcing new pages
+    var bodyWidth = context.contentWindow.document.body.scrollWidth;
+    if (bodyWidth > context.width) {
+      cssApplied();
+    } else {
+      context.debug.log("Retrying: " + bodyWidth);
+      requestAnimationFrame(cssLoaded);
+    }
   }
 
   function cssApplied() {
