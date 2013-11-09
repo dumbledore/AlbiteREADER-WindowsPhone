@@ -233,7 +233,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
             public void CloseBook()
             {
-                // TODO: Book persistance
+                bookPresenter.BookLocation = Engine.Navigator.BookLocation;
             }
 
             public string SendMessage(string message)
