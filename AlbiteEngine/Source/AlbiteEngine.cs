@@ -143,14 +143,20 @@ namespace SvetlinAnkov.Albite.Engine
             UpdateDimensions();
         }
 
-        internal void SetChapter(string fileUrl, InitialLocation initialLocation)
+        /// <summary>
+        /// Called before switching chapters
+        /// </summary>
+        internal void TryPersist()
         {
             if (canGetDomLocation)
             {
                 // Cache the location
                 BookPresenter.BookLocation = Navigator.BookLocation;
             }
+        }
 
+        internal void SetChapter(string fileUrl, InitialLocation initialLocation)
+        {
             // Set up main.xhtml
             TemplateController.UpdateChapter(
                 initialLocation,

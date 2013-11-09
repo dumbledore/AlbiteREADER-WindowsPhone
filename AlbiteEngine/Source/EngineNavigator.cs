@@ -60,6 +60,8 @@ namespace SvetlinAnkov.Albite.Engine
                 return;
             }
 
+            engine.TryPersist();
+
             current = current.Previous;
             engine.SetChapter(current.Url,
                 InitialLocation.GetLastLocation());
@@ -72,6 +74,8 @@ namespace SvetlinAnkov.Albite.Engine
                 Log.W(tag, "It's the last chapter already");
                 return;
             }
+
+            engine.TryPersist();
 
             current = current.Next;
             engine.SetChapter(current.Url,
@@ -97,6 +101,8 @@ namespace SvetlinAnkov.Albite.Engine
                 }
                 else
                 {
+                    engine.TryPersist();
+
                     current = value.SpineElement;
                     engine.SetChapter(
                         value.SpineElement.Url,
