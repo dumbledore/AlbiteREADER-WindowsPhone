@@ -59,6 +59,11 @@
                         <TextBlock Text="Speech Synthesis Test" />
                     </StackPanel>
                 </Button>
+                <Button x:Name="PaginationTestButton" Click="PaginationTestButton_Click">
+                    <StackPanel>
+                        <TextBlock Text="Pagination Test" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

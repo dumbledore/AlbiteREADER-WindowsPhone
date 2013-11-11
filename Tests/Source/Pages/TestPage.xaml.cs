@@ -69,5 +69,10 @@ namespace SvetlinAnkov.Albite.Tests.Pages
         {
             new SpeechSynthesisTest().Test();
         }
+
+        private void PaginationTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            new PaginationTest("Test/epub/aliceDynamic.epub", 3, 16, NavigationService).Test();
+        }
     }
 }

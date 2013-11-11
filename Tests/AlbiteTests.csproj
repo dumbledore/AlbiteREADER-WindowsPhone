@@ -109,6 +109,10 @@
     </Compile>
     <Compile Include="Source\EpubTests.cs" />
     <Compile Include="Source\GCTests.cs" />
+    <Compile Include="Source\Pages\PaginationTestPage.xaml.cs">
+      <DependentUpon>PaginationTestPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\PaginationTest.cs" />
     <Compile Include="Source\SpeechSynthesisTest.cs" />
     <Compile Include="Source\CoreTests.cs" />
     <Compile Include="Source\ReaderPageTest.cs" />
@@ -172,6 +176,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Source\Pages\BooksTestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Pages\PaginationTestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
