@@ -1770,11 +1770,25 @@ Albite.Main = function(options) {
     // Current solution checks if there's only one page. At a minimum
     // there should be 2 pages because of the left/right separators
     // we've just added and their style forcing new pages
+
+    // Note: This is not a fool-proof method because columnization
+    // may be done on *more than one step*, i.e. the following check
+    // might succeed *without* columnization beeing fully completed.
+
+    // It tries to read the scrollWidth which should cause a reflow
+    // and wait for the most recent value. As columninzation can
+    // happend on multiple successions (i.e. trigger multiple reflows)
+    // this is not a winner, but at least makes certain that the initial
+    // reflow was triggered.
     var bodyWidth = context.contentWindow.document.body.scrollWidth;
     if (bodyWidth > context.width) {
-      cssApplied();
+      // Finally, scheduling for some milliseconds will make it even less
+      // likely that the columnization is not complete, because of the
+      // fixed wait interval (rather than waiting for the next paint).
+      setTimeout(cssApplied, 250);
     } else {
-      context.debug.log("Retrying: " + bodyWidth);
+      // Scheduling for the next paint makes it more likely that
+      // the reflow would've finished
       requestAnimationFrame(cssLoaded);
     }
   }
