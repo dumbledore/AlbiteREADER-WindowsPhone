@@ -378,11 +378,8 @@ Albite.Pager = function(context) {
 
         // Get the bounding box
         var box = range.getBoundingClientRect();
-        if (box.height > 0 && box.left < pageWidth) {
-          // It's not a dummy text node and
-          // it's on or before the current page.
-          // Note that the box dimensions are *relative*
-          // to the current scroll.
+        if (box.height > 0) {
+          // It's not a dummy text node
           content.push(new PageContent(node, box));
           return NodeFilter.FILTER_ACCEPT;
         }
