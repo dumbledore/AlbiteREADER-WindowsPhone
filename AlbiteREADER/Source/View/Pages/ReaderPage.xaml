@@ -22,7 +22,7 @@
                 ReaderError="ReaderControl_ReaderError"
                 ContentLoadingStarted="ReaderControl_ContentLoadingStarted"
                 ContentLoadingCompleted="ReaderControl_ContentLoadingCompleted" />
-        <albite:WaitControl x:Name="WaitControl" IsIndeterminate="True"/>
+        <albite:WaitControl x:Name="WaitControl" IsIndeterminate="True" Text="Preparing content..." />
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
