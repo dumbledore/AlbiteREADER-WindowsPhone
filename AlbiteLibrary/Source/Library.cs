@@ -34,10 +34,10 @@ namespace SvetlinAnkov.Albite.BookLibrary
         /// Creates a new LibraryDataContext
         /// </summary>
         /// <returns>Returns a new LibraryDataContext</returns>
-        internal LibraryDataContext GetDataContext()
+        internal LibraryDataContext GetDataContext(bool readOnly = false)
         {
             LibraryDataContext db
-                = new LibraryDataContext(dbConnectionString);
+                = new LibraryDataContext(dbConnectionString, readOnly);
 
             if (!db.DatabaseExists())
             {

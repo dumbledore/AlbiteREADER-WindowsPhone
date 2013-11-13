@@ -138,7 +138,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
         {
             get
             {
-                using (LibraryDataContext dc = Library.GetDataContext())
+                using (LibraryDataContext dc = Library.GetDataContext(true))
                 {
                     return new Book(this, GetEntity(dc, id));
                 }
@@ -147,7 +147,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         public override IList<Book> GetAll()
         {
-            using (LibraryDataContext dc = Library.GetDataContext())
+            using (LibraryDataContext dc = Library.GetDataContext(true))
             {
                 int count = dc.Books.Count();
                 List<Book> books = new List<Book>(count);

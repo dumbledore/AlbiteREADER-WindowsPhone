@@ -38,7 +38,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
         {
             get
             {
-                using (LibraryDataContext dc = Library.GetDataContext())
+                using (LibraryDataContext dc = Library.GetDataContext(true))
                 {
                     BookmarkEntity bookmarkEntity = dc.Bookmarks.Single(
                         n => n.MappedId == id && n.Book.MappedId == BookPresenter.Book.Id);
@@ -49,7 +49,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         public override IList<Bookmark> GetAll()
         {
-            using (LibraryDataContext dc = Library.GetDataContext())
+            using (LibraryDataContext dc = Library.GetDataContext(true))
             {
                 BookEntity bookEntity = getBookEntity(dc);
                 EntitySet<BookmarkEntity> bookmarkSet = bookEntity.Bookmarks;

@@ -68,7 +68,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         private BookLocation prepareLocation()
         {
-            using (LibraryDataContext dc = Book.Library.GetDataContext())
+            using (LibraryDataContext dc = Book.Library.GetDataContext(true))
             {
                 BookEntity bookEntity = getEntity(dc);
 

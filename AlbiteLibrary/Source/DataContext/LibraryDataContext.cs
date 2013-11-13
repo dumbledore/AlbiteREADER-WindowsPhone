@@ -7,7 +7,10 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
         public Table<BookEntity> Books;
         public Table<BookmarkEntity> Bookmarks;
 
-        public LibraryDataContext(string fileOrConnection)
-            : base(fileOrConnection) { }
+        public LibraryDataContext(string fileOrConnection, bool readOnly)
+            : base(fileOrConnection)
+        {
+            ObjectTrackingEnabled = !readOnly;
+        }
     }
 }
