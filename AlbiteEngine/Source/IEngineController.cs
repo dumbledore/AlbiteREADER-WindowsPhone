@@ -33,9 +33,9 @@ namespace SvetlinAnkov.Albite.Engine
         string SendMessage(string message);
 
         /// <summary>
-        /// Indicates if the control is showing a loading screen
+        /// Inform the control that loading has started
         /// </summary>
-        bool IsLoading { get; }
+        void LoadingStarted();
 
         /// <summary>
         /// Inform the control that loading has completed

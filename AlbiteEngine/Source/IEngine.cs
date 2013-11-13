@@ -41,6 +41,11 @@ namespace SvetlinAnkov.Albite.Engine
         IEngineNavigator Navigator { get; }
 
         /// <summary>
+        /// Indicates if the client has loaded and is safe to communicate with it
+        /// </summary>
+        bool IsLoading { get; }
+
+        /// <summary>
         /// Process a message from the client.
         /// </summary>
         /// <param name="message">JSON-encoded message from the JS client</param>

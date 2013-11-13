@@ -26,6 +26,8 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
+        public bool IsLoading { get; private set; }
+
         internal IEngineController EngineController { get; private set; }
         internal EngineMessenger Messenger { get; private set; }
 
@@ -86,7 +88,7 @@ namespace SvetlinAnkov.Albite.Engine
             int newWidth = EngineController.Width;
             int newHeight = EngineController.Height;
 
-            if (EngineController.IsLoading)
+            if (IsLoading)
             {
                 Log.D(tag, "Can't update the dimensions while loading");
                 return;
@@ -123,7 +125,7 @@ namespace SvetlinAnkov.Albite.Engine
         /// </summary>
         protected void EnsureValidState()
         {
-            if (EngineController.IsLoading)
+            if (IsLoading)
             {
                 throw new InvalidOperationException("Client not loaded yet");
             }
@@ -135,6 +137,7 @@ namespace SvetlinAnkov.Albite.Engine
 
             // Inform the EngineController that it's ready
             EngineController.LoadingCompleted();
+            IsLoading = false;
 
             // We now have a working client
             canGetDomLocation = true;
@@ -163,7 +166,7 @@ namespace SvetlinAnkov.Albite.Engine
                 Navigator.IsFirstChapter, Navigator.IsLastChapter,
                 Path.Combine("/" + BookPresenter.RelativeContentPath, fileUrl));
 
-            EngineController.ReloadBrowser();
+            ReloadBrowser();
         }
 
         /// <summary>
@@ -185,6 +188,13 @@ namespace SvetlinAnkov.Albite.Engine
             TemplateController.UpdateInitialLocation(initialLocation);
 
             // Now reload the web browser
+            ReloadBrowser();
+        }
+
+        private void ReloadBrowser()
+        {
+            IsLoading = true;
+            EngineController.LoadingStarted();
             EngineController.ReloadBrowser();
         }
     }

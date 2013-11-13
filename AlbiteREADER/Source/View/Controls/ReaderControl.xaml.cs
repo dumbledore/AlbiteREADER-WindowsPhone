@@ -91,8 +91,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 e.Cancel = true;
                 return;
             }
-
-            controller.LoadingStarted();
         }
 
         private void WebBrowser_NavigationFailed(object sender, System.Windows.Navigation.NavigationFailedEventArgs e)
@@ -204,7 +202,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
             public void ReloadBrowser()
             {
-                LoadingStarted();
                 control.WebBrowser.Navigate(Engine.Uri);
             }
 
@@ -240,7 +237,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
             public void PersistBook()
             {
-                if (!IsLoading)
+                if (!Engine.IsLoading)
                 {
                     // Can't get a book location when loading, so:
                     // 1. If it's the first load, nothing to persist anyway
@@ -260,7 +257,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             {
                 Log.D(tag, "SendMessage: " + message);
 
-                if (IsLoading)
+                if (Engine.IsLoading)
                 {
                     Log.D(tag, "Can't send command. Still loading.");
                     return null;
@@ -272,7 +269,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
             public void LoadingStarted()
             {
-                IsLoading = true;
                 if (control.ContentLoadingStarted != null)
                 {
                     control.ContentLoadingStarted(control, EventArgs.Empty);
@@ -285,7 +281,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 {
                     control.ContentLoadingCompleted(control, EventArgs.Empty);
                 }
-                IsLoading = false;
             }
 
             public void OnError(string message)
