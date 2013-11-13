@@ -293,11 +293,37 @@ Albite.Pager = function(context) {
       }
 
       var range = doc.createRange();
+      var box;
+      var point;
 
+      // Try the usual way: if there was text on the page,
+      // it would've found the right textOffset.
       range.setStart(node, offset);
       range.setEnd(node, offset);
-      var box = range.getBoundingClientRect();
-      return getPageForPoint(scroller.getPosition() + box.left);
+      box = range.getBoundingClientRect();
+      point = box.left;
+
+      if (box.height == 0) {
+        // There wasn't text on the page, so it got either the text node on
+        // the previous page or on the next page.
+
+        // Try searching left to right, i.e. the text node was on the
+        // previous page
+        range.setStart(node, offset);
+        range.setEnd(node, node.length > 0 ? node.length - 1 : 0);
+        box = range.getBoundingClientRect();
+        point = box.left;
+
+        if (box.height == 0) {
+          // Try searching right to left, i.e. the text node was on the
+          // next page
+          range.setStart(node, 0);
+          range.setEnd(node, offset);
+          box = range.getBoundingClientRect();
+          point = box.right;
+        }
+      }
+      return getPageForPoint(scroller.getPosition() + point);
     } catch(e) {
       // Something is wrong with the . Default ot 1
       return 1;
