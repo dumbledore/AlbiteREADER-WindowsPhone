@@ -5,5 +5,6 @@
         void OnError(string message);
         void OnContentLoadingStarted();
         void OnContentLoadingCompleted();
+        int ApplicationBarHeight { get; }
     }
 }

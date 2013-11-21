@@ -159,6 +159,11 @@ namespace SvetlinAnkov.Albite.Tests.Pages
             {
                 Log.E(tag, "ReaderError: " + message);
             }
+
+            public int ApplicationBarHeight
+            {
+                get { return 0; }
+            }
         }
         #endregion
     }

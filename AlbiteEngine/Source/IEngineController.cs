@@ -16,6 +16,11 @@ namespace SvetlinAnkov.Albite.Engine
         int Height { get; }
 
         /// <summary>
+        /// The padding taken by the ApplicationBar (if any).
+        /// </summary>
+        int ApplicationBarHeight { get; }
+
+        /// <summary>
         /// Base path of the browser
         /// </summary>
         string BasePath { get; set; }

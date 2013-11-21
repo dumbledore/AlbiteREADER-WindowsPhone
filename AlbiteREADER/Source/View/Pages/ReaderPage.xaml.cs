@@ -87,6 +87,15 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 // Show the bar if adequate
                 page.ApplicationBar.IsVisible = page.shouldShowApplicationBar(page.Orientation);
             }
+
+            public int ApplicationBarHeight
+            {
+                get
+                {
+                    return page.shouldShowApplicationBar(page.Orientation)
+                        ? (int) page.ApplicationBar.MiniSize : 0;
+                }
+            }
         }
     }
 #endregion

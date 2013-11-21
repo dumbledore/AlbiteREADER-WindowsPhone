@@ -51,7 +51,8 @@ namespace SvetlinAnkov.Albite.Engine
             // Prepare the template controller
             TemplateController = new EngineTemplateController(
                 Settings, BookPresenter.EnginePath,
-                EngineController.Width, EngineController.Height);
+                EngineController.Width, EngineController.Height,
+                EngineController.ApplicationBarHeight);
 
             // Create the messenger for the engine
             Messenger = new EngineMessenger(
@@ -102,7 +103,7 @@ namespace SvetlinAnkov.Albite.Engine
             }
 
             // Update the templates
-            TemplateController.UpdateDimensions(newWidth, newHeight);
+            TemplateController.UpdateDimensions(newWidth, newHeight, EngineController.ApplicationBarHeight);
 
             // Reload to the current DomLocation
             Reload();

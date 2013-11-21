@@ -290,6 +290,21 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                     control.Observer.OnError(message);
                 }
             }
+
+            public int ApplicationBarHeight
+            {
+                get
+                {
+                    if (control.Observer != null)
+                    {
+                        return control.Observer.ApplicationBarHeight;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            }
         }
         #endregion
     }

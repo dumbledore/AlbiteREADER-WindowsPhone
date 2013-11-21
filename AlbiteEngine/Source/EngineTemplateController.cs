@@ -21,7 +21,8 @@ namespace SvetlinAnkov.Albite.Engine
         private ContentStylesTemplate contentStylesTemplate;
 
         public EngineTemplateController(Settings settings,
-            string enginePath, int initialWidth, int initialHeight)
+            string enginePath, int initialWidth, int initialHeight,
+            int initialApplicationBarHeight)
         {
             Settings = settings;
 
@@ -46,7 +47,7 @@ namespace SvetlinAnkov.Albite.Engine
             contentStylesTemplate = new ContentStylesTemplate(enginePath);
 
             // Set up the dimensions
-            UpdateDimensions(initialWidth, initialHeight);
+            UpdateDimensions(initialWidth, initialHeight, initialApplicationBarHeight);
 
             // Set up the settings
             UpdateSettings();
@@ -71,7 +72,7 @@ namespace SvetlinAnkov.Albite.Engine
             mainPageTemplate.SaveToStorage();
         }
 
-        public void UpdateDimensions(int width, int height)
+        public void UpdateDimensions(int width, int height, int applicationBarHeight)
         {
             Log.D(tag, string.Format(
                 "UpdateDimensions: {0}x{1}", width, height));
@@ -92,7 +93,7 @@ namespace SvetlinAnkov.Albite.Engine
             int marginBottom = (margins.Bottom * viewportReference) / 100;
 
             contentStylesTemplate.MarginTop = marginTop;
-            contentStylesTemplate.MarginBottom = marginBottom;
+            contentStylesTemplate.MarginBottom = marginBottom + applicationBarHeight;
             contentStylesTemplate.MarginLeft = marginLeft;
             contentStylesTemplate.MarginRight = marginRight;
 
