@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
+using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
 using System.Windows;
 using System.Windows.Navigation;
@@ -10,6 +11,8 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         public ReaderPage()
         {
             InitializeComponent();
+
+            ReaderControl.Observer = new Observer(this);
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) { }
@@ -29,23 +32,33 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             ReaderControl.OpenBook(bookId);
         }
 
-        private void ReaderControl_ReaderError(object sender, EventArgs e)
+        private class Observer : IReaderControlObserver
         {
-            MessageBox.Show("There was a problem with this book");
+            private ReaderPage page;
 
-            // There MUST be a previous entry, otherwise it wouldn't
-            // make sense
-            NavigationService.GoBack();
-        }
+            public Observer(ReaderPage page)
+            {
+                this.page = page;
+            }
 
-        private void ReaderControl_ContentLoadingStarted(object sender, EventArgs e)
-        {
-            WaitControl.Start();
-        }
+            public void OnError(string message)
+            {
+                MessageBox.Show("There was a problem with this book:\n" + message);
 
-        private void ReaderControl_ContentLoadingCompleted(object sender, EventArgs e)
-        {
-            WaitControl.Finish();
+                // There MUST be a previous entry, otherwise it wouldn't
+                // make sense
+                page.NavigationService.GoBack();
+            }
+
+            public void OnContentLoadingStarted()
+            {
+                page.WaitControl.Start();
+            }
+
+            public void OnContentLoadingCompleted()
+            {
+                page.WaitControl.Finish();
+            }
         }
     }
 }

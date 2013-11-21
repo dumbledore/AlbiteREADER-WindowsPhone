@@ -104,6 +104,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\AppUtils.cs" />
+    <Compile Include="Source\View\Controls\IReaderControlObserver.cs" />
     <Compile Include="Source\View\Controls\ReaderControl.xaml.cs">
       <DependentUpon>ReaderControl.xaml</DependentUpon>
     </Compile>

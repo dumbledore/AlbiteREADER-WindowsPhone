@@ -12,9 +12,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
     {
         private static readonly string tag = "ReaderControl";
 
-        public event EventHandler ReaderError;
-        public event EventHandler ContentLoadingStarted;
-        public event EventHandler ContentLoadingCompleted;
+        public IReaderControlObserver Observer { get; set; }
 
         private EngineController controller;
 
@@ -269,17 +267,17 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
             public void LoadingStarted()
             {
-                if (control.ContentLoadingStarted != null)
+                if (control.Observer != null)
                 {
-                    control.ContentLoadingStarted(control, EventArgs.Empty);
+                    control.Observer.OnContentLoadingStarted();
                 }
             }
 
             public void LoadingCompleted()
             {
-                if (control.ContentLoadingCompleted != null)
+                if (control.Observer != null)
                 {
-                    control.ContentLoadingCompleted(control, EventArgs.Empty);
+                    control.Observer.OnContentLoadingCompleted();
                 }
             }
 
@@ -287,9 +285,9 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             {
                 Log.E(tag, "ReaderError: " + message);
 
-                if (control.ReaderError != null)
+                if (control.Observer != null)
                 {
-                    control.ReaderError(control, EventArgs.Empty);
+                    control.Observer.OnError(message);
                 }
             }
         }
