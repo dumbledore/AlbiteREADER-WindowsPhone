@@ -7,22 +7,12 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 {
     public partial class ReaderPage : PhoneApplicationPage
     {
-        private int bookId;
-
         public ReaderPage()
         {
             InitializeComponent();
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) { }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-
-            // Get the book id from the query string
-            bookId = int.Parse(NavigationContext.QueryString["id"]);
-        }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
@@ -32,6 +22,10 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void ReaderControl_Loaded(object sender, RoutedEventArgs e)
         {
+            // Get the book id from the query string
+            int bookId = int.Parse(NavigationContext.QueryString["id"]);
+
+            // Now, open the book in the control
             ReaderControl.OpenBook(bookId);
         }
 
