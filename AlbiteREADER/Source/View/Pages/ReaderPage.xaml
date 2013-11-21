@@ -22,8 +22,8 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True" Mode="Default"
-            BackgroundColor="{StaticResource PhoneBackgroundColor}" Opacity="0.9">
+        <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True" Mode="Minimized"
+            BackgroundColor="{StaticResource PhoneBackgroundColor}" Opacity="0.9" StateChanged="ApplicationBar_StateChanged">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
             <shell:ApplicationBar.MenuItems>

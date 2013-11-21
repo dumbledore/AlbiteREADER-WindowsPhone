@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
 using System.Windows;
@@ -14,6 +15,24 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
             ReaderControl.Observer = new Observer(this);
         }
+
+#region ApplicationBar & SystemTray
+        private void ApplicationBar_StateChanged(object sender, ApplicationBarStateChangedEventArgs e)
+        {
+            SystemTray.IsVisible = e.IsMenuVisible;
+        }
+
+        private void updateApplicationBarVisibility(PageOrientation orientation)
+        {
+            ApplicationBar.IsVisible = orientation == PageOrientation.PortraitUp;
+        }
+
+        protected override void OnOrientationChanged(OrientationChangedEventArgs e)
+        {
+            updateApplicationBarVisibility(e.Orientation);
+            base.OnOrientationChanged(e);
+        }
+#endregion
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) { }
 
@@ -55,12 +74,18 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
             public void OnContentLoadingStarted()
             {
+                // Hide the bar when loading
+                page.ApplicationBar.IsVisible = false;
+
                 page.WaitControl.Start();
             }
 
             public void OnContentLoadingCompleted()
             {
                 page.WaitControl.Finish();
+
+                // Show the bar if adequate
+                page.updateApplicationBarVisibility(page.Orientation);
             }
         }
     }
