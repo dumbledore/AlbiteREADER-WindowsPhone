@@ -17,6 +17,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) { }
 
+#region Open/persist book on load/navigating from
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             ReaderControl.PersistBook();
@@ -31,7 +32,9 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Now, open the book in the control
             ReaderControl.OpenBook(bookId);
         }
+#endregion
 
+#region IReaderContenObserver
         private class Observer : IReaderControlObserver
         {
             private ReaderPage page;
@@ -61,4 +64,5 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             }
         }
     }
+#endregion
 }
