@@ -22,14 +22,14 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             SystemTray.IsVisible = e.IsMenuVisible;
         }
 
-        private void updateApplicationBarVisibility(PageOrientation orientation)
+        private bool shouldShowApplicationBar(PageOrientation orientation)
         {
-            ApplicationBar.IsVisible = orientation == PageOrientation.PortraitUp;
+            return orientation == PageOrientation.PortraitUp;
         }
 
         protected override void OnOrientationChanged(OrientationChangedEventArgs e)
         {
-            updateApplicationBarVisibility(e.Orientation);
+            ApplicationBar.IsVisible = shouldShowApplicationBar(e.Orientation);
             base.OnOrientationChanged(e);
         }
 #endregion
@@ -85,7 +85,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 page.WaitControl.Finish();
 
                 // Show the bar if adequate
-                page.updateApplicationBarVisibility(page.Orientation);
+                page.ApplicationBar.IsVisible = page.shouldShowApplicationBar(page.Orientation);
             }
         }
     }
