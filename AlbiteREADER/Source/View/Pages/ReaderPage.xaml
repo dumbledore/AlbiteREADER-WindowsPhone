@@ -24,11 +24,14 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True" Mode="Minimized"
             BackgroundColor="{StaticResource PhoneBackgroundColor}" Opacity="0.9" StateChanged="ApplicationBar_StateChanged">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/back.png" Text="Back" x:Name="BackButton" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/feature.settings.png" Text="Settings" x:Name="SettingsButton"/>
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/gotoslide.png" Text="Index" x:Name="IndexButton"/>
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/bookmark.add.png" Text="Bookmark" x:Name="BookmarkButton"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+                <shell:ApplicationBarMenuItem Text="Article on Wikipedia" x:Name="WikipediaButton"/>
+                <shell:ApplicationBarMenuItem Text="Share" x:Name="ShareButton"/>
+                <shell:ApplicationBarMenuItem Text="Pin to Start" x:Name="PinButton"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
