@@ -105,7 +105,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 page.ApplicationBar.IsVisible = page.shouldShowApplicationBar(page.Orientation);
             }
 
-            public void OnNavigationRequested(string url)
+            public bool OnNavigationRequested(string url)
             {
                 // Is it in the book or external?
                 Uri uri;
@@ -113,25 +113,48 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 if (isAbsolute)
                 {
                     // external
-                    if (MessageBox.Show(
-                        "Would you like to open this link the web browser?",
-                        "External link",
-                        MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    if (uri.Scheme == Uri.UriSchemeHttp
+                        || uri.Scheme == Uri.UriSchemeHttps)
                     {
-                        // Launch the web browser
-                        WebBrowserTask task = new WebBrowserTask();
-                        task.Uri = uri;
-                        task.Show();
+                        // A web page
+                        if (MessageBox.Show(
+                            "Would you like to open this link the web browser?",
+                            "External link",
+                            MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                        {
+                            // Launch the web browser
+                            WebBrowserTask task = new WebBrowserTask();
+                            task.Uri = uri;
+                            task.Show();
+                        }
                     }
+                    else if (uri.Scheme == Uri.UriSchemeMailto)
+                    {
+                        string mailAddress = string.Format("{0}@{1}", uri.UserInfo, uri.Host);
+
+                        // An email address
+                        if (MessageBox.Show(
+                            "Would you like to compose an email to " + mailAddress + "?",
+                            "E-mail address",
+                            MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                        {
+                            EmailComposeTask task = new EmailComposeTask();
+                            task.To = mailAddress;
+                            task.Show();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "This scheme is not supported: " + uri.Scheme,
+                            "Unknown scheme",
+                            MessageBoxButton.OK);
+                    }
+                    return true;
                 }
-                else
-                {
-                    // in the book
-                    // uri = new Uri(url, UriKind.Relative);
-                    // TODO
-                    // 1. Check if it is valid
-                    // 2. Open it
-                }
+
+                // The UI doesn't handle internal jumps
+                return false;
             }
 
             public int ApplicationBarHeight

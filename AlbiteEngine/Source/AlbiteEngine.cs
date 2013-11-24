@@ -149,7 +149,17 @@ namespace SvetlinAnkov.Albite.Engine
 
         internal void OnNavigationRequested(string url)
         {
-            EngineController.NavigationRequested(url);
+            bool handled = EngineController.NavigationRequested(url);
+            if (!handled)
+            {
+                Uri uri;
+                bool isAbsolute = Uri.TryCreate(url, UriKind.Absolute, out uri);
+                if (!isAbsolute)
+                {
+                    // Handling only internal links
+                    uri = new Uri(url, UriKind.Relative);
+                }
+            }
         }
 
         /// <summary>

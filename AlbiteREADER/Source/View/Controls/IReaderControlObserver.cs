@@ -5,7 +5,7 @@
         void OnError(string message);
         void OnContentLoadingStarted();
         void OnContentLoadingCompleted();
-        void OnNavigationRequested(string url);
+        bool OnNavigationRequested(string url);
         int ApplicationBarHeight { get; }
     }
 }

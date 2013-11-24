@@ -52,7 +52,9 @@ namespace SvetlinAnkov.Albite.Engine
         /// to navigate.
         /// </summary>
         /// <param name="url">Internal or external URL</param>
-        void NavigationRequested(string url);
+        /// <returns>Returns true if the navigation was handled by the control,
+        /// e.g. in cases of external links</returns>
+        bool NavigationRequested(string url);
 
         /// <summary>
         /// Inform the control in case of an error.
