@@ -48,6 +48,13 @@ namespace SvetlinAnkov.Albite.Engine
         void LoadingCompleted();
 
         /// <summary>
+        /// Inform the control that the client has requested
+        /// to navigate.
+        /// </summary>
+        /// <param name="url">Internal or external URL</param>
+        void NavigationRequested(string url);
+
+        /// <summary>
         /// Inform the control in case of an error.
         /// E.g., this might happen if the data from the client is
         /// malformed, or if the client has generated an error itself.

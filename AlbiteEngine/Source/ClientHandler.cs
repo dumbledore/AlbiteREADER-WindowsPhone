@@ -32,5 +32,10 @@ namespace SvetlinAnkov.Albite.Engine
         {
             engine.Navigator.GoToNextChapter();
         }
+
+        public void ClientNavigationRequest(string url)
+        {
+            engine.OnNavigationRequested(url);
+        }
     }
 }

@@ -270,6 +270,14 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 }
             }
 
+            public void NavigationRequested(string url)
+            {
+                if (control.Observer != null)
+                {
+                    control.Observer.OnNavigationRequested(url);
+                }
+            }
+
             public void OnError(string message)
             {
                 Log.E(tag, "ReaderError: " + message);

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.READER.View.Controls;
+using System;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -101,6 +103,35 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
                 // Show the bar if adequate
                 page.ApplicationBar.IsVisible = page.shouldShowApplicationBar(page.Orientation);
+            }
+
+            public void OnNavigationRequested(string url)
+            {
+                // Is it in the book or external?
+                Uri uri;
+                bool isAbsolute = Uri.TryCreate(url, UriKind.Absolute, out uri);
+                if (isAbsolute)
+                {
+                    // external
+                    if (MessageBox.Show(
+                        "Would you like to open this link the web browser?",
+                        "External link",
+                        MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        // Launch the web browser
+                        WebBrowserTask task = new WebBrowserTask();
+                        task.Uri = uri;
+                        task.Show();
+                    }
+                }
+                else
+                {
+                    // in the book
+                    // uri = new Uri(url, UriKind.Relative);
+                    // TODO
+                    // 1. Check if it is valid
+                    // 2. Open it
+                }
             }
 
             public int ApplicationBarHeight

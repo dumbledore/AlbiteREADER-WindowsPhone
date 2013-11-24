@@ -155,6 +155,11 @@ namespace SvetlinAnkov.Albite.Tests.Pages
                 page.clientLoaded();
             }
 
+            public void NavigationRequested(string url)
+            {
+                Log.D(tag, "Navigation: " + url);
+            }
+
             public void OnError(string message)
             {
                 Log.E(tag, "ReaderError: " + message);

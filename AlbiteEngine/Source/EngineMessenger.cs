@@ -276,7 +276,7 @@ namespace SvetlinAnkov.Albite.Engine
             public override void Callback(IClientHandler handler)
             {
                 //TODO
-                Log.D(tag, string.Format("navigate(url={0})", Url));
+                handler.ClientNavigationRequest(Url);
             }
         }
 
@@ -330,6 +330,7 @@ namespace SvetlinAnkov.Albite.Engine
             void ClientLoaded(int page, int pageCount);
             void GoToPreviousChapter();
             void GoToNextChapter();
+            void ClientNavigationRequest(string url);
         }
     }
 }

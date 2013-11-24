@@ -147,6 +147,11 @@ namespace SvetlinAnkov.Albite.Engine
             UpdateDimensions();
         }
 
+        internal void OnNavigationRequested(string url)
+        {
+            EngineController.NavigationRequested(url);
+        }
+
         /// <summary>
         /// Called before switching chapters
         /// </summary>
