@@ -1354,8 +1354,10 @@ Albite.PresentationController = function(context) {
     } else if (pageWidth - pageTapWidth <= x) {
       scrollToPage(PageType.next, tapSpeed);
     } else {
+      /* Not used for now
       // Notify the host
       context.host.toggleFullscreen();
+      */
     }
   };
 
@@ -1371,6 +1373,7 @@ Albite.PresentationController = function(context) {
   }
 
   gestureHandler.onHold = function(x, y) {
+    /* Not used for now
     if (animation.isRunning()) {
       return;
     }
@@ -1391,6 +1394,7 @@ Albite.PresentationController = function(context) {
 
     // Notify the host
     context.host.contextMenu(options);
+    */
   };
 
   function processKey(evt) {
