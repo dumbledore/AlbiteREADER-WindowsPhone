@@ -4,16 +4,16 @@ namespace SvetlinAnkov.Albite.Engine
 {
     internal class ClientNotifier : IClientNotifier
     {
-        private readonly IEngineController controller;
+        private readonly IEnginePresenter presenter;
 
-        public ClientNotifier(IEngineController controller)
+        public ClientNotifier(IEnginePresenter presenter)
         {
-            this.controller = controller;
+            this.presenter = presenter;
         }
 
         public string NotifyClient(string message)
         {
-            return controller.SendMessage(message);
+            return presenter.SendMessage(message);
         }
     }
 }

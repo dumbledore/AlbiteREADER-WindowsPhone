@@ -3,7 +3,7 @@ using System;
 
 namespace SvetlinAnkov.Albite.Engine
 {
-    public interface IEngineController
+    public interface IEnginePresenter
     {
         /// <summary>
         /// The width of the viewport of the control

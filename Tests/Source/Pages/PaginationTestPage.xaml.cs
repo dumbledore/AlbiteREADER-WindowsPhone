@@ -25,7 +25,7 @@ namespace SvetlinAnkov.Albite.Tests.Pages
         }
 
         private static readonly string tag = "PaginationTestPage";
-        private EngineController controller;
+        private EnginePresenter presenter;
         private int chapterNumber;
         private int expectedPageCount;
 
@@ -37,7 +37,7 @@ namespace SvetlinAnkov.Albite.Tests.Pages
 
         private void WebBrowser_ScriptNotify(object sender, NotifyEventArgs e)
         {
-            controller.Engine.ReceiveMessage(e.Value);
+            presenter.Engine.ReceiveMessage(e.Value);
         }
 
         private void runTest()
@@ -52,21 +52,21 @@ namespace SvetlinAnkov.Albite.Tests.Pages
             // Get the presenter
             BookPresenter bookPresenter = new BookPresenter(book);
 
-            Log.D(tag, "Creating controller...");
-            controller = new EngineController(this, bookPresenter);
+            Log.D(tag, "Creating presenter...");
+            presenter = new EnginePresenter(this, bookPresenter);
 
             Log.D(tag, "Loading book in client...");
             BookLocation location = bookPresenter.Spine[chapterNumber].CreateLocation(
                 new DomLocation(new int[] { 0 }, 0));
 
-            controller.Engine.Navigator.BookLocation = location;
+            presenter.Engine.Navigator.BookLocation = location;
         }
 
         private int testIterations = 0;
 
         private void clientLoaded()
         {
-            int pageCount = controller.Engine.Navigator.PageCount;
+            int pageCount = presenter.Engine.Navigator.PageCount;
             if (pageCount != expectedPageCount)
             {
                 string msg = string.Format(
@@ -86,21 +86,21 @@ namespace SvetlinAnkov.Albite.Tests.Pages
                 Log.D(tag, msg);
                 StatusText.Text = msg;
 
-                controller.ReloadBrowser();
+                presenter.ReloadBrowser();
             }
         }
 
-        #region EngineController
-        private class EngineController : IEngineController
+        #region EnginePresenter
+        private class EnginePresenter : IEnginePresenter
         {
-            private static readonly string tag = "PaginationTestController";
+            private static readonly string tag = "PaginationTestPresenter";
 
             private readonly PaginationTestPage page;
 
             public BookPresenter BookPresenter { get; private set; }
             public AlbiteEngine Engine { get; private set; }
 
-            public EngineController(PaginationTestPage page, BookPresenter bookPresenter)
+            public EnginePresenter(PaginationTestPage page, BookPresenter bookPresenter)
             {
                 this.page = page;
                 Engine = new AlbiteEngine(this, bookPresenter, new Settings());

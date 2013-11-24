@@ -91,7 +91,7 @@
     <Compile Include="Source\EngineTemplateController.cs" />
     <Compile Include="Source\ClientHandler.cs" />
     <Compile Include="Source\IEngine.cs" />
-    <Compile Include="Source\IEngineController.cs" />
+    <Compile Include="Source\IEnginePresenter.cs" />
     <Compile Include="Source\IEngineNavigator.cs" />
     <Compile Include="Source\InitialLocation.cs" />
     <Compile Include="Source\LayoutSettings\FontSettings.cs" />

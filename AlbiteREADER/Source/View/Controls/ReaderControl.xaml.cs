@@ -14,7 +14,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
         public IReaderControlObserver Observer { get; set; }
 
-        private EngineController controller;
+        private EnginePresenter presenter;
 
         private ThreadCheck threadCheck = new ThreadCheck();
 
@@ -27,23 +27,23 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         #region LifeCycle
         private void load()
         {
-            if (controller == null)
+            if (presenter == null)
             {
-                controller = new EngineController(this);
+                presenter = new EnginePresenter(this);
             }
         }
 
         private void unload()
         {
-            if (controller == null)
+            if (presenter == null)
             {
                 return;
             }
 
             // Call LoadingCompleted so to hide the popup
             // and cancel the animation.
-            controller.LoadingCompleted();
-            controller = null;
+            presenter.LoadingCompleted();
+            presenter = null;
         }
         #endregion
 
@@ -77,13 +77,13 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
             Log.D(tag, "Navigating to: " + e.Uri.ToString());
 
-            if (controller == null || controller.Engine == null)
+            if (presenter == null || presenter.Engine == null)
             {
                 return;
             }
 
             // Allow only the Engine Uri to be navigated to.
-            if (controller.Engine.Uri != e.Uri)
+            if (presenter.Engine.Uri != e.Uri)
             {
                 Log.D(tag, "Cancelling navigation");
                 e.Cancel = true;
@@ -108,18 +108,18 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         {
             threadCheck.Check();
 
-            if (controller == null || controller.Engine == null)
+            if (presenter == null || presenter.Engine == null)
             {
                 return;
             }
 
             try
             {
-                controller.Engine.ReceiveMessage(e.Value);
+                presenter.Engine.ReceiveMessage(e.Value);
             }
             catch (Exception ex)
             {
-                controller.OnError(ex.Message);
+                presenter.OnError(ex.Message);
             }
         }
 
@@ -129,12 +129,12 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
             Log.D(tag, "SizeChanged: " + e.NewSize.Width + "x" + e.NewSize.Height);
 
-            if (controller == null || controller.Engine == null)
+            if (presenter == null || presenter.Engine == null)
             {
                 return;
             }
 
-            controller.Engine.UpdateDimensions();
+            presenter.Engine.UpdateDimensions();
         }
         #endregion
 
@@ -142,35 +142,35 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         public void OpenBook(Book book)
         {
             threadCheck.Check();
-            if (controller == null)
+            if (presenter == null)
             {
                 return;
             }
 
-            controller.OpenBook(book);
+            presenter.OpenBook(book);
         }
 
         public void PersistBook()
         {
             threadCheck.Check();
-            if (controller == null)
+            if (presenter == null)
             {
                 return;
             }
 
-            controller.PersistBook();
+            presenter.PersistBook();
         }
         #endregion
 
-        #region EngineController
-        private class EngineController : IEngineController
+        #region EnginePresenter
+        private class EnginePresenter : IEnginePresenter
         {
             private readonly ReaderControl control;
 
             private BookPresenter bookPresenter;
             private AlbiteEngine engine;
 
-            public EngineController(ReaderControl control)
+            public EnginePresenter(ReaderControl control)
             {
                 this.control = control;
             }

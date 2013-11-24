@@ -28,20 +28,20 @@ namespace SvetlinAnkov.Albite.Engine
 
         public bool IsLoading { get; private set; }
 
-        internal IEngineController EngineController { get; private set; }
+        internal IEnginePresenter EnginePresenter { get; private set; }
         internal EngineMessenger Messenger { get; private set; }
 
         private EngineTemplateController TemplateController;
 
         public AlbiteEngine(
-            IEngineController engineController, BookPresenter bookPresenter, Settings settings)
+            IEnginePresenter enginePresenter, BookPresenter bookPresenter, Settings settings)
         {
-            EngineController = engineController;
+            EnginePresenter = enginePresenter;
             BookPresenter = bookPresenter;
             Settings = settings;
 
             // Set up the base path
-            EngineController.BasePath = BookPresenter.Path;
+            EnginePresenter.BasePath = BookPresenter.Path;
 
             // Uri of main.xhtml
             Uri = new Uri(
@@ -51,13 +51,13 @@ namespace SvetlinAnkov.Albite.Engine
             // Prepare the template controller
             TemplateController = new EngineTemplateController(
                 Settings, BookPresenter.EnginePath,
-                EngineController.Width, EngineController.Height,
-                EngineController.ApplicationBarHeight);
+                EnginePresenter.Width, EnginePresenter.Height,
+                EnginePresenter.ApplicationBarHeight);
 
             // Create the messenger for the engine
             Messenger = new EngineMessenger(
                 new ClientHandler(this),
-                new ClientNotifier(EngineController)
+                new ClientNotifier(EnginePresenter)
             );
 
             navigator = new EngineNavigator(this);
@@ -86,8 +86,8 @@ namespace SvetlinAnkov.Albite.Engine
             int height = TemplateController.Height;
 
             // New dimensions
-            int newWidth = EngineController.Width;
-            int newHeight = EngineController.Height;
+            int newWidth = EnginePresenter.Width;
+            int newHeight = EnginePresenter.Height;
 
             if (IsLoading)
             {
@@ -103,7 +103,7 @@ namespace SvetlinAnkov.Albite.Engine
             }
 
             // Update the templates
-            TemplateController.UpdateDimensions(newWidth, newHeight, EngineController.ApplicationBarHeight);
+            TemplateController.UpdateDimensions(newWidth, newHeight, EnginePresenter.ApplicationBarHeight);
 
             // Reload to the current DomLocation
             Reload();
@@ -136,8 +136,8 @@ namespace SvetlinAnkov.Albite.Engine
         {
             navigator.PageCount = pageCount;
 
-            // Inform the EngineController that it's ready
-            EngineController.LoadingCompleted();
+            // Inform the EnginePresenter that it's ready
+            EnginePresenter.LoadingCompleted();
             IsLoading = false;
 
             // We now have a working client
@@ -191,7 +191,7 @@ namespace SvetlinAnkov.Albite.Engine
                         }
                     }
                 }
-                else if (EngineController.NavigationRequested(uri))
+                else if (EnginePresenter.NavigationRequested(uri))
                 {
                     // Handled by the UI
                     handled = true;
@@ -252,8 +252,8 @@ namespace SvetlinAnkov.Albite.Engine
         private void ReloadBrowser()
         {
             IsLoading = true;
-            EngineController.LoadingStarted();
-            EngineController.ReloadBrowser();
+            EnginePresenter.LoadingStarted();
+            EnginePresenter.ReloadBrowser();
         }
     }
 }
