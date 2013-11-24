@@ -1,5 +1,6 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
+using System;
 
 namespace SvetlinAnkov.Albite.Engine
 {
@@ -82,12 +83,6 @@ namespace SvetlinAnkov.Albite.Engine
                 InitialLocation.GetFirstLocation());
         }
 
-        /// <summary>
-        /// Go to a spine element
-        /// </summary>
-        /// <param name="chapter"></param>
-        /// <param name="goToBeginning">If true, it goes to the first page of the chapter,
-        /// otherwise it goes to the last</param>
         public void GoToChapter(SpineElement chapter, bool goToBeginning)
         {
             if (current == chapter)
@@ -115,17 +110,19 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        /// <summary>
-        /// Go to a SpineElement, specifying a hash string
-        /// </summary>
-        /// <param name="chapter">The chapter to go to</param>
-        /// <param name="hash">The hash string, without the hash character</param>
-        public void GoToChapter(SpineElement chapter, string hash)
+        public void GoToChapter(SpineElement chapter, string fragment)
         {
+            if (fragment.Length < 2 || !fragment.StartsWith("#"))
+            {
+                throw new ArgumentException("not a valid fragment");
+            }
+
             if (current == chapter)
             {
                 // Same chapter, no need to reload
-                engine.Messenger.GoToElementById(hash);
+                // Remove the Hash char first
+                string elementId = fragment.Substring(1);
+                engine.Messenger.GoToElementById(elementId);
             }
             else
             {
@@ -133,7 +130,7 @@ namespace SvetlinAnkov.Albite.Engine
 
                 current = chapter;
                 engine.SetChapter(current.Url,
-                    InitialLocation.GetHashLocation(hash));
+                    InitialLocation.GetFragmentLocation(fragment));
             }
         }
 

@@ -31,9 +31,9 @@ namespace SvetlinAnkov.Albite.Engine
             return new DomInitialLocation(domLocation);
         }
 
-        public static InitialLocation GetHashLocation(string hash)
+        public static InitialLocation GetFragmentLocation(string hash)
         {
-            return new HashInitialLocation(hash);
+            return new FragmentInitialLocation(hash);
         }
 
         private class FirstLocation : InitialLocation
@@ -98,18 +98,23 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        private class HashInitialLocation : InitialLocation
+        private class FragmentInitialLocation : InitialLocation
         {
-            private readonly string location;
+            private readonly string fragment;
 
-            public HashInitialLocation(string hash)
+            public FragmentInitialLocation(string fragment)
             {
-                location = string.Format("'#{0}'", hash);
+                if (!fragment.StartsWith("#"))
+                {
+                    throw new ArgumentException();
+                }
+
+                this.fragment = string.Format("'{0}'", fragment);
             }
 
             public override string ToEngineKeyword()
             {
-                return location;
+                return fragment;
             }
         }
     }

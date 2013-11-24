@@ -197,7 +197,7 @@ namespace SvetlinAnkov.Albite.Engine
         [DataContract(Name = "goToElementById")]
         private class GoToElementByIdMessage : AlbiteMessage
         {
-            [DataMember(Name = "id")]
+            [DataMember(Name = "elementId")]
             public string Id { get; private set; }
 
             public GoToElementByIdMessage(string id)

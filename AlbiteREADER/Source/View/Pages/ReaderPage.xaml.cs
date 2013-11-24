@@ -105,20 +105,16 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 page.ApplicationBar.IsVisible = page.shouldShowApplicationBar(page.Orientation);
             }
 
-            public bool OnNavigationRequested(string url)
+            public bool OnNavigationRequested(Uri uri)
             {
-                // Is it in the book or external?
-                Uri uri;
-                bool isAbsolute = Uri.TryCreate(url, UriKind.Absolute, out uri);
-                if (isAbsolute)
+                if (uri.IsAbsoluteUri)
                 {
-                    // external
                     if (uri.Scheme == Uri.UriSchemeHttp
                         || uri.Scheme == Uri.UriSchemeHttps)
                     {
                         // A web page
                         if (MessageBox.Show(
-                            "Would you like to open this link the web browser?",
+                            "Would you like to open the link in the web browser?",
                             "External link",
                             MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                         {

@@ -147,18 +147,60 @@ namespace SvetlinAnkov.Albite.Engine
             UpdateDimensions();
         }
 
+        private static readonly string absoluteContentPath
+            = Path.Combine("/", BookPresenter.RelativeContentPath) + "/";
+
         internal void OnNavigationRequested(string url)
         {
-            bool handled = EngineController.NavigationRequested(url);
+            bool handled = false;
+
+            Uri uri;
+            bool isAbsolute = Uri.TryCreate(url, UriKind.Absolute, out uri);
+            if (isAbsolute)
+            {
+                if (uri.IsFile
+                    || uri.Scheme.StartsWith("x-wmapp", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Get the absolute path
+                    string path = uri.AbsolutePath;
+
+                    // Is it a valid path?
+                    if (path.StartsWith(absoluteContentPath)
+                        && path.Length > absoluteContentPath.Length)
+                    {
+                        // Remove the initial part of the path, e.g. "/content"
+                        path = path.Substring(absoluteContentPath.Length);
+
+                        // Try looking for the chapter with this path
+                        SpineElement chapter = BookPresenter.Spine[path];
+
+                        if (chapter != null)
+                        {
+                            string fragment = uri.Fragment;
+                            if (fragment != string.Empty)
+                            {
+                                // Go to hash
+                                Navigator.GoToChapter(chapter, fragment);
+                            }
+                            else
+                            {
+                                // Go to beginning of chapter
+                                Navigator.GoToChapter(chapter);
+                            }
+                            handled = true;
+                        }
+                    }
+                }
+                else if (EngineController.NavigationRequested(uri))
+                {
+                    // Handled by the UI
+                    handled = true;
+                }
+            }
+
             if (!handled)
             {
-                Uri uri;
-                bool isAbsolute = Uri.TryCreate(url, UriKind.Absolute, out uri);
-                if (!isAbsolute)
-                {
-                    // Handling only internal links
-                    uri = new Uri(url, UriKind.Relative);
-                }
+                Log.W(tag, "The Uri wasn't handled: " + uri);
             }
         }
 

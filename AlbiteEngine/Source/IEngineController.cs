@@ -51,10 +51,10 @@ namespace SvetlinAnkov.Albite.Engine
         /// Inform the control that the client has requested
         /// to navigate.
         /// </summary>
-        /// <param name="url">Internal or external URL</param>
+        /// <param name="uri">Internal or external URI</param>
         /// <returns>Returns true if the navigation was handled by the control,
         /// e.g. in cases of external links</returns>
-        bool NavigationRequested(string url);
+        bool NavigationRequested(Uri uri);
 
         /// <summary>
         /// Inform the control in case of an error.

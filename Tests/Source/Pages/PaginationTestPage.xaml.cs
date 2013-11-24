@@ -155,9 +155,9 @@ namespace SvetlinAnkov.Albite.Tests.Pages
                 page.clientLoaded();
             }
 
-            public bool NavigationRequested(string url)
+            public bool NavigationRequested(Uri uri)
             {
-                Log.D(tag, "Navigation: " + url);
+                Log.D(tag, "Navigation: " + uri);
                 return false;
             }
 

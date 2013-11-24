@@ -12,57 +12,27 @@ namespace SvetlinAnkov.Albite.BookLibrary
     {
         public Book Book { get; private set; }
 
-        private SpineElement[] spine;
+        public Spine Spine { get; private set; }
         // TODO: ToC
         // TODO: Lists
 
         public BookPresenter(Book book)
         {
             this.Book = book;
+            Spine = prepareSpine();
+            bookLocation = prepareLocation();
+        }
 
+        private Spine prepareSpine()
+        {
             using (AlbiteIsolatedContainer iso = new AlbiteIsolatedContainer(ContentPath))
             {
                 // All installed books are in ePub
                 using (BookContainer container
                     = BookContainer.GetContainer(iso, BookContainerType.Epub))
                 {
-                    spine = prepareSpine(container);
+                    return Spine.Create(Book, container);
                 }
-
-                bookLocation = prepareLocation();
-            }
-
-            // TODO: Get the current location from the database
-        }
-
-        private SpineElement[] prepareSpine(BookContainer container)
-        {
-            List<SpineElement> spine = new List<SpineElement>();
-            SpineElement previous = null;
-            SpineElement current = null;
-            int number = 0;
-
-            foreach (string url in container.Spine)
-            {
-                // Add the chapter to the spine
-                current = new SpineElement(
-                        Book,
-                        number++,
-                        url,
-                        previous
-                );
-                spine.Add(current);
-                previous = current;
-            }
-
-            return spine.ToArray();
-        }
-
-        public IList<SpineElement> Spine
-        {
-            get
-            {
-                return Array.AsReadOnly(spine);
             }
         }
 
@@ -81,7 +51,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
         internal BookLocation CreateLocation(
             int spineIndex, string domLocationString)
         {
-            if (spineIndex < 0 || spineIndex >= spine.Length)
+            if (spineIndex < 0 || spineIndex >= Spine.Length)
             {
                 throw new EntityInvalidException("Spine value is out of range");
             }
@@ -89,7 +59,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             DomLocation domLocation =
                 DomLocation.FromString(domLocationString);
 
-            SpineElement element = spine[spineIndex];
+            SpineElement element = Spine[spineIndex];
             return element.CreateLocation(domLocation);
         }
 
@@ -142,7 +112,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             get { return Book.Library.Books.GetPath(Book); }
         }
 
-        public string RelativeContentPath
+        public static string RelativeContentPath
         {
             get { return BookManager.RelativeContentPath; }
         }
@@ -152,7 +122,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             get { return Book.Library.Books.GetContentPath(Book); }
         }
 
-        public string RelativeEnginePath
+        public static string RelativeEnginePath
         {
             get { return BookManager.RelativeEnginePath; }
         }
