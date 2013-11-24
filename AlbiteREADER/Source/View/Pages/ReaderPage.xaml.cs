@@ -1,7 +1,7 @@
 ﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.READER.View.Controls;
-using System;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -48,8 +48,14 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Get the book id from the query string
             int bookId = int.Parse(NavigationContext.QueryString["id"]);
 
+            // Get the library from the current context
+            Library library = App.Context.Library;
+
+            // Get the book for the given id
+            Book book = library.Books[bookId];
+
             // Now, open the book in the control
-            ReaderControl.OpenBook(bookId);
+            ReaderControl.OpenBook(book);
         }
 #endregion
 

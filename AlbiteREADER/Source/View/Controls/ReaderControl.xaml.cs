@@ -139,7 +139,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         #endregion
 
         #region Public API
-        public void OpenBook(int bookId)
+        public void OpenBook(Book book)
         {
             threadCheck.Check();
             if (controller == null)
@@ -147,7 +147,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 return;
             }
 
-            controller.OpenBook(bookId);
+            controller.OpenBook(book);
         }
 
         public void PersistBook()
@@ -206,17 +206,8 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 get { return bookPresenter; }
             }
 
-            public void OpenBook(int bookId)
+            public void OpenBook(Book book)
             {
-                // TODO: The following needs to be run on
-                // a different thread perhaps?
-
-                // Get the library from the current context
-                Library library = App.Context.Library;
-
-                // Get the book for the given id
-                Book book = library.Books[bookId];
-
                 // Get the presenter
                 bookPresenter = new BookPresenter(book);
 
