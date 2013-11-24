@@ -170,8 +170,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             private BookPresenter bookPresenter;
             private AlbiteEngine engine;
 
-            public bool IsLoading { get; private set; }
-
             public EngineController(ReaderControl control)
             {
                 this.control = control;
