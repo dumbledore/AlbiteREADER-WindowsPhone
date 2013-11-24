@@ -1,4 +1,5 @@
-﻿using SvetlinAnkov.Albite.Core.IO;
+﻿using SvetlinAnkov.Albite.Core;
+using SvetlinAnkov.Albite.Core.IO;
 using SvetlinAnkov.Albite.Core.Xml;
 using System;
 using System.IO;
@@ -12,16 +13,14 @@ namespace SvetlinAnkov.Albite.Container.Epub
         protected IAlbiteContainer Container { get; private set; }
         protected string Filename { get; private set; }
 
-        private Uri baseUri;
-
-        private static Uri rootUri = new Uri("file:///");
+        protected RelativeUriResolver UriResolver { get; private set; }
 
         public EpubXmlFile(IAlbiteContainer container, string filename)
         {
             Container = container;
             Filename = filename;
 
-            baseUri = new Uri(rootUri, filename);
+            UriResolver = new RelativeUriResolver(filename);
         }
 
         protected XDocument GetDocument()
@@ -52,25 +51,6 @@ namespace SvetlinAnkov.Albite.Container.Epub
             {
                 throw new BookContainerException(message);
             }
-        }
-
-        /// <summary>
-        /// Returns the Uri of the resource relative to the base path
-        /// </summary>
-        /// <param name="path">The path of the resource</param>
-        public Uri GetUriFor(string path)
-        {
-            Uri uri = new Uri(baseUri, path);
-            return rootUri.MakeRelativeUri(uri);
-        }
-
-        /// <summary>
-        /// Returns the unescaped path of the resource relative to the base path
-        /// </summary>
-        /// <param name="path">The path of the resource</param>
-        public string GetPathFor(string path)
-        {
-            return Uri.UnescapeDataString(GetUriFor(path).ToString());
         }
 
         /// <summary>

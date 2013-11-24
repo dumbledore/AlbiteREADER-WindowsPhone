@@ -7,8 +7,7 @@ namespace SvetlinAnkov.Albite.Core.IO
     {
         private string basePath;
 
-        private static Uri rootUri = new Uri("file:///");
-        private static Uri baseUri = new Uri(rootUri, "/");
+        private static RelativeUriResolver uriResolver = new RelativeUriResolver("/");
 
         public AlbiteIsolatedContainer(string basePath)
         {
@@ -18,11 +17,7 @@ namespace SvetlinAnkov.Albite.Core.IO
         public Stream Stream(string entityName)
         {
             // Remove any '..' in the name
-            Uri uri = new Uri(baseUri, entityName);
-            Uri uriValidated = rootUri.MakeRelativeUri(uri);
-
-            // Get the validated entity name
-            string entityNameValidated = Uri.UnescapeDataString(uriValidated.ToString());
+            string entityNameValidated = uriResolver.ResolveToString(entityName);
 
             // Now make the full path
             string filename = Path.Combine(basePath, entityNameValidated);

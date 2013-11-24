@@ -383,7 +383,7 @@ namespace SvetlinAnkov.Albite.Container.Epub
 
         private string getPathFor(string path)
         {
-            string res = GetPathFor(path);
+            string res = UriResolver.ResolveToString(path);
 
             if (!IsValidFileName(res))
             {

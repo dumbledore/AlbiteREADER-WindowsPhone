@@ -131,7 +131,7 @@ namespace SvetlinAnkov.Albite.Container.Epub
                     continue;
                 }
 
-                string path = GetPathFor(href.Value);
+                string path = UriResolver.ResolveToString(href.Value);
                 if (!IsValidFileName(path))
                 {
                     reportError("href not a valid filename: " + path);
