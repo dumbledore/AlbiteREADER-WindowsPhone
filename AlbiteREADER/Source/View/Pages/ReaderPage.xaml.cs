@@ -43,6 +43,15 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             base.OnNavigatingFrom(e);
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                // TODO: Clear the history stack if it's there
+            }
+            base.OnNavigatedTo(e);
+        }
+
         private void ReaderControl_Loaded(object sender, RoutedEventArgs e)
         {
             // Get the book id from the query string
