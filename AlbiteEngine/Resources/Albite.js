@@ -1768,6 +1768,13 @@ Albite.Main = function(options) {
         break;
 
       case "string":
+        if (initialLocation.length > 1 && initialLocation[0] == '#')
+        {
+          // It is a hash, i.e. an element id
+          context.pager.goToElementById(initialLocation.substr(1));
+          break;
+        }
+
         switch(initialLocation.toLowerCase()) {
           case "first":
             context.pager.goToFirstPage();

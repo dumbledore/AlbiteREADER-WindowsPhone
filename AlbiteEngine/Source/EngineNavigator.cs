@@ -82,6 +82,61 @@ namespace SvetlinAnkov.Albite.Engine
                 InitialLocation.GetFirstLocation());
         }
 
+        /// <summary>
+        /// Go to a spine element
+        /// </summary>
+        /// <param name="chapter"></param>
+        /// <param name="goToBeginning">If true, it goes to the first page of the chapter,
+        /// otherwise it goes to the last</param>
+        public void GoToChapter(SpineElement chapter, bool goToBeginning)
+        {
+            if (current == chapter)
+            {
+                // Same chapter, no need to reload.
+                if (goToBeginning)
+                {
+                    GoToFirstPage();
+                }
+                else
+                {
+                    GoToLastPage();
+                }
+            }
+            else
+            {
+                engine.TryPersist();
+
+                current = chapter;
+                engine.SetChapter(current.Url,
+                    goToBeginning
+                    ? InitialLocation.GetFirstLocation()
+                    : InitialLocation.GetLastLocation()
+                );
+            }
+        }
+
+        /// <summary>
+        /// Go to a SpineElement, specifying a hash string
+        /// </summary>
+        /// <param name="chapter">The chapter to go to</param>
+        /// <param name="hash">The hash string, without the hash character</param>
+        public void GoToChapter(SpineElement chapter, string hash)
+        {
+            if (current == chapter)
+            {
+                // Same chapter, no need to reload
+                engine.Messenger.GoToElementById(hash);
+            }
+            else
+            {
+                engine.TryPersist();
+
+                current = chapter;
+                engine.SetChapter(current.Url,
+                    InitialLocation.GetHashLocation(hash));
+            }
+        }
+
         public BookLocation BookLocation
         {
             get

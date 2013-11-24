@@ -31,6 +31,11 @@ namespace SvetlinAnkov.Albite.Engine
             return new DomInitialLocation(domLocation);
         }
 
+        public static InitialLocation GetHashLocation(string hash)
+        {
+            return new HashInitialLocation(hash);
+        }
+
         private class FirstLocation : InitialLocation
         {
             private static readonly FirstLocation instance = new FirstLocation();
@@ -85,6 +90,21 @@ namespace SvetlinAnkov.Albite.Engine
             public DomInitialLocation(DomLocation domLocation)
             {
                 location = string.Format("'{0}'", domLocation.ToString());
+            }
+
+            public override string ToEngineKeyword()
+            {
+                return location;
+            }
+        }
+
+        private class HashInitialLocation : InitialLocation
+        {
+            private readonly string location;
+
+            public HashInitialLocation(string hash)
+            {
+                location = string.Format("'#{0}'", hash);
             }
 
             public override string ToEngineKeyword()
