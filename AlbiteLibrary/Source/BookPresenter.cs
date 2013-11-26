@@ -31,7 +31,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 using (BookContainer container
                     = BookContainer.GetContainer(iso, BookContainerType.Epub))
                 {
-                    return Spine.Create(Book, container);
+                    return Spine.Create(this, container);
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             }
             set
             {
-                if (value.Chapter.Book != Book)
+                if (value.Chapter.BookPresenter.Book.Id != Book.Id)
                 {
                     throw new EntityInvalidException(
                         "Bad location: Spine is not from this book");

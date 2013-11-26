@@ -49,7 +49,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             }
         }
 
-        internal static Spine Create(Book book, BookContainer container)
+        internal static Spine Create(BookPresenter bookPresenter, BookContainer container)
         {
             List<Chapter> spine = new List<Chapter>();
 
@@ -61,7 +61,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             {
                 // Add the chapter to the spine
                 current = new Chapter(
-                        book,
+                        bookPresenter,
                         number++,
                         url,
                         previous

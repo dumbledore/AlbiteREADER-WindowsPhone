@@ -10,6 +10,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
         private static readonly Type[] expectedTypes = new Type[]
         {
             typeof(DomLocation),
+            typeof(BookLocation),
         };
 
         private readonly JsonSerializer<object> serializer;

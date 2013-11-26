@@ -2,20 +2,20 @@
 {
     public class Chapter
     {
-        public Book Book { get; private set; }
+        public BookPresenter BookPresenter { get; private set; }
         public int Number { get; private set; }
         public string Url { get; private set; }
         public Chapter Previous { get; private set; }
         public Chapter Next { get; private set; }
 
         internal Chapter(
-            Book book,
+            BookPresenter bookPresenter,
             int number,
             string url,
             Chapter previous,
             Chapter next = null)
         {
-            Book = book;
+            BookPresenter = bookPresenter;
             Number = number;
             Url = url;
             Previous = previous;
@@ -35,6 +35,7 @@
         public BookLocation CreateLocation(DomLocation domLocation)
         {
             BookLocation location = new BookLocation(this, domLocation);
+            // No need to call Attach() as creating it like this does that already
             return location;
         }
     }
