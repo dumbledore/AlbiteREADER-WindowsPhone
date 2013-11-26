@@ -72,6 +72,7 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
 
             try
             {
+                LibrarySerializer serializer = new LibrarySerializer();
                 return (DomLocation)serializer.Decode(encodedData);
             }
             catch (Exception)
@@ -82,16 +83,8 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
 
         public override string ToString()
         {
+            LibrarySerializer serializer = new LibrarySerializer();
             return serializer.Encode(this);
         }
-
-        private static readonly Type[] expectedTypes = new Type[]
-        {
-            typeof(DomLocation),
-        };
-
-        private static readonly JsonSerializer<object> serializer
-            = new JsonSerializer<object>(expectedTypes);
-
     }
 }

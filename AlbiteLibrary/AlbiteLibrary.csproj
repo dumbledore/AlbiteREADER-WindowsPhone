@@ -87,6 +87,7 @@
     <Compile Include="Source\BookManager.cs" />
     <Compile Include="Source\BookPresenter.cs" />
     <Compile Include="Source\DataContext\BookEntity.cs" />
+    <Compile Include="Source\LibrarySerializer.cs" />
     <Compile Include="Source\Location\DomLocation.cs" />
     <Compile Include="Source\Entity.cs" />
     <Compile Include="Source\DataContext\BookmarkEntity.cs" />
