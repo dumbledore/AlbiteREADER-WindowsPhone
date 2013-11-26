@@ -24,10 +24,7 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
 
         // Reading Persistance
         [Column]
-        public int SpineIndex { get; set; }
-
-        [Column]
-        public string DomLocation { get; set; }
+        public string Location;
 
         // Bookmarks
         private EntitySet<BookmarkEntity> bookmarksSet = new EntitySet<BookmarkEntity>();

@@ -42,25 +42,29 @@ namespace SvetlinAnkov.Albite.BookLibrary
             {
                 BookEntity bookEntity = getEntity(dc);
 
-                return CreateLocation(
-                    bookEntity.SpineIndex,
-                    bookEntity.DomLocation);
+                BookLocation bookLocation;
+
+                // Deserialize
+                if (bookEntity.Location != null
+                    && bookEntity.Location != string.Empty)
+                {
+                    bookLocation = BookLocation.FromString(bookEntity.Location);
+
+                    // Attach to the context
+                    bookLocation.Attach(this);
+                }
+                else
+                {
+                    // Not a valid string. Perhaps, it's the first time the book has
+                    // been opened. Default to the first page of the first chapter.
+                    bookLocation = Spine[0].CreateLocation(DomLocation.Default);
+
+                    // No need to attach as the created location is already attached
+                }
+
+
+                return bookLocation;
             }
-        }
-
-        internal BookLocation CreateLocation(
-            int spineIndex, string domLocationString)
-        {
-            if (spineIndex < 0 || spineIndex >= Spine.Length)
-            {
-                throw new EntityInvalidException("Spine value is out of range");
-            }
-
-            DomLocation domLocation =
-                DomLocation.FromString(domLocationString);
-
-            Chapter element = Spine[spineIndex];
-            return element.CreateLocation(domLocation);
         }
 
         private BookLocation bookLocation;
@@ -93,14 +97,10 @@ namespace SvetlinAnkov.Albite.BookLibrary
         /// </summary>
         public void Persist()
         {
-            string domLocation = bookLocation.DomLocation.ToString();
-
             using (LibraryDataContext dc = Book.Library.GetDataContext())
             {
                 BookEntity bookEntity = getEntity(dc);
-
-                bookEntity.SpineIndex = bookLocation.Chapter.Number;
-                bookEntity.DomLocation = domLocation;
+                bookEntity.Location = bookLocation.ToString();
 
                 dc.SubmitChanges();
             }

@@ -9,6 +9,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
         public BookmarkManager Manager { get; private set; }
 
         public BookLocation BookLocation { get; private set; }
+
         public string Text { get; private set; }
 
         internal Bookmark(BookmarkManager manager, BookmarkEntity entity)
@@ -16,12 +17,11 @@ namespace SvetlinAnkov.Albite.BookLibrary
         {
             Manager = manager;
 
-            // Other fields
-            BookLocation = manager.BookPresenter.CreateLocation(
-                entity.SpineIndex,
-                entity.DomLocation);
-
             Text = entity.Text;
+
+            // Set up the location
+            BookLocation = BookLocation.FromString(entity.Location);
+            BookLocation.Attach(manager.BookPresenter);
         }
 
         public int CompareTo(Bookmark other)
