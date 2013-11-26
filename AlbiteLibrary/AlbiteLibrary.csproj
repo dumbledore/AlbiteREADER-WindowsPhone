@@ -96,7 +96,7 @@
     <Compile Include="Source\Library.cs" />
     <Compile Include="Source\DataContext\LibraryDataContext.cs" />
     <Compile Include="Source\Location\BookLocation.cs" />
-    <Compile Include="Source\Location\SpineElement.cs" />
+    <Compile Include="Source\Location\Chapter.cs" />
     <Compile Include="Source\Bookmark.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\BookmarkManager.cs" />

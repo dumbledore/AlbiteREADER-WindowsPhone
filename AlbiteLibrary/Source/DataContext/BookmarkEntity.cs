@@ -15,7 +15,7 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
             BookLocation bookLocation, string text)
         {
             Book = bookEntity;
-            SpineIndex = bookLocation.SpineElement.Number;
+            SpineIndex = bookLocation.Chapter.Number;
             DomLocation = bookLocation.DomLocation.ToString();
             Text = text;
         }

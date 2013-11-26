@@ -10,34 +10,34 @@ namespace SvetlinAnkov.Albite.BookLibrary
 {
     public class Spine
     {
-        private readonly SpineElement[] spineElements;
+        private readonly Chapter[] chapters;
 
-        private Spine(SpineElement[] spineElements)
+        private Spine(Chapter[] chapters)
         {
-            this.spineElements = spineElements;
+            this.chapters = chapters;
         }
 
         public int Length
         {
             get
             {
-                return spineElements.Length;
+                return chapters.Length;
             }
         }
 
-        public SpineElement this[int number]
+        public Chapter this[int number]
         {
             get
             {
-                return spineElements[number];
+                return chapters[number];
             }
         }
 
-        public SpineElement this[string url]
+        public Chapter this[string url]
         {
             get
             {
-                foreach (SpineElement element in spineElements)
+                foreach (Chapter element in chapters)
                 {
                     if (element.Url == url)
                     {
@@ -51,16 +51,16 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         internal static Spine Create(Book book, BookContainer container)
         {
-            List<SpineElement> spine = new List<SpineElement>();
+            List<Chapter> spine = new List<Chapter>();
 
-            SpineElement previous = null;
-            SpineElement current = null;
+            Chapter previous = null;
+            Chapter current = null;
             int number = 0;
 
             foreach (string url in container.Spine)
             {
                 // Add the chapter to the spine
-                current = new SpineElement(
+                current = new Chapter(
                         book,
                         number++,
                         url,

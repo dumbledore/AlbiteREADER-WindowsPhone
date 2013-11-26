@@ -53,18 +53,18 @@ namespace SvetlinAnkov.Albite.Engine
         void GoToNextChapter();
 
         /// <summary>
-        /// Go to a spine element
+        /// Go to a Chapter
         /// </summary>
         /// <param name="chapter"></param>
         /// <param name="goToBeginning">If true, it goes to the first page of the chapter,
         /// otherwise it goes to the last</param>
-        void GoToChapter(SpineElement chapter, bool goToBeginning = true);
+        void GoToChapter(Chapter chapter, bool goToBeginning = true);
 
         /// <summary>
-        /// Go to a SpineElement, specifying a fragment string
+        /// Go to a Chapter, specifying a fragment string
         /// </summary>
         /// <param name="chapter">The chapter to go to</param>
         /// <param name="fragment">The hash string, without the hash character</param>
-        void GoToChapter(SpineElement chapter, string fragment);
+        void GoToChapter(Chapter chapter, string fragment);
     }
 }

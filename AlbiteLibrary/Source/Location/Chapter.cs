@@ -1,19 +1,19 @@
 ﻿namespace SvetlinAnkov.Albite.BookLibrary.Location
 {
-    public class SpineElement
+    public class Chapter
     {
         public Book Book { get; private set; }
         public int Number { get; private set; }
         public string Url { get; private set; }
-        public SpineElement Previous { get; private set; }
-        public SpineElement Next { get; private set; }
+        public Chapter Previous { get; private set; }
+        public Chapter Next { get; private set; }
 
-        internal SpineElement(
+        internal Chapter(
             Book book,
             int number,
             string url,
-            SpineElement previous,
-            SpineElement next = null)
+            Chapter previous,
+            Chapter next = null)
         {
             Book = book;
             Number = number;

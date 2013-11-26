@@ -10,7 +10,7 @@ namespace SvetlinAnkov.Albite.Engine
 
         protected readonly AlbiteEngine engine;
 
-        private SpineElement current;
+        private Chapter current;
 
         // TODO: Add history stack
 
@@ -83,7 +83,7 @@ namespace SvetlinAnkov.Albite.Engine
                 InitialLocation.GetFirstLocation());
         }
 
-        public void GoToChapter(SpineElement chapter, bool goToBeginning)
+        public void GoToChapter(Chapter chapter, bool goToBeginning)
         {
             if (current == chapter)
             {
@@ -110,7 +110,7 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        public void GoToChapter(SpineElement chapter, string fragment)
+        public void GoToChapter(Chapter chapter, string fragment)
         {
             if (fragment.Length < 2 || !fragment.StartsWith("#"))
             {
@@ -138,14 +138,14 @@ namespace SvetlinAnkov.Albite.Engine
         {
             get
             {
-                // TODO: What about when the current spine element
+                // TODO: What about when the current chapter
                 // is not the current chapter, and thus is not
                 return current.CreateLocation(DomLocation);
             }
 
             set
             {
-                if (current == value.SpineElement)
+                if (current == value.Chapter)
                 {
                     // It's the same chapter, no need for reload
                     // Only updat the dom location
@@ -155,9 +155,9 @@ namespace SvetlinAnkov.Albite.Engine
                 {
                     engine.TryPersist();
 
-                    current = value.SpineElement;
+                    current = value.Chapter;
                     engine.SetChapter(
-                        value.SpineElement.Url,
+                        value.Chapter.Url,
                         InitialLocation.GetDomLocation(value.DomLocation));
                 }
             }

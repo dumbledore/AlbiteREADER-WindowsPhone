@@ -4,21 +4,21 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
 {
     public class BookLocation : IComparable<BookLocation>
     {
-        public SpineElement SpineElement { get; private set; }
+        public Chapter Chapter { get; private set; }
         public DomLocation DomLocation { get; private set; }
 
         internal BookLocation(
-            SpineElement spineElement,
+            Chapter chapter,
             DomLocation domLocation)
         {
-            SpineElement = spineElement;
+            Chapter = chapter;
             DomLocation = domLocation;
         }
 
         public int CompareTo(BookLocation other)
         {
-            int thisSpineIndex = SpineElement.Number;
-            int otherSpineIndex = other.SpineElement.Number;
+            int thisSpineIndex = Chapter.Number;
+            int otherSpineIndex = other.Chapter.Number;
 
             if (thisSpineIndex != otherSpineIndex)
             {

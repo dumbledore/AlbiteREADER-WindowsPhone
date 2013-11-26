@@ -59,7 +59,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             DomLocation domLocation =
                 DomLocation.FromString(domLocationString);
 
-            SpineElement element = Spine[spineIndex];
+            Chapter element = Spine[spineIndex];
             return element.CreateLocation(domLocation);
         }
 
@@ -78,7 +78,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             }
             set
             {
-                if (value.SpineElement.Book != Book)
+                if (value.Chapter.Book != Book)
                 {
                     throw new EntityInvalidException(
                         "Bad location: Spine is not from this book");
@@ -99,7 +99,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             {
                 BookEntity bookEntity = getEntity(dc);
 
-                bookEntity.SpineIndex = bookLocation.SpineElement.Number;
+                bookEntity.SpineIndex = bookLocation.Chapter.Number;
                 bookEntity.DomLocation = domLocation;
 
                 dc.SubmitChanges();

@@ -172,7 +172,7 @@ namespace SvetlinAnkov.Albite.Engine
                         path = path.Substring(absoluteContentPath.Length);
 
                         // Try looking for the chapter with this path
-                        SpineElement chapter = BookPresenter.Spine[path];
+                        Chapter chapter = BookPresenter.Spine[path];
 
                         if (chapter != null)
                         {
