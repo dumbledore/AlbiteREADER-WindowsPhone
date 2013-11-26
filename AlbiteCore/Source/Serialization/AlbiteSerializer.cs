@@ -3,7 +3,7 @@ using System.Text;
 
 namespace SvetlinAnkov.Albite.Core.Serialization
 {
-    public abstract class AlbiteSerializer<TEntity>
+    public abstract class AlbiteSerializer<TEntity> : IAlbiteSerializer<TEntity>
     {
         public string Encode(TEntity entity)
         {

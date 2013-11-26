@@ -98,6 +98,7 @@
     <Compile Include="Source\RelativeUriResolver.cs" />
     <Compile Include="Source\Serialization\AlbiteSerializer.cs" />
     <Compile Include="Source\Serialization\AlbiteMessenger.cs" />
+    <Compile Include="Source\Serialization\IAlbiteSerializer.cs" />
     <Compile Include="Source\Serialization\IClientNotifier.cs" />
     <Compile Include="Source\Test\TestCaseWrapper.cs" />
     <Compile Include="Source\Test\TestCase.cs" />
