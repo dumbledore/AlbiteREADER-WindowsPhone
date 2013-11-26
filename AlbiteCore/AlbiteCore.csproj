@@ -100,6 +100,7 @@
     <Compile Include="Source\Serialization\AlbiteMessenger.cs" />
     <Compile Include="Source\Serialization\IAlbiteSerializer.cs" />
     <Compile Include="Source\Serialization\IClientNotifier.cs" />
+    <Compile Include="Source\Serialization\IContextAttachable.cs" />
     <Compile Include="Source\Test\TestCaseWrapper.cs" />
     <Compile Include="Source\Test\TestCase.cs" />
     <Compile Include="Source\Test\TestCollection.cs" />
