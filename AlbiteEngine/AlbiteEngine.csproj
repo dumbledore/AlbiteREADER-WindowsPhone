@@ -93,7 +93,6 @@
     <Compile Include="Source\IEngine.cs" />
     <Compile Include="Source\IEnginePresenter.cs" />
     <Compile Include="Source\IEngineNavigator.cs" />
-    <Compile Include="Source\Internal\InitialLocation.cs" />
     <Compile Include="Source\LayoutSettings\FontSettings.cs" />
     <Compile Include="Source\LayoutSettings\MarginSettings.cs" />
     <Compile Include="Source\LayoutSettings\TextSettings.cs" />

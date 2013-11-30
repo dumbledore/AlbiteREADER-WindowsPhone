@@ -1,9 +1,9 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.IO;
 using SvetlinAnkov.Albite.Engine.LayoutSettings;
 using System;
-using System.IO;
 
 namespace SvetlinAnkov.Albite.Engine.Internal
 {
@@ -66,14 +66,14 @@ namespace SvetlinAnkov.Albite.Engine.Internal
         }
 
         public void UpdateInitialLocation(
-            InitialLocation initialLocation)
+            ChapterLocation initialLocation)
         {
             mainPageTemplate.InitialLocation = initialLocation;
             mainPageTemplate.SaveToStorage();
         }
 
         public void UpdateChapter(
-            InitialLocation initialLocation,
+            ChapterLocation initialLocation,
             bool isFirstChapter, bool isLastChapter,
             string filePath)
         {

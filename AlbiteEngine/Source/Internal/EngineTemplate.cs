@@ -1,4 +1,5 @@
-﻿using SvetlinAnkov.Albite.Core.IO;
+﻿using SvetlinAnkov.Albite.BookLibrary.Location;
+using SvetlinAnkov.Albite.Core.IO;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -151,11 +152,11 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             }
         }
 
-        public InitialLocation InitialLocation
+        public ChapterLocation InitialLocation
         {
             set
             {
-                set(RegisteredNames.InitialLocation, value.ToEngineKeyword());
+                set(RegisteredNames.InitialLocation, value);
             }
         }
 

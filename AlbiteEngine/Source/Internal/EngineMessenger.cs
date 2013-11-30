@@ -18,12 +18,10 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             // Host Messages
             typeof(GetPageMessage),
             typeof(GetPageResultMessage),
-            typeof(GoToPageMessage),
-            typeof(GoToPageResultMessage),
             typeof(GetDomLocationMessage),
             typeof(GetDomLocationResultMessage),
-            typeof(GoToDomLocationMessage),
-            typeof(GoToDomLocationResultMessage),
+            typeof(GoToLocationMessage),
+            typeof(GoToLocationResultMessage),
             typeof(GoToElementByIdMessage),
             typeof(GoToElementByIdResultMessage),
             typeof(GetBookmarkMessage),
@@ -31,6 +29,11 @@ namespace SvetlinAnkov.Albite.Engine.Internal
 
             // Used by the Host Messages
             typeof(Bookmark),
+            typeof(ChapterLocation),
+            typeof(FirstPageLocation),
+            typeof(LastPageLocation),
+            typeof(PageLocation),
+            typeof(ElementLocation),
             typeof(DomLocation),
 
             // Client Messages
@@ -71,12 +74,13 @@ namespace SvetlinAnkov.Albite.Engine.Internal
 
             set
             {
-                GoToPageMessage requestMessage = new GoToPageMessage(value);
+                GoToLocationMessage requestMessage
+                    = new GoToLocationMessage(new PageLocation(value));
                 NotifyClient(requestMessage);
             }
         }
 
-        public DomLocation DomLocation
+        public ChapterLocation Location
         {
             get
             {
@@ -88,7 +92,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
 
             set
             {
-                GoToDomLocationMessage requestMessage = new GoToDomLocationMessage(value);
+                GoToLocationMessage requestMessage = new GoToLocationMessage(value);
                 NotifyClient(requestMessage);
             }
         }
@@ -161,21 +165,6 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             public int Page { get; private set; }
         }
 
-        [DataContract(Name = "goToPage")]
-        private class GoToPageMessage : AlbiteMessage
-        {
-            [DataMember(Name = "page")]
-            public int Page { get; private set; }
-
-            public GoToPageMessage(int page)
-            {
-                Page = page;
-            }
-        }
-
-        [DataContract(Name = "result_goToPage")]
-        private class GoToPageResultMessage : AlbiteMessage { }
-
         [DataContract(Name = "getDomLocation")]
         private class GetDomLocationMessage : AlbiteMessage { }
 
@@ -186,20 +175,20 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             public DomLocation DomLocation { get; private set; }
         }
 
-        [DataContract(Name = "goToDomLocation")]
-        private class GoToDomLocationMessage : AlbiteMessage
+        [DataContract(Name = "goToLocation")]
+        private class GoToLocationMessage : AlbiteMessage
         {
             [DataMember(Name = "location")]
-            public DomLocation DomLocation { get; private set; }
+            public ChapterLocation Location { get; private set; }
 
-            public GoToDomLocationMessage(DomLocation domLocation)
+            public GoToLocationMessage(ChapterLocation location)
             {
-                DomLocation = domLocation;
+                Location = location;
             }
         }
 
-        [DataContract(Name = "result_goToDomLocation")]
-        private class GoToDomLocationResultMessage : AlbiteMessage { }
+        [DataContract(Name = "result_goToLocation")]
+        private class GoToLocationResultMessage : AlbiteMessage { }
 
         [DataContract(Name = "goToElementById")]
         private class GoToElementByIdMessage : AlbiteMessage

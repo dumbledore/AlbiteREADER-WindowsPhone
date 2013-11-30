@@ -65,23 +65,23 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
             }
         }
 
-        [DataMember(Name = "domLocation")]
-        private DomLocation domLocation_;
+        [DataMember(Name = "location")]
+        private ChapterLocation location_;
 
-        public DomLocation DomLocation
+        public ChapterLocation Location
         {
             get
             {
                 // Validate state
                 throwIfNotAttached();
 
-                return domLocation_;
+                return location_;
             }
         }
 
         internal BookLocation(
             Chapter chapter,
-            DomLocation domLocation)
+            ChapterLocation location)
         {
             // Set up the context
             context_ = chapter.BookPresenter;
@@ -89,7 +89,7 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
 
             // Set the data
             chapterNumber = chapter.Number;
-            domLocation_ = domLocation;
+            location_ = location;
         }
 
         public int CompareTo(BookLocation other)
@@ -105,7 +105,7 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
                 return thisSpineIndex < otherSpineIndex ? -1 : 1;
             }
 
-            return DomLocation.CompareTo(other.DomLocation);
+            return Location.CompareTo(other.location_);
         }
 
         public static BookLocation FromString(string encodedData)
@@ -115,13 +115,13 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
                 throw new ArgumentException();
             }
 
-            LibrarySerializer serializer = new LibrarySerializer();
+            LocationSerializer serializer = new LocationSerializer();
             return (BookLocation)serializer.Decode(encodedData);
         }
 
         public override string ToString()
         {
-            LibrarySerializer serializer = new LibrarySerializer();
+            LocationSerializer serializer = new LocationSerializer();
             return serializer.Encode(this);
         }
     }

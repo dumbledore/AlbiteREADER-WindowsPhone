@@ -5,17 +5,22 @@ using System;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {
-    internal class LibrarySerializer : IAlbiteSerializer<object>
+    internal class LocationSerializer: IAlbiteSerializer<object>
     {
         private static readonly Type[] expectedTypes = new Type[]
         {
+            typeof(ChapterLocation),
+            typeof(FirstPageLocation),
+            typeof(LastPageLocation),
+            typeof(PageLocation),
+            typeof(ElementLocation),
             typeof(DomLocation),
             typeof(BookLocation),
         };
 
         private readonly JsonSerializer<object> serializer;
 
-        public LibrarySerializer()
+        public LocationSerializer()
         {
             serializer = new JsonSerializer<object>(expectedTypes);
         }

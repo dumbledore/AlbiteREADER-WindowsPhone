@@ -1,4 +1,6 @@
-﻿namespace SvetlinAnkov.Albite.BookLibrary.Location
+﻿using SvetlinAnkov.Albite.BookLibrary.Location;
+
+namespace SvetlinAnkov.Albite.BookLibrary
 {
     public class Chapter
     {
@@ -32,9 +34,9 @@
             }
         }
 
-        public BookLocation CreateLocation(DomLocation domLocation)
+        public BookLocation CreateLocation(ChapterLocation chapterLocation)
         {
-            BookLocation location = new BookLocation(this, domLocation);
+            BookLocation location = new BookLocation(this, chapterLocation);
             // No need to call Attach() as creating it like this does that already
             return location;
         }

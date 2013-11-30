@@ -186,16 +186,26 @@ namespace SvetlinAnkov.Albite.Engine
                         if (chapter != null)
                         {
                             string fragment = uri.Fragment;
-                            if (fragment != string.Empty)
+                            ChapterLocation chapterLocation;
+                            if (fragment.Length > 1)
                             {
-                                // Go to hash
-                                Navigator.GoToChapter(chapter, fragment);
+                                // Go to fragment. It starts with a #,
+                                // so remove the first character
+                                chapterLocation = new ElementLocation(fragment.Substring(1));
                             }
                             else
                             {
                                 // Go to beginning of chapter
-                                Navigator.GoToChapter(chapter);
+                                chapterLocation = new FirstPageLocation();
                             }
+
+                            // Get the BookLocation
+                            BookLocation bookLocation = chapter.CreateLocation(chapterLocation);
+
+                            // Go there
+                            Navigator.BookLocation = bookLocation;
+
+                            // Handled, indeed
                             handled = true;
                         }
                     }
@@ -225,7 +235,7 @@ namespace SvetlinAnkov.Albite.Engine
             }
         }
 
-        internal void SetChapter(string fileUrl, InitialLocation initialLocation)
+        internal void SetChapter(string fileUrl, ChapterLocation initialLocation)
         {
             // Set up main.xhtml
             TemplateController.UpdateChapter(
@@ -249,10 +259,7 @@ namespace SvetlinAnkov.Albite.Engine
             // Update the location in the BookPresenter
             BookPresenter.BookLocation = bookLocation;
 
-            InitialLocation initialLocation =
-                InitialLocation.GetDomLocation(bookLocation.DomLocation);
-
-            TemplateController.UpdateInitialLocation(initialLocation);
+            TemplateController.UpdateInitialLocation(bookLocation.Location);
 
             // Now reload the web browser
             ReloadBrowser();

@@ -702,6 +702,25 @@ Albite.Pager = function(context) {
     goToPage(getPageForLocation(location));
   }
 
+  function goToLocation(location) {
+    // Find what type of location it is by
+    // asking the duck to squawk
+    if (typeof location.firstPage !== 'undefined')
+    {
+      goToFirstPage();
+    } else if (typeof location.lastPage !== 'undefined') {
+      goToLastPage();
+    } else if (typeof location.page !== 'undefined') {
+      goToPage(location.page);
+    } else if (typeof location.elementId !== 'undefined') {
+      goToElementById(location.elementId);
+    } else if ((typeof location.elementPath !== 'undefined') && (typeof location.textOffset !== 'undefined')) {
+      goToDomLocation( { 'elementPath' : location.elementPath, 'textOffset' : location.textOffset} );
+    } else {
+      context.debug.log("Unknown location type");
+    }
+  }
+
   function IETextIterator(text, range) {
     var stopped = false;
 
@@ -809,6 +828,7 @@ Albite.Pager = function(context) {
   this.goToDomLocation  = goToDomLocation;
   this.goToPage         = goToPage;
   this.goToElementById  = goToElementById;
+  this.goToLocation     = goToLocation;
   this.findText         = findText;
   this.findPagesForText = findPagesForText;
   this.getBookmark      = getBookmark;
@@ -1558,10 +1578,9 @@ Albite.Host = function(context) {
     "getPageCount"        : "getPageCount",
     "getPage"             : "getPage",
     "goToPage"            : "goToPage",
-    "goToDomLocation"     : "goToDomLocation",
+    "goToLocation"        : "goToLocation",
     "getDomLocation"      : "getDomLocation",
     "findText"            : "findText",
-    "goToElementById"     : "goToElementById",
     "getBookmark"         : "getBookmark"
   };
 
@@ -1597,8 +1616,8 @@ Albite.Host = function(context) {
           context.pager.goToPage(message.page);
           break;
 
-        case HostMessages.goToDomLocation:
-          context.pager.goToDomLocation(message.location);
+        case HostMessages.goToLocation:
+          context.pager.goToLocation(message.location);
           break;
 
         case HostMessages.getDomLocation:
@@ -1607,10 +1626,6 @@ Albite.Host = function(context) {
 
         case HostMessages.findText:
           returnMessage.pages = context.pager.findPagesForText(message.text);
-          break;
-
-        case HostMessages.goToElementById:
-          context.pager.goToElementById(message.elementId);
           break;
 
         case HostMessages.getBookmark:
@@ -1759,45 +1774,6 @@ Albite.Main = function(options) {
     }
   }
 
-  function setupInitialLocation(initialLocation) {
-    var type = typeof initialLocation;
-
-    switch (type) {
-      case "number":
-        context.pager.goToPage(initialLocation);
-        break;
-
-      case "string":
-        if (initialLocation.length > 1 && initialLocation[0] == '#')
-        {
-          // It is a hash, i.e. an element id
-          context.pager.goToElementById(initialLocation.substr(1));
-          break;
-        }
-
-        switch(initialLocation.toLowerCase()) {
-          case "first":
-            context.pager.goToFirstPage();
-            break;
-
-          case "last":
-            context.pager.goToLastPage();
-            break;
-
-          default:
-            // The initial location is a JSON string
-            try {
-              context.pager.goToDomLocation(JSON.parse(initialLocation));
-            } catch (e) { }
-            break;
-        }
-        break;
-
-      default:
-        throw new Error(0, "Invalid type for the initial location: " + type);
-    }
-  }
-
   function cssLoaded() {
     // On some occasions, the CSS is not applied atomically, i.e.
     // some columns are created, but not all of them at the same time,
@@ -1841,7 +1817,7 @@ Albite.Main = function(options) {
       context.pager = new Albite.Pager(context);
 
       // Go to the page location specified by the host
-      setupInitialLocation(context.initialLocation);
+      context.pager.goToLocation(context.initialLocation);
 
       // Set up the presentation controller
       context.controller = new Albite.PresentationController(context);

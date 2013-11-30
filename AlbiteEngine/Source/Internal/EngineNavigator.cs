@@ -1,4 +1,5 @@
-﻿using SvetlinAnkov.Albite.BookLibrary.Location;
+﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using System;
 
@@ -19,10 +20,10 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             this.engine = engine;
         }
 
-        internal DomLocation DomLocation
+        internal ChapterLocation ChapterLocation
         {
-            get { return engine.Messenger.DomLocation; }
-            set { engine.Messenger.DomLocation = value; }
+            get { return engine.Messenger.Location; }
+            set { engine.Messenger.Location = value; }
         }
 
         public int Page
@@ -64,8 +65,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             engine.TryPersist();
 
             current = current.Previous;
-            engine.SetChapter(current.Url,
-                InitialLocation.GetLastLocation());
+            engine.SetChapter(current.Url, new LastPageLocation());
         }
 
         public void GoToNextChapter()
@@ -79,59 +79,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             engine.TryPersist();
 
             current = current.Next;
-            engine.SetChapter(current.Url,
-                InitialLocation.GetFirstLocation());
-        }
-
-        public void GoToChapter(Chapter chapter, bool goToBeginning)
-        {
-            if (current == chapter)
-            {
-                // Same chapter, no need to reload.
-                if (goToBeginning)
-                {
-                    GoToFirstPage();
-                }
-                else
-                {
-                    GoToLastPage();
-                }
-            }
-            else
-            {
-                engine.TryPersist();
-
-                current = chapter;
-                engine.SetChapter(current.Url,
-                    goToBeginning
-                    ? InitialLocation.GetFirstLocation()
-                    : InitialLocation.GetLastLocation()
-                );
-            }
-        }
-
-        public void GoToChapter(Chapter chapter, string fragment)
-        {
-            if (fragment.Length < 2 || !fragment.StartsWith("#"))
-            {
-                throw new ArgumentException("not a valid fragment");
-            }
-
-            if (current == chapter)
-            {
-                // Same chapter, no need to reload
-                // Remove the Hash char first
-                string elementId = fragment.Substring(1);
-                engine.Messenger.GoToElementById(elementId);
-            }
-            else
-            {
-                engine.TryPersist();
-
-                current = chapter;
-                engine.SetChapter(current.Url,
-                    InitialLocation.GetFragmentLocation(fragment));
-            }
+            engine.SetChapter(current.Url, new FirstPageLocation());
         }
 
         public BookLocation BookLocation
@@ -140,7 +88,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             {
                 // TODO: What about when the current chapter
                 // is not the current chapter, and thus is not
-                return current.CreateLocation(DomLocation);
+                return current.CreateLocation(ChapterLocation);
             }
 
             set
@@ -149,16 +97,14 @@ namespace SvetlinAnkov.Albite.Engine.Internal
                 {
                     // It's the same chapter, no need for reload
                     // Only updat the dom location
-                    DomLocation = value.DomLocation;
+                    ChapterLocation = value.Location;
                 }
                 else
                 {
                     engine.TryPersist();
 
                     current = value.Chapter;
-                    engine.SetChapter(
-                        value.Chapter.Url,
-                        InitialLocation.GetDomLocation(value.DomLocation));
+                    engine.SetChapter(value.Chapter.Url, value.Location);
                 }
             }
         }

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace SvetlinAnkov.Albite.BookLibrary.Location
 {
     [DataContract(Name = "domLocation")]
-    public class DomLocation : IComparable<DomLocation>
+    public class DomLocation : ChapterLocation
     {
         public static DomLocation Default = new DomLocation(new int[] { 0 }, 0);
 
@@ -23,10 +23,29 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
         {
             this.elementPath = new int[elementPath.Count];
             elementPath.CopyTo(this.elementPath, 0);
+            TextOffset = textOffset;
         }
 
-        public int CompareTo(DomLocation other)
+        public override int CompareTo(ChapterLocation otherLocation)
         {
+            if (otherLocation is FirstPageLocation)
+            {
+                return 1;
+            }
+            else if (otherLocation is LastPageLocation)
+            {
+                return -1;
+            }
+            else if (!(otherLocation is DomLocation))
+            {
+                // We can't say anything for ElementLocation or PageLocation,
+                // so return a default value, e.g. -1
+                return -1;
+            }
+
+            // It's indeed a DomLocation
+            DomLocation other = otherLocation as DomLocation;
+
             int thisIndex;
             int otherIndex;
 
@@ -60,30 +79,6 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
 
             // Perfectly equal
             return 0;
-        }
-
-        public static DomLocation FromString(string encodedData)
-        {
-            if (encodedData == null)
-            {
-                return Default;
-            }
-
-            try
-            {
-                LibrarySerializer serializer = new LibrarySerializer();
-                return (DomLocation)serializer.Decode(encodedData);
-            }
-            catch (Exception)
-            {
-                return Default;
-            }
-        }
-
-        public override string ToString()
-        {
-            LibrarySerializer serializer = new LibrarySerializer();
-            return serializer.Encode(this);
         }
     }
 }
