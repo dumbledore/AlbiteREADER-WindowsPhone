@@ -2,9 +2,9 @@
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using System;
 
-namespace SvetlinAnkov.Albite.Engine
+namespace SvetlinAnkov.Albite.Engine.Internal
 {
-    public class EngineNavigator : IEngineNavigator
+    internal class EngineNavigator : IEngineNavigator
     {
         private static readonly string tag = "BookEngine";
 

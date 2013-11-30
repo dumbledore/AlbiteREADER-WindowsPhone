@@ -1,4 +1,4 @@
-﻿namespace SvetlinAnkov.Albite.Engine
+﻿namespace SvetlinAnkov.Albite.Engine.Internal
 {
     internal static class Paths
     {

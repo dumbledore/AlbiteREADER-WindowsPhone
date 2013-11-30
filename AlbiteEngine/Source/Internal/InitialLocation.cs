@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvetlinAnkov.Albite.Engine
+namespace SvetlinAnkov.Albite.Engine.Internal
 {
     internal abstract class InitialLocation
     {

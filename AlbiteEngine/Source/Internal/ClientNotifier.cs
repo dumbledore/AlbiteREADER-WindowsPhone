@@ -1,6 +1,6 @@
 ﻿using SvetlinAnkov.Albite.Core.Serialization;
 
-namespace SvetlinAnkov.Albite.Engine
+namespace SvetlinAnkov.Albite.Engine.Internal
 {
     internal class ClientNotifier : IClientNotifier
     {

@@ -1,6 +1,7 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
+using SvetlinAnkov.Albite.Engine.Internal;
 using SvetlinAnkov.Albite.Engine.LayoutSettings;
 using System;
 using System.IO;

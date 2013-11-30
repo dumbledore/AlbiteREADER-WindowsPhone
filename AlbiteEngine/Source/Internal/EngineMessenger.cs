@@ -5,7 +5,7 @@ using SvetlinAnkov.Albite.Core.Serialization;
 using System;
 using System.Runtime.Serialization;
 
-namespace SvetlinAnkov.Albite.Engine
+namespace SvetlinAnkov.Albite.Engine.Internal
 {
     internal class EngineMessenger : JsonMessenger<EngineMessenger.IClientHandler>
     {

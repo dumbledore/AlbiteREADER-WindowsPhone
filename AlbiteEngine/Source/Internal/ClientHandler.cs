@@ -1,6 +1,6 @@
 ﻿using SvetlinAnkov.Albite.Core.Diagnostics;
 
-namespace SvetlinAnkov.Albite.Engine
+namespace SvetlinAnkov.Albite.Engine.Internal
 {
     internal class ClientHandler : EngineMessenger.IClientHandler
     {

@@ -83,23 +83,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Source\EngineNavigator.cs" />
-    <Compile Include="Source\EngineMessenger.cs" />
+    <Compile Include="Source\Internal\EngineNavigator.cs" />
+    <Compile Include="Source\Internal\EngineMessenger.cs" />
     <Compile Include="Source\AlbiteEngine.cs" />
-    <Compile Include="Source\ClientNotifier.cs" />
-    <Compile Include="Source\EngineTemplate.cs" />
-    <Compile Include="Source\EngineTemplateController.cs" />
-    <Compile Include="Source\ClientHandler.cs" />
+    <Compile Include="Source\Internal\ClientNotifier.cs" />
+    <Compile Include="Source\Internal\EngineTemplate.cs" />
+    <Compile Include="Source\Internal\EngineTemplateController.cs" />
+    <Compile Include="Source\Internal\ClientHandler.cs" />
     <Compile Include="Source\IEngine.cs" />
     <Compile Include="Source\IEnginePresenter.cs" />
     <Compile Include="Source\IEngineNavigator.cs" />
-    <Compile Include="Source\InitialLocation.cs" />
+    <Compile Include="Source\Internal\InitialLocation.cs" />
     <Compile Include="Source\LayoutSettings\FontSettings.cs" />
     <Compile Include="Source\LayoutSettings\MarginSettings.cs" />
     <Compile Include="Source\LayoutSettings\TextSettings.cs" />
     <Compile Include="Source\LayoutSettings\ThemeColor.cs" />
     <Compile Include="Source\LayoutSettings\ThemePalette.cs" />
-    <Compile Include="Source\Paths.cs" />
+    <Compile Include="Source\Internal\Paths.cs" />
     <Compile Include="Source\LayoutSettings\Settings.cs" />
     <Compile Include="Source\LayoutSettings\Theme.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

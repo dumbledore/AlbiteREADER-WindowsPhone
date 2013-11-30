@@ -3,7 +3,7 @@ using SvetlinAnkov.Albite.Core.IO;
 using SvetlinAnkov.Albite.Engine.LayoutSettings;
 using System;
 
-namespace SvetlinAnkov.Albite.Engine
+namespace SvetlinAnkov.Albite.Engine.Internal
 {
     internal class EngineTemplateController
     {
