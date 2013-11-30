@@ -1,12 +1,18 @@
-﻿using SvetlinAnkov.Albite.Core.Diagnostics;
+﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.IO;
 using SvetlinAnkov.Albite.Engine.LayoutSettings;
 using System;
+using System.IO;
 
 namespace SvetlinAnkov.Albite.Engine.Internal
 {
     internal class EngineTemplateController
     {
+        // Note: We shan't use Path.Combine for IE would only accept it with "/" slashes
+        private static readonly string absoluteContentStylesPath
+            = "/" + BookPresenter.RelativeEnginePath + "/" + Paths.ContentStyles;
+
         private static readonly string tag = "EngineTemplateController";
 
         public Settings Settings { get; private set; }
@@ -45,6 +51,12 @@ namespace SvetlinAnkov.Albite.Engine.Internal
 #endif
             baseStylesTemplate = new BaseStylesTemplate(enginePath);
             contentStylesTemplate = new ContentStylesTemplate(enginePath);
+
+            // Set up css location
+            mainPageTemplate.CssLocation = absoluteContentStylesPath;
+
+            // Set up the namespace
+            mainPageTemplate.TypeNamespace = EngineMessenger.TypeNamespace;
 
             // Set up the dimensions
             UpdateDimensions(initialWidth, initialHeight, initialApplicationBarHeight);

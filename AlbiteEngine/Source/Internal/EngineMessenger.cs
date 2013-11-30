@@ -51,6 +51,13 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             IClientNotifier notifier)
             : base(handler, notifier, expectedTypes) { }
 
+        private static string typeNameSpace
+            = ":#" + typeof(EngineMessenger).Namespace;
+
+        public static string TypeNamespace {
+            get { return typeNameSpace; }
+        }
+
         // Public API for notifying the client
         public int Page
         {

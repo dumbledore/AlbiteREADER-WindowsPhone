@@ -85,6 +85,8 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             public static readonly string IsFirstChapter = "is_first_chapter";
             public static readonly string IsLastChapter = "is_last_chapter";
             public static readonly string ChapterFile = "chapter_file";
+            public static readonly string CssLocation = "css_location";
+            public static readonly string TypeNamespace = "type_namespace";
 
             public static readonly string Width = "width";
             public static readonly string Height = "height";
@@ -187,6 +189,28 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             {
                 chapterFile = value;
                 set(RegisteredNames.ChapterFile, value);
+            }
+        }
+
+        private string cssLocation;
+        public string CssLocation
+        {
+            get { return cssLocation; }
+            set
+            {
+                cssLocation = value;
+                set(RegisteredNames.CssLocation, value);
+            }
+        }
+
+        private string typeNamespace;
+        public string TypeNamespace
+        {
+            get { return typeNamespace; }
+            set
+            {
+                typeNamespace = value;
+                set(RegisteredNames.TypeNamespace, value);
             }
         }
     }
