@@ -103,6 +103,7 @@
     <Compile Include="Source\BookmarkManager.cs" />
     <Compile Include="Source\Spine.cs" />
     <Compile Include="Test\LibraryAddBookTest.cs" />
+    <Compile Include="Test\LibraryHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlbiteContainer\AlbiteContainer.csproj">

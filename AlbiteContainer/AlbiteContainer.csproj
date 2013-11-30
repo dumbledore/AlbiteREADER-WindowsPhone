@@ -85,7 +85,6 @@
   <ItemGroup>
     <Compile Include="Source\BookContainer.cs" />
     <Compile Include="Source\BookContainerException.cs" />
-    <Compile Include="Source\BookContainerType.cs" />
     <Compile Include="Source\Epub\EpubContainer.cs" />
     <Compile Include="Source\Epub\EpubXmlFile.cs" />
     <Compile Include="Source\Epub\NavigationControlFile.cs" />

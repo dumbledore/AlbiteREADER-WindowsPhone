@@ -1,7 +1,7 @@
 ﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using SvetlinAnkov.Albite.BookLibrary;
-using SvetlinAnkov.Albite.Container;
+using SvetlinAnkov.Albite.BookLibrary.Test;
 using SvetlinAnkov.Albite.READER;
 using System;
 using System.Collections;
@@ -83,7 +83,7 @@ namespace SvetlinAnkov.Albite.Tests.Pages
                     return;
                 }
 
-                library.Books.Add(new Book.Descriptor(bookPath, BookContainerType.Epub));
+                LibraryHelper.AddEpubFromResource(bookPath, library);
                 progress += step;
                 worker.ReportProgress(progress);
             }

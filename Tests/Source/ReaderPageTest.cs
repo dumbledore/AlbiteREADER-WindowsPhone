@@ -1,5 +1,4 @@
-﻿using SvetlinAnkov.Albite.BookLibrary;
-using SvetlinAnkov.Albite.Container;
+﻿using SvetlinAnkov.Albite.BookLibrary.Test;
 using SvetlinAnkov.Albite.Core.Test;
 using SvetlinAnkov.Albite.READER;
 using System;
@@ -27,7 +26,7 @@ namespace SvetlinAnkov.Albite.Tests
             BookLibrary.Library library = context.Library;
 
             // Add the book
-            library.Books.Add(new Book.Descriptor(book, BookContainerType.Epub));
+            LibraryHelper.AddEpubFromResource(book, library);
 
             // Navigate
             navigation.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/ReaderPage.xaml?id=1", UriKind.Relative));

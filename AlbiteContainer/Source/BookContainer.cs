@@ -9,10 +9,6 @@ namespace SvetlinAnkov.Albite.Container
 {
     public abstract class BookContainer : IAlbiteContainer
     {
-        private static readonly string tag = "BookContainer";
-
-        protected IAlbiteContainer Container;
-
         public abstract IEnumerable<string> Items { get; }
 
         public abstract string Title { get; }
@@ -32,80 +28,31 @@ namespace SvetlinAnkov.Albite.Container
             HadErrors = false;
         }
 
-        /// <summary>
-        /// Creates a new BookContainer
-        /// </summary>
-        /// <param name="container">The source IAlbiteContainer</param>
-        /// <param name="fallback">
-        ///     If true, non-fatal errors when using this containre won't cause
-        ///     an exception. Use HadErrors to check if there were any.
-        /// </param>
-        public BookContainer(IAlbiteContainer container, bool fallback)
+        protected BookContainer(bool fallback)
         {
-            this.Container = container;
             this.Fallback = fallback;
         }
 
         /// <summary>
         /// Extracts the contents into the isolated storage.
         /// Doesn't throw if the container has been initialised with
-        /// fallback as false.
+        /// fallback as true.
         /// </summary>
         /// <param name="path">The path on the isolated storage to copy to.</param>
         /// <returns>True if there were no errors</returns>
-        public virtual bool Install(string path)
-        {
-            bool hadErrors = false;
-            IEnumerable<string> items = Items;
+        public abstract bool Install(string path);
 
-            foreach (string item in items)
+        public abstract Stream Stream(string entityName);
+
+        public abstract void Dispose();
+
+        public static BookContainer GetContainer(IAlbiteContainer container, string extension)
+        {
+            extension = extension.ToLowerInvariant();
+
+            switch (extension)
             {
-                try
-                {
-                    // This assumes that all items have been thoroughly checked before being
-                    // added to the list, i.e. that their names are valid and that
-                    // they are not using relative paths so that they wouldn't be
-                    // a security issue.
-                    // Doing the check here is not as easy as it seems, therefore it's
-                    // the responsibility of the implementing class
-                    using (AlbiteIsolatedStorage output = new AlbiteIsolatedStorage(System.IO.Path.Combine(path, item)))
-                    {
-                        using (Stream input = Stream(item))
-                        {
-                            output.Write(input);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.E(tag, "Failed unpacking " + item, e);
-                    hadErrors = true;
-
-                    if (!Fallback)
-                    {
-                        throw e;
-                    }
-                }
-            }
-
-            return hadErrors;
-        }
-
-        public virtual Stream Stream(string entityName)
-        {
-            return Container.Stream(entityName);
-        }
-
-        public void Dispose()
-        {
-            Container.Dispose();
-        }
-
-        public static BookContainer GetContainer(IAlbiteContainer container, BookContainerType type)
-        {
-            switch (type)
-            {
-                case BookContainerType.Epub:
+                case ".epub":
                     return new EpubContainer(container);
             }
 

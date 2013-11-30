@@ -17,17 +17,5 @@ namespace SvetlinAnkov.Albite.BookLibrary
             // Other entity fields
             Title = entity.Title;
         }
-
-        public sealed class Descriptor
-        {
-            public string Path { get; private set; }
-            public BookContainerType Type { get; private set; }
-
-            public Descriptor(string path, BookContainerType type)
-            {
-                Path = path;
-                Type = type;
-            }
-        }
     }
 }

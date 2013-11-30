@@ -1,7 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
-using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.BookLibrary.Test;
-using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using System;
 using System.IO.IsolatedStorage;
@@ -48,10 +46,9 @@ namespace SvetlinAnkov.Albite.Tests.Pages
             // Remove all local data
             removeStore();
 
-            Book.Descriptor[] books
-                = {
-                      new Book.Descriptor(
-                          "Test/epub/aliceDynamic.epub", BookContainerType.Epub)
+            string[] books
+                = new string[] {
+                      "Test/epub/aliceDynamic.epub",
                   };
             new LibraryAddBookTest("Test/Library/", books).Test();
         }

@@ -6,9 +6,9 @@ namespace SvetlinAnkov.Albite.BookLibrary.Test
     public class LibraryAddBookTest : TestCase
     {
         private string location;
-        private Book.Descriptor[] books;
+        private string[] books;
 
-        public LibraryAddBookTest(string location, Book.Descriptor[] books)
+        public LibraryAddBookTest(string location, string[] books)
         {
             this.location = location;
             this.books = books;
@@ -18,10 +18,10 @@ namespace SvetlinAnkov.Albite.BookLibrary.Test
         {
             // Start using the library
             BookLibrary.Library library = new BookLibrary.Library(location);
-            foreach (Book.Descriptor book in books)
+            foreach (string book in books)
             {
                 // Add a book
-                library.Books.Add(book);
+                LibraryHelper.AddEpubFromResource(book, library);
             }
         }
     }

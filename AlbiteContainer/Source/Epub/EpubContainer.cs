@@ -6,16 +6,27 @@ using System.IO;
 
 namespace SvetlinAnkov.Albite.Container.Epub
 {
-    internal class EpubContainer : BookContainer
+    public class EpubContainer : BookContainer
     {
         private static readonly string tag = "EpubContainer";
 
-        public OpenContainerFile Ocf { get; private set; }
-        public OpenPackageFile Opf { get; private set; }
-        public NavigationControlFile Ncx { get; private set; }
+        private IAlbiteContainer container;
 
-        public EpubContainer(IAlbiteContainer container, bool fallback = true) : base(container, fallback)
+        internal OpenContainerFile Ocf { get; private set; }
+        internal OpenPackageFile Opf { get; private set; }
+        internal NavigationControlFile Ncx { get; private set; }
+
+        /// <summary>
+        /// Creates a instance of EpubContainer
+        /// </summary>
+        /// <param name="container">The source IAlbiteContainer</param>
+        /// <param name="fallback">
+        ///     If true, non-fatal errors when using this container won't cause
+        ///     an exception. Use HadErrors to check if there were any.
+        /// </param>
+        public EpubContainer(IAlbiteContainer container, bool fallback = true) : base(fallback)
         {
+            this.container = container;
             processDocuments();
         }
 
@@ -48,6 +59,44 @@ namespace SvetlinAnkov.Albite.Container.Epub
             get { return Opf.Title; }
         }
 
+        public override bool Install(string path)
+        {
+            bool hadErrors = false;
+            IEnumerable<string> items = Items;
+
+            foreach (string item in items)
+            {
+                try
+                {
+                    // This assumes that all items have been thoroughly checked before being
+                    // added to the list, i.e. that their names are valid and that
+                    // they are not using relative paths so that they wouldn't be
+                    // a security issue.
+                    // Doing the check here is not as easy as it seems, therefore it's
+                    // the responsibility of the implementing class
+                    using (AlbiteIsolatedStorage output = new AlbiteIsolatedStorage(System.IO.Path.Combine(path, item)))
+                    {
+                        using (Stream input = Stream(item))
+                        {
+                            output.Write(input);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.E(tag, "Failed unpacking " + item, e);
+                    hadErrors = true;
+
+                    if (!Fallback)
+                    {
+                        throw e;
+                    }
+                }
+            }
+
+            return hadErrors;
+        }
+
         public override Stream Stream(string entityName)
         {
             // First check that this stream is there and/or is allowed to
@@ -57,10 +106,15 @@ namespace SvetlinAnkov.Albite.Container.Epub
                 || entityName == Ocf.OpfPath
                 || entityName == Opf.NcxPath)
             {
-                return base.Stream(entityName);
+                return container.Stream(entityName);
             }
 
             throw new BookContainerException("Entity not found in book");
+        }
+
+        public override void Dispose()
+        {
+            container.Dispose();
         }
 
         private void processDocuments()
@@ -68,17 +122,17 @@ namespace SvetlinAnkov.Albite.Container.Epub
             try
             {
                 // Read the container and extract the location to the OPF
-                Ocf = new OpenContainerFile(Container);
+                Ocf = new OpenContainerFile(container);
 
                 // Read the manifest, spine & (optionally) metadata, .
-                Opf = new OpenPackageFile(Container, Ocf.OpfPath);
+                Opf = new OpenPackageFile(container, Ocf.OpfPath);
 
                 // Read the table of contents. Don't crash on error.
                 try
                 {
                     if (Opf.NcxPath != null)
                     {
-                        Ncx = new NavigationControlFile(Container, Opf.NcxPath);
+                        Ncx = new NavigationControlFile(container, Opf.NcxPath);
                     }
                     else
                     {

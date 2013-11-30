@@ -1,6 +1,7 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary.DataContext;
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Container;
+using SvetlinAnkov.Albite.Container.Epub;
 using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.Collections.Generic;
@@ -28,8 +29,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             using (AlbiteIsolatedContainer iso = new AlbiteIsolatedContainer(ContentPath))
             {
                 // All installed books are in ePub
-                using (BookContainer container
-                    = BookContainer.GetContainer(iso, BookContainerType.Epub))
+                using (BookContainer container = new EpubContainer(iso))
                 {
                     return Spine.Create(this, container);
                 }

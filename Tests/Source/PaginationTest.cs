@@ -1,4 +1,5 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Test;
 using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.IO;
@@ -39,8 +40,7 @@ namespace SvetlinAnkov.Albite.Tests
 
             Library library = new Library(TestFolder);
             Log("Adding new book...");
-            Book.Descriptor descriptor = new Book.Descriptor("Test/epub/aliceDynamic.epub", BookContainerType.Epub);
-            Book book = library.Books.Add(descriptor);
+            LibraryHelper.AddEpubFromResource("Test/epub/aliceDynamic.epub", library);
 
             // Navigate
             navigation.Navigate(new Uri(

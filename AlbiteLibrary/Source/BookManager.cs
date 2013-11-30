@@ -23,17 +23,11 @@ namespace SvetlinAnkov.Albite.BookLibrary
             booksTempPath = Path.Combine(booksPath, "Temp");
         }
 
-        public Book Add(IAlbiteContainer container, BookContainerType type)
+        public Book Add(BookContainer bookContainer)
         {
             using (LibraryDataContext dc = Library.GetDataContext())
             {
                 BookEntity bookEntity = new BookEntity();
-
-                // Should not wrap the container in a using() {}
-                // statement as it is not under our control,
-                // but under the control of the caller.
-                BookContainer bookContainer
-                    = BookContainer.GetContainer(container, type);
 
                 // Fill in the defaults so that if there's
                 // a problem with the metadata it would
@@ -92,23 +86,6 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 }
 
                 return book;
-            }
-        }
-
-        public Book Add(Book.Descriptor descriptor)
-        {
-            Log.D(tag, "Opening book " + descriptor.Path);
-
-            using (AlbiteResourceStorage res = new AlbiteResourceStorage(descriptor.Path))
-            {
-                using (Stream inputStream = res.GetStream(FileAccess.Read))
-                {
-                    using (AlbiteZipContainer zip = new AlbiteZipContainer(inputStream))
-                    {
-                        // Add to the library
-                        return Add(zip, descriptor.Type);
-                    }
-                }
             }
         }
 
