@@ -101,8 +101,6 @@
     <Compile Include="Source\LayoutSettings\ThemePalette.cs" />
     <Compile Include="Source\Paths.cs" />
     <Compile Include="Source\LayoutSettings\Settings.cs" />
-    <Compile Include="Source\Template.cs" />
-    <Compile Include="Source\TemplateResource.cs" />
     <Compile Include="Source\LayoutSettings\Theme.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\TemplateTest.cs" />

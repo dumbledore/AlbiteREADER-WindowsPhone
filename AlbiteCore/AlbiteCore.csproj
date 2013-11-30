@@ -93,6 +93,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\IO\Template.cs" />
+    <Compile Include="Source\IO\TemplateResource.cs" />
     <Compile Include="Source\Json\JsonMessenger.cs" />
     <Compile Include="Source\Json\JsonSerializer.cs" />
     <Compile Include="Source\RelativeUriResolver.cs" />
