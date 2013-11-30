@@ -33,7 +33,8 @@ namespace SvetlinAnkov.Albite.Engine
         /// Called whenever the viewport is resized or the dimensions
         /// might have changed (e.g. after the client has loaded).
         /// </summary>
-        void UpdateDimensions();
+        /// <returns>true if an update was immediately triggered</returns>
+        bool UpdateDimensions();
 
         /// <summary>
         /// Navigator for this engine

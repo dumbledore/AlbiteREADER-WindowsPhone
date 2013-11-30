@@ -75,7 +75,7 @@ namespace SvetlinAnkov.Albite.Engine
             Reload();
         }
 
-        public void UpdateDimensions()
+        public bool UpdateDimensions()
         {
             // It is perfectly legal to be called before
             // the client has fully loaded, because
@@ -92,14 +92,14 @@ namespace SvetlinAnkov.Albite.Engine
             if (IsLoading)
             {
                 Log.D(tag, "Can't update the dimensions while loading");
-                return;
+                return false;
             }
 
             if (newWidth == width
                 && newHeight == height)
             {
                 Log.D(tag, "The dimensions haven't changed, no need to update.");
-                return;
+                return false;
             }
 
             // Update the templates
@@ -107,6 +107,8 @@ namespace SvetlinAnkov.Albite.Engine
 
             // Reload to the current DomLocation
             Reload();
+
+            return true;
         }
 
         public void ReceiveMessage(string message)
@@ -136,15 +138,21 @@ namespace SvetlinAnkov.Albite.Engine
         {
             navigator.PageCount = pageCount;
 
-            // Inform the EnginePresenter that it's ready
-            EnginePresenter.LoadingCompleted();
+            // Not loading anymore
             IsLoading = false;
 
             // We now have a working client
             canGetDomLocation = true;
 
             // Handle missed orientations
-            UpdateDimensions();
+            bool needToReload = UpdateDimensions();
+
+            if (!needToReload)
+            {
+                // No need to reload. Without further ado
+                // inform the EnginePresenter that we're ready
+                EnginePresenter.LoadingCompleted();
+            }
         }
 
         private static readonly string absoluteContentPath
