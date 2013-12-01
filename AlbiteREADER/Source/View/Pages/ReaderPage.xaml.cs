@@ -162,6 +162,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 }
             }
         }
-    }
 #endregion
+    }
 }
