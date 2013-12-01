@@ -11,8 +11,6 @@ namespace SvetlinAnkov.Albite.BookLibrary
 {
     public class BookManager : EntityManager<Book>
     {
-        private static readonly string tag = "BookManager";
-
         private string booksPath;
         private string booksTempPath;
 
