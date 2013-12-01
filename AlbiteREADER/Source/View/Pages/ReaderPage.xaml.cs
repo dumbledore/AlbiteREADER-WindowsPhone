@@ -167,9 +167,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void ReaderControl_Loaded(object sender, RoutedEventArgs e)
         {
-            // Update the application bar
-            updateApplicationBarButtons();
-
             // Get the book id from the query string
             int bookId = int.Parse(NavigationContext.QueryString["id"]);
 
@@ -181,6 +178,12 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
             // Now, open the book in the control
             ReaderControl.OpenBook(book);
+
+            // Attach the history stack to the book presenter
+            historyStack.Attach(ReaderControl.BookPresenter);
+
+            // Update the application bar
+            updateApplicationBarButtons();
         }
 #endregion
 

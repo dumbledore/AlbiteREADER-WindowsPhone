@@ -116,8 +116,12 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         public BookLocation BookLocation
         {
             get { return presenter.BookLocation; }
-
             set { presenter.BookLocation = value; }
+        }
+
+        public BookPresenter BookPresenter
+        {
+            get { return presenter.BookPresenter; }
         }
         #endregion
 
