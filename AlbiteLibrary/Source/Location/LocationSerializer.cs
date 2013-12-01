@@ -16,6 +16,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             typeof(ElementLocation),
             typeof(DomLocation),
             typeof(BookLocation),
+            typeof(HistoryStack.SerializedHistoryStack),
         };
 
         private readonly JsonSerializer<object> serializer;

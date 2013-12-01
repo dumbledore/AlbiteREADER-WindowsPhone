@@ -40,7 +40,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         private void updateApplicationBarButtons()
         {
             // Should the back button be enabled?
-            BackButton.IsEnabled = historyStack.Count > 0;
+            BackButton.IsEnabled = !historyStack.IsEmpty;
 
             // Should the Wikipedia button be enabled?
             WikipediaButton.IsEnabled = false; // TODO
@@ -72,12 +72,12 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            if (historyStack.Count > 0)
+            if (!historyStack.IsEmpty)
             {
                 // Not empty
                 BookLocation previousLocation = historyStack.Pop();
 
-                if (historyStack.Count < 1)
+                if (historyStack.IsEmpty)
                 {
                     // No more locations, so disable the button
                     BackButton.IsEnabled = false;
@@ -123,6 +123,16 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             ReaderControl.PersistBook();
+
+            // Try persisting the history stack
+            if (e.NavigationMode != NavigationMode.Back)
+            {
+                // No need to persist it if the page
+                // is going to be discarded
+                string historyStackData = historyStack.ToString();
+                State[historyStackTag] = historyStackData;
+            }
+
             base.OnNavigatingFrom(e);
         }
 
@@ -130,8 +140,28 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         {
             if (e.NavigationMode == NavigationMode.New)
             {
-                // TODO: Clear the history stack if it's there
+                // New navigation, clear the state if there was
+                // anything already persisted... (Shouldn't happen)
+                // Note, IDictionary<>.Remove() doesn't throw if the
+                // item is not found.
+                State.Remove(historyStackTag);
             }
+            else
+            {
+                // Try to get it from the State
+                if (State.ContainsKey(historyStackTag))
+                {
+                    string historyStackData = (string)State[historyStackTag];
+                    historyStack = HistoryStack.FromString(historyStackData);
+                }
+            }
+
+            if (historyStack == null)
+            {
+                // The stack was not persisted, so create a new one
+                historyStack = new HistoryStack();
+            }
+
             base.OnNavigatedTo(e);
         }
 
@@ -155,7 +185,8 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 #endregion
 
 #region History Stack
-        private Stack<BookLocation> historyStack = new Stack<BookLocation>();
+        private static readonly string historyStackTag = "HistoryStack";
+        private HistoryStack historyStack = null;
 #endregion
 
 #region IReaderContenObserver

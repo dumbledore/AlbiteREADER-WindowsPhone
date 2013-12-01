@@ -104,6 +104,7 @@
     <Compile Include="Source\BookmarkManager.cs" />
     <Compile Include="Source\Location\ElementLocation.cs" />
     <Compile Include="Source\Location\FirstPageLocation.cs" />
+    <Compile Include="Source\Location\HistoryStack.cs" />
     <Compile Include="Source\Location\LastPageLocation.cs" />
     <Compile Include="Source\Location\LocationSerializer.cs" />
     <Compile Include="Source\Location\PageLocation.cs" />
