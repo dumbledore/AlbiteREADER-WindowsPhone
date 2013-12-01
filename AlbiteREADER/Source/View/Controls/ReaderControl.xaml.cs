@@ -1,4 +1,5 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Engine;
 using SvetlinAnkov.Albite.Engine.LayoutSettings;
@@ -278,6 +279,14 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 }
 
                 return false;
+            }
+
+            public void Navigating(BookLocation currentLocation)
+            {
+                if (control.Observer != null)
+                {
+                    control.Observer.OnNavigating(currentLocation);
+                }
             }
 
             public void OnError(string message)

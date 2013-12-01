@@ -2,6 +2,7 @@
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
 using System.Windows;
@@ -151,6 +152,12 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
                 // The UI doesn't handle internal jumps
                 return false;
+            }
+
+            public void OnNavigating(BookLocation currentLocation)
+            {
+                // TODO
+                MessageBox.Show("Navigating...");
             }
 
             public int ApplicationBarHeight

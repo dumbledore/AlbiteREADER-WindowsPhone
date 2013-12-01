@@ -161,6 +161,11 @@ namespace SvetlinAnkov.Albite.Tests.Pages
                 return false;
             }
 
+            public void Navigating(BookLocation currentLocation)
+            {
+                Log.D(tag, "Navigating...");
+            }
+
             public void OnError(string message)
             {
                 Log.E(tag, "ReaderError: " + message);

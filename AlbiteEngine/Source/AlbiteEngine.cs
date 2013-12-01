@@ -202,6 +202,9 @@ namespace SvetlinAnkov.Albite.Engine
                             // Get the BookLocation
                             BookLocation bookLocation = chapter.CreateLocation(chapterLocation);
 
+                            // Inform the client we're indeed navigating away
+                            EnginePresenter.Navigating(Navigator.BookLocation);
+
                             // Go there
                             Navigator.BookLocation = bookLocation;
 

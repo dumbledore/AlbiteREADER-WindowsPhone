@@ -1,4 +1,4 @@
-﻿using SvetlinAnkov.Albite.BookLibrary;
+﻿using SvetlinAnkov.Albite.BookLibrary.Location;
 using System;
 
 namespace SvetlinAnkov.Albite.Engine
@@ -55,6 +55,14 @@ namespace SvetlinAnkov.Albite.Engine
         /// <returns>Returns true if the navigation was handled by the control,
         /// e.g. in cases of external links</returns>
         bool NavigationRequested(Uri uri);
+
+        /// <summary>
+        /// Inform the control that the engine is about to navigate,
+        /// i.e. to a different location and / or chapter
+        /// </summary>
+        /// <param name="currentLocation">The BookLocation just before
+        /// navigation is going to happen</param>
+        void Navigating(BookLocation currentLocation);
 
         /// <summary>
         /// Inform the control in case of an error.

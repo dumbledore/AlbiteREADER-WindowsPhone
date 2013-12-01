@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SvetlinAnkov.Albite.BookLibrary.Location;
+using System;
 
 namespace SvetlinAnkov.Albite.READER.View.Controls
 {
@@ -8,6 +9,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         void OnContentLoadingStarted();
         void OnContentLoadingCompleted();
         bool OnNavigationRequested(Uri uri);
+        void OnNavigating(BookLocation currentLocation);
         int ApplicationBarHeight { get; }
     }
 }
