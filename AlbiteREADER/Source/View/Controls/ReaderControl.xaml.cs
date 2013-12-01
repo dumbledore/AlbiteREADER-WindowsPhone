@@ -161,6 +161,31 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
             presenter.PersistBook();
         }
+
+        public BookLocation BookLocation
+        {
+            get
+            {
+                threadCheck.Check();
+                if (presenter == null)
+                {
+                    return null;
+                }
+
+                return presenter.BookLocation;
+            }
+
+            set
+            {
+                threadCheck.Check();
+                if (presenter == null)
+                {
+                    return;
+                }
+
+                presenter.BookLocation = value;
+            }
+        }
         #endregion
 
         #region EnginePresenter
@@ -179,6 +204,12 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             public AlbiteEngine Engine
             {
                 get { return engine; }
+            }
+
+            public BookLocation BookLocation
+            {
+                get { return Engine.Navigator.BookLocation; }
+                set { Engine.Navigator.BookLocation = value; }
             }
 
             public int Width

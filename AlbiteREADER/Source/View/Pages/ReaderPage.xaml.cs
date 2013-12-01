@@ -5,6 +5,7 @@ using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -15,7 +16,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         public ReaderPage()
         {
             InitializeComponent();
-
+            InitializeApplicationBar();
             ReaderControl.Observer = new Observer(this);
         }
 
@@ -35,9 +36,88 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             ApplicationBar.IsVisible = shouldShowApplicationBar(e.Orientation);
             base.OnOrientationChanged(e);
         }
+
+        private void updateApplicationBarButtons()
+        {
+            // Should the back button be enabled?
+            BackButton.IsEnabled = historyStack.Count > 0;
+
+            // Should the Wikipedia button be enabled?
+            WikipediaButton.IsEnabled = false; // TODO
+
+            // Should the Pin-To-Start button be enabled?
+            PinButton.IsEnabled = false; // TODO
+        }
 #endregion
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) { }
+#region ApplicationBar Buttons
+        private void InitializeApplicationBar()
+        {
+            // The buttons can't be addressed using "x:Name", see this:
+            // http://stackoverflow.com/questions/5933109/applicationbar-is-always-null
+            //
+            // So we need to do it the ugly way...
+
+            // First, the icon buttons
+            BackButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            SettingsButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
+            IndexButton = ApplicationBar.Buttons[2] as ApplicationBarIconButton;
+            BookmarkButton = ApplicationBar.Buttons[3] as ApplicationBarIconButton;
+
+            // Then the menu buttons
+            WikipediaButton = ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+            ShareButton = ApplicationBar.MenuItems[1] as ApplicationBarMenuItem;
+            PinButton = ApplicationBar.MenuItems[2] as ApplicationBarMenuItem;
+        }
+
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+            if (historyStack.Count > 0)
+            {
+                // Not empty
+                BookLocation previousLocation = historyStack.Pop();
+
+                if (historyStack.Count < 1)
+                {
+                    // No more locations, so disable the button
+                    BackButton.IsEnabled = false;
+                }
+
+                // Now go to the location
+                ReaderControl.BookLocation = previousLocation;
+            }
+        }
+
+        private void SettingsButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void IndexButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BookmarkButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void WikipediaButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ShareButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PinButton_Click(object sender, EventArgs e)
+        {
+
+        }
+#endregion
 
 #region Open/persist book on load/navigating from
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -57,6 +137,9 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void ReaderControl_Loaded(object sender, RoutedEventArgs e)
         {
+            // Update the application bar
+            updateApplicationBarButtons();
+
             // Get the book id from the query string
             int bookId = int.Parse(NavigationContext.QueryString["id"]);
 
@@ -69,6 +152,10 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Now, open the book in the control
             ReaderControl.OpenBook(book);
         }
+#endregion
+
+#region History Stack
+        private Stack<BookLocation> historyStack = new Stack<BookLocation>();
 #endregion
 
 #region IReaderContenObserver
@@ -156,8 +243,8 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
             public void OnNavigating(BookLocation currentLocation)
             {
-                // TODO
-                MessageBox.Show("Navigating...");
+                page.historyStack.Push(currentLocation);
+                page.BackButton.IsEnabled = true;
             }
 
             public int ApplicationBarHeight
@@ -170,5 +257,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             }
         }
 #endregion
+
     }
 }
