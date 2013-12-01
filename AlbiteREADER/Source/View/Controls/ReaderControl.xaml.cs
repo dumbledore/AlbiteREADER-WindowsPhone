@@ -15,73 +15,49 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
         public IReaderControlObserver Observer { get; set; }
 
-        private EnginePresenter presenter;
-
-        private ThreadCheck threadCheck = new ThreadCheck();
+        private readonly EnginePresenter presenter;
 
         public ReaderControl()
         {
             InitializeComponent();
+            presenter = new EnginePresenter(this);
             load();
         }
 
         #region LifeCycle
         private void load()
         {
-            if (presenter == null)
-            {
-                presenter = new EnginePresenter(this);
-            }
         }
 
         private void unload()
         {
-            if (presenter == null)
-            {
-                return;
-            }
-
             // Call LoadingCompleted so to hide the popup
             // and cancel the animation.
             presenter.LoadingCompleted();
-            presenter = null;
         }
         #endregion
 
         #region UI Events
         private void WebBrowser_Loaded(object sender, RoutedEventArgs e)
         {
-            threadCheck.Check();
-
             Log.D(tag, "WebBrowser Loaded");
             load();
         }
 
         private void WebBrowser_Unloaded(object sender, RoutedEventArgs e)
         {
-            threadCheck.Check();
-
             Log.D(tag, "WebBrowser Unloaded");
             unload();
         }
 
         private void WebBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            threadCheck.Check();
-
             Log.D(tag, "Navigated: " + e.Uri.ToString());
         }
 
         private void WebBrowser_Navigating(object sender, Microsoft.Phone.Controls.NavigatingEventArgs e)
         {
-            threadCheck.Check();
-
             Log.D(tag, "Navigating to: " + e.Uri.ToString());
-
-            if (presenter == null || presenter.Engine == null)
-            {
-                return;
-            }
 
             // Allow only the Engine Uri to be navigated to.
             if (presenter.Engine.Uri != e.Uri)
@@ -94,8 +70,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
         private void WebBrowser_NavigationFailed(object sender, System.Windows.Navigation.NavigationFailedEventArgs e)
         {
-            threadCheck.Check();
-
             // TODO: How should the user be informed and/or
             // what has to be done? This a fault of the app, not the epub.
             // TODO: Handling failed navigation in the iframe?
@@ -107,13 +81,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
         private void WebBrowser_ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
         {
-            threadCheck.Check();
-
-            if (presenter == null || presenter.Engine == null)
-            {
-                return;
-            }
-
             try
             {
                 presenter.Engine.ReceiveMessage(e.Value);
@@ -126,65 +93,31 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
         public void WebBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            threadCheck.Check();
-
-            Log.D(tag, "SizeChanged: " + e.NewSize.Width + "x" + e.NewSize.Height);
-
-            if (presenter == null || presenter.Engine == null)
+            // The SizeChanged event might come before the book has been opened
+            if (presenter.Engine != null)
             {
-                return;
+                Log.D(tag, "SizeChanged: " + e.NewSize.Width + "x" + e.NewSize.Height);
+                presenter.Engine.UpdateDimensions();
             }
-
-            presenter.Engine.UpdateDimensions();
         }
         #endregion
 
         #region Public API
         public void OpenBook(Book book)
         {
-            threadCheck.Check();
-            if (presenter == null)
-            {
-                return;
-            }
-
             presenter.OpenBook(book);
         }
 
         public void PersistBook()
         {
-            threadCheck.Check();
-            if (presenter == null)
-            {
-                return;
-            }
-
             presenter.PersistBook();
         }
 
         public BookLocation BookLocation
         {
-            get
-            {
-                threadCheck.Check();
-                if (presenter == null)
-                {
-                    return null;
-                }
+            get { return presenter.BookLocation; }
 
-                return presenter.BookLocation;
-            }
-
-            set
-            {
-                threadCheck.Check();
-                if (presenter == null)
-                {
-                    return;
-                }
-
-                presenter.BookLocation = value;
-            }
+            set { presenter.BookLocation = value; }
         }
         #endregion
 
