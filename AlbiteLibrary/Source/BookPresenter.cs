@@ -57,7 +57,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 {
                     // Not a valid string. Perhaps, it's the first time the book has
                     // been opened. Default to the first page of the first chapter.
-                    bookLocation = Spine[0].CreateLocation(DomLocation.Default);
+                    bookLocation = Spine[0].CreateLocation(ChapterLocation.Default);
 
                     // No need to attach as the created location is already attached
                 }

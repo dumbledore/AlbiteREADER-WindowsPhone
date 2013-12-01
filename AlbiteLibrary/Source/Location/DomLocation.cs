@@ -7,8 +7,6 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
     [DataContract(Name = "domLocation")]
     public class DomLocation : ChapterLocation
     {
-        public static DomLocation Default = new DomLocation(new int[] { 0 }, 0);
-
         [DataMember(Name = "elementPath")]
         private int[] elementPath;
         public IList<int> ElementPath
