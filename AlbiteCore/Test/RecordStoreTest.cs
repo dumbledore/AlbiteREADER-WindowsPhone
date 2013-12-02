@@ -16,6 +16,12 @@ namespace SvetlinAnkov.Albite.Core.Test
         {
             RecordStore store = new RecordStore(FilePath);
 
+            // Clear just in case
+            store.Clear();
+
+            // Assert it's clean
+            Assert(store.Count == 0);
+
             // Try adding something to the store
             store["Alice"] = "Wonderland";
 
@@ -30,6 +36,12 @@ namespace SvetlinAnkov.Albite.Core.Test
 
             // Try getting something that we never put
             Assert(!store.ContainsKey("Flamingo"));
+
+            // Clear again
+            store.Clear();
+
+            // And it's indeed empty
+            Assert(store.Count == 0);
         }
     }
 }
