@@ -144,6 +144,11 @@ namespace SvetlinAnkov.Albite.Core.Serialization
                 {
                     throw new ArgumentException("An element with the same key already exists");
                 }
+
+                // It's a new entity
+                RecordEntity record = new RecordEntity(key, value);
+                db.Records.InsertOnSubmit(record);
+                db.SubmitChanges();
             }
         }
 
@@ -191,7 +196,8 @@ namespace SvetlinAnkov.Albite.Core.Serialization
             {
                 if (containsKey_(key, db))
                 {
-                    value = this[key];
+                    RecordEntity record = getEntity(key, db);
+                    value = record.Value;
                     return true;
                 }
                 else
@@ -230,19 +236,26 @@ namespace SvetlinAnkov.Albite.Core.Serialization
             using (RecordDataContext db = getDataContext())
             {
                 db.Records.DeleteAllOnSubmit(db.Records);
+                db.SubmitChanges();
             }
+        }
+
+        private bool contains_(KeyValuePair<string, string> item, RecordDataContext db)
+        {
+            if (containsKey_(item.Key, db))
+            {
+                RecordEntity record = getEntity(item.Key, db);
+                return record.Value == item.Value;
+            }
+
+            return false;
         }
 
         public bool Contains(KeyValuePair<string, string> item)
         {
             using (RecordDataContext db = getDataContext(true))
             {
-                if (containsKey_(item.Key, db))
-                {
-                    return this[item.Key] == item.Value;
-                }
-
-                return false;
+                return contains_(item, db);
             }
         }
 
@@ -282,16 +295,24 @@ namespace SvetlinAnkov.Albite.Core.Serialization
         {
             using (RecordDataContext db = getDataContext())
             {
-                if (containsKey_(item.Key, db))
+                if (!contains_(item, db))
                 {
-                    if (this[item.Key] == item.Value)
-                    {
-                        return Remove(item.Key);
-                    }
+                    return false;
                 }
 
-                return false;
+                try
+                {
+                    RecordEntity record = getEntity(item.Key, db);
+                    db.Records.DeleteOnSubmit(record);
+                    db.SubmitChanges();
+                }
+                catch
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
 #endregion
 
