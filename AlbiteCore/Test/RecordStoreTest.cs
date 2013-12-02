@@ -25,6 +25,9 @@ namespace SvetlinAnkov.Albite.Core.Test
             // Try adding something to the store
             store["Alice"] = "Wonderland";
 
+            // Try checking if it's there
+            Assert(store.ContainsKey("Alice"));
+
             // Try retrieving the data
             Assert("Wonderland" == store["Alice"]);
 
@@ -35,7 +38,25 @@ namespace SvetlinAnkov.Albite.Core.Test
             Assert("Looking-glass" == store["Alice"]);
 
             // Try getting something that we never put
-            Assert(!store.ContainsKey("Flamingo"));
+            string flamingo;
+            Assert(!store.TryGetValue("Flamingo", out flamingo));
+            Assert(flamingo == null);
+
+            // Add one more pair
+            store.Add("Rabbit", "White");
+
+            // Now assert that TryGetValue works for existing stuff
+            string white;
+            Assert(store.TryGetValue("Rabbit", out white));
+
+            // And it's indeed what it should be
+            Assert("White" == white);
+
+            // Remove it
+            Assert(store.Remove("Rabbit"));
+
+            // shouldn't be there anymore
+            Assert(!store.ContainsKey("Rabbit"));
 
             // Clear again
             store.Clear();
