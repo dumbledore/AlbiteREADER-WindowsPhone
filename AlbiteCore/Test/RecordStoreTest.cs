@@ -29,7 +29,7 @@ namespace SvetlinAnkov.Albite.Core.Test
             Assert("Looking-glass" == store["Alice"]);
 
             // Try getting something that we never put
-            Assert(store["Flamingo"] == null);
+            Assert(!store.ContainsKey("Flamingo"));
         }
     }
 }
