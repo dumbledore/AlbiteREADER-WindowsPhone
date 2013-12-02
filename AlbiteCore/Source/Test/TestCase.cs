@@ -42,7 +42,7 @@ namespace SvetlinAnkov.Albite.Core.Test
         {
             if (!expression)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Assertion failed");
             }
         }
 
