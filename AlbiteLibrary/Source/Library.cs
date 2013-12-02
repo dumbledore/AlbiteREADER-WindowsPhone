@@ -55,6 +55,8 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         private static string getConnectionString(string location, int maxSize = 128)
         {
+            // The size is in MB
+            // See: http://msdn.microsoft.com/en-us/library/windowsphone/develop/hh202861(v=vs.105).aspx
             return string.Format(
                 "Data Source = 'isostore:/{0}'; Max Database Size = '{1}';",
                 location, maxSize);

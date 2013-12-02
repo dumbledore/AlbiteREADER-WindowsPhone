@@ -8,7 +8,8 @@ namespace SvetlinAnkov.Albite.Tests
         {
             return new TestCase[]
             {
-                //new AlbiteIsolatedStorageTest("Test/epub/aliceDynamic.epub"),
+                new RecordStoreTestWrapper("Test/recordstore.sdf"),
+                new AlbiteIsolatedStorageTest("Test/epub/aliceDynamic.epub"),
                 new AlbiteIsolatedContainerTestWrapper(
                     "Test/epub/aliceDynamic.epub",
                     new string[] {"chapter01.xhtml", "Thumbnails/thumbnail.png", "META-INF/container.xml"},

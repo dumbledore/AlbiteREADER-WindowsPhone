@@ -104,6 +104,7 @@
     <Compile Include="Source\Serialization\IAlbiteSerializer.cs" />
     <Compile Include="Source\Serialization\IClientNotifier.cs" />
     <Compile Include="Source\Serialization\IContextAttachable.cs" />
+    <Compile Include="Source\Serialization\RecordStore.cs" />
     <Compile Include="Source\Test\TestCaseWrapper.cs" />
     <Compile Include="Source\Test\TestCase.cs" />
     <Compile Include="Source\Test\TestCollection.cs" />
@@ -125,6 +126,8 @@
     <Compile Include="Test\AlbiteIsolatedContainerTestWrapper.cs" />
     <Compile Include="Test\AlbiteIsolatedStorageTest.cs" />
     <Compile Include="Test\JsonSerializerTest.cs" />
+    <Compile Include="Test\RecordStoreTest.cs" />
+    <Compile Include="Test\RecordStoreTestWrapper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
