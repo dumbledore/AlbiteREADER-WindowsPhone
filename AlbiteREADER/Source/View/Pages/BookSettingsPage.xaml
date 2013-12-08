@@ -15,44 +15,9 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
-    <phone:PhoneApplicationPage.Resources>
-        <Storyboard x:Name="inStoryboard">
-            <DoubleAnimation
-                    Storyboard.TargetName="LayoutRoot"
-                    Storyboard.TargetProperty="Opacity"
-                    From="0.0" To="1.0" Duration="0:0:0.3"
-                    RepeatBehavior="1x">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation
-                    Storyboard.TargetName="RootScaleTransform"
-                    Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
-                    From="1.05" To="1.0" Duration="0:0:0.3"
-                    RepeatBehavior="1x">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation
-                    Storyboard.TargetName="RootScaleTransform"
-                    Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
-                    From="1.05" To="1.0" Duration="0:0:0.3"
-                    RepeatBehavior="1x">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>        </Storyboard>
-    </phone:PhoneApplicationPage.Resources>
-
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent"
           RenderTransformOrigin="0.5, 0.5">
-        <Grid.RenderTransform>
-            <ScaleTransform ScaleX="1" ScaleY="1"
-                            x:Name="RootScaleTransform"/>
-        </Grid.RenderTransform>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
