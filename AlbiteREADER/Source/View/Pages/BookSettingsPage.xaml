@@ -6,10 +6,11 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:albite="clr-namespace:SvetlinAnkov.Albite.READER.View.Controls"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
@@ -22,13 +23,31 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="book layout" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
+            <ScrollViewer>
+                <StackPanel Orientation="Vertical">
+                    <albite:HeaderedContentControl
+                        HeaderText="theme"
+                        ContentText="black on white" />
+                    <albite:HeaderedContentControl
+                        HeaderText="font"
+                        ContentText="Georgia, medium size" />
+                    <albite:HeaderedContentControl
+                        HeaderText="text"
+                        ContentText="justified" />
+                    <albite:HeaderedContentControl
+                        HeaderText="line spacing"
+                        ContentText="medium" />
+                    <albite:HeaderedContentControl
+                        HeaderText="page margins"
+                        ContentText="medium" />
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 
