@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Windows.Media.Animation;
 
 namespace SvetlinAnkov.Albite.READER.Source.View.Pages
 {
@@ -15,6 +16,12 @@ namespace SvetlinAnkov.Albite.READER.Source.View.Pages
         public BookSettingsPage()
         {
             InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            inStoryboard.Begin();
+            base.OnNavigatedTo(e);
         }
     }
 }
