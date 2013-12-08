@@ -105,6 +105,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\AppUtils.cs" />
+    <Compile Include="Source\View\Controls\HeaderedContentControl.xaml.cs">
+      <DependentUpon>HeaderedContentControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\View\Controls\IReaderControlObserver.cs" />
     <Compile Include="Source\View\Controls\ReaderControl.xaml.cs">
       <DependentUpon>ReaderControl.xaml</DependentUpon>
@@ -147,6 +150,10 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Source\View\Controls\HeaderedContentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Source\View\Controls\ReaderControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
