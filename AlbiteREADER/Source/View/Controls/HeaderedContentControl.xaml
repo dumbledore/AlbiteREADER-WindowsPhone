@@ -19,10 +19,12 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource PhoneTextLargeStyle}"
+                   IsHitTestVisible="False"
                    x:Name="HeaderTextBlock" />
         <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                    x:Name="ContentTextBlock"
                    Grid.Row="1"
+                   IsHitTestVisible="False"
                    Opacity=".5" />
     </Grid>
 </UserControl>
