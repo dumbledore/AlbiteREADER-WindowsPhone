@@ -123,6 +123,11 @@
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Transition\DramaticTransition.cs" />
+    <Compile Include="Source\View\Transition\ITransition.cs" />
+    <Compile Include="Source\View\Transition\ITransitionFactory.cs" />
+    <Compile Include="Source\View\Transition\ITransitionMode.cs" />
+    <Compile Include="Source\View\Transition\TransitionFrame.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="Source\App.xaml">

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using SvetlinAnkov.Albite.Core.Diagnostics;
+using SvetlinAnkov.Albite.READER.View.Transition;
+using System;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -128,7 +130,9 @@ namespace SvetlinAnkov.Albite.READER
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
-            RootFrame = new PhoneApplicationFrame();
+            ITransitionFactory transitionFactory
+                = new DramaticTransition.Factory(new Duration(TimeSpan.FromMilliseconds(300)), 1.05, 0.95);
+            RootFrame = new SvetlinAnkov.Albite.READER.View.Transition.TransitionFrame(transitionFactory);
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Handle navigation failures
