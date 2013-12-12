@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="SvetlinAnkov.Albite.READER.Source.View.Pages.BookSettingsPage"
+    x:Class="SvetlinAnkov.Albite.READER.View.Pages.BookSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -54,5 +54,4 @@
             </ScrollViewer>
         </Grid>
     </Grid>
-
 </phone:PhoneApplicationPage>
