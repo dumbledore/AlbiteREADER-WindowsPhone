@@ -37,7 +37,7 @@
                             toolkit:TiltEffect.IsTiltEnabled="True">
                     <albite:HeaderedContentControl
                         HeaderText="theme"
-                        ContentText="black on white" />
+                        ContentText="black on white" Tap="ThemeControl_Tap" />
                     <albite:HeaderedContentControl
                         HeaderText="font"
                         ContentText="Georgia, medium size" />
