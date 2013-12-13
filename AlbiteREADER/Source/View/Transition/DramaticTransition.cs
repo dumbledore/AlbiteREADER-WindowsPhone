@@ -1,6 +1,6 @@
-﻿using Microsoft.Phone.Controls;
-using System;
+﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -8,12 +8,12 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
 {
     public class DramaticTransition : AbstractTransition
     {
-        public DramaticTransition(PhoneApplicationFrame frame, ITransitionMode mode,
+        public DramaticTransition(ContentControl control, ITransitionMode mode,
             Duration duration, double scaleUp, double scaleDown)
             : base(mode)
         {
-            initializeOldContentAnimation(frame.Background, duration, scaleUp, scaleDown);
-            initializeNewContentAnimation((UIElement)frame.Content, duration, scaleUp, scaleDown);
+            initializeOldContentAnimation(control.Background, duration, scaleUp, scaleDown);
+            initializeNewContentAnimation((UIElement)control.Content, duration, scaleUp, scaleDown);
         }
 
         private void initializeOldContentAnimation(
@@ -190,9 +190,9 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
                 ScaleDown = scaleDown;
             }
 
-            public ITransition CreateTransition(PhoneApplicationFrame frame, ITransitionMode mode)
+            public ITransition CreateTransition(ContentControl control, ITransitionMode mode)
             {
-                return new DramaticTransition(frame, mode, Duration, ScaleUp, ScaleDown);
+                return new DramaticTransition(control, mode, Duration, ScaleUp, ScaleDown);
             }
         }
     }

@@ -1,9 +1,9 @@
-﻿using Microsoft.Phone.Controls;
+﻿using System.Windows.Controls;
 
 namespace SvetlinAnkov.Albite.READER.View.Transition
 {
     public interface ITransitionFactory
     {
-        ITransition CreateTransition(PhoneApplicationFrame frame, ITransitionMode mode);
+        ITransition CreateTransition(ContentControl control, ITransitionMode mode);
     }
 }
