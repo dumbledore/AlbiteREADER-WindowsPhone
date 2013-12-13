@@ -2,9 +2,7 @@
 {
     public enum ITransitionMode
     {
-        NavigatingBack,
-        NavigatingForward,
-        NavigatedBack,
-        NavigatedForward,
+        Backward,
+        Forward,
     }
 }

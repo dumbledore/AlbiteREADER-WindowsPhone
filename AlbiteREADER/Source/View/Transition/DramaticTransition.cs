@@ -1,175 +1,179 @@
-﻿using System;
+﻿using Microsoft.Phone.Controls;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace SvetlinAnkov.Albite.READER.View.Transition
 {
-    public class DramaticTransition : ITransition
+    public class DramaticTransition : AbstractTransition
     {
-        public ITransitionMode Mode { get; private set; }
-        public event EventHandler Completed;
-
-        public DramaticTransition(UIElement root, ITransitionMode mode,
+        public DramaticTransition(PhoneApplicationFrame frame, ITransitionMode mode,
             Duration duration, double scaleUp, double scaleDown)
+            : base(mode)
         {
-            Mode = mode;
-            initializeAnimation(root, duration, scaleUp, scaleDown);
+            initializeOldContentAnimation(frame.Background, duration, scaleUp, scaleDown);
+            initializeNewContentAnimation((UIElement)frame.Content, duration, scaleUp, scaleDown);
         }
 
-        private DoubleAnimation opacityAnimation;
-        private DoubleAnimation scaleXAnimation;
-        private DoubleAnimation scaleYAnimation;
-        private Storyboard storyboard;
-
-        private bool stopRequested = false;
-
-        public void Begin()
+        private void initializeOldContentAnimation(
+            Brush oldContent, Duration duration, double scaleUp, double scaleDown)
         {
-            stopRequested = false;
-            storyboard.Begin();
-        }
-
-        public void Stop()
-        {
-            stopRequested = true;
-            storyboard.SkipToFill();
-        }
-
-        void storyboard_Completed(object sender, EventArgs e)
-        {
-            if (stopRequested)
-            {
-                return;
-            }
-
-            if (Completed != null)
-            {
-                Completed(this, EventArgs.Empty);
-            }
-        }
-
-        private void initializeAnimation(
-            UIElement layoutRoot, Duration duration, double scaleUp, double scaleDown)
-        {
-            // Set up the render transform for LayoutRoot
-            layoutRoot.RenderTransformOrigin = new Point(0.5, 0.5);
-
+            // Set up the scale transform
             ScaleTransform scaleTransform = new ScaleTransform();
             scaleTransform.ScaleX = 1;
             scaleTransform.ScaleY = 1;
+            scaleTransform.CenterX = 0.5;
+            scaleTransform.CenterY = 0.5;
+            oldContent.RelativeTransform = scaleTransform;
 
-            layoutRoot.RenderTransform = scaleTransform;
-
-            // Set up the easing function
-            //SineEase easingFunction = new SineEase();
-            PowerEase easingFunction = new PowerEase();
-            easingFunction.Power = 6;
-            easingFunction.EasingMode = EasingMode.EaseIn;
+            // Cache the animation values
+            double opacityFrom = getOpacityFrom(true);
+            double opacityTo = getOpacityTo(true);
+            double scaleFrom = getScaleFrom(true, scaleUp, scaleDown);
+            double scaleTo = getScaleTo(true, scaleUp, scaleDown);
 
             // Set up the opacity animation
-            opacityAnimation = new DoubleAnimation();
-            opacityAnimation.From = getOpacityFrom();
-            opacityAnimation.To = getOpacityTo();
+            DoubleAnimation opacityAnimation = new DoubleAnimation();
+            opacityAnimation.From = opacityFrom;
+            opacityAnimation.To = opacityTo;
             opacityAnimation.Duration = duration;
-            opacityAnimation.EasingFunction = easingFunction;
-            Storyboard.SetTarget(opacityAnimation, layoutRoot);
-            Storyboard.SetTargetProperty(opacityAnimation, new PropertyPath(UIElement.OpacityProperty));
+            Storyboard.SetTarget(opacityAnimation, oldContent);
+            Storyboard.SetTargetProperty(opacityAnimation, new PropertyPath(Brush.OpacityProperty));
 
             // Set up the scaleX animation
-            scaleXAnimation = new DoubleAnimation();
-            scaleXAnimation.From = getScaleFrom(scaleUp, scaleDown);
-            scaleXAnimation.To = getScaleTo(scaleUp, scaleDown);
+            DoubleAnimation scaleXAnimation = new DoubleAnimation();
+            scaleXAnimation.From = scaleFrom;
+            scaleXAnimation.To = scaleTo;
             scaleXAnimation.Duration = duration;
-            scaleXAnimation.EasingFunction = easingFunction;
             Storyboard.SetTarget(scaleXAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleXAnimation, new PropertyPath(ScaleTransform.ScaleXProperty));
 
             // Set up the scaleY animation
-            scaleYAnimation = new DoubleAnimation();
-            scaleYAnimation.From = getScaleFrom(scaleUp, scaleDown);
-            scaleYAnimation.To = getScaleTo(scaleUp, scaleDown);
+            DoubleAnimation scaleYAnimation = new DoubleAnimation();
+            scaleYAnimation.From = scaleFrom;
+            scaleYAnimation.To = scaleTo;
             scaleYAnimation.Duration = duration;
-            scaleYAnimation.EasingFunction = easingFunction;
             Storyboard.SetTarget(scaleYAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleYAnimation, new PropertyPath(ScaleTransform.ScaleYProperty));
 
             // Set up the storyboard
-            storyboard = new Storyboard();
-            storyboard.Children.Add(opacityAnimation);
-            storyboard.Children.Add(scaleXAnimation);
-            storyboard.Children.Add(scaleYAnimation);
-            storyboard.Completed += storyboard_Completed;
+            Storyboard.Children.Add(opacityAnimation);
+            Storyboard.Children.Add(scaleXAnimation);
+            Storyboard.Children.Add(scaleYAnimation);
         }
 
-        private double getOpacityFrom()
+        private void initializeNewContentAnimation(
+            UIElement root, Duration duration, double scaleUp, double scaleDown)
         {
-            switch (Mode)
+            // Set up the render transform
+            ScaleTransform scaleTransform = new ScaleTransform();
+            scaleTransform.ScaleX = 1;
+            scaleTransform.ScaleY = 1;
+            root.RenderTransform = scaleTransform;
+            root.RenderTransformOrigin = new Point(0.5, 0.5);
+
+            // Cache the animation values
+            double opacityFrom = getOpacityFrom(false);
+            double opacityTo = getOpacityTo(false);
+            double scaleFrom = getScaleFrom(false, scaleUp, scaleDown);
+            double scaleTo = getScaleTo(false, scaleUp, scaleDown);
+
+            // Set up the opacity animation
+            DoubleAnimation opacityAnimation = new DoubleAnimation();
+            opacityAnimation.From = opacityFrom;
+            opacityAnimation.To = opacityTo;
+            opacityAnimation.Duration = duration;
+            Storyboard.SetTarget(opacityAnimation, root);
+            Storyboard.SetTargetProperty(opacityAnimation, new PropertyPath(UIElement.OpacityProperty));
+
+            // Set up the scaleX animation
+            DoubleAnimation scaleXAnimation = new DoubleAnimation();
+            scaleXAnimation.From = scaleFrom;
+            scaleXAnimation.To = scaleTo;
+            scaleXAnimation.Duration = duration;
+            Storyboard.SetTarget(scaleXAnimation, scaleTransform);
+            Storyboard.SetTargetProperty(scaleXAnimation, new PropertyPath(ScaleTransform.ScaleXProperty));
+
+            // Set up the scaleY animation
+            DoubleAnimation scaleYAnimation = new DoubleAnimation();
+            scaleYAnimation.From = scaleFrom;
+            scaleYAnimation.To = scaleTo;
+            scaleYAnimation.Duration = duration;
+            Storyboard.SetTarget(scaleYAnimation, scaleTransform);
+            Storyboard.SetTargetProperty(scaleYAnimation, new PropertyPath(ScaleTransform.ScaleYProperty));
+
+            // Set up the storyboard
+            Storyboard.Children.Add(opacityAnimation);
+            Storyboard.Children.Add(scaleXAnimation);
+            Storyboard.Children.Add(scaleYAnimation);
+        }
+
+        private double getOpacityFrom(bool goingAway)
+        {
+            if (goingAway)
             {
-                case ITransitionMode.NavigatingBack:
-                case ITransitionMode.NavigatingForward:
-                    return 1.0; // Fade out
-
-                case ITransitionMode.NavigatedBack:
-                case ITransitionMode.NavigatedForward:
-                    return 0.0; // Fade in
-
-                default:
-                    throw new InvalidOperationException("Invalid mode");
+                return 1.0; // Fade out
+            }
+            else
+            {
+                return 0.0; // Fade in
             }
         }
 
-        private double getOpacityTo()
+        private double getOpacityTo(bool goingAway)
         {
-            switch (Mode)
+            if (goingAway)
             {
-                case ITransitionMode.NavigatingBack:
-                case ITransitionMode.NavigatingForward:
-                    return 0.0; // Fade out
-
-                case ITransitionMode.NavigatedBack:
-                case ITransitionMode.NavigatedForward:
-                    return 1.0; // Fade in
-
-                default:
-                    throw new InvalidOperationException("Invalid mode");
+                return 0.0; // Fade out
+            }
+            else
+            {
+                return 1.0; // Fade in
             }
         }
 
-        private double getScaleFrom(double scaleUp, double scaleDown)
+        private double getScaleFrom(bool goingAway, double scaleUp, double scaleDown)
         {
-            switch (Mode)
+            if (goingAway)
             {
-                case ITransitionMode.NavigatingBack:
-                case ITransitionMode.NavigatingForward:
-                    return 1.0; // Going away
+                return 1.0; // Going away
+            }
+            else
+            {
+                switch (Mode)
+                {
+                    case ITransitionMode.Backward:
+                        return scaleDown; // Coming back from below
 
-                case ITransitionMode.NavigatedBack:
-                    return scaleDown; // Coming back from below
-                case ITransitionMode.NavigatedForward:
-                    return scaleUp; // Coming back from above
+                    case ITransitionMode.Forward:
+                        return scaleUp; // Coming back from above
 
-                default:
-                    throw new InvalidOperationException("Invalid mode");
+                    default:
+                        throw new InvalidOperationException("Invalid mode");
+                }
             }
         }
 
-        private double getScaleTo(double scaleUp, double scaleDown)
+        private double getScaleTo(bool goingAway, double scaleUp, double scaleDown)
         {
-            switch (Mode)
+            if (goingAway)
             {
-                case ITransitionMode.NavigatingBack:
-                    return scaleUp; // Current page is going out from the stack
+                switch (Mode)
+                {
+                    case ITransitionMode.Backward:
+                        return scaleUp; // Current page is going out from the stack
 
-                case ITransitionMode.NavigatingForward:
-                    return scaleDown; // Current page is going to the back of the stack
+                    case ITransitionMode.Forward:
+                        return scaleDown; // Current page is going to the back of the stack
 
-                case ITransitionMode.NavigatedBack:
-                case ITransitionMode.NavigatedForward:
-                    return 1.0; // New page is coming to the top of the stack
-
-                default:
-                    throw new InvalidOperationException("Invalid mode");
+                    default:
+                        throw new InvalidOperationException("Invalid mode");
+                }
+            }
+            else
+            {
+                return 1.0; // New page is coming to the top of the stack
             }
         }
 
@@ -186,9 +190,9 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
                 ScaleDown = scaleDown;
             }
 
-            public ITransition CreateTransition(UIElement root, ITransitionMode mode)
+            public ITransition CreateTransition(PhoneApplicationFrame frame, ITransitionMode mode)
             {
-                return new DramaticTransition(root, mode, Duration, ScaleUp, ScaleDown);
+                return new DramaticTransition(frame, mode, Duration, ScaleUp, ScaleDown);
             }
         }
     }
