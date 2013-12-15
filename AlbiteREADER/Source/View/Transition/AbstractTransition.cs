@@ -5,16 +5,13 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
 {
     public class AbstractTransition : ITransition
     {
-        public ITransitionMode Mode { get; protected set; }
         public event EventHandler Completed;
 
         protected Storyboard Storyboard { get; private set; }
         private bool stopRequested = false;
 
-        public AbstractTransition(ITransitionMode mode)
+        public AbstractTransition()
         {
-            Mode = mode;
-
             // Set up storyboard
             Storyboard = new Storyboard();
             Storyboard.Completed += storyboard_Completed;

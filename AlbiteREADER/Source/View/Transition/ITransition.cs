@@ -6,7 +6,6 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
     {
         void Begin();
         void Stop();
-        ITransitionMode Mode { get; }
         event EventHandler Completed;
     }
 }

@@ -8,11 +8,11 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
 {
     public class TransitionFrame : PhoneApplicationFrame
     {
-        private ITransitionFactory transitionFactory;
+        private INavigationTransitionFactory transitionFactory;
         private ITransition currentTransition;
         private WriteableBitmap bitmap;
 
-        public TransitionFrame(ITransitionFactory transitionFactory)
+        public TransitionFrame(INavigationTransitionFactory transitionFactory)
         {
             this.transitionFactory = transitionFactory;
 
@@ -84,12 +84,12 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             if (e.NavigationMode == NavigationMode.Back)
             {
                 currentTransition = transitionFactory.CreateTransition(
-                    this, ITransitionMode.Backward);
+                    this, NavigationTransitionMode.Backward);
             }
             else
             {
                 currentTransition = transitionFactory.CreateTransition(
-                    this, ITransitionMode.Forward);
+                    this, NavigationTransitionMode.Forward);
             }
 
             currentTransition.Completed += transition_Completed;

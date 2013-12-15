@@ -6,12 +6,15 @@ using System.Windows.Media.Animation;
 
 namespace SvetlinAnkov.Albite.READER.View.Transition
 {
-    public class DramaticTransition : AbstractTransition
+    public class DramaticTransition : AbstractTransition, INavigationTransition
     {
-        public DramaticTransition(ContentControl control, ITransitionMode mode,
+        public NavigationTransitionMode Mode { get; private set; }
+
+        public DramaticTransition(ContentControl control, NavigationTransitionMode mode,
             Duration duration, double scaleUp, double scaleDown)
-            : base(mode)
         {
+            Mode = mode;
+
             initializeOldContentAnimation(control.Background, duration, scaleUp, scaleDown);
             initializeNewContentAnimation((UIElement)control.Content, duration, scaleUp, scaleDown);
         }
@@ -149,10 +152,10 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             {
                 switch (Mode)
                 {
-                    case ITransitionMode.Backward:
+                    case NavigationTransitionMode.Backward:
                         return scaleDown; // Coming back from below
 
-                    case ITransitionMode.Forward:
+                    case NavigationTransitionMode.Forward:
                         return scaleUp; // Coming back from above
 
                     default:
@@ -167,10 +170,10 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             {
                 switch (Mode)
                 {
-                    case ITransitionMode.Backward:
+                    case NavigationTransitionMode.Backward:
                         return scaleUp; // Current page is going out from the stack
 
-                    case ITransitionMode.Forward:
+                    case NavigationTransitionMode.Forward:
                         return scaleDown; // Current page is going to the back of the stack
 
                     default:
@@ -183,7 +186,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             }
         }
 
-        public class Factory : ITransitionFactory
+        public class Factory : INavigationTransitionFactory
         {
             public Duration Duration { get; private set; }
             public double ScaleUp { get; private set; }
@@ -196,7 +199,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
                 ScaleDown = scaleDown;
             }
 
-            public ITransition CreateTransition(ContentControl control, ITransitionMode mode)
+            public INavigationTransition CreateTransition(ContentControl control, NavigationTransitionMode mode)
             {
                 return new DramaticTransition(control, mode, Duration, ScaleUp, ScaleDown);
             }

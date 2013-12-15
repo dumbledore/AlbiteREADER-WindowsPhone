@@ -128,9 +128,10 @@
     </Compile>
     <Compile Include="Source\View\Transition\AbstractTransition.cs" />
     <Compile Include="Source\View\Transition\DramaticTransition.cs" />
+    <Compile Include="Source\View\Transition\INavigationTransition.cs" />
     <Compile Include="Source\View\Transition\ITransition.cs" />
-    <Compile Include="Source\View\Transition\ITransitionFactory.cs" />
-    <Compile Include="Source\View\Transition\ITransitionMode.cs" />
+    <Compile Include="Source\View\Transition\INavigationTransitionFactory.cs" />
+    <Compile Include="Source\View\Transition\NavigationTransitionMode.cs" />
     <Compile Include="Source\View\Transition\TransitionFrame.cs" />
     <Compile Include="Source\View\Transition\TransitionService.cs" />
   </ItemGroup>
