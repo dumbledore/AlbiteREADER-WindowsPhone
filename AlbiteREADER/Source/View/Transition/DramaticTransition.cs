@@ -28,6 +28,10 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
                 return;
             }
 
+            // Set up an easing function
+            CircleEase ease = new CircleEase();
+            ease.EasingMode = EasingMode.EaseIn;
+
             // Set up the scale transform
             ScaleTransform scaleTransform = new ScaleTransform();
             scaleTransform.ScaleX = 1;
@@ -55,6 +59,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleXAnimation.From = scaleFrom;
             scaleXAnimation.To = scaleTo;
             scaleXAnimation.Duration = duration;
+            scaleXAnimation.EasingFunction = ease;
             Storyboard.SetTarget(scaleXAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleXAnimation, new PropertyPath(ScaleTransform.ScaleXProperty));
 
@@ -63,6 +68,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleYAnimation.From = scaleFrom;
             scaleYAnimation.To = scaleTo;
             scaleYAnimation.Duration = duration;
+            scaleYAnimation.EasingFunction = ease;
             Storyboard.SetTarget(scaleYAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleYAnimation, new PropertyPath(ScaleTransform.ScaleYProperty));
 
@@ -81,6 +87,10 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleTransform.ScaleY = 1;
             root.RenderTransform = scaleTransform;
             root.RenderTransformOrigin = new Point(0.5, 0.5);
+
+            // Set up an easing function
+            CircleEase ease = new CircleEase();
+            ease.EasingMode = EasingMode.EaseOut;
 
             // Cache the animation values
             double opacityFrom = getOpacityFrom(false);
@@ -101,6 +111,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleXAnimation.From = scaleFrom;
             scaleXAnimation.To = scaleTo;
             scaleXAnimation.Duration = duration;
+            scaleXAnimation.EasingFunction = ease;
             Storyboard.SetTarget(scaleXAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleXAnimation, new PropertyPath(ScaleTransform.ScaleXProperty));
 
@@ -109,6 +120,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleYAnimation.From = scaleFrom;
             scaleYAnimation.To = scaleTo;
             scaleYAnimation.Duration = duration;
+            scaleYAnimation.EasingFunction = ease;
             Storyboard.SetTarget(scaleYAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleYAnimation, new PropertyPath(ScaleTransform.ScaleYProperty));
 
