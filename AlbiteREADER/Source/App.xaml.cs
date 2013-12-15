@@ -5,6 +5,7 @@ using SvetlinAnkov.Albite.READER.View.Transition;
 using System;
 using System.Windows;
 using System.Windows.Navigation;
+using AlbiteTransitionFrame = SvetlinAnkov.Albite.READER.View.Transition.TransitionFrame;
 
 namespace SvetlinAnkov.Albite.READER
 {
@@ -130,9 +131,8 @@ namespace SvetlinAnkov.Albite.READER
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
-            INavigationTransitionFactory transitionFactory
-                = new DramaticTransition.Factory(new Duration(TimeSpan.FromMilliseconds(200)), 1.1, 0.9);
-            RootFrame = new SvetlinAnkov.Albite.READER.View.Transition.TransitionFrame(transitionFactory);
+            RootFrame = createTransitionFrame();
+
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Handle navigation failures
@@ -140,6 +140,17 @@ namespace SvetlinAnkov.Albite.READER
 
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
+        }
+
+        private PhoneApplicationFrame createTransitionFrame()
+        {
+            INavigationTransitionFactory navigationTransitionFactory
+                = new DramaticTransition.Factory(new Duration(TimeSpan.FromMilliseconds(200)), 1.1, 0.9);
+
+            IRotationTransitionFactory rotationTransitionFactory
+                = new RotationTransition.Factory(new Duration(TimeSpan.FromMilliseconds(200)));
+
+            return new AlbiteTransitionFrame(navigationTransitionFactory, rotationTransitionFactory);
         }
 
         // Do not add any additional code to this method

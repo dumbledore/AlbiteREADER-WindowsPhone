@@ -8,16 +8,26 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
 {
     public class TransitionFrame : PhoneApplicationFrame
     {
-        private INavigationTransitionFactory transitionFactory;
+        private INavigationTransitionFactory navigationTransitionFactory;
+        private IRotationTransitionFactory rotationTransitionFactory;
         private ITransition currentTransition;
         private WriteableBitmap bitmap;
+        private PageOrientation previousOrientation;
 
-        public TransitionFrame(INavigationTransitionFactory transitionFactory)
+        public TransitionFrame(
+            INavigationTransitionFactory navigationTransitionFactory,
+            IRotationTransitionFactory rotationTransitionFactory)
         {
-            this.transitionFactory = transitionFactory;
+            this.navigationTransitionFactory = navigationTransitionFactory;
+            this.rotationTransitionFactory = rotationTransitionFactory;
 
+            // Get the initial orientation
+            previousOrientation = Orientation;
+
+            // Set up events
             Navigating += OnNavigating;
             Navigated += OnNavigated;
+            OrientationChanged += OnOrientationChanged;
         }
 
         private void OnNavigating(object sender, NavigatingCancelEventArgs e)
@@ -83,17 +93,44 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             PhoneApplicationPage page = Content as PhoneApplicationPage;
             if (e.NavigationMode == NavigationMode.Back)
             {
-                currentTransition = transitionFactory.CreateTransition(
+                currentTransition = navigationTransitionFactory.CreateTransition(
                     this, NavigationTransitionMode.Backward);
             }
             else
             {
-                currentTransition = transitionFactory.CreateTransition(
+                currentTransition = navigationTransitionFactory.CreateTransition(
                     this, NavigationTransitionMode.Forward);
             }
 
             currentTransition.Completed += transition_Completed;
             currentTransition.Begin();
+        }
+
+        private void OnOrientationChanged(object sender, OrientationChangedEventArgs e)
+        {
+            // Stop the transition
+            clearTransition();
+
+            // Rotating from
+            PageOrientation from = previousOrientation;
+
+            // Rotating to
+            PageOrientation to = e.Orientation;
+
+            // Cache the new orientation
+            previousOrientation = e.Orientation;
+
+            // Which way are we rotating?
+            RotationTransitionMode mode = getRotation(from, to);
+
+            if (mode != RotationTransitionMode.None)
+            {
+                // Set up the transition
+                currentTransition = rotationTransitionFactory.CreateTransition(
+                    (UIElement)Content, mode);
+                currentTransition.Completed += transition_Completed;
+                currentTransition.Begin();
+            }
         }
 
         void transition_Completed(object sender, System.EventArgs e)
@@ -130,6 +167,47 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
 
             // Clear the cached bitmap (if any)
             bitmap = null;
+        }
+
+        RotationTransitionMode getRotation(PageOrientation from, PageOrientation to)
+        {
+            RotationTransitionMode mode = RotationTransitionMode.None;
+
+            if (from == PageOrientation.PortraitUp)
+            {
+                if (to == PageOrientation.LandscapeLeft)
+                {
+                    mode = RotationTransitionMode.CounterClockwise;
+                }
+                else if (to == PageOrientation.LandscapeRight)
+                {
+                    mode = RotationTransitionMode.Clockwise;
+                }
+            }
+            else if (from == PageOrientation.LandscapeLeft)
+            {
+                if (to == PageOrientation.PortraitUp)
+                {
+                    mode = RotationTransitionMode.Clockwise;
+                }
+                else if (to == PageOrientation.LandscapeRight)
+                {
+                    mode = RotationTransitionMode.UpsideDownCW;
+                }
+            }
+            else if (from == PageOrientation.LandscapeRight)
+            {
+                if (to == PageOrientation.PortraitUp)
+                {
+                    mode = RotationTransitionMode.CounterClockwise;
+                }
+                else if (to == PageOrientation.LandscapeLeft)
+                {
+                    mode = RotationTransitionMode.UpsideDownCCW;
+                }
+            }
+
+            return mode;
         }
     }
 }

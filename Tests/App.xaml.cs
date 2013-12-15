@@ -112,9 +112,8 @@ namespace SvetlinAnkov.Albite.Tests
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
-            INavigationTransitionFactory transitionFactory
-                = new DramaticTransition.Factory(new Duration(TimeSpan.FromMilliseconds(200)), 1.1, 0.9);
-            RootFrame = new SvetlinAnkov.Albite.READER.View.Transition.TransitionFrame(transitionFactory);
+            RootFrame = createTransitionFrame();
+
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Handle navigation failures
@@ -122,6 +121,17 @@ namespace SvetlinAnkov.Albite.Tests
 
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
+        }
+
+        private PhoneApplicationFrame createTransitionFrame()
+        {
+            INavigationTransitionFactory navigationTransitionFactory
+                = new DramaticTransition.Factory(new Duration(TimeSpan.FromMilliseconds(200)), 1.1, 0.9);
+
+            IRotationTransitionFactory rotationTransitionFactory
+                = new RotationTransition.Factory(new Duration(TimeSpan.FromMilliseconds(200)));
+
+            return new TransitionFrame(navigationTransitionFactory, rotationTransitionFactory);
         }
 
         // Do not add any additional code to this method
