@@ -30,11 +30,16 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             root.RenderTransform = rotateTransform;
             root.RenderTransformOrigin = new Point(0.5, 0.5);
 
+            // Set up an easing function
+            CircleEase ease = new CircleEase();
+            ease.EasingMode = EasingMode.EaseOut;
+
             // Set up the rotation animation
             DoubleAnimation rotationAnimation = new DoubleAnimation();
             rotationAnimation.From = getRotationFrom();
             rotationAnimation.To = 0;
             rotationAnimation.Duration = duration;
+            rotationAnimation.EasingFunction = ease;
             Storyboard.SetTarget(rotationAnimation, rotateTransform);
             Storyboard.SetTargetProperty(rotationAnimation, new PropertyPath(RotateTransform.AngleProperty));
 

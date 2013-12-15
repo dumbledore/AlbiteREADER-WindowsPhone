@@ -129,7 +129,7 @@ namespace SvetlinAnkov.Albite.Tests
                 = new DramaticTransition.Factory(new Duration(TimeSpan.FromMilliseconds(200)), 1.1, 0.9);
 
             IRotationTransitionFactory rotationTransitionFactory
-                = new RotationTransition.Factory(new Duration(TimeSpan.FromMilliseconds(200)));
+                = new RotationTransition.Factory(new Duration(TimeSpan.FromMilliseconds(300)));
 
             return new TransitionFrame(navigationTransitionFactory, rotationTransitionFactory);
         }
