@@ -19,6 +19,12 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
         private void initializeOldContentAnimation(
             Brush oldContent, Duration duration, double scaleUp, double scaleDown)
         {
+            if (oldContent == null)
+            {
+                // There's nothing to animate
+                return;
+            }
+
             // Set up the scale transform
             ScaleTransform scaleTransform = new ScaleTransform();
             scaleTransform.ScaleX = 1;

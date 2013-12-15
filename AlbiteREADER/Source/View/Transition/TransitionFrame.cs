@@ -22,14 +22,14 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
 
         private void OnNavigating(object sender, NavigatingCancelEventArgs e)
         {
-            stopTransition();
+            // Stop any previous transitions
+            clearTransition();
 
-            // If the current application is not the origin
-            // and destination of the navigation, ignore it.
-            // e.g. do not play a transition when the
-            // application gets deactivated because the shell
-            // will animate the frame out automatically.
-            if (!e.IsNavigationInitiator)
+            // Clear the background brush and the cached bitmap
+            clearBitmap();
+
+            // Do we want the transition?
+            if (!e.IsNavigationInitiator || !transitionEnabled())
             {
                 return;
             }
@@ -38,20 +38,13 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             bitmap = new WriteableBitmap(Content as UIElement, null);
         }
 
-        void stopTransition()
-        {
-            if (currentTransition != null)
-            {
-                currentTransition.Stop();
-                currentTransition = null;
-            }
-        }
-
         void OnNavigated(object sender, NavigationEventArgs e)
         {
-            stopTransition();
+            // Stop any previous transitions
+            clearTransition();
 
-            if (!e.IsNavigationInitiator)
+            // Do we want the transition?
+            if (!e.IsNavigationInitiator || !transitionEnabled())
             {
                 return;
             }
@@ -106,10 +99,37 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
         void transition_Completed(object sender, System.EventArgs e)
         {
             // Stop the transition
-            stopTransition();
+            clearTransition();
 
+            // Clear the background brush and the cached bitmap
+            clearBitmap();
+        }
+
+        bool transitionEnabled()
+        {
+            // Get the content page
+            PhoneApplicationPage page = Content as PhoneApplicationPage;
+
+            // Get whether the value of the attached property
+            return (bool)page.GetValue(TransitionService.NavigationTransitionEnabledProperty);
+        }
+
+        void clearTransition()
+        {
+            if (currentTransition != null)
+            {
+                currentTransition.Stop();
+                currentTransition = null;
+            }
+        }
+
+        void clearBitmap()
+        {
             // Clear the ImageBrush
             Background = null;
+
+            // Clear the cached bitmap (if any)
+            bitmap = null;
         }
     }
 }

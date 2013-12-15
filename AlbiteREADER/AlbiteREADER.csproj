@@ -132,6 +132,7 @@
     <Compile Include="Source\View\Transition\ITransitionFactory.cs" />
     <Compile Include="Source\View\Transition\ITransitionMode.cs" />
     <Compile Include="Source\View\Transition\TransitionFrame.cs" />
+    <Compile Include="Source\View\Transition\TransitionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="Source\App.xaml">
