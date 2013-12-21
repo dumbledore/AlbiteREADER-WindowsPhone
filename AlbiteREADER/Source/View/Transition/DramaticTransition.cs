@@ -10,6 +10,9 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
     {
         public NavigationTransitionMode Mode { get; private set; }
 
+        private const double centerX = -0.1;
+        private const double centerY =  0.6;
+
         public DramaticTransition(ContentControl control, NavigationTransitionMode mode,
             Duration duration, double scaleUp, double scaleDown)
         {
@@ -28,16 +31,19 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
                 return;
             }
 
-            // Set up an easing function
-            CircleEase ease = new CircleEase();
-            ease.EasingMode = EasingMode.EaseIn;
+            // Set up the easing functions
+            CircleEase opacityEase = new CircleEase();
+            opacityEase.EasingMode = EasingMode.EaseOut;
+
+            CircleEase scaleEase = new CircleEase();
+            scaleEase.EasingMode = EasingMode.EaseIn;
 
             // Set up the scale transform
             ScaleTransform scaleTransform = new ScaleTransform();
             scaleTransform.ScaleX = 1;
             scaleTransform.ScaleY = 1;
-            scaleTransform.CenterX = 0.5;
-            scaleTransform.CenterY = 0.5;
+            scaleTransform.CenterX = centerX;
+            scaleTransform.CenterY = centerY;
             oldContent.RelativeTransform = scaleTransform;
 
             // Cache the animation values
@@ -51,6 +57,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             opacityAnimation.From = opacityFrom;
             opacityAnimation.To = opacityTo;
             opacityAnimation.Duration = duration;
+            opacityAnimation.EasingFunction = opacityEase;
             Storyboard.SetTarget(opacityAnimation, oldContent);
             Storyboard.SetTargetProperty(opacityAnimation, new PropertyPath(Brush.OpacityProperty));
 
@@ -59,7 +66,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleXAnimation.From = scaleFrom;
             scaleXAnimation.To = scaleTo;
             scaleXAnimation.Duration = duration;
-            scaleXAnimation.EasingFunction = ease;
+            scaleXAnimation.EasingFunction = scaleEase;
             Storyboard.SetTarget(scaleXAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleXAnimation, new PropertyPath(ScaleTransform.ScaleXProperty));
 
@@ -68,7 +75,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleYAnimation.From = scaleFrom;
             scaleYAnimation.To = scaleTo;
             scaleYAnimation.Duration = duration;
-            scaleYAnimation.EasingFunction = ease;
+            scaleYAnimation.EasingFunction = scaleEase;
             Storyboard.SetTarget(scaleYAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleYAnimation, new PropertyPath(ScaleTransform.ScaleYProperty));
 
@@ -86,11 +93,14 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleTransform.ScaleX = 1;
             scaleTransform.ScaleY = 1;
             root.RenderTransform = scaleTransform;
-            root.RenderTransformOrigin = new Point(0.5, 0.5);
+            root.RenderTransformOrigin = new Point(centerX, centerY);
 
-            // Set up an easing function
-            CircleEase ease = new CircleEase();
-            ease.EasingMode = EasingMode.EaseOut;
+            // Set up the easing functions
+            CircleEase opacityEase = new CircleEase();
+            opacityEase.EasingMode = EasingMode.EaseIn;
+
+            CircleEase scaleEase = new CircleEase();
+            scaleEase.EasingMode = EasingMode.EaseOut;
 
             // Cache the animation values
             double opacityFrom = getOpacityFrom(false);
@@ -103,6 +113,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             opacityAnimation.From = opacityFrom;
             opacityAnimation.To = opacityTo;
             opacityAnimation.Duration = duration;
+            opacityAnimation.EasingFunction = opacityEase;
             Storyboard.SetTarget(opacityAnimation, root);
             Storyboard.SetTargetProperty(opacityAnimation, new PropertyPath(UIElement.OpacityProperty));
 
@@ -111,7 +122,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleXAnimation.From = scaleFrom;
             scaleXAnimation.To = scaleTo;
             scaleXAnimation.Duration = duration;
-            scaleXAnimation.EasingFunction = ease;
+            scaleXAnimation.EasingFunction = scaleEase;
             Storyboard.SetTarget(scaleXAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleXAnimation, new PropertyPath(ScaleTransform.ScaleXProperty));
 
@@ -120,7 +131,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             scaleYAnimation.From = scaleFrom;
             scaleYAnimation.To = scaleTo;
             scaleYAnimation.Duration = duration;
-            scaleYAnimation.EasingFunction = ease;
+            scaleYAnimation.EasingFunction = scaleEase;
             Storyboard.SetTarget(scaleYAnimation, scaleTransform);
             Storyboard.SetTargetProperty(scaleYAnimation, new PropertyPath(ScaleTransform.ScaleYProperty));
 
@@ -168,7 +179,8 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
                         return scaleDown; // Coming back from below
 
                     case NavigationTransitionMode.Forward:
-                        return scaleUp; // Coming back from above
+                        return scaleUp * 2.1; // Coming back from above.
+                                              // Scale up a bit more for a more dramatic effect
 
                     default:
                         throw new InvalidOperationException("Invalid mode");
@@ -183,10 +195,10 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
                 switch (Mode)
                 {
                     case NavigationTransitionMode.Backward:
-                        return scaleUp; // Current page is going out from the stack
+                        return scaleUp * 1.8; // Current page is going out from the stack
 
                     case NavigationTransitionMode.Forward:
-                        return scaleDown; // Current page is going to the back of the stack
+                        return scaleDown / 2; // Current page is going to the back of the stack
 
                     default:
                         throw new InvalidOperationException("Invalid mode");

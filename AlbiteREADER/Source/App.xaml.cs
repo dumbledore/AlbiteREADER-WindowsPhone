@@ -145,7 +145,7 @@ namespace SvetlinAnkov.Albite.READER
         private PhoneApplicationFrame createTransitionFrame()
         {
             INavigationTransitionFactory navigationTransitionFactory
-                = new DramaticTransition.Factory(new Duration(TimeSpan.FromMilliseconds(300)), 1.2, 0.8);
+                = new DramaticTransition.Factory(new Duration(TimeSpan.FromMilliseconds(400)), 1.2, 0.8);
 
             IRotationTransitionFactory rotationTransitionFactory
                 = new RotationTransition.Factory(new Duration(TimeSpan.FromMilliseconds(300)));
