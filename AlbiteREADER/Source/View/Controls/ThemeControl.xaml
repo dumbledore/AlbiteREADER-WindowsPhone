@@ -15,9 +15,17 @@
 
     <Border x:Name="BackgroundBorder" BorderThickness="1"
             Margin="12,0,12,0">
-        <TextBlock Style="{StaticResource PhoneTextLargeStyle}"
-                    IsHitTestVisible="False"
+        <Grid IsHitTestVisible="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border x:Name="SelectionBorder"
+                    Grid.Column="0"/>
+            <TextBlock Style="{StaticResource PhoneTextLargeStyle}"
+                    Grid.Column="1"
                     x:Name="ForegroundText"
-                    Margin="24,18,24,18" />
+                    Margin="12,18,12,18" />
+        </Grid>
     </Border>
 </UserControl>

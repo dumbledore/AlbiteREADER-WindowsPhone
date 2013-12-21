@@ -18,34 +18,34 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty ThemeBackgroundColorProperty
-            = DependencyProperty.Register("ThemeBackgroundColor", typeof(Color), typeof(ThemeControl),
-            new PropertyMetadata(onThemeBackgroundColorChanged));
+        public static readonly DependencyProperty BackgroundColorProperty
+            = DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(ThemeControl),
+            new PropertyMetadata(onBackgroundColorChanged));
 
-        public Color ThemeBackgroundColor
+        public Color BackgroundColor
         {
-            get { return (Color)GetValue(ThemeBackgroundColorProperty); }
-            set { SetValue(ThemeBackgroundColorProperty, value); }
+            get { return (Color)GetValue(BackgroundColorProperty); }
+            set { SetValue(BackgroundColorProperty, value); }
         }
 
-        public static void onThemeBackgroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static void onBackgroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ThemeControl control = (ThemeControl)d;
             Color newValue = (Color)e.NewValue;
             control.BackgroundBorder.Background = new SolidColorBrush(newValue);
         }
 
-        public static readonly DependencyProperty ThemeForegroundColorProperty
-            = DependencyProperty.Register("ThemeForegroundColor", typeof(Color), typeof(ThemeControl),
-            new PropertyMetadata(onThemeForegroundColorChanged));
+        public static readonly DependencyProperty ForegroundColorProperty
+            = DependencyProperty.Register("ForegroundColor", typeof(Color), typeof(ThemeControl),
+            new PropertyMetadata(onForegroundColorChanged));
 
-        public Color ThemeForegroundColor
+        public Color ForegroundColor
         {
-            get { return (Color)GetValue(ThemeForegroundColorProperty); }
-            set { SetValue(ThemeForegroundColorProperty, value); }
+            get { return (Color)GetValue(ForegroundColorProperty); }
+            set { SetValue(ForegroundColorProperty, value); }
         }
 
-        public static void onThemeForegroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static void onForegroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ThemeControl control = (ThemeControl)d;
             Color newValue = (Color)e.NewValue;
@@ -56,7 +56,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
         public static readonly DependencyProperty TextProperty
             = DependencyProperty.Register("Text", typeof(string), typeof(ThemeControl),
-            new PropertyMetadata(onHeaderTextChanged));
+            new PropertyMetadata(onTextChanged));
 
         public string Text
         {
@@ -64,11 +64,68 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             set { SetValue(TextProperty, value); }
         }
 
-        private static void onHeaderTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void onTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ThemeControl control = (ThemeControl)d;
             string newValue = (string)e.NewValue;
             control.ForegroundText.Text = newValue;
+        }
+
+        public static readonly DependencyProperty SelectedProperty
+            = DependencyProperty.Register("Selected", typeof(bool), typeof(ThemeControl),
+            new PropertyMetadata(onSelectedChanged));
+
+        public bool Selected
+        {
+            get { return (bool)GetValue(SelectedProperty); }
+            set { SetValue(SelectedProperty, value); }
+        }
+
+        public static void onSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ThemeControl control = (ThemeControl)d;
+            bool newValue = (bool)e.NewValue;
+            Brush brush = null;
+            if (newValue)
+            {
+                brush = (Brush)Application.Current.Resources["PhoneAccentBrush"];
+            }
+
+            control.SelectionBorder.Background = brush;
+        }
+
+        public new static readonly DependencyProperty FontFamilyProperty
+            = DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(ThemeControl),
+            new PropertyMetadata(onFontFamilyChanged));
+
+        public new FontFamily FontFamily
+        {
+            get { return (FontFamily)GetValue(FontFamilyProperty); }
+            set { SetValue(FontFamilyProperty, value); }
+        }
+
+        public static void onFontFamilyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ThemeControl control = (ThemeControl)d;
+            FontFamily family = (FontFamily)e.NewValue;
+            control.ForegroundText.FontFamily = family;
+        }
+
+        public new static readonly DependencyProperty FontSizeProperty
+            = DependencyProperty.Register("FontSize", typeof(double), typeof(ThemeControl),
+            new PropertyMetadata(onFontSizeChanged));
+
+        public new double FontSize
+        {
+            get { return (double)GetValue(FontSizeProperty); }
+            set { SetValue(FontSizeProperty, value); }
+        }
+
+        public static void onFontSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ThemeControl control = (ThemeControl)d;
+            double fontSize = (double)e.NewValue;
+            control.ForegroundText.FontSize = fontSize;
         }
     }
 }

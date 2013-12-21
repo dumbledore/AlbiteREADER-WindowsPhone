@@ -36,36 +36,38 @@
                 <StackPanel Orientation="Vertical"
                         toolkit:TiltEffect.IsTiltEnabled="True">
                     <albite:ThemeControl
-                        ThemeForegroundColor="White"
-                        ThemeBackgroundColor="Black"
+                        ForegroundColor="White"
+                        BackgroundColor="Black"
                         Text="white on black"/>
                     <albite:ThemeControl
-                        ThemeForegroundColor="Beige"
-                        ThemeBackgroundColor="#FF201800"
-                        Text="beige on brown"/>
+                        ForegroundColor="Beige"
+                        BackgroundColor="#FF201800"
+                        Text="beige on brown"
+                        Selected="True"
+                        />
                     <albite:ThemeControl
-                        ThemeForegroundColor="Black"
-                        ThemeBackgroundColor="White"
+                        ForegroundColor="Black"
+                        BackgroundColor="White"
                         Text="black on white"/>
                     <albite:ThemeControl
-                        ThemeForegroundColor="#FF000040"
-                        ThemeBackgroundColor="Beige"
+                        ForegroundColor="#FF000040"
+                        BackgroundColor="Beige"
                         Text="ink on paper"/>
                     <albite:ThemeControl
-                        ThemeForegroundColor="White"
-                        ThemeBackgroundColor="Black"
+                        ForegroundColor="White"
+                        BackgroundColor="Black"
                         Text="white on black"/>
                     <albite:ThemeControl
-                        ThemeForegroundColor="Beige"
-                        ThemeBackgroundColor="#FF201800"
+                        ForegroundColor="Beige"
+                        BackgroundColor="#FF201800"
                         Text="beige on brown"/>
                     <albite:ThemeControl
-                        ThemeForegroundColor="Black"
-                        ThemeBackgroundColor="White"
+                        ForegroundColor="Black"
+                        BackgroundColor="White"
                         Text="black on white"/>
                     <albite:ThemeControl
-                        ThemeForegroundColor="#FF000040"
-                        ThemeBackgroundColor="Beige"
+                        ForegroundColor="#FF000040"
+                        BackgroundColor="Beige"
                         Text="ink on paper"/>
                 </StackPanel>
             </ScrollViewer>
