@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="SvetlinAnkov.Albite.READER.View.Controls.ThemeControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480"
+    HorizontalAlignment="Stretch"
+    HorizontalContentAlignment="Left"
+    VerticalContentAlignment="Center"
+    Margin="0,0,0,24">
+
+    <Border x:Name="BackgroundBorder" BorderThickness="1"
+            Margin="12,0,12,0">
+        <TextBlock Style="{StaticResource PhoneTextLargeStyle}"
+                    IsHitTestVisible="False"
+                    x:Name="ForegroundText"
+                    Margin="24,18,24,18" />
+    </Border>
+</UserControl>

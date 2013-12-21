@@ -6,7 +6,9 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:albite="clr-namespace:SvetlinAnkov.Albite.READER.View.Controls"
     xmlns:transitions="clr-namespace:SvetlinAnkov.Albite.READER.View.Transition"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -24,13 +26,49 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="Theme" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
+            <ScrollViewer>
+                <StackPanel Orientation="Vertical"
+                        toolkit:TiltEffect.IsTiltEnabled="True">
+                    <albite:ThemeControl
+                        ThemeForegroundColor="White"
+                        ThemeBackgroundColor="Black"
+                        Text="white on black"/>
+                    <albite:ThemeControl
+                        ThemeForegroundColor="Beige"
+                        ThemeBackgroundColor="#FF201800"
+                        Text="beige on brown"/>
+                    <albite:ThemeControl
+                        ThemeForegroundColor="Black"
+                        ThemeBackgroundColor="White"
+                        Text="black on white"/>
+                    <albite:ThemeControl
+                        ThemeForegroundColor="#FF000040"
+                        ThemeBackgroundColor="Beige"
+                        Text="ink on paper"/>
+                    <albite:ThemeControl
+                        ThemeForegroundColor="White"
+                        ThemeBackgroundColor="Black"
+                        Text="white on black"/>
+                    <albite:ThemeControl
+                        ThemeForegroundColor="Beige"
+                        ThemeBackgroundColor="#FF201800"
+                        Text="beige on brown"/>
+                    <albite:ThemeControl
+                        ThemeForegroundColor="Black"
+                        ThemeBackgroundColor="White"
+                        Text="black on white"/>
+                    <albite:ThemeControl
+                        ThemeForegroundColor="#FF000040"
+                        ThemeBackgroundColor="Beige"
+                        Text="ink on paper"/>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 
