@@ -11,9 +11,27 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             InitializeComponent();
         }
 
-        private void ThemeControl_Tap(object sender, GEArgs e)
+        private void Theme_Tap(object sender, GEArgs e)
         {
             NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/ThemeSettingsPage.xaml", UriKind.Relative));
+        }
+
+        private void FontFamily_Tap(object sender, GEArgs e)
+        {
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/FontFamilySettingsPage.xaml", UriKind.Relative));
+        }
+
+        private void FontSize_Tap(object sender, GEArgs e)
+        {
+        }
+        private void TextJustification_Tap(object sender, GEArgs e)
+        {
+        }
+        private void LineSpacing_Tap(object sender, GEArgs e)
+        {
+        }
+        private void PageMargins_Tap(object sender, GEArgs e)
+        {
         }
     }
 }

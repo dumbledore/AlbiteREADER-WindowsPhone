@@ -14,6 +14,8 @@
     Margin="0,0,0,24">
 
     <Border x:Name="BackgroundBorder" BorderThickness="1"
+            Background="{StaticResource PhoneBackgroundBrush}"
+            BorderBrush="{StaticResource PhoneForegroundBrush}"
             Margin="12,0,12,0">
         <Grid IsHitTestVisible="False">
             <Grid.ColumnDefinitions>

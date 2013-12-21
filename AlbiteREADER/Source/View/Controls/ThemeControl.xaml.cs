@@ -111,6 +111,8 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             control.ForegroundText.FontFamily = family;
         }
 
+        // Font size is in logical pixels.
+        // See http://www.silverlightshow.net/items/Windows-Phone-8-Multiple-Screen-Resolutions.aspx
         public new static readonly DependencyProperty FontSizeProperty
             = DependencyProperty.Register("FontSize", typeof(double), typeof(ThemeControl),
             new PropertyMetadata(onFontSizeChanged));
