@@ -126,6 +126,9 @@
     <Compile Include="Source\View\Pages\FontFamilySettingsPage.xaml.cs">
       <DependentUpon>FontFamilySettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Pages\FontSizeSettingsPage.xaml.cs">
+      <DependentUpon>FontSizeSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
     </Compile>
@@ -198,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\View\Pages\FontFamilySettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\View\Pages\FontSizeSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

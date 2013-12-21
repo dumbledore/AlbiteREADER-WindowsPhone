@@ -23,13 +23,17 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void FontSize_Tap(object sender, GEArgs e)
         {
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/FontSizeSettingsPage.xaml", UriKind.Relative));
         }
+
         private void TextJustification_Tap(object sender, GEArgs e)
         {
         }
+
         private void LineSpacing_Tap(object sender, GEArgs e)
         {
         }
+
         private void PageMargins_Tap(object sender, GEArgs e)
         {
         }
