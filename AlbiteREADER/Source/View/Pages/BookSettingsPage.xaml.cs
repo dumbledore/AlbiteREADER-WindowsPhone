@@ -28,6 +28,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void TextJustification_Tap(object sender, GEArgs e)
         {
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/TextJustificationSettingsPage.xaml", UriKind.Relative));
         }
 
         private void LineSpacing_Tap(object sender, GEArgs e)
