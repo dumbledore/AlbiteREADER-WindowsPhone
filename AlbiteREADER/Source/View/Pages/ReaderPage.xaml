@@ -13,7 +13,7 @@
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
     shell:SystemTray.IsVisible="False"
-    shell:SystemTray.Opacity="0.9">
+    shell:SystemTray.Opacity="0.95">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -23,7 +23,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True" Mode="Minimized"
-            BackgroundColor="{StaticResource PhoneBackgroundColor}" Opacity="0.9" StateChanged="ApplicationBar_StateChanged">
+            BackgroundColor="{StaticResource PhoneBackgroundColor}" Opacity="0.95" StateChanged="ApplicationBar_StateChanged">
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/back.png" Text="Back" x:Name="BackButton" Click="BackButton_Click" />
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/feature.settings.png" Text="Settings" x:Name="SettingsButton" Click="SettingsButton_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/gotoslide.png" Text="Index" x:Name="IndexButton" Click="IndexButton_Click"/>

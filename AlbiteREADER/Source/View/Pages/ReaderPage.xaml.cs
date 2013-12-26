@@ -3,6 +3,7 @@ using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.BookLibrary.Location;
+using SvetlinAnkov.Albite.Engine.LayoutSettings;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,26 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
             // Should the Pin-To-Start button be enabled?
             PinButton.IsEnabled = false; // TODO
+        }
+
+        private void updateColors()
+        {
+            // Get the context
+            AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
+
+            // Get current layout settings
+            Settings settings = context.Settings;
+
+            // Get current theme
+            Theme theme = settings.Theme;
+
+            // Set colors of the system tray
+            SystemTray.BackgroundColor = theme.BackgroundColor;
+            SystemTray.ForegroundColor = theme.TextColor;
+
+            // Now set-up the application bar
+            ApplicationBar.BackgroundColor = theme.BackgroundColor;
+            ApplicationBar.ForegroundColor = theme.TextColor;
         }
 #endregion
 
@@ -138,6 +159,9 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            // Update sys tray & app bar colors
+            updateColors();
+
             if (e.NavigationMode == NavigationMode.New)
             {
                 // New navigation, clear the state if there was
