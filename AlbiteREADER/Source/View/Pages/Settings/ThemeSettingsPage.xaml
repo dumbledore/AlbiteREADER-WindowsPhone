@@ -38,37 +38,23 @@
                     <albite:ThemeControl
                         ForegroundColor="White"
                         BackgroundColor="Black"
-                        Text="white on black"/>
+                        Text="white on black"
+                        Tap="ThemeControl_Tap" />
                     <albite:ThemeControl
                         ForegroundColor="Beige"
                         BackgroundColor="#FF201800"
                         Text="beige on brown"
-                        Selected="True"
-                        />
+                        Tap="ThemeControl_Tap" />
                     <albite:ThemeControl
                         ForegroundColor="Black"
                         BackgroundColor="White"
-                        Text="black on white"/>
+                        Text="black on white"
+                        Tap="ThemeControl_Tap" />
                     <albite:ThemeControl
                         ForegroundColor="#FF000040"
                         BackgroundColor="Beige"
-                        Text="ink on paper"/>
-                    <albite:ThemeControl
-                        ForegroundColor="White"
-                        BackgroundColor="Black"
-                        Text="white on black"/>
-                    <albite:ThemeControl
-                        ForegroundColor="Beige"
-                        BackgroundColor="#FF201800"
-                        Text="beige on brown"/>
-                    <albite:ThemeControl
-                        ForegroundColor="Black"
-                        BackgroundColor="White"
-                        Text="black on white"/>
-                    <albite:ThemeControl
-                        ForegroundColor="#FF000040"
-                        BackgroundColor="Beige"
-                        Text="ink on paper"/>
+                        Text="ink on paper"
+                        Tap="ThemeControl_Tap" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
