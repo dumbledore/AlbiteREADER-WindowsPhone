@@ -16,7 +16,7 @@ namespace SvetlinAnkov.Albite.Tests
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
 
-        private AlbiteContext context = new AlbiteContext("Test/Reader/Library");
+        private AlbiteContext context = new AlbiteContext("Test/Reader/Library", "Test/Reader/Albite.sdf");
         public AlbiteContext CurrentContext { get { return context; } }
 
         /// <summary>
