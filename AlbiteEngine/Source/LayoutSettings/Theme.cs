@@ -27,11 +27,14 @@ namespace SvetlinAnkov.Albite.Engine.LayoutSettings
             AccentColor = accentColor;
         }
 
+        public Theme(Color textColor, Color backgroundColor)
+            : this(textColor, backgroundColor, textColor) { }
+
         public static Theme DefaultTheme { get; private set; }
 
         static Theme()
         {
-            DefaultTheme = new Theme(Colors.Black, Colors.White, Colors.Red);
+            DefaultTheme = new Theme(Colors.Black, Colors.White);
         }
     }
 }
