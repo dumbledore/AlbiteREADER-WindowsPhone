@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="SvetlinAnkov.Albite.READER.View.Pages.Settings.ThemeSettingsPage"
+    x:Class="SvetlinAnkov.Albite.READER.View.Pages.BookSettings.FontSizeSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -27,7 +27,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="theme" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="font size" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -35,26 +35,11 @@
             <ScrollViewer>
                 <StackPanel Orientation="Vertical"
                         toolkit:TiltEffect.IsTiltEnabled="True">
-                    <albite:ThemeControl
-                        ForegroundColor="White"
-                        BackgroundColor="Black"
-                        Text="white on black"
-                        Tap="ThemeControl_Tap" />
-                    <albite:ThemeControl
-                        ForegroundColor="Beige"
-                        BackgroundColor="#FF201800"
-                        Text="beige on brown"
-                        Tap="ThemeControl_Tap" />
-                    <albite:ThemeControl
-                        ForegroundColor="Black"
-                        BackgroundColor="White"
-                        Text="black on white"
-                        Tap="ThemeControl_Tap" />
-                    <albite:ThemeControl
-                        ForegroundColor="#FF000040"
-                        BackgroundColor="Beige"
-                        Text="ink on paper"
-                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl FontSize="23" Text="small" />
+                    <albite:ThemeControl FontSize="32" Text="medium" />
+                    <albite:ThemeControl FontSize="37" Text="medium large" />
+                    <albite:ThemeControl FontSize="43" Text="large" />
+                    <albite:ThemeControl FontSize="60" Text="extra large" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>

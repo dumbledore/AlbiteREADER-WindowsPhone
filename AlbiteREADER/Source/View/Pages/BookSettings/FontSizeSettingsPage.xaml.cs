@@ -8,7 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace SvetlinAnkov.Albite.READER.View.Pages.Settings
+namespace SvetlinAnkov.Albite.READER.View.Pages.BookSettings
 {
     public partial class FontSizeSettingsPage : PhoneApplicationPage
     {

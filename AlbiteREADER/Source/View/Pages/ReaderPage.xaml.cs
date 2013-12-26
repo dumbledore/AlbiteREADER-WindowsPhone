@@ -90,7 +90,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void SettingsButton_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/Settings/BookSettingsPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/BookSettings/BookSettingsPage.xaml", UriKind.Relative));
         }
 
         private void IndexButton_Click(object sender, EventArgs e)

@@ -1,9 +1,10 @@
 ﻿using Microsoft.Phone.Controls;
+using SvetlinAnkov.Albite.Engine.LayoutSettings;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System.Windows.Input;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
-namespace SvetlinAnkov.Albite.READER.View.Pages.Settings
+namespace SvetlinAnkov.Albite.READER.View.Pages.BookSettings
 {
     public partial class ThemeSettingsPage : PhoneApplicationPage
     {
@@ -20,10 +21,10 @@ namespace SvetlinAnkov.Albite.READER.View.Pages.Settings
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
             // Get current layout settings
-            SvetlinAnkov.Albite.Engine.LayoutSettings.Settings settings = context.Settings;
+            Settings settings = context.Settings;
 
             // Update the theme
-            settings.Theme = new SvetlinAnkov.Albite.Engine.LayoutSettings.Theme(
+            settings.Theme = new Theme(
                 control.ForegroundColor,
                 control.BackgroundColor);
 

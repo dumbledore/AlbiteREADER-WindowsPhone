@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="SvetlinAnkov.Albite.READER.View.Pages.Settings.BookSettingsPage"
+    x:Class="SvetlinAnkov.Albite.READER.View.Pages.BookSettings.TextJustificationSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -19,7 +19,6 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -28,40 +27,22 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="book layout" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="justification" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <ScrollViewer>
                 <StackPanel Orientation="Vertical"
-                            toolkit:TiltEffect.IsTiltEnabled="True">
-                    <albite:HeaderedContentControl
-                        HeaderText="theme"
-                        ContentText="black on white"
-                        Tap="Theme_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="font family"
-                        ContentText="Georgia"
-                        Tap="FontFamily_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="font size"
-                        ContentText="medium"
-                        Tap="FontSize_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="text"
-                        ContentText="justified"
-                        Tap="TextJustification_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="line spacing"
-                        ContentText="medium"
-                        Tap="LineSpacing_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="page margins"
-                        ContentText="medium"
-                        Tap="PageMargins_Tap" />
+                        toolkit:TiltEffect.IsTiltEnabled="True">
+                    <TextBlock Margin="12" TextWrapping="Wrap">
+                        Choose whether you would prefer paragraph text
+                        to be justified (ON) or left-aligned (OFF).
+                    </TextBlock>
+                    <toolkit:ToggleSwitch Header="Status" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
     </Grid>
+
 </phone:PhoneApplicationPage>

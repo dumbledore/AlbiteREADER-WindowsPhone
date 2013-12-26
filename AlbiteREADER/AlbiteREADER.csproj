@@ -120,22 +120,22 @@
     </Compile>
     <Compile Include="Source\IAlbiteApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\View\Pages\Settings\BookSettingsPage.xaml.cs">
+    <Compile Include="Source\View\Pages\BookSettings\BookSettingsPage.xaml.cs">
       <DependentUpon>BookSettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\View\Pages\Settings\FontFamilySettingsPage.xaml.cs">
+    <Compile Include="Source\View\Pages\BookSettings\FontFamilySettingsPage.xaml.cs">
       <DependentUpon>FontFamilySettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\View\Pages\Settings\FontSizeSettingsPage.xaml.cs">
+    <Compile Include="Source\View\Pages\BookSettings\FontSizeSettingsPage.xaml.cs">
       <DependentUpon>FontSizeSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\View\Pages\Settings\TextJustificationSettingsPage.xaml.cs">
+    <Compile Include="Source\View\Pages\BookSettings\TextJustificationSettingsPage.xaml.cs">
       <DependentUpon>TextJustificationSettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\View\Pages\Settings\ThemeSettingsPage.xaml.cs">
+    <Compile Include="Source\View\Pages\BookSettings\ThemeSettingsPage.xaml.cs">
       <DependentUpon>ThemeSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\View\Transition\AbstractTransition.cs" />
@@ -199,15 +199,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\View\Pages\Settings\BookSettingsPage.xaml">
+    <Page Include="Source\View\Pages\BookSettings\BookSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\View\Pages\Settings\FontFamilySettingsPage.xaml">
+    <Page Include="Source\View\Pages\BookSettings\FontFamilySettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\View\Pages\Settings\FontSizeSettingsPage.xaml">
+    <Page Include="Source\View\Pages\BookSettings\FontSizeSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -215,11 +215,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\View\Pages\Settings\TextJustificationSettingsPage.xaml">
+    <Page Include="Source\View\Pages\BookSettings\TextJustificationSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\View\Pages\Settings\ThemeSettingsPage.xaml">
+    <Page Include="Source\View\Pages\BookSettings\ThemeSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

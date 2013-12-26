@@ -2,7 +2,7 @@
 using System;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
-namespace SvetlinAnkov.Albite.READER.View.Pages.Settings
+namespace SvetlinAnkov.Albite.READER.View.Pages.BookSettings
 {
     public partial class BookSettingsPage : PhoneApplicationPage
     {
@@ -13,22 +13,22 @@ namespace SvetlinAnkov.Albite.READER.View.Pages.Settings
 
         private void Theme_Tap(object sender, GEArgs e)
         {
-            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/Settings/ThemeSettingsPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/BookSettings/ThemeSettingsPage.xaml", UriKind.Relative));
         }
 
         private void FontFamily_Tap(object sender, GEArgs e)
         {
-            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/Settings/FontFamilySettingsPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/BookSettings/FontFamilySettingsPage.xaml", UriKind.Relative));
         }
 
         private void FontSize_Tap(object sender, GEArgs e)
         {
-            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/Settings/FontSizeSettingsPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/BookSettings/FontSizeSettingsPage.xaml", UriKind.Relative));
         }
 
         private void TextJustification_Tap(object sender, GEArgs e)
         {
-            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/Settings/TextJustificationSettingsPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/BookSettings/TextJustificationSettingsPage.xaml", UriKind.Relative));
         }
 
         private void LineSpacing_Tap(object sender, GEArgs e)
