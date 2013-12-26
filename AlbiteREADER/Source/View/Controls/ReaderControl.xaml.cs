@@ -180,10 +180,14 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 // Get the presenter
                 bookPresenter = new BookPresenter(book);
 
+                // Get the context
+                AlbiteContext context = ((IAlbiteApplication) App.Current).CurrentContext;
+
+                // Get current layout settings
+                Settings settings = context.Settings;
 
                 // Load the engine.
-                // This will initialise the settings with their default values.
-                engine = new AlbiteEngine(this, bookPresenter, new Settings());
+                engine = new AlbiteEngine(this, bookPresenter, settings);
 
                 // Go to the last reading location
                 engine.Navigator.BookLocation = bookPresenter.BookLocation;
