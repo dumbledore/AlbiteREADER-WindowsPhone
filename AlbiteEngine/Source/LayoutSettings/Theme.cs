@@ -15,12 +15,12 @@ namespace SvetlinAnkov.Albite.Engine.LayoutSettings
 
     public class Theme
     {
-        public Color BackgroundColor { get; private set; }
         public Color TextColor { get; private set; }
+        public Color BackgroundColor { get; private set; }
         public Color AccentColor { get; private set; }
 
         public Theme(
-            Color backgroundColor, Color textColor, Color accentColor)
+            Color textColor, Color backgroundColor, Color accentColor)
         {
             BackgroundColor = backgroundColor;
             TextColor = textColor;
@@ -31,8 +31,7 @@ namespace SvetlinAnkov.Albite.Engine.LayoutSettings
 
         static Theme()
         {
-            Color chocolate = Color.FromArgb(0xFF, 0x63, 0x4F, 0x3B);
-            DefaultTheme = new Theme(Colors.White, Colors.Black, chocolate);
+            DefaultTheme = new Theme(Colors.Black, Colors.White, Colors.Red);
         }
     }
 }
