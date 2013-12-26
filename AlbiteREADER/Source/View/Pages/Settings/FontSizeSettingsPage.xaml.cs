@@ -8,11 +8,11 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace SvetlinAnkov.Albite.READER.View.Pages
+namespace SvetlinAnkov.Albite.READER.View.Pages.Settings
 {
-    public partial class TextJustificationSettingsPage : PhoneApplicationPage
+    public partial class FontSizeSettingsPage : PhoneApplicationPage
     {
-        public TextJustificationSettingsPage()
+        public FontSizeSettingsPage()
         {
             InitializeComponent();
         }

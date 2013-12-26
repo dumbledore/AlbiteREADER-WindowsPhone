@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="SvetlinAnkov.Albite.READER.View.Pages.BookSettingsPage"
+    x:Class="SvetlinAnkov.Albite.READER.View.Pages.Settings.FontFamilySettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -19,7 +19,6 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -28,40 +27,26 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="book layout" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="font family" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <ScrollViewer>
                 <StackPanel Orientation="Vertical"
-                            toolkit:TiltEffect.IsTiltEnabled="True">
-                    <albite:HeaderedContentControl
-                        HeaderText="theme"
-                        ContentText="black on white"
-                        Tap="Theme_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="font family"
-                        ContentText="Georgia"
-                        Tap="FontFamily_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="font size"
-                        ContentText="medium"
-                        Tap="FontSize_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="text"
-                        ContentText="justified"
-                        Tap="TextJustification_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="line spacing"
-                        ContentText="medium"
-                        Tap="LineSpacing_Tap" />
-                    <albite:HeaderedContentControl
-                        HeaderText="page margins"
-                        ContentText="medium"
-                        Tap="PageMargins_Tap" />
+                        toolkit:TiltEffect.IsTiltEnabled="True">
+                    <albite:ThemeControl FontFamily="Arial" Text="arial" />
+                    <albite:ThemeControl FontFamily="Calibri" Text="calibri" />
+                    <albite:ThemeControl FontFamily="Georgia" Text="georgia" />
+                    <albite:ThemeControl FontFamily="Lucida Sans Unicode" Text="lucida sans" />
+                    <albite:ThemeControl FontFamily="Segoe UI" Text="segoe" />
+                    <albite:ThemeControl FontFamily="Tahoma" Text="tahoma" />
+                    <albite:ThemeControl FontFamily="Times New Roman" Text="times new roman" />
+                    <albite:ThemeControl FontFamily="Trebuchet MS" Text="trebuchet ms" />
+                    <albite:ThemeControl FontFamily="Verdana" Text="verdana" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
     </Grid>
+
 </phone:PhoneApplicationPage>

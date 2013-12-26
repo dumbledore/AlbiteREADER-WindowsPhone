@@ -8,11 +8,11 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace SvetlinAnkov.Albite.READER.View.Pages
+namespace SvetlinAnkov.Albite.READER.View.Pages.Settings
 {
-    public partial class ThemeSettingsPage : PhoneApplicationPage
+    public partial class FontFamilySettingsPage : PhoneApplicationPage
     {
-        public ThemeSettingsPage()
+        public FontFamilySettingsPage()
         {
             InitializeComponent();
         }
