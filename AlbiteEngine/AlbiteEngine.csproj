@@ -97,8 +97,6 @@
     <Compile Include="Source\LayoutSettings\FontSettings.cs" />
     <Compile Include="Source\LayoutSettings\MarginSettings.cs" />
     <Compile Include="Source\LayoutSettings\TextSettings.cs" />
-    <Compile Include="Source\LayoutSettings\ThemeColor.cs" />
-    <Compile Include="Source\LayoutSettings\ThemePalette.cs" />
     <Compile Include="Source\Internal\Paths.cs" />
     <Compile Include="Source\LayoutSettings\Settings.cs" />
     <Compile Include="Source\LayoutSettings\Theme.cs" />

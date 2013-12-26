@@ -1,14 +1,26 @@
 ﻿using System.Windows.Media;
 namespace SvetlinAnkov.Albite.Engine.LayoutSettings
 {
+    public static class ColorExtensions
+    {
+        public static string ToHexString(this Color color)
+        {
+            int intColor = 0;
+            intColor |= color.R << 16;
+            intColor |= color.G << 8;
+            intColor |= color.B << 0;
+            return "#" + intColor.ToString("X6");
+        }
+    }
+
     public class Theme
     {
-        public ThemeColor BackgroundColor { get; private set; }
-        public ThemeColor TextColor { get; private set; }
-        public ThemeColor AccentColor { get; private set; }
+        public Color BackgroundColor { get; private set; }
+        public Color TextColor { get; private set; }
+        public Color AccentColor { get; private set; }
 
         public Theme(
-            ThemeColor backgroundColor, ThemeColor textColor, ThemeColor accentColor)
+            Color backgroundColor, Color textColor, Color accentColor)
         {
             BackgroundColor = backgroundColor;
             TextColor = textColor;
@@ -19,12 +31,8 @@ namespace SvetlinAnkov.Albite.Engine.LayoutSettings
 
         static Theme()
         {
-            ThemePalette palette = new ThemePalette();
-            palette.AddColor("White", Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF));
-            palette.AddColor("Black", Color.FromArgb(0xFF, 0x00, 0x00, 0x00));
-            palette.AddColor("Chocolate", Color.FromArgb(0xFF, 0x63, 0x4F, 0x3B));
-            DefaultTheme = new Theme(
-                palette["White"], palette["Black"], palette["Chocolate"]);
+            Color chocolate = Color.FromArgb(0xFF, 0x63, 0x4F, 0x3B);
+            DefaultTheme = new Theme(Colors.White, Colors.Black, chocolate);
         }
     }
 }

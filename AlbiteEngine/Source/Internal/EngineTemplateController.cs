@@ -136,13 +136,17 @@ namespace SvetlinAnkov.Albite.Engine.Internal
 
         private void updateTheme()
         {
-            baseStylesTemplate.BackgroundColor = Settings.Theme.BackgroundColor.HtmlColor;
-            baseStylesTemplate.TextColor = Settings.Theme.TextColor.HtmlColor;
+            string backgroundColorString = Settings.Theme.BackgroundColor.ToHexString();
+            string textColorString = Settings.Theme.TextColor.ToHexString();
+            string accentColorString = Settings.Theme.AccentColor.ToHexString();
+
+            baseStylesTemplate.BackgroundColor = backgroundColorString;
+            baseStylesTemplate.TextColor = textColorString;
             baseStylesTemplate.SaveToStorage();
 
-            contentStylesTemplate.BackgroundColor = Settings.Theme.BackgroundColor.HtmlColor;
-            contentStylesTemplate.TextColor = Settings.Theme.TextColor.HtmlColor;
-            contentStylesTemplate.AccentColor = Settings.Theme.AccentColor.HtmlColor;
+            contentStylesTemplate.BackgroundColor = backgroundColorString;
+            contentStylesTemplate.TextColor = textColorString;
+            contentStylesTemplate.AccentColor = accentColorString;
             contentStylesTemplate.SaveToStorage();
         }
     }
