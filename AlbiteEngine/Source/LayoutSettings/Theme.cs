@@ -1,4 +1,6 @@
-﻿using System.Windows.Media;
+﻿using System.Runtime.Serialization;
+using System.Windows.Media;
+
 namespace SvetlinAnkov.Albite.Engine.LayoutSettings
 {
     public static class ColorExtensions
@@ -13,10 +15,16 @@ namespace SvetlinAnkov.Albite.Engine.LayoutSettings
         }
     }
 
+    [DataContract]
     public class Theme
     {
+        [DataMember]
         public Color TextColor { get; private set; }
+
+        [DataMember]
         public Color BackgroundColor { get; private set; }
+
+        [DataMember]
         public Color AccentColor { get; private set; }
 
         public Theme(
