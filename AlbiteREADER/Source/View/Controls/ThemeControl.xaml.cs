@@ -129,5 +129,25 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             double fontSize = (double)e.NewValue;
             control.ForegroundText.FontSize = fontSize;
         }
+
+        public static readonly DependencyProperty LineSpacingProperty
+            = DependencyProperty.Register("LineSpacing", typeof(double), typeof(ThemeControl),
+            new PropertyMetadata(null));
+
+        public double LineSpacing
+        {
+            get { return (double)GetValue(LineSpacingProperty); }
+            set { SetValue(LineSpacingProperty, value); }
+        }
+
+        public static readonly DependencyProperty PageMarginsProperty
+            = DependencyProperty.Register("PageMargins", typeof(double), typeof(ThemeControl),
+            new PropertyMetadata(null));
+
+        public double PageMargins
+        {
+            get { return (double)GetValue(PageMarginsProperty); }
+            set { SetValue(PageMarginsProperty, value); }
+        }
     }
 }
