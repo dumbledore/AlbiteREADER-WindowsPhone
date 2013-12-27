@@ -31,19 +31,48 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid Grid.Row="1" Margin="12,0,12,0">
             <ScrollViewer>
-                <StackPanel Orientation="Vertical"
-                        toolkit:TiltEffect.IsTiltEnabled="True">
-                    <albite:ThemeControl FontFamily="Arial" Text="arial" />
-                    <albite:ThemeControl FontFamily="Calibri" Text="calibri" />
-                    <albite:ThemeControl FontFamily="Georgia" Text="georgia" />
-                    <albite:ThemeControl FontFamily="Lucida Sans Unicode" Text="lucida sans" />
-                    <albite:ThemeControl FontFamily="Segoe UI" Text="segoe" />
-                    <albite:ThemeControl FontFamily="Tahoma" Text="tahoma" />
-                    <albite:ThemeControl FontFamily="Times New Roman" Text="times new roman" />
-                    <albite:ThemeControl FontFamily="Trebuchet MS" Text="trebuchet ms" />
-                    <albite:ThemeControl FontFamily="Verdana" Text="verdana" />
+                <StackPanel
+                    x:Name="ContentList"
+                    Orientation="Vertical"
+                    toolkit:TiltEffect.IsTiltEnabled="True">
+                    <albite:ThemeControl
+                        FontFamily="Arial"
+                        Text="arial"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
+                        FontFamily="Calibri"
+                        Text="calibri"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
+                        FontFamily="Georgia"
+                        Text="georgia"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
+                        FontFamily="Lucida Sans Unicode"
+                        Text="lucida sans"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
+                        FontFamily="Segoe UI"
+                        Text="segoe"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
+                        FontFamily="Tahoma"
+                        Text="tahoma"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
+                        FontFamily="Times New Roman"
+                        Text="times new roman"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
+                        FontFamily="Trebuchet MS"
+                        Text="trebuchet ms"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
+                        FontFamily="Verdana"
+                        Text="verdana"
+                        Tap="ThemeControl_Tap" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
