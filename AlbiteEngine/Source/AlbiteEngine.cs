@@ -64,18 +64,6 @@ namespace SvetlinAnkov.Albite.Engine
             navigator = new EngineNavigator(this);
         }
 
-        public void UpdateLayout()
-        {
-            // This can't happen while loading
-            EnsureValidState();
-
-            // Update the templates
-            TemplateController.UpdateSettings();
-
-            // Reload to the current DomLocation
-            Reload();
-        }
-
         public bool UpdateDimensions()
         {
             // It is perfectly legal to be called before

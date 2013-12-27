@@ -24,12 +24,6 @@ namespace SvetlinAnkov.Albite.Engine
         Uri Uri { get; }
 
         /// <summary>
-        /// Inform the engine that the settings have been modified.
-        /// This will cause the engine to relayout the current chapter
-        /// </summary>
-        void UpdateLayout();
-
-        /// <summary>
         /// Called whenever the viewport is resized or the dimensions
         /// might have changed (e.g. after the client has loaded).
         /// </summary>

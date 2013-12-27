@@ -37,28 +37,28 @@
                 <StackPanel Orientation="Vertical"
                             toolkit:TiltEffect.IsTiltEnabled="True">
                     <albite:HeaderedContentControl
+                        x:Name="ThemeControl"
                         HeaderText="theme"
-                        ContentText="black on white"
                         Tap="Theme_Tap" />
                     <albite:HeaderedContentControl
+                        x:Name="FontFamilyControl"
                         HeaderText="font family"
-                        ContentText="Georgia"
                         Tap="FontFamily_Tap" />
                     <albite:HeaderedContentControl
+                        x:Name="FontSizeControl"
                         HeaderText="font size"
-                        ContentText="medium"
                         Tap="FontSize_Tap" />
                     <albite:HeaderedContentControl
+                        x:Name="TextJustificationControl"
                         HeaderText="text"
-                        ContentText="justified"
                         Tap="TextJustification_Tap" />
                     <albite:HeaderedContentControl
+                        x:Name="LineSpacingControl"
                         HeaderText="line spacing"
-                        ContentText="medium"
                         Tap="LineSpacing_Tap" />
                     <albite:HeaderedContentControl
+                        x:Name="PageMarginsControl"
                         HeaderText="page margins"
-                        ContentText="medium"
                         Tap="PageMargins_Tap" />
                 </StackPanel>
             </ScrollViewer>

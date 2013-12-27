@@ -63,8 +63,11 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             // Set up the dimensions
             UpdateDimensions(initialWidth, initialHeight, initialApplicationBarHeight);
 
-            // Set up the settings
-            UpdateSettings();
+            // Set up the layout
+            updateLayout();
+
+            // Set up the theme
+            updateTheme();
         }
 
         public void UpdateInitialLocation(
@@ -115,12 +118,6 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             contentStylesTemplate.Height = height;
 
             contentStylesTemplate.SaveToStorage();
-        }
-
-        public void UpdateSettings()
-        {
-            updateLayout();
-            updateTheme();
         }
 
         private void updateLayout()
