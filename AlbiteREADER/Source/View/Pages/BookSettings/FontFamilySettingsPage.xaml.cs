@@ -1,5 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
-using SvetlinAnkov.Albite.Engine.LayoutSettings;
+using SvetlinAnkov.Albite.Engine.Layout;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System.Windows;
 using GEArgs = System.Windows.Input.GestureEventArgs;
@@ -20,7 +20,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages.BookSettings
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
             // Get current layout settings
-            Settings settings = context.Settings;
+            LayoutSettings settings = context.LayoutSettings;
 
             // Get current font family
             string fontFamily = settings.FontSettings.Family;
@@ -44,13 +44,23 @@ namespace SvetlinAnkov.Albite.READER.View.Pages.BookSettings
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
             // Get current layout settings
-            Settings settings = context.Settings;
+            LayoutSettings settings = context.LayoutSettings;
 
-            // Update the theme
-            settings.FontSettings.Family = control.FontFamily.Source;
+            // Update the font family
+            FontSettings fontSettings = new FontSettings(
+                control.FontFamily.Source,
+                settings.FontSettings.FontSize);
+
+            // Create the new settings
+            LayoutSettings newSettings
+                = new LayoutSettings(
+                    fontSettings,
+                    settings.TextSettings,
+                    settings.MarginSettings,
+                    settings.Theme);
 
             // Update & persist
-            context.Settings = settings;
+            context.LayoutSettings = newSettings;
 
             // Go back
             NavigationService.GoBack();

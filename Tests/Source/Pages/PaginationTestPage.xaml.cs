@@ -10,10 +10,11 @@ using Microsoft.Phone.Shell;
 using SvetlinAnkov.Albite.Engine;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Container;
-using SvetlinAnkov.Albite.Engine.LayoutSettings;
+using SvetlinAnkov.Albite.Engine.Layout;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using System.Windows.Media;
+using SvetlinAnkov.Albite.READER.View.Pages.BookSettings;
 
 namespace SvetlinAnkov.Albite.Tests.Pages
 {
@@ -103,7 +104,7 @@ namespace SvetlinAnkov.Albite.Tests.Pages
             public EnginePresenter(PaginationTestPage page, BookPresenter bookPresenter)
             {
                 this.page = page;
-                Engine = new AlbiteEngine(this, bookPresenter, new Settings());
+                Engine = new AlbiteEngine(this, bookPresenter, DefaultLayoutSettings.LayoutSettings);
             }
 
             public int Width

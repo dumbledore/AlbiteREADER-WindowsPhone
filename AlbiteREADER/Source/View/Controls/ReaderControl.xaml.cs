@@ -2,7 +2,7 @@
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Engine;
-using SvetlinAnkov.Albite.Engine.LayoutSettings;
+using SvetlinAnkov.Albite.Engine.Layout;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -184,7 +184,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 AlbiteContext context = ((IAlbiteApplication) App.Current).CurrentContext;
 
                 // Get current layout settings
-                Settings settings = context.Settings;
+                LayoutSettings settings = context.LayoutSettings;
 
                 // Load the engine.
                 engine = new AlbiteEngine(this, bookPresenter, settings);

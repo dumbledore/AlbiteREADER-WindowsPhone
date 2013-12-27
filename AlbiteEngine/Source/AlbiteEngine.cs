@@ -2,7 +2,7 @@
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Engine.Internal;
-using SvetlinAnkov.Albite.Engine.LayoutSettings;
+using SvetlinAnkov.Albite.Engine.Layout;
 using System;
 using System.IO;
 
@@ -13,7 +13,7 @@ namespace SvetlinAnkov.Albite.Engine
         private static readonly string tag = "AlbiteEngine";
 
         public BookPresenter BookPresenter { get; private set; }
-        public Settings Settings { get; private set; }
+        public LayoutSettings Settings { get; private set; }
 
         public Uri Uri { get; private set; }
 
@@ -35,7 +35,7 @@ namespace SvetlinAnkov.Albite.Engine
         private EngineTemplateController TemplateController;
 
         public AlbiteEngine(
-            IEnginePresenter enginePresenter, BookPresenter bookPresenter, Settings settings)
+            IEnginePresenter enginePresenter, BookPresenter bookPresenter, LayoutSettings settings)
         {
             EnginePresenter = enginePresenter;
             BookPresenter = bookPresenter;

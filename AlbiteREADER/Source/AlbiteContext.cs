@@ -1,6 +1,7 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Core.Serialization;
-using SvetlinAnkov.Albite.Engine.LayoutSettings;
+using SvetlinAnkov.Albite.Engine.Layout;
+using SvetlinAnkov.Albite.READER.View.Pages.BookSettings;
 
 namespace SvetlinAnkov.Albite.READER
 {
@@ -17,8 +18,8 @@ namespace SvetlinAnkov.Albite.READER
 
         public static readonly string LayoutSettingsKey = "layout-settings";
 
-        private Settings cachedSettings = null;
-        public Settings Settings
+        private LayoutSettings cachedSettings = null;
+        public LayoutSettings LayoutSettings
         {
             get
             {
@@ -30,7 +31,7 @@ namespace SvetlinAnkov.Albite.READER
                         string s = RecordStore[LayoutSettingsKey];
 
                         // Unserialize
-                        cachedSettings = (Settings)Settings.FromString(s);
+                        cachedSettings = LayoutSettings.FromString(s);
                     }
                     else
                     {
@@ -57,9 +58,9 @@ namespace SvetlinAnkov.Albite.READER
             }
         }
 
-        private Settings getDefaultSettings()
+        private LayoutSettings getDefaultSettings()
         {
-            Settings settings = new Settings();
+            LayoutSettings settings = DefaultLayoutSettings.LayoutSettings;
 
             // TODO Fill this in appropriately
 

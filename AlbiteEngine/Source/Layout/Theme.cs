@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using System.Windows.Media;
 
-namespace SvetlinAnkov.Albite.Engine.LayoutSettings
+namespace SvetlinAnkov.Albite.Engine.Layout
 {
     public static class ColorExtensions
     {
@@ -18,6 +18,13 @@ namespace SvetlinAnkov.Albite.Engine.LayoutSettings
     [DataContract]
     public class Theme
     {
+        /// <summary>
+        /// Name for this theme,
+        /// e.g. black on white, etc.
+        /// </summary>
+        [DataMember]
+        public string Name { get; private set; }
+
         [DataMember]
         public Color TextColor { get; private set; }
 
@@ -28,21 +35,16 @@ namespace SvetlinAnkov.Albite.Engine.LayoutSettings
         public Color AccentColor { get; private set; }
 
         public Theme(
+            string name,
             Color textColor, Color backgroundColor, Color accentColor)
         {
+            Name = name;
             BackgroundColor = backgroundColor;
             TextColor = textColor;
             AccentColor = accentColor;
         }
 
-        public Theme(Color textColor, Color backgroundColor)
-            : this(textColor, backgroundColor, textColor) { }
-
-        public static Theme DefaultTheme { get; private set; }
-
-        static Theme()
-        {
-            DefaultTheme = new Theme(Colors.Black, Colors.White);
-        }
+        public Theme(string name, Color textColor, Color backgroundColor)
+            : this(name, textColor, backgroundColor, textColor) { }
     }
 }

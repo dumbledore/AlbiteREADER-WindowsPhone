@@ -123,6 +123,7 @@
     <Compile Include="Source\View\Pages\BookSettings\BookSettingsPage.xaml.cs">
       <DependentUpon>BookSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Pages\BookSettings\DefaultLayoutSettings.cs" />
     <Compile Include="Source\View\Pages\BookSettings\FontFamilySettingsPage.xaml.cs">
       <DependentUpon>FontFamilySettingsPage.xaml</DependentUpon>
     </Compile>

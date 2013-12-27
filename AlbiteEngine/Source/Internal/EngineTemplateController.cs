@@ -2,7 +2,7 @@
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.IO;
-using SvetlinAnkov.Albite.Engine.LayoutSettings;
+using SvetlinAnkov.Albite.Engine.Layout;
 using System;
 
 namespace SvetlinAnkov.Albite.Engine.Internal
@@ -15,7 +15,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
 
         private static readonly string tag = "EngineTemplateController";
 
-        public Settings Settings { get; private set; }
+        public LayoutSettings Settings { get; private set; }
 
         // We can get the width from any of the templates,
         // so it doesn't matter which one we use.
@@ -26,8 +26,10 @@ namespace SvetlinAnkov.Albite.Engine.Internal
         private BaseStylesTemplate baseStylesTemplate;
         private ContentStylesTemplate contentStylesTemplate;
 
-        public EngineTemplateController(Settings settings,
-            string enginePath, int initialWidth, int initialHeight,
+        public EngineTemplateController(
+            LayoutSettings settings,
+            string enginePath,
+            int initialWidth, int initialHeight,
             int initialApplicationBarHeight)
         {
             Settings = settings;
@@ -125,10 +127,10 @@ namespace SvetlinAnkov.Albite.Engine.Internal
         {
             FontSettings fontSettings = Settings.FontSettings;
             contentStylesTemplate.FontFamily = fontSettings.Family;
-            contentStylesTemplate.FontSize = fontSettings.Size;
+            contentStylesTemplate.FontSize = fontSettings.FontSize.Size;
 
             TextSettings textSettings = Settings.TextSettings;
-            contentStylesTemplate.LineHeight = textSettings.LineHeight;
+            contentStylesTemplate.LineHeight = textSettings.LineHeight.Height;
             contentStylesTemplate.Justified = textSettings.Justified;
 
             contentStylesTemplate.SaveToStorage();

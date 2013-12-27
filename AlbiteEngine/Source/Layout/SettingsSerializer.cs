@@ -3,15 +3,17 @@ using SvetlinAnkov.Albite.Core.Serialization;
 using System;
 using System.Windows.Media;
 
-namespace SvetlinAnkov.Albite.Engine.LayoutSettings
+namespace SvetlinAnkov.Albite.Engine.Layout
 {
     internal class SettingsSerializer : IAlbiteSerializer<object>
     {
         private static readonly Type[] expectedTypes = new Type[]
         {
             typeof(FontSettings),
+            typeof(FontSize),
+            typeof(LayoutSettings),
+            typeof(LineHeight),
             typeof(MarginSettings),
-            typeof(Settings),
             typeof(TextSettings),
             typeof(Theme),
             typeof(Color),

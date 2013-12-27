@@ -1,5 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
-using SvetlinAnkov.Albite.Engine.LayoutSettings;
+using SvetlinAnkov.Albite.Engine.Layout;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System.Windows;
 using System.Windows.Input;
@@ -21,7 +21,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages.BookSettings
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
             // Get current layout settings
-            Settings settings = context.Settings;
+            LayoutSettings settings = context.LayoutSettings;
 
             // Get current theme
             Theme theme = settings.Theme;
@@ -46,15 +46,24 @@ namespace SvetlinAnkov.Albite.READER.View.Pages.BookSettings
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
             // Get current layout settings
-            Settings settings = context.Settings;
+            LayoutSettings settings = context.LayoutSettings;
 
             // Update the theme
-            settings.Theme = new Theme(
+            Theme theme = new Theme(
+                control.Text,
                 control.ForegroundColor,
                 control.BackgroundColor);
 
+            // Create the new settings
+            LayoutSettings newSettings
+                = new LayoutSettings(
+                    settings.FontSettings,
+                    settings.TextSettings,
+                    settings.MarginSettings,
+                    theme);
+
             // Update & persist
-            context.Settings = settings;
+            context.LayoutSettings = newSettings;
 
             // Go back
             NavigationService.GoBack();

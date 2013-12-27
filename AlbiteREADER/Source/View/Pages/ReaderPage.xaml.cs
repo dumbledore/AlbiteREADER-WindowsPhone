@@ -3,7 +3,7 @@ using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.BookLibrary.Location;
-using SvetlinAnkov.Albite.Engine.LayoutSettings;
+using SvetlinAnkov.Albite.Engine.Layout;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
 using System.Collections.Generic;
@@ -56,7 +56,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
             // Get current layout settings
-            Settings settings = context.Settings;
+            LayoutSettings settings = context.LayoutSettings;
 
             // Get current theme
             Theme theme = settings.Theme;

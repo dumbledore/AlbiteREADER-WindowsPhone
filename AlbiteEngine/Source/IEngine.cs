@@ -1,5 +1,5 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary;
-using SvetlinAnkov.Albite.Engine.LayoutSettings;
+using SvetlinAnkov.Albite.Engine.Layout;
 using System;
 
 namespace SvetlinAnkov.Albite.Engine
@@ -14,7 +14,7 @@ namespace SvetlinAnkov.Albite.Engine
         /// <summary>
         /// Settings for this engine
         /// </summary>
-        Settings Settings { get; }
+        LayoutSettings Settings { get; }
 
         /// <summary>
         /// The Uri used for loading the engine.
