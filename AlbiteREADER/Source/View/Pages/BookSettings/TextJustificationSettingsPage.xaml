@@ -31,7 +31,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid Grid.Row="1" Margin="12,0,12,0">
             <ScrollViewer>
                 <StackPanel Orientation="Vertical"
                         toolkit:TiltEffect.IsTiltEnabled="True">
@@ -39,7 +39,9 @@
                         Choose whether you would prefer paragraph text
                         to be justified (ON) or left-aligned (OFF).
                     </TextBlock>
-                    <toolkit:ToggleSwitch Header="Status" />
+                    <toolkit:ToggleSwitch
+                        x:Name="JustificationSwitch"
+                        Header="Status" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
