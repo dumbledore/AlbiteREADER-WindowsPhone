@@ -71,6 +71,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages.BookSettings
 
         private void LineSpacing_Tap(object sender, GEArgs e)
         {
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/BookSettings/LineSpacingSettingsPage.xaml", UriKind.Relative));
         }
 
         private void PageMargins_Tap(object sender, GEArgs e)

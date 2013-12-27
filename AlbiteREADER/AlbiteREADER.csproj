@@ -130,6 +130,9 @@
     <Compile Include="Source\View\Pages\BookSettings\FontSizeSettingsPage.xaml.cs">
       <DependentUpon>FontSizeSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Pages\BookSettings\LineSpacingSettingsPage.xaml.cs">
+      <DependentUpon>LineSpacingSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
     </Compile>
@@ -209,6 +212,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\View\Pages\BookSettings\FontSizeSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\View\Pages\BookSettings\LineSpacingSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
