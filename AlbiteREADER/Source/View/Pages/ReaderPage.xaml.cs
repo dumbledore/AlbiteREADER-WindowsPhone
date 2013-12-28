@@ -150,7 +150,14 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 #region Open/persist book on load/navigating from
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            ReaderControl.PersistBook();
+            BookPresenter bookPresenter = ReaderControl.BookPresenter;
+
+            // Update the BookLocation of BookPresenter to match
+            // the current BookLocation
+            bookPresenter.BookLocation = ReaderControl.BookLocation;
+
+            // Now persist BookPresenter
+            bookPresenter.Persist();
 
             // Try persisting the history stack
             if (e.NavigationMode != NavigationMode.Back)

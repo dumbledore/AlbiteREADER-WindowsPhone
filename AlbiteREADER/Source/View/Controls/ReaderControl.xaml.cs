@@ -103,9 +103,10 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         #endregion
 
         #region Public API
-        public void PersistBook()
+        public BookPresenter BookPresenter
         {
-            presenter.PersistBook();
+            get { return presenter.BookPresenter; }
+            set { presenter.BookPresenter = value; }
         }
 
         public BookLocation BookLocation
@@ -117,12 +118,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         public Bookmark CreateBookmark()
         {
             return presenter.CreateBookmark();
-        }
-
-        public BookPresenter BookPresenter
-        {
-            get { return presenter.BookPresenter; }
-            set { presenter.BookPresenter = value; }
         }
         #endregion
 
@@ -146,7 +141,26 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
             public BookLocation BookLocation
             {
-                get { return Engine.Navigator.BookLocation; }
+                get
+                {
+                    BookLocation location = BookPresenter.BookLocation;
+
+                    if (!Engine.IsLoading)
+                    {
+                        // Can't get a book location when loading, so:
+                        // 1. If it's the first load, nothing to persist anyway
+                        // 2. Persist the location elsewhere before calling ReloadBrowser()
+                        // True, real jumps would actually miss the latest location,
+                        // e.g. when trying to persist while loading the next chapter,
+                        // but that's the only problem with this approach and I don't
+                        // see a better solution.
+                        // It should also work when tombstoning the app.
+                        location = Engine.Navigator.BookLocation;
+                    }
+
+                    return location;
+                }
+
                 set { Engine.Navigator.BookLocation = value; }
             }
 
@@ -195,26 +209,8 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                     engine = new AlbiteEngine(this, bookPresenter, settings);
 
                     // Go to the last reading location
-                    engine.Navigator.BookLocation = bookPresenter.BookLocation;
+                    BookLocation = bookPresenter.BookLocation;
                 }
-            }
-
-            public void PersistBook()
-            {
-                if (!Engine.IsLoading)
-                {
-                    // Can't get a book location when loading, so:
-                    // 1. If it's the first load, nothing to persist anyway
-                    // 2. Persist the location elsewhere before calling ReloadBrowser()
-                    // True, real jumps would actually miss the latest location,
-                    // e.g. when trying to persist while loading the next chapter,
-                    // but that's the only problem with this approach and I don't
-                    // see a better solution.
-                    // It should also work when tombstoning the app.
-                    bookPresenter.BookLocation = Engine.Navigator.BookLocation;
-                }
-
-                bookPresenter.Persist();
             }
 
             public string SendMessage(string message)

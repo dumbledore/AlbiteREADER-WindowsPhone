@@ -217,7 +217,7 @@ namespace SvetlinAnkov.Albite.Engine
         /// <summary>
         /// Called before switching chapters
         /// </summary>
-        internal void TryPersist()
+        internal void TryUpdateBookLocation()
         {
             if (canGetDomLocation)
             {

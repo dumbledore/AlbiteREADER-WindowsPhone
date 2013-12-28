@@ -62,7 +62,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
                 return;
             }
 
-            engine.TryPersist();
+            engine.TryUpdateBookLocation();
 
             current = current.Previous;
             engine.SetChapter(current.Url, new LastPageLocation());
@@ -76,7 +76,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
                 return;
             }
 
-            engine.TryPersist();
+            engine.TryUpdateBookLocation();
 
             current = current.Next;
             engine.SetChapter(current.Url, new FirstPageLocation());
@@ -101,7 +101,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
                 }
                 else
                 {
-                    engine.TryPersist();
+                    engine.TryUpdateBookLocation();
 
                     current = value.Chapter;
                     engine.SetChapter(value.Chapter.Url, value.Location);
