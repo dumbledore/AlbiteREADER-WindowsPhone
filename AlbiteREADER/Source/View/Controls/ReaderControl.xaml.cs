@@ -103,11 +103,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         #endregion
 
         #region Public API
-        public void OpenBook(Book book)
-        {
-            presenter.OpenBook(book);
-        }
-
         public void PersistBook()
         {
             presenter.PersistBook();
@@ -127,6 +122,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         public BookPresenter BookPresenter
         {
             get { return presenter.BookPresenter; }
+            set { presenter.BookPresenter = value; }
         }
         #endregion
 
@@ -183,24 +179,24 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             public BookPresenter BookPresenter
             {
                 get { return bookPresenter; }
-            }
 
-            public void OpenBook(Book book)
-            {
-                // Get the presenter
-                bookPresenter = new BookPresenter(book);
+                set
+                {
+                    // Update the current value
+                    bookPresenter = value;
 
-                // Get the context
-                AlbiteContext context = ((IAlbiteApplication) App.Current).CurrentContext;
+                    // Get the context
+                    AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
-                // Get current layout settings
-                LayoutSettings settings = context.LayoutSettings;
+                    // Get current layout settings
+                    LayoutSettings settings = context.LayoutSettings;
 
-                // Load the engine.
-                engine = new AlbiteEngine(this, bookPresenter, settings);
+                    // Load the engine.
+                    engine = new AlbiteEngine(this, bookPresenter, settings);
 
-                // Go to the last reading location
-                engine.Navigator.BookLocation = bookPresenter.BookLocation;
+                    // Go to the last reading location
+                    engine.Navigator.BookLocation = bookPresenter.BookLocation;
+                }
             }
 
             public void PersistBook()

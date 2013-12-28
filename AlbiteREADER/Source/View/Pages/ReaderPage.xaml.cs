@@ -201,17 +201,14 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Get the book id from the query string
             int bookId = int.Parse(NavigationContext.QueryString["id"]);
 
-            // Get the library from the current context
-            Library library = App.Context.Library;
-
-            // Get the book for the given id
-            Book book = library.Books[bookId];
+            // Open the book
+            BookPresenter bookPresenter = App.Context.OpenBook(bookId);
 
             // Now, open the book in the control
-            ReaderControl.OpenBook(book);
+            ReaderControl.BookPresenter = bookPresenter;
 
             // Attach the history stack to the book presenter
-            historyStack.Attach(ReaderControl.BookPresenter);
+            historyStack.Attach(bookPresenter);
 
             // Update the application bar
             updateApplicationBarButtons();

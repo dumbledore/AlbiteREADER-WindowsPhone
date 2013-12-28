@@ -1,7 +1,9 @@
-﻿using SvetlinAnkov.Albite.BookLibrary;
+﻿using Microsoft.Phone.Shell;
+using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Core.Serialization;
 using SvetlinAnkov.Albite.Engine.Layout;
 using SvetlinAnkov.Albite.READER.View.Pages.BookSettings;
+using System.Collections.Generic;
 
 namespace SvetlinAnkov.Albite.READER
 {
@@ -65,6 +67,56 @@ namespace SvetlinAnkov.Albite.READER
             // TODO Fill this in appropriately
 
             return settings;
+        }
+
+        private static readonly string BookPresenterKey = "book-presenter";
+
+        private BookPresenter bookPresenterCached = null;
+
+        /// <summary>
+        /// BookPresenter for the currently opened book
+        /// </summary>
+        public BookPresenter BookPresenter
+        {
+            get
+            {
+                if (bookPresenterCached == null)
+                {
+                    IDictionary<string, object> state = PhoneApplicationService.Current.State;
+
+                    if (state.ContainsKey(BookPresenterKey))
+                    {
+                        int bookId = (int)state[BookPresenterKey];
+                        bookPresenterCached = openBookInternal(bookId);
+                    }
+                }
+
+                return bookPresenterCached;
+            }
+        }
+
+        public BookPresenter OpenBook(int bookId)
+        {
+            // Open the book only if there's no
+            // book opened and if there is, it's
+            // not the same book
+            if (bookPresenterCached == null
+                || bookPresenterCached.Book.Id != bookId)
+            {
+                // Cache the new book
+                bookPresenterCached = openBookInternal(bookId);
+            }
+
+            return bookPresenterCached;
+        }
+
+        private BookPresenter openBookInternal(int bookId)
+        {
+            // Get the book for the given id
+            Book book = Library.Books[bookId];
+
+            // return the new book presenter for this book
+            return new BookPresenter(book);
         }
     }
 }
