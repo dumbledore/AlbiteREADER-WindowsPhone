@@ -1,13 +1,13 @@
 ﻿using SvetlinAnkov.Albite.Container.Epub;
-using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace SvetlinAnkov.Albite.Container
 {
-    public abstract class BookContainer : IAlbiteContainer
+    public abstract class BookContainer : IAlbiteHashableContainer
     {
         public abstract IEnumerable<string> Items { get; }
 
@@ -44,9 +44,11 @@ namespace SvetlinAnkov.Albite.Container
 
         public abstract Stream Stream(string entityName);
 
+        public abstract byte[] ComputeHash(HashAlgorithm hashAlgorithm);
+
         public abstract void Dispose();
 
-        public static BookContainer GetContainer(IAlbiteContainer container, string extension)
+        public static BookContainer GetContainer(IAlbiteHashableContainer container, string extension)
         {
             extension = extension.ToLowerInvariant();
 

@@ -3,6 +3,7 @@ using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace SvetlinAnkov.Albite.Container.Epub
 {
@@ -10,7 +11,7 @@ namespace SvetlinAnkov.Albite.Container.Epub
     {
         private static readonly string tag = "EpubContainer";
 
-        private IAlbiteContainer container;
+        private IAlbiteHashableContainer container;
 
         internal OpenContainerFile Ocf { get; private set; }
         internal OpenPackageFile Opf { get; private set; }
@@ -24,7 +25,7 @@ namespace SvetlinAnkov.Albite.Container.Epub
         ///     If true, non-fatal errors when using this container won't cause
         ///     an exception. Use HadErrors to check if there were any.
         /// </param>
-        public EpubContainer(IAlbiteContainer container, bool fallback = true) : base(fallback)
+        public EpubContainer(IAlbiteHashableContainer container, bool fallback = true) : base(fallback)
         {
             this.container = container;
             processDocuments();
@@ -110,6 +111,11 @@ namespace SvetlinAnkov.Albite.Container.Epub
             }
 
             throw new BookContainerException("Entity not found in book");
+        }
+
+        public override byte[] ComputeHash(HashAlgorithm hashAlgorithm)
+        {
+            return container.ComputeHash(hashAlgorithm);
         }
 
         public override void Dispose()

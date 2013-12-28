@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace SvetlinAnkov.Albite.Core.IO
 {
-    public class AlbiteIsolatedContainer : IAlbiteContainer
+    public class AlbiteIsolatedContainer : IAlbiteHashableContainer
     {
         private string basePath;
 
@@ -23,6 +24,11 @@ namespace SvetlinAnkov.Albite.Core.IO
             string filename = Path.Combine(basePath, entityNameValidated);
 
             return new StreamWrapper(filename);
+        }
+
+        public byte[] ComputeHash(HashAlgorithm hashAlgorithm)
+        {
+            throw new InvalidOperationException("Can't compute hash of isolated storage data");
         }
 
         // Nothing to dispose of

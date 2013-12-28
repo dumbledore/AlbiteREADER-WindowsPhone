@@ -1,11 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Resources;
 
 namespace SvetlinAnkov.Albite.Core.IO
 {
-    public class AlbiteZipContainer : IAlbiteContainer
+    public class AlbiteZipContainer : IAlbiteHashableContainer
     {
         private readonly StreamResourceInfo info;
         private readonly Stream stream;
@@ -37,6 +38,23 @@ namespace SvetlinAnkov.Albite.Core.IO
             }
 
             return stream.Stream;
+        }
+
+        public byte[] ComputeHash(HashAlgorithm hashAlgorithm)
+        {
+            // Get stream position
+            long currentPosition = stream.Position;
+
+            // Rewind stream to the beginning
+            stream.Position = 0;
+
+            // Compute hash value
+            byte[] hash = hashAlgorithm.ComputeHash(stream);
+
+            // Restore original position
+            stream.Position = currentPosition;
+
+            return hash;
         }
 
         public void UnzipStorage(string entityName, AlbiteStorage output)
