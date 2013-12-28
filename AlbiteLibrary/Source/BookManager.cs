@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {
@@ -21,16 +22,44 @@ namespace SvetlinAnkov.Albite.BookLibrary
             booksTempPath = Path.Combine(booksPath, "Temp");
         }
 
+        /// <summary>
+        /// Adds a new book to the library.
+        ///
+        /// If there's a book with the same title & hash value,
+        /// returns that book instead.
+        /// </summary>
+        /// <param name="bookContainer">BookContainer for the new book</param>
+        /// <returns>Book from the library for this BookContainer</returns>
         public Book Add(BookContainer bookContainer)
         {
             using (LibraryDataContext dc = Library.GetDataContext())
             {
+                // Compute container's hash
+                HashAlgorithm hashAlgorithm = new SHA1Managed();
+                byte[] hash = bookContainer.ComputeHash(hashAlgorithm);
+
+                // Check if this book already exists
+                IQueryable<BookEntity> bookEntities =
+                    dc.Books.Where(b =>
+                        b.Hash == hash &&
+                        b.Title == bookContainer.Title);
+
+                if (bookEntities.Count() > 0)
+                {
+                    // Book already available,
+                    // no need to add it again
+                    return new Book(this, bookEntities.First());
+                }
+
                 BookEntity bookEntity = new BookEntity();
 
                 // Fill in the defaults so that if there's
                 // a problem with the metadata it would
                 // fail gracefully.
                 bookEntity.Title = bookContainer.Title;
+
+                // Fill in the hash
+                bookEntity.Hash = hash;
 
                 try
                 {

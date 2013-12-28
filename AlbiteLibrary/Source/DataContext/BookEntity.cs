@@ -16,6 +16,9 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
         }
 
         [Column]
+        public byte[] Hash { get; internal set; }
+
+        [Column]
         public string Title { get; internal set; }
 
         // Author (reference)
