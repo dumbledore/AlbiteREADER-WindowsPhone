@@ -187,7 +187,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             else
             {
                 // Try to get it from the State
-                if (State.ContainsKey(historyStackTag))
+                if (historyStack == null && State.ContainsKey(historyStackTag))
                 {
                     string historyStackData = (string)State[historyStackTag];
                     historyStack = HistoryStack.FromString(historyStackData);
