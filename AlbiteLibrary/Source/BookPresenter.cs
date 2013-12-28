@@ -13,15 +13,18 @@ namespace SvetlinAnkov.Albite.BookLibrary
     {
         public Book Book { get; private set; }
 
+        public BookmarkManager BookmarkManager { get; private set; }
+
         public Spine Spine { get; private set; }
         // TODO: ToC
         // TODO: Lists
 
         public BookPresenter(Book book)
         {
-            this.Book = book;
+            Book = book;
             Spine = prepareSpine();
             bookLocation = prepareLocation();
+            BookmarkManager = new BookmarkManager(this);
         }
 
         private Spine prepareSpine()

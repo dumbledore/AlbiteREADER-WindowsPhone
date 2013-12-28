@@ -121,7 +121,14 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void BookmarkButton_Click(object sender, EventArgs e)
         {
+            // Create the bookmark
+            Bookmark bookmark = ReaderControl.CreateBookmark();
 
+            // Inform the user
+            MessageBox.Show(
+                "Bookmark added successfully",
+                "Bookmark added",
+                MessageBoxButton.OK);
         }
 
         private void WikipediaButton_Click(object sender, EventArgs e)

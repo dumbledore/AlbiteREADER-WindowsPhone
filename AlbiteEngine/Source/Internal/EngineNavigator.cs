@@ -108,5 +108,21 @@ namespace SvetlinAnkov.Albite.Engine.Internal
                 }
             }
         }
+
+        public Bookmark CreateBookmark()
+        {
+            // Get bookmark from client
+            EngineMessenger.Bookmark clientBookmark
+                = engine.Messenger.GetBookmark();
+
+            // Create a BookLocation for the Bookmark
+            BookLocation location = current.CreateLocation(clientBookmark.DomLocation);
+
+            // Now create a new bookmark using BookmarkManager
+            Bookmark bookmark = engine.BookPresenter.BookmarkManager.Add(location, clientBookmark.Text);
+
+            // Done
+            return bookmark;
+        }
     }
 }

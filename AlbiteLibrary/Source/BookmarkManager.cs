@@ -22,9 +22,37 @@ namespace SvetlinAnkov.Albite.BookLibrary
             using (LibraryDataContext dc = Library.GetDataContext())
             {
                 BookEntity bookEntity = getBookEntity(dc);
-                BookmarkEntity bookmarkEntity = new BookmarkEntity(bookEntity, location, text);
-                bookEntity.Bookmarks.Add(bookmarkEntity);
-                dc.SubmitChanges();
+
+                BookmarkEntity bookmarkEntity;
+
+                // Check if a bookmark for this location already exists,
+                // i.e. a bookmark for the same book id
+                // having the same location json string
+                IQueryable<BookmarkEntity> entities =
+                dc.Bookmarks.Where(
+                    n => n.Book.MappedId == BookPresenter.Book.Id
+                        && n.Location == location.ToString());
+
+                if (entities.Count() > 0)
+                {
+                    // Will return the already existing one,
+                    // no need to create a new bookmark
+                    // for the *very* same location
+                    bookmarkEntity = entities.First();
+                }
+                else
+                {
+                    // Create the entity
+                    bookmarkEntity = new BookmarkEntity(bookEntity, location, text);
+
+                    // Insert to the entity table
+                    bookEntity.Bookmarks.Add(bookmarkEntity);
+
+                    // Commit changes to DB
+                    dc.SubmitChanges();
+                }
+
+                // Ready to return the bookmark
                 return new Bookmark(this, bookmarkEntity);
             }
         }

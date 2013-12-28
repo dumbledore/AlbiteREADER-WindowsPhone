@@ -119,6 +119,11 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             set { presenter.BookLocation = value; }
         }
 
+        public Bookmark CreateBookmark()
+        {
+            return presenter.CreateBookmark();
+        }
+
         public BookPresenter BookPresenter
         {
             get { return presenter.BookPresenter; }
@@ -147,6 +152,11 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             {
                 get { return Engine.Navigator.BookLocation; }
                 set { Engine.Navigator.BookLocation = value; }
+            }
+
+            public Bookmark CreateBookmark()
+            {
+                return Engine.Navigator.CreateBookmark();
             }
 
             public int Width

@@ -14,6 +14,16 @@ namespace SvetlinAnkov.Albite.Engine
         BookLocation BookLocation { get; set; }
 
         /// <summary>
+        /// Create a Bookmark for the current BookLocation.
+        ///
+        /// Note that this will get the bookmark from the client,
+        /// and then *create* a new record in the library database
+        /// if there's no bookmark with the same location. If there
+        /// is, it will return the previously created entity.
+        /// </summary>
+        Bookmark CreateBookmark();
+
+        /// <summary>
         /// Current page
         /// </summary>
         int Page { get; set; }
