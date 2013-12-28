@@ -133,6 +133,9 @@
     <Compile Include="Source\View\Pages\BookSettings\LineSpacingSettingsPage.xaml.cs">
       <DependentUpon>LineSpacingSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Pages\BookSettings\PageMarginsSettingsPage.xaml.cs">
+      <DependentUpon>PageMarginsSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
     </Compile>
@@ -216,6 +219,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\View\Pages\BookSettings\LineSpacingSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\View\Pages\BookSettings\PageMarginsSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
