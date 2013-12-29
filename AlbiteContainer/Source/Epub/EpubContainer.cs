@@ -60,6 +60,11 @@ namespace SvetlinAnkov.Albite.Container.Epub
             get { return Opf.Title; }
         }
 
+        public override string Author
+        {
+            get { return Opf.Author; }
+        }
+
         public override bool Install(string path)
         {
             bool hadErrors = false;

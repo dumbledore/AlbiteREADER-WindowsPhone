@@ -9,6 +9,8 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         public string Title { get; private set; }
 
+        public string Author { get; private set; }
+
         internal Book(BookManager manager, BookEntity entity)
             : base(manager.Library, entity)
         {
@@ -16,6 +18,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
             // Other entity fields
             Title = entity.Title;
+            Author = entity.Author;
         }
     }
 }

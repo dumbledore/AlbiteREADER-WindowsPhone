@@ -53,10 +53,9 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
                 BookEntity bookEntity = new BookEntity();
 
-                // Fill in the defaults so that if there's
-                // a problem with the metadata it would
-                // fail gracefully.
+                // Fill in the metadata
                 bookEntity.Title = bookContainer.Title;
+                bookEntity.Author = bookContainer.Author;
 
                 // Fill in the hash
                 bookEntity.Hash = hash;

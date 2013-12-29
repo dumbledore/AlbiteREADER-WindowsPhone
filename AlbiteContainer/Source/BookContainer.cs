@@ -13,6 +13,8 @@ namespace SvetlinAnkov.Albite.Container
 
         public abstract string Title { get; }
 
+        public abstract string Author { get; }
+
         public abstract IEnumerable<String> Spine { get; }
 
         /// <summary>

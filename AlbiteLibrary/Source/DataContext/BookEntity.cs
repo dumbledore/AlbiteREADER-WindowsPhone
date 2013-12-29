@@ -21,9 +21,8 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
         [Column]
         public string Title { get; internal set; }
 
-        // Author (reference)
-        // Genre (reference)
-        // Subjects (reference)
+        [Column]
+        public string Author { get; internal set; }
 
         // Reading Persistance
         [Column]
