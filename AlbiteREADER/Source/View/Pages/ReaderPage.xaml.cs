@@ -131,7 +131,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void ReadingPositionButton_Click(object sender, EventArgs e)
         {
-            // Navigate to page showing reading position
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/ReadingLocationPage.xaml", UriKind.Relative));
         }
 
         private void BookmarksButton_Click(object sender, EventArgs e)

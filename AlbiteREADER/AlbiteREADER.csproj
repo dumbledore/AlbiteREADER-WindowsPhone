@@ -145,6 +145,9 @@
     <Compile Include="Source\View\Pages\BookSettings\ThemeSettingsPage.xaml.cs">
       <DependentUpon>ThemeSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Pages\ReadingLocationPage.xaml.cs">
+      <DependentUpon>ReadingLocationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\View\Transition\AbstractTransition.cs" />
     <Compile Include="Source\View\Transition\DramaticTransition.cs" />
     <Compile Include="Source\View\Transition\INavigationTransition.cs" />
@@ -182,6 +185,7 @@
     <Content Include="Resources\Images\bookmark.add.png" />
     <Content Include="Resources\Images\feature.settings.png" />
     <Content Include="Resources\Images\gotoslide.png" />
+    <Content Include="Resources\Images\next.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
@@ -235,6 +239,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\View\Pages\BookSettings\ThemeSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\View\Pages\ReadingLocationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
