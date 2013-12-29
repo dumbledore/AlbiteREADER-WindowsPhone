@@ -254,6 +254,9 @@ Albite.Pager = function(context) {
       page = 1;
     }
 
+    // floor the value as it can be a float
+    page = Math.floor(page);
+
     if (isFirstPage(page)) {
       page = firstPage();
     }

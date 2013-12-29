@@ -35,6 +35,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             typeof(PageLocation),
             typeof(ElementLocation),
             typeof(DomLocation),
+            typeof(RelativeChapterLocation),
 
             // Client Messages
             typeof(ClientLogMessage),
