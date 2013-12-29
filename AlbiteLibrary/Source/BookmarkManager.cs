@@ -57,9 +57,19 @@ namespace SvetlinAnkov.Albite.BookLibrary
             }
         }
 
-        public override void Remove(Bookmark entity)
+        public override void Remove(Bookmark bookmark)
         {
-            throw new NotImplementedException();
+            using (LibraryDataContext dc = Library.GetDataContext())
+            {
+                // Get the bookmark entity
+                BookmarkEntity bookmarkEntity = getEntity(dc, bookmark.Id);
+
+                // Queue for deletion
+                dc.Bookmarks.DeleteOnSubmit(bookmarkEntity);
+
+                // Commit changes to DB
+                dc.SubmitChanges();
+            }
         }
 
         public override Bookmark this[int id]
@@ -68,9 +78,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             {
                 using (LibraryDataContext dc = Library.GetDataContext(true))
                 {
-                    BookmarkEntity bookmarkEntity = dc.Bookmarks.Single(
-                        n => n.MappedId == id && n.bookId == BookPresenter.Book.Id);
-                    return new Bookmark(this, bookmarkEntity);
+                    return new Bookmark(this, getEntity(dc, id));
                 }
             }
         }
@@ -92,6 +100,11 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
                 return bookmarks;
             }
+        }
+
+        private static BookmarkEntity getEntity(LibraryDataContext dc, int id)
+        {
+            return dc.Bookmarks.Single(n => n.MappedId == id);
         }
 
         private BookEntity getBookEntity(LibraryDataContext dc)
