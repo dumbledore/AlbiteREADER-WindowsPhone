@@ -23,6 +23,7 @@
                    x:Name="HeaderTextBlock" />
         <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                    x:Name="ContentTextBlock"
+                   TextWrapping="Wrap"
                    Grid.Row="1"
                    IsHitTestVisible="False"
                    Opacity=".5" />
