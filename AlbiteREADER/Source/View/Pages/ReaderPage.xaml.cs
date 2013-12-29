@@ -136,7 +136,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void BookmarksButton_Click(object sender, EventArgs e)
         {
-            // Navigate to page showing list of bookmarks
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/BookmarksPage.xaml", UriKind.Relative));
         }
 
         private void ShareButton_Click(object sender, EventArgs e)
