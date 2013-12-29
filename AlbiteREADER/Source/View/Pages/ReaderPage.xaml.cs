@@ -141,7 +141,20 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void ShareButton_Click(object sender, EventArgs e)
         {
-            // Show share status task
+            // Get the book
+            Book book = ReaderControl.BookPresenter.Book;
+
+            // Create the share status task
+            ShareStatusTask task = new ShareStatusTask();
+
+            // Set the status message
+            task.Status = string.Format(
+                "I'm reading \"{0}\" by {1}.",
+                book.Title,
+                book.Author);
+
+            // Now show the task
+            task.Show();
         }
 
         private void PinButton_Click(object sender, EventArgs e)
