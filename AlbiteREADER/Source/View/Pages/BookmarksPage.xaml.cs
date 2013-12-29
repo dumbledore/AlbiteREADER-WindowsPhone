@@ -38,10 +38,31 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             foreach (Bookmark bookmark in bookmarks)
             {
                 HeaderedContentControl control = new HeaderedContentControl();
-                control.HeaderText = "14%";
+                control.HeaderText = string.Format(
+                    "{0:P0}", calculateBookmarkReadingPosition(bookmark));
                 control.ContentText = bookmark.Text;
                 BookmarksList.Children.Add(control);
             }
+        }
+
+        private double calculateBookmarkReadingPosition(Bookmark bookmark)
+        {
+            BookLocation location = bookmark.BookLocation;
+
+            // Total number of chapters
+            int chapterCount = location.Chapter.BookPresenter.Spine.Length;
+
+            // Each chapter gets this interval in [0, 1]
+            double chapterInterval = 1 / (double)chapterCount;
+
+            // Chapter starts at this position
+            double chapterPosition = location.Chapter.Number * chapterInterval;
+
+            // Additional offset to account for chapter location
+            double chapterOffset = location.Location.RelativeLocation * chapterInterval;
+
+            // return the total
+            return chapterPosition + chapterOffset;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
