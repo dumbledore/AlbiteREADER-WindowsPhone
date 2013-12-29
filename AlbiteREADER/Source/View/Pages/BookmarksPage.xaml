@@ -33,12 +33,10 @@
         <!--ContentPanel - place additional content here-->
         <Grid Grid.Row="1" Margin="12,0,12,0">
             <ScrollViewer>
-                <ScrollViewer>
-                    <StackPanel
-                        x:Name="BookmarksList"
-                        Orientation="Vertical"
-                        toolkit:TiltEffect.IsTiltEnabled="True" />
-                </ScrollViewer>
+                <StackPanel
+                    x:Name="BookmarksList"
+                    Orientation="Vertical"
+                    toolkit:TiltEffect.IsTiltEnabled="True" />
             </ScrollViewer>
         </Grid>
     </Grid>
