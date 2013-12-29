@@ -36,8 +36,8 @@
             <ScrollViewer>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Margin="12" TextWrapping="Wrap">
-                        This is your current reading location in
-                        the book. Use the slider to change it.
+                        This is the current reading location in
+                        the book.
                     </TextBlock>
                     <Slider x:Name="LocationSlider"
                             Minimum="0"
