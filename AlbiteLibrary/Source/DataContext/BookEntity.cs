@@ -27,15 +27,5 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
         // Reading Persistance
         [Column]
         public string Location;
-
-        // Bookmarks
-        private EntitySet<BookmarkEntity> bookmarksSet = new EntitySet<BookmarkEntity>();
-
-        [Association(Storage = "bookmarksSet", OtherKey = "bookId")]
-        public EntitySet<BookmarkEntity> Bookmarks
-        {
-            get { return bookmarksSet; }
-            set { bookmarksSet.Assign(value); }
-        }
     }
 }

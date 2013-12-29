@@ -148,7 +148,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
             }
         }
 
-        public override IList<Book> GetAll()
+        public override Book[] GetAll()
         {
             using (LibraryDataContext dc = Library.GetDataContext(true))
             {

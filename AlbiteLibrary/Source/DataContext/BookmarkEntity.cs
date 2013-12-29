@@ -14,7 +14,7 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
         public BookmarkEntity(BookEntity bookEntity,
             BookLocation bookLocation, string text)
         {
-            Book = bookEntity;
+            bookId = bookEntity.Id;
             Location = bookLocation.ToString();
             Text = text;
         }
@@ -29,21 +29,7 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
         }
 
         [Column(IsPrimaryKey = true)]
-        private int bookId;
-        private EntityRef<BookEntity> bookRef;
-
-        [Association(Storage = "bookRef", ThisKey = "bookId")]
-        public BookEntity Book
-        {
-            get { return bookRef.Entity; }
-            private set
-            {
-                bookRef.Entity = value;
-                // There seems to be a bug on WP7 and
-                // one needs to set the ID explicitly.
-                bookId = value.Id;
-            }
-        }
+        internal int bookId;
 
         [Column]
         public string Location { get; set; }

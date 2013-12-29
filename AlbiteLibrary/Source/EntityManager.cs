@@ -14,6 +14,6 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
         public abstract void Remove(TEntity entity);
         public abstract TEntity this[int id] { get; }
-        public abstract IList<TEntity> GetAll();
+        public abstract TEntity[] GetAll();
     }
 }

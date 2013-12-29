@@ -30,7 +30,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 // having the same location json string
                 IQueryable<BookmarkEntity> entities =
                 dc.Bookmarks.Where(
-                    n => n.Book.MappedId == BookPresenter.Book.Id
+                    n => n.bookId == BookPresenter.Book.Id
                         && n.Location == location.ToString());
 
                 if (entities.Count() > 0)
@@ -46,7 +46,7 @@ namespace SvetlinAnkov.Albite.BookLibrary
                     bookmarkEntity = new BookmarkEntity(bookEntity, location, text);
 
                     // Insert to the entity table
-                    bookEntity.Bookmarks.Add(bookmarkEntity);
+                    dc.Bookmarks.InsertOnSubmit(bookmarkEntity);
 
                     // Commit changes to DB
                     dc.SubmitChanges();
@@ -69,28 +69,28 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 using (LibraryDataContext dc = Library.GetDataContext(true))
                 {
                     BookmarkEntity bookmarkEntity = dc.Bookmarks.Single(
-                        n => n.MappedId == id && n.Book.MappedId == BookPresenter.Book.Id);
+                        n => n.MappedId == id && n.bookId == BookPresenter.Book.Id);
                     return new Bookmark(this, bookmarkEntity);
                 }
             }
         }
 
-        public override IList<Bookmark> GetAll()
+        public override Bookmark[] GetAll()
         {
             using (LibraryDataContext dc = Library.GetDataContext(true))
             {
-                BookEntity bookEntity = getBookEntity(dc);
-                EntitySet<BookmarkEntity> bookmarkSet = bookEntity.Bookmarks;
+                BookmarkEntity[] bookmarkEntities =
+                    dc.Bookmarks.Where(
+                        n => n.bookId == BookPresenter.Book.Id).ToArray();
 
-                int count = bookmarkSet.Count();
-                List<Bookmark> bookmarks = new List<Bookmark>(count);
+                Bookmark[] bookmarks = new Bookmark[bookmarkEntities.Length];
 
-                foreach (BookmarkEntity bookmarkEntity in bookmarkSet)
+                for (int i = 0; i < bookmarks.Length; i++)
                 {
-                    bookmarks.Add(new Bookmark(this, bookmarkEntity));
+                    bookmarks[i] = new Bookmark(this, bookmarkEntities[i]);
                 }
 
-                return bookmarks.ToArray();
+                return bookmarks;
             }
         }
 
