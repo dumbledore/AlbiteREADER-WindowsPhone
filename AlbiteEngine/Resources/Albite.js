@@ -597,7 +597,10 @@ Albite.Pager = function(context) {
   }
 
   function getRelative() {
-    return getCurrentPage() / getPageCount();
+    // getCurrentPage() is always > 0, because of the dummy pages
+    // getPageCount() should always be > 0 as well
+    // This way, the first non-dummy page would be 0, and the last non-dummy page: 1
+    return (getCurrentPage() - 1) / (getPageCount() - 1);
   }
 
   function getDomLocation() {
@@ -812,8 +815,8 @@ Albite.Pager = function(context) {
   }
 
   function goToRelative(ratio) {
-    // Compute the page number
-    var page = getPageCount() * ratio;
+    // Check getRelative() for more info on the computation
+    var page = (ratio * (getPageCount() - 1)) + 1
 
     // Even if the ratio is not in [0, 1], goToPage()
     // calls validate() and would eventually clamp it.
