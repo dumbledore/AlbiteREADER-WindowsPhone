@@ -25,6 +25,10 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Get the book presenter
             BookPresenter bookPresenter = context.BookPresenter;
 
+            // Set the title
+            string titleUppercase = bookPresenter.Book.Title.ToUpper();
+            PageTitle.Text = titleUppercase;
+
             // Get the current location
             BookLocation location = bookPresenter.BookLocation;
 
