@@ -3,7 +3,10 @@ using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
+using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace SvetlinAnkov.Albite.READER.View.Pages
 {
@@ -13,8 +16,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         {
             InitializeComponent();
         }
-
-        private Bookmark[] bookmarks;
 
         private void setCurrentState()
         {
@@ -29,7 +30,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             PageTitle.Text = titleUppercase;
 
             // Get all current bookmakrs
-            bookmarks = bookPresenter.BookmarkManager.GetAll();
+            Bookmark[] bookmarks = bookPresenter.BookmarkManager.GetAll();
 
             // Sort them so that they are listed correctly
             Array.Sort(bookmarks);
@@ -37,32 +38,53 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Fill the bookmarks
             foreach (Bookmark bookmark in bookmarks)
             {
-                HeaderedContentControl control = new HeaderedContentControl();
-                control.HeaderText = string.Format(
-                    "{0:P0}", calculateBookmarkReadingPosition(bookmark));
-                control.ContentText = bookmark.Text;
+                // Create the control
+                BookmarkControl control = new BookmarkControl(bookmark);
+
+                // Attach the context menu
+                attachContextMenu(control);
+
+                // Attach the tap event handler
+                control.Tap += bookmarkControl_Tap;
+
+                // Add to the other controls
                 BookmarksList.Children.Add(control);
             }
         }
 
-        private double calculateBookmarkReadingPosition(Bookmark bookmark)
+        private static void attachContextMenu(DependencyObject control)
         {
-            BookLocation location = bookmark.BookLocation;
+            // Create the menu item
+            MenuItem menuItem = new MenuItem();
+            menuItem.Header = "Remove";
+            menuItem.Command = new RemoveBookmarkCommand();
+            menuItem.CommandParameter = control;
 
-            // Total number of chapters
-            int chapterCount = location.Chapter.BookPresenter.Spine.Length;
+            // Create the context menu
+            ContextMenu contextMenu = new ContextMenu();
+            contextMenu.Items.Add(menuItem);
 
-            // Each chapter gets this interval in [0, 1]
-            double chapterInterval = 1 / (double)chapterCount;
+            // Add the context menu
+            control.SetValue(ContextMenuService.ContextMenuProperty, contextMenu);
+        }
 
-            // Chapter starts at this position
-            double chapterPosition = location.Chapter.Number * chapterInterval;
+        private void bookmarkControl_Tap(object sender, GEArgs e)
+        {
+            BookmarkControl control = (BookmarkControl)sender;
 
-            // Additional offset to account for chapter location
-            double chapterOffset = location.Location.RelativeLocation * chapterInterval;
+            // Get the context
+            AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
-            // return the total
-            return chapterPosition + chapterOffset;
+            // Get the book presenter
+            BookPresenter bookPresenter = context.BookPresenter;
+
+            // Update the reading location
+            bookPresenter.BookLocation = control.Bookmark.BookLocation;
+
+            // TODO: Add to history stack
+
+            // Go back to ReaderPage
+            NavigationService.GoBack();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -74,54 +96,77 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             base.OnNavigatedTo(e);
         }
 
-#if false
-        private void applyLocation()
+        #region BookmarkControl
+        private class BookmarkControl : HeaderedContentControl
         {
-            // Get the context
-            AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
+            public Bookmark Bookmark { get; private set; }
 
-            // Get the book presenter
-            BookPresenter bookPresenter = context.BookPresenter;
-
-            // Get new location
-            int currentLocation = (int)LocationSlider.Value;
-
-            if (initialLocation != currentLocation)
+            public BookmarkControl(Bookmark bookmark)
             {
-                // Get the chapter number
-                int chapterNumber = currentLocation / stepsPerChapter;
+                Bookmark = bookmark;
 
-                // Get the offset
-                double chapterOffset = (currentLocation % stepsPerChapter) / ((double)(stepsPerChapter - 1));
+                // Set up book position as header text
+                HeaderText = string.Format(
+                    "{0:P0}", getReadingPosition(bookmark));
 
-                // Get the chapter
-                Chapter chapter = bookPresenter.Spine[chapterNumber];
+                // Set up bookmark text as content text
+                ContentText = bookmark.Text;
+            }
 
-                // Create the RelativeLocation
-                RelativeChapterLocation relativeLocation = new RelativeChapterLocation(chapterOffset);
+            private static double getReadingPosition(Bookmark bookmark)
+            {
+                BookLocation location = bookmark.BookLocation;
 
-                // Create the BookLocation
-                BookLocation location = chapter.CreateLocation(relativeLocation);
+                // Total number of chapters
+                int chapterCount = location.Chapter.BookPresenter.Spine.Length;
 
-                // Set the new location
-                bookPresenter.BookLocation = location;
+                // Each chapter gets this interval in [0, 1]
+                double chapterInterval = 1 / (double)chapterCount;
+
+                // Chapter starts at this position
+                double chapterPosition = location.Chapter.Number * chapterInterval;
+
+                // Additional offset to account for chapter location
+                double chapterOffset = location.Location.RelativeLocation * chapterInterval;
+
+                // return the total
+                return chapterPosition + chapterOffset;
             }
         }
+        #endregion
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        #region RemoveBookmarkCommand
+        private class RemoveBookmarkCommand : ICommand
         {
-            // First apply the new settings
-            applyLocation();
+#pragma warning disable 0067
+            public event EventHandler CanExecuteChanged;
+#pragma warning restore 0067
 
-            // Go on as usual
-            base.OnNavigatingFrom(e);
-        }
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
 
-        private void GoToButton_Click(object sender, EventArgs e)
-        {
-            // Simply go back to the ReaderPage
-            NavigationService.GoBack();
+            public void Execute(object parameter)
+            {
+                BookmarkControl control = (BookmarkControl)parameter;
+
+                // Get the context
+                AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
+
+                // Get the book presenter
+                BookPresenter bookPresenter = context.BookPresenter;
+
+                // Remove the bookmark
+                bookPresenter.BookmarkManager.Remove(control.Bookmark);
+
+                // Get the parent
+                Panel parent = (Panel)control.Parent;
+
+                // Remove the control
+                parent.Children.Remove(control);
+            }
         }
-#endif
+        #endregion
     }
 }
