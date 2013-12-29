@@ -126,6 +126,8 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 // they shall go up
                 removeDirectory(GetPath(book));
 
+                // TODO: Remove bookmarks
+
                 // Remove from the data base
                 // If there's an error with the database,
                 // it will roll back the changes
