@@ -118,8 +118,11 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             // Create a BookLocation for the Bookmark
             BookLocation location = current.CreateLocation(clientBookmark.DomLocation);
 
+            // Remove new line characters from the text
+            string text = clientBookmark.Text.Replace('\n', ' ');
+
             // Now create a new bookmark using BookmarkManager
-            Bookmark bookmark = engine.BookPresenter.BookmarkManager.Add(location, clientBookmark.Text);
+            Bookmark bookmark = engine.BookPresenter.BookmarkManager.Add(location, text);
 
             // Done
             return bookmark;
