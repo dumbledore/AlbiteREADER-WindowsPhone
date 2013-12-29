@@ -13,6 +13,12 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
             Page = page;
         }
 
+        public override double RelativeLocation
+        {
+            // We don't know, so simply return 0
+            get { return 0; }
+        }
+
         public override int CompareTo(ChapterLocation other)
         {
             if (other is PageLocation)
@@ -20,18 +26,11 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
                 PageLocation otherPage = other as PageLocation;
                 return this.Page < otherPage.Page ? -1 : 1;
             }
-            else if (other is FirstPageLocation)
+            else
             {
-                return 1;
+                // Use default
+                return base.CompareTo(other);
             }
-            else if (other is LastPageLocation)
-            {
-                return -1;
-            }
-
-            // We can't say anything for ElementLocation or DomLocation,
-            // so return a default value, e.g. -1
-            return -1;
         }
     }
 }

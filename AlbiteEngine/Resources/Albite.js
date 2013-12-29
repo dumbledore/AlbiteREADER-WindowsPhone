@@ -550,7 +550,7 @@ Albite.Pager = function(context) {
     }
   }
 
-  function makeDomLocation(node, textOffset) {
+  function makeDomLocation(node, textOffset, relativeLocation) {
       if (!node || node.nodeType !== Node.TEXT_NODE) {
       // It only makes sense for text nodes
       return {};
@@ -590,12 +590,17 @@ Albite.Pager = function(context) {
     // The path is leaf to root, but we need it root to leaf, so reverse it
     elementPath.reverse();
 
-    return { "elementPath" : elementPath, "textOffset" : textOffset };
+    return { "elementPath" : elementPath, "textOffset" : textOffset, "relativeLocation" : relativeLocation };
+  }
+
+  function getRelative() {
+    return getCurrentPage() / getPageCount();
   }
 
   function getDomLocation() {
     var location = getTextLocation();
-    return makeDomLocation(location.node, location.textOffset);
+    var relativeLocation = getRelative();
+    return makeDomLocation(location.node, location.textOffset, relativeLocation);
   }
 
   function getBookmarkText(node, textOffset) {
@@ -692,8 +697,9 @@ Albite.Pager = function(context) {
 
   function getBookmark() {
     var location = getTextLocation();
+    var relativeLocation = getRelative();
     return {
-      "location"  : makeDomLocation(location.node, location.textOffset),
+      "location"  : makeDomLocation(location.node, location.textOffset, relativeLocation),
       "text"      : getBookmarkText(location.node, location.textOffset)
     };
   }
@@ -716,6 +722,9 @@ Albite.Pager = function(context) {
       goToElementById(location.elementId);
     } else if ((typeof location.elementPath !== 'undefined') && (typeof location.textOffset !== 'undefined')) {
       goToDomLocation( { 'elementPath' : location.elementPath, 'textOffset' : location.textOffset} );
+    } else if (typeof location.relativeLocation !== 'undefined') {
+      // test for relative location last, as all other locations would have it
+      goToRelative(location.relativeLocation);
     } else {
       context.debug.log("Unknown location type");
     }
@@ -799,6 +808,15 @@ Albite.Pager = function(context) {
     return false;
   }
 
+  function goToRelative(ratio) {
+    // Compute the page number
+    var page = getPageCount() * ratio;
+
+    // Even if the ratio is not in [0, 1], goToPage()
+    // calls validate() and would eventually clamp it.
+    goToPage(page);
+  }
+
   function goToPage(page) {
     page = validate(page);
 
@@ -829,6 +847,8 @@ Albite.Pager = function(context) {
   this.goToPage         = goToPage;
   this.goToElementById  = goToElementById;
   this.goToLocation     = goToLocation;
+  this.getRelative      = getRelative;
+  this.goToRelative     = goToRelative;
   this.findText         = findText;
   this.findPagesForText = findPagesForText;
   this.getBookmark      = getBookmark;

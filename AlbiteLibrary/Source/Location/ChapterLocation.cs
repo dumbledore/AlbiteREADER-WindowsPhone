@@ -8,7 +8,19 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
     public abstract class ChapterLocation
         : IComparable<ChapterLocation>
     {
-        public abstract int CompareTo(ChapterLocation other);
+        /// <summary>
+        /// Relative location in the chapter.
+        /// It's a double number in the range 0 (first page) to 1 (last page).
+        /// It's not meant to be accurate, rather give some indication
+        /// of current progress.
+        /// </summary>
+        public abstract double RelativeLocation { get; }
+
+        // Default implementation uses relative location
+        public virtual int CompareTo(ChapterLocation other)
+        {
+            return this.RelativeLocation < other.RelativeLocation ? -1 : 1;
+        }
 
         public static ChapterLocation Default
         {

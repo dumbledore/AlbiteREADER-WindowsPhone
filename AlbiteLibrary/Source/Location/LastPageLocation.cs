@@ -11,9 +11,10 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
         private bool lastPage = true;
 #pragma warning restore 0414
 
-        public override int CompareTo(ChapterLocation other)
+        public override double RelativeLocation
         {
-            return 1;
+            // Last page, so always 1
+            get { return 1; }
         }
     }
 }

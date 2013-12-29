@@ -58,7 +58,7 @@ namespace SvetlinAnkov.Albite.Tests.Pages
 
             Log.D(tag, "Loading book in client...");
             BookLocation location = bookPresenter.Spine[chapterNumber].CreateLocation(
-                new DomLocation(new int[] { 0 }, 0));
+                new DomLocation(new int[] { 0 }, 0, 0));
 
             presenter.Engine.Navigator.BookLocation = location;
         }
