@@ -126,7 +126,12 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 // they shall go up
                 removeDirectory(GetPath(book));
 
-                // TODO: Remove bookmarks
+                // Get all bookmarks for this book
+                IQueryable<BookmarkEntity> bookmarkEntities =
+                    dc.Bookmarks.Where(n => n.bookId == book.Id);
+
+                // Queue those bookmarks for deletion
+                dc.Bookmarks.DeleteAllOnSubmit(bookmarkEntities);
 
                 // Remove from the data base
                 // If there's an error with the database,
