@@ -43,9 +43,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Should the back button be enabled?
             BackButton.IsEnabled = !historyStack.IsEmpty;
 
-            // Should the Wikipedia button be enabled?
-            WikipediaButton.IsEnabled = false; // TODO
-
             // Should the Pin-To-Start button be enabled?
             PinButton.IsEnabled = false; // TODO
         }
@@ -80,15 +77,16 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // So we need to do it the ugly way...
 
             // First, the icon buttons
-            BackButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-            SettingsButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
-            IndexButton = ApplicationBar.Buttons[2] as ApplicationBarIconButton;
-            BookmarkButton = ApplicationBar.Buttons[3] as ApplicationBarIconButton;
+            BackButton              = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            SettingsButton          = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
+            ContentsButton          = ApplicationBar.Buttons[2] as ApplicationBarIconButton;
+            AddBookmarkButton       = ApplicationBar.Buttons[3] as ApplicationBarIconButton;
 
             // Then the menu buttons
-            WikipediaButton = ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
-            ShareButton = ApplicationBar.MenuItems[1] as ApplicationBarMenuItem;
-            PinButton = ApplicationBar.MenuItems[2] as ApplicationBarMenuItem;
+            ReadingPositionButton   = ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+            BookmarksButton         = ApplicationBar.MenuItems[1] as ApplicationBarMenuItem;
+            ShareButton             = ApplicationBar.MenuItems[2] as ApplicationBarMenuItem;
+            PinButton               = ApplicationBar.MenuItems[3] as ApplicationBarMenuItem;
         }
 
         private void BackButton_Click(object sender, EventArgs e)
@@ -114,12 +112,12 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/BookSettings/BookSettingsPage.xaml", UriKind.Relative));
         }
 
-        private void IndexButton_Click(object sender, EventArgs e)
+        private void ContentsButton_Click(object sender, EventArgs e)
         {
-
+            // TODO: Navigate to Table of Contents
         }
 
-        private void BookmarkButton_Click(object sender, EventArgs e)
+        private void AddBookmarkButton_Click(object sender, EventArgs e)
         {
             // Create the bookmark
             Bookmark bookmark = ReaderControl.CreateBookmark();
@@ -131,19 +129,24 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 MessageBoxButton.OK);
         }
 
-        private void WikipediaButton_Click(object sender, EventArgs e)
+        private void ReadingPositionButton_Click(object sender, EventArgs e)
         {
+            // Navigate to page showing reading position
+        }
 
+        private void BookmarksButton_Click(object sender, EventArgs e)
+        {
+            // Navigate to page showing list of bookmarks
         }
 
         private void ShareButton_Click(object sender, EventArgs e)
         {
-
+            // Show share status task
         }
 
         private void PinButton_Click(object sender, EventArgs e)
         {
-
+            // Pin book tile to start
         }
 #endregion
 

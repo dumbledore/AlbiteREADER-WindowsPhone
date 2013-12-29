@@ -26,10 +26,11 @@
             BackgroundColor="{StaticResource PhoneBackgroundColor}" Opacity="0.95" StateChanged="ApplicationBar_StateChanged">
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/back.png" Text="Back" x:Name="BackButton" Click="BackButton_Click" />
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/feature.settings.png" Text="Settings" x:Name="SettingsButton" Click="SettingsButton_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Resources/Images/gotoslide.png" Text="Index" x:Name="IndexButton" Click="IndexButton_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Resources/Images/bookmark.add.png" Text="Bookmark" x:Name="BookmarkButton" Click="BookmarkButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/gotoslide.png" Text="contents" x:Name="ContentsButton" Click="ContentsButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/bookmark.add.png" Text="Bookmark" x:Name="AddBookmarkButton" Click="AddBookmarkButton_Click"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Article on Wikipedia" x:Name="WikipediaButton" Click="WikipediaButton_Click"/>
+                <shell:ApplicationBarMenuItem Text="Reading Position" x:Name="ReadingPositionButton" Click="ReadingPositionButton_Click"/>
+                <shell:ApplicationBarMenuItem Text="Bookmarks" x:Name="BookmarksButton" Click="BookmarksButton_Click"/>
                 <shell:ApplicationBarMenuItem Text="Share" x:Name="ShareButton" Click="ShareButton_Click"/>
                 <shell:ApplicationBarMenuItem Text="Pin to Start" x:Name="PinButton" Click="PinButton_Click"/>
             </shell:ApplicationBar.MenuItems>
