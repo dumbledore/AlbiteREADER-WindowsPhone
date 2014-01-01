@@ -21,6 +21,8 @@ namespace SvetlinAnkov.Albite.Container.Epub
         public string Rights { get; private set; }
         public string Publisher { get; private set; }
 
+        public string Cover { get; private set; }
+
         public string NcxPath { get; private set; }
 
         /// <summary>
@@ -106,6 +108,17 @@ namespace SvetlinAnkov.Albite.Container.Epub
 
                 XElement dcMetadataElement = metadataElement.Element(xmlns + "dc-metadata");
                 processMetadata(dcMetadataElement != null ? dcMetadataElement : metadataElement);
+
+                // The cover needs to point to the path, not the id
+                if (Cover != null && items.ContainsKey(Cover))
+                {
+                    // id -> path
+                    Cover = items[Cover];
+                }
+                else
+                {
+                    Cover = null;
+                }
             }
             catch (Exception e)
             {
@@ -205,17 +218,23 @@ namespace SvetlinAnkov.Albite.Container.Epub
 
         private void processMetadata(XElement metadataElement)
         {
+            const string xmlnsOpf = XmlNamespaceOpf;
             const string xmlnsDc = XmlNamespaceDc;
+
             const string titleName = xmlnsDc + "title";
             const string authorName = xmlnsDc + "creator";
             const string dateName = xmlnsDc + "date";
             const string languageName = xmlnsDc + "language";
             const string rightsName = xmlnsDc + "rights";
             const string publisherName = xmlnsDc + "publisher";
+            const string metaName = xmlnsOpf + "meta";
 
-            const string xmlnsOpf = XmlNamespaceOpf;
             const string authorAttributeName = xmlnsOpf + "role";
             const string dateAttributeName = xmlnsOpf + "event";
+
+            const string metaNameAttributeName = "name";
+            const string metaContentAttributeName = "content";
+            const string metaCoverValue = "cover";
 
             foreach (XElement element in metadataElement.Elements())
             {
@@ -280,6 +299,21 @@ namespace SvetlinAnkov.Albite.Container.Epub
                             Publisher = element.Value;
                         }
                         break;
+
+                    case metaName:
+                    {
+                        XAttribute contentAttribute = element.Attribute(metaContentAttributeName);
+                        if (contentAttribute != null)
+                        {
+                            XAttribute nameAttribute = element.Attribute(metaNameAttributeName);
+                            if (nameAttribute != null && nameAttribute.Value == metaCoverValue)
+                            {
+                                Cover = contentAttribute.Value;
+                            }
+                        }
+                        break;
+                    }
+
                 }
             }
         }
