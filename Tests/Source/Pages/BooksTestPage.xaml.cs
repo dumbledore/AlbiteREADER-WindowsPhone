@@ -106,7 +106,12 @@ namespace SvetlinAnkov.Albite.Tests.Pages
                     return;
                 }
 
+                // Remove tile
+                TileManager.UnpinBook(book);
+
+                // Remove book
                 library.Books.Remove(book);
+
                 progress += step;
                 worker.ReportProgress(progress);
             }

@@ -44,7 +44,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             BackButton.IsEnabled = !historyStack.IsEmpty;
 
             // Should the Pin-To-Start button be enabled?
-            PinButton.IsEnabled = false; // TODO
+            PinButton.IsEnabled = true;
         }
 
         private void updateColors()
@@ -159,7 +159,11 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void PinButton_Click(object sender, EventArgs e)
         {
+            // Get the context
+            AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
+
             // Pin book tile to start
+            TileManager.PinBook(context.BookPresenter);
         }
 #endregion
 
