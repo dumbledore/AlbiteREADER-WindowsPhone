@@ -11,8 +11,8 @@ namespace SvetlinAnkov.Albite.Container.Epub
     /// </summary>
     internal class OpenPackageFile : EpubXmlFile
     {
-        public static string XmlNamespaceOpf { get { return "{http://www.idpf.org/2007/opf}"; } }
-        public static string XmlNamespaceDc { get { return "{http://purl.org/dc/elements/1.1/}"; } }
+        public const string XmlNamespaceOpf = "{http://www.idpf.org/2007/opf}";
+        public const string XmlNamespaceDc = "{http://purl.org/dc/elements/1.1/}";
 
         public string Title { get; private set; }
         public string Author { get; private set; }
@@ -205,79 +205,81 @@ namespace SvetlinAnkov.Albite.Container.Epub
 
         private void processMetadata(XElement metadataElement)
         {
-            string xmlnsDc = XmlNamespaceDc;
-            string titleName = xmlnsDc + "title";
-            string authorName = xmlnsDc + "creator";
-            string dateName = xmlnsDc + "date";
-            string languageName = xmlnsDc + "language";
-            string rightsName = xmlnsDc + "rights";
-            string publisherName = xmlnsDc + "publisher";
+            const string xmlnsDc = XmlNamespaceDc;
+            const string titleName = xmlnsDc + "title";
+            const string authorName = xmlnsDc + "creator";
+            const string dateName = xmlnsDc + "date";
+            const string languageName = xmlnsDc + "language";
+            const string rightsName = xmlnsDc + "rights";
+            const string publisherName = xmlnsDc + "publisher";
 
-            string xmlnsOpf = XmlNamespaceOpf;
-            string authorAttributeName = xmlnsOpf + "role";
-            string dateAttributeName = xmlnsOpf + "event";
+            const string xmlnsOpf = XmlNamespaceOpf;
+            const string authorAttributeName = xmlnsOpf + "role";
+            const string dateAttributeName = xmlnsOpf + "event";
 
             foreach (XElement element in metadataElement.Elements())
             {
                 string name = element.Name.ToString();
 
-                if (name == titleName)
+                switch (name)
                 {
-                    // Only use the first title element
-                    if (Title == null)
-                    {
-                        Title = element.Value;
-                    }
-                }
-                else if (name == authorName)
-                {
-                    // Only use the first creator (that is an author of course)
-                    if (Author == null)
-                    {
-                        XAttribute attribute = element.Attribute(authorAttributeName);
-                        // Either no attribute or its value must be "aut"
-                        if (attribute == null || attribute.Value == "aut")
+                    case titleName:
+                        // Only use the first title element
+                        if (Title == null)
                         {
-                            Author = element.Value;
+                            Title = element.Value;
                         }
-                    }
-                }
-                else if (name == dateName)
-                {
-                    // Only use the first publication date
-                    if (PublicationDate == null)
-                    {
-                        XAttribute attribute = element.Attribute(dateAttributeName);
-                        // Either no attribute or its value must be "publication"
-                        if (attribute == null || attribute.Value == "publication")
+                        break;
+
+                    case authorName:
+                        // Only use the first creator (that is an author of course)
+                        if (Author == null)
                         {
-                            PublicationDate = element.Value;
+                            XAttribute attribute = element.Attribute(authorAttributeName);
+                            // Either no attribute or its value must be "aut"
+                            if (attribute == null || attribute.Value == "aut")
+                            {
+                                Author = element.Value;
+                            }
                         }
-                    }
-                }
-                else if (name == languageName)
-                {
-                    // Only use the first language
-                    if (Language == null)
-                    {
-                        Language = element.Value;
-                    }
-                }
-                else if (name == rightsName)
-                {
-                    // Only use the first rights element
-                    if (Rights == null)
-                    {
-                        Rights = element.Value;
-                    }
-                }
-                else if (name == publisherName)
-                {
-                    // Only use the first publisher
-                    if (Publisher == null)
-                    {
-                        Publisher = element.Value;
-                    }
+                        break;
+
+                    case dateName:
+                        // Only use the first publication date
+                        if (PublicationDate == null)
+                        {
+                            XAttribute attribute = element.Attribute(dateAttributeName);
+                            // Either no attribute or its value must be "publication"
+                            if (attribute == null || attribute.Value == "publication")
+                            {
+                                PublicationDate = element.Value;
+                            }
+                        }
+                        break;
+
+                    case languageName:
+                        // Only use the first language
+                        if (Language == null)
+                        {
+                            Language = element.Value;
+                        }
+                        break;
+
+                    case rightsName:
+                        // Only use the first rights element
+                        if (Rights == null)
+                        {
+                            Rights = element.Value;
+                        }
+                        break;
+
+                    case publisherName:
+                        // Only use the first publisher
+                        if (Publisher == null)
+                        {
+                            Publisher = element.Value;
+                        }
+                        break;
                 }
             }
         }
