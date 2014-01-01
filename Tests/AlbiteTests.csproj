@@ -173,7 +173,6 @@
     <Content Include="Resources\Test\WebBrowser\Security\exploit\exploit.html" />
     <Content Include="Resources\Test\WebBrowser\Security\exploit\other.html" />
     <Content Include="Resources\Test\WebBrowser\Security\other\other.html" />
-    <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Source\Pages\BooksTestPage.xaml">
