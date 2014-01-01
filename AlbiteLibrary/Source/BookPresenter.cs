@@ -5,6 +5,7 @@ using SvetlinAnkov.Albite.Container.Epub;
 using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 
 namespace SvetlinAnkov.Albite.BookLibrary
@@ -18,6 +19,8 @@ namespace SvetlinAnkov.Albite.BookLibrary
         public Spine Spine { get; private set; }
         // TODO: ToC
         // TODO: Lists
+
+        private string cover;
 
         public BookPresenter(Book book)
         {
@@ -34,6 +37,9 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 // All installed books are in ePub
                 using (BookContainer container = new EpubContainer(iso))
                 {
+                    // cache the cover path
+                    cover = container.Cover;
+
                     return Spine.Create(this, container);
                 }
             }
@@ -107,6 +113,25 @@ namespace SvetlinAnkov.Albite.BookLibrary
 
                 dc.SubmitChanges();
             }
+        }
+
+        public Stream GetCoverStream()
+        {
+            Stream stream = null;
+
+            if (cover != null)
+            {
+                try
+                {
+                    using (AlbiteIsolatedContainer iso = new AlbiteIsolatedContainer(ContentPath))
+                    {
+                        stream = iso.Stream(cover);
+                    }
+                }
+                catch { }
+            }
+
+            return stream;
         }
 
         // Helper methods
