@@ -108,9 +108,6 @@ namespace SvetlinAnkov.Albite.READER
                         // Make a new WriteableBitmap so we could save it
                         WriteableBitmap wbmp = new WriteableBitmap(bmp);
 
-                        // Crop the bitmap
-                        wbmp = crop(wbmp);
-
                         // Output name
                         string outputName = getTilePath(bookPresenter.Book);
 
@@ -136,40 +133,6 @@ namespace SvetlinAnkov.Albite.READER
         private static string getTilePath(Book book)
         {
             return string.Format("Shared/ShellContent/book-{0}.jpg", book.Id);
-        }
-
-        private static WriteableBitmap crop(WriteableBitmap source)
-        {
-            int srcWidth = source.PixelWidth;
-            int srcHeight = source.PixelHeight;
-
-            int size = Math.Min(srcWidth, srcHeight);
-
-            int width = size;
-            int height = size;
-
-            int x = (srcWidth - size) / 2;
-            int y = (srcHeight - size) / 2;
-
-            // Clamp to boundaries
-            if (x < 0) x = 0;
-            if (x + width > srcWidth) width = srcWidth - x;
-            if (y < 0) y = 0;
-            if (y + height > srcHeight) height = srcHeight - y;
-
-            // Copy the pixels line by line using fast BlockCopy
-            WriteableBitmap dest = new WriteableBitmap(size, size);
-
-            for (var line = 0; line < height; line++)
-            {
-                // RGBA = 4 bytes
-                int srcOff = ((y + line) * srcWidth + x) * 4;
-                int dstOff = line * width * 4;
-
-                Buffer.BlockCopy(source.Pixels, srcOff, dest.Pixels, dstOff, width * 4);
-            }
-
-            return dest;
         }
     }
 }
