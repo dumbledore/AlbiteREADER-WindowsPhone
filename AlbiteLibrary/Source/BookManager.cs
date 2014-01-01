@@ -1,6 +1,5 @@
 ﻿using SvetlinAnkov.Albite.BookLibrary.DataContext;
 using SvetlinAnkov.Albite.Container;
-using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.Collections.Generic;
@@ -85,9 +84,6 @@ namespace SvetlinAnkov.Albite.BookLibrary
                     // would be properly handled
                     throw e;
                 }
-
-                // TODO: Fill in the other metadata,
-                // incl author and info from Freebase.
 
                 // Working with the Book class now
                 Book book = new Book(this, bookEntity);
