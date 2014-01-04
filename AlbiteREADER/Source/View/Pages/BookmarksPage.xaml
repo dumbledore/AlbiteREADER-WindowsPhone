@@ -8,7 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:albite="clr-namespace:SvetlinAnkov.Albite.READER.View.Controls"
     xmlns:transitions="clr-namespace:SvetlinAnkov.Albite.READER.View.Transition"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -35,8 +34,7 @@
             <ScrollViewer>
                 <StackPanel
                     x:Name="BookmarksList"
-                    Orientation="Vertical"
-                    toolkit:TiltEffect.IsTiltEnabled="True" />
+                    Orientation="Vertical" />
             </ScrollViewer>
         </Grid>
     </Grid>

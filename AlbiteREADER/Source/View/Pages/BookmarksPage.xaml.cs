@@ -41,6 +41,9 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 // Create the control
                 BookmarkControl control = new BookmarkControl(bookmark);
 
+                // Enable tilt effect
+                control.SetValue(TiltEffect.IsTiltEnabledProperty, true);
+
                 // Attach the context menu
                 attachContextMenu(control);
 
