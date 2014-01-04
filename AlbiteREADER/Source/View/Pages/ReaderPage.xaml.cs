@@ -114,7 +114,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void ContentsButton_Click(object sender, EventArgs e)
         {
-            // TODO: Navigate to Table of Contents
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/ContentsPage.xaml", UriKind.Relative));
         }
 
         private void AddBookmarkButton_Click(object sender, EventArgs e)

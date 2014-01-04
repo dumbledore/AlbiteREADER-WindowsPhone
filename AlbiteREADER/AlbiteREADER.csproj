@@ -109,6 +109,9 @@
     <Compile Include="Source\View\Controls\HeaderedContentControl.xaml.cs">
       <DependentUpon>HeaderedContentControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Controls\HierarchicalTextControl.xaml.cs">
+      <DependentUpon>HierarchicalTextControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\View\Controls\IReaderControlObserver.cs" />
     <Compile Include="Source\View\Controls\ReaderControl.xaml.cs">
       <DependentUpon>ReaderControl.xaml</DependentUpon>
@@ -139,6 +142,9 @@
     </Compile>
     <Compile Include="Source\View\Pages\BookSettings\PageMarginsSettingsPage.xaml.cs">
       <DependentUpon>PageMarginsSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\View\Pages\ContentsPage.xaml.cs">
+      <DependentUpon>ContentsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
@@ -204,6 +210,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Source\View\Controls\HierarchicalTextControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Source\View\Controls\ReaderControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -237,6 +247,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\View\Pages\BookSettings\PageMarginsSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\View\Pages\ContentsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
