@@ -18,8 +18,9 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         {
             InitializeComponent();
             InitializeApplicationBar();
-            ReaderControl.Observer = new Observer(this);
         }
+
+        private ReaderControl ReaderControl = null;
 
 #region ApplicationBar & SystemTray
         private void ApplicationBar_StateChanged(object sender, ApplicationBarStateChangedEventArgs e)
@@ -172,12 +173,21 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         {
             BookPresenter bookPresenter = ReaderControl.BookPresenter;
 
-            // Update the BookLocation of BookPresenter to match
-            // the current BookLocation
-            bookPresenter.BookLocation = ReaderControl.BookLocation;
+            // ReaderControl.BookPresenter can be null if the user navigates
+            // from *before* it has actually loaded
+            if (bookPresenter != null)
+            {
+                // Update the BookLocation of BookPresenter to match
+                // the current BookLocation
+                bookPresenter.BookLocation = ReaderControl.BookLocation;
 
-            // Now persist BookPresenter
-            bookPresenter.Persist();
+                // Now persist BookPresenter
+                bookPresenter.Persist();
+            }
+
+            // Remove the ReaderControl
+            ReaderControl = null;
+            ReaderControlGrid.Children.Clear();
 
             // Try persisting the history stack
             if (e.NavigationMode != NavigationMode.Back)
@@ -220,25 +230,38 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 historyStack = new HistoryStack();
             }
 
-            base.OnNavigatedTo(e);
-        }
-
-        private void ReaderControl_Loaded(object sender, RoutedEventArgs e)
-        {
             // Get the book id from the query string
             int bookId = int.Parse(NavigationContext.QueryString["id"]);
 
             // Open the book
             BookPresenter bookPresenter = App.Context.OpenBook(bookId);
 
-            // Now, open the book in the control
-            ReaderControl.BookPresenter = bookPresenter;
-
             // Attach the history stack to the book presenter
-            historyStack.Attach(bookPresenter);
+            if (!historyStack.IsAttached)
+            {
+                // As the control is removed *every* time the
+                // page is navigated from, this could easily be
+                // called more than once. We need to
+                // attach it only the first time.
+                historyStack.Attach(bookPresenter);
+            }
 
             // Update the application bar
             updateApplicationBarButtons();
+
+            // Add the ReaderControl
+            ReaderControl = new ReaderControl();
+            ReaderControl.Observer = new Observer(this);
+            ReaderControl.Loaded += ReaderControl_Loaded;
+            ReaderControlGrid.Children.Add(ReaderControl);
+
+            base.OnNavigatedTo(e);
+        }
+
+        private void ReaderControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Now, open the book in the control
+            ReaderControl.BookPresenter = App.Context.BookPresenter;
         }
 #endregion
 
@@ -346,6 +369,5 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             }
         }
 #endregion
-
     }
 }

@@ -17,7 +17,7 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <albite:ReaderControl x:Name="ReaderControl" Loaded="ReaderControl_Loaded" />
+        <Grid x:Name="ReaderControlGrid" />
         <albite:WaitControl x:Name="WaitControl" IsIndeterminate="True" Text="Preparing content..." />
     </Grid>
 
