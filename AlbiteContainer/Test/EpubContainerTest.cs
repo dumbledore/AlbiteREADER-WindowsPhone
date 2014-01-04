@@ -99,7 +99,11 @@ namespace SvetlinAnkov.Albite.Container.Test
             // Dump the navigation map
             if (ncx.NavigationMap != null)
             {
-                dumpIContentItem(ncx.NavigationMap.Root, 0);
+                foreach (INode<IContentItem> node in ncx.NavigationMap)
+                {
+                    Log("NavPoint. Level: {0}, Label: {1}, Content: {2}",
+                        node.Depth, node.Value.Title, node.Value.EntityName);
+                }
             }
 
             // Dump the navigation lists
@@ -119,20 +123,6 @@ namespace SvetlinAnkov.Albite.Container.Test
                     dumpGuideReference(guideRef);
                 }
             }
-        }
-
-        private void dumpIContentItem(INode<IContentItem> node, int level)
-        {
-            if (node == null)
-            {
-                return;
-            }
-
-            Log("NavPoint. Level: {0}, Label: {1}, Content: {2}",
-                level, node.Value.Title, node.Value.EntityName);
-
-            dumpIContentItem(node.FirstChild, level + 1);
-            dumpIContentItem(node.NextSibling, level);
         }
 
         private void dumpNavList(NavigationControlFile.NavList navList)
