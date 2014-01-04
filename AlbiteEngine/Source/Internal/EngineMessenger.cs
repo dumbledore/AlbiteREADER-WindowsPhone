@@ -272,7 +272,6 @@ namespace SvetlinAnkov.Albite.Engine.Internal
 
             public override void Callback(IClientHandler handler)
             {
-                //TODO
                 handler.ClientNavigationRequest(Url);
             }
         }
