@@ -1,5 +1,6 @@
 ﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.READER;
 using SvetlinAnkov.Albite.READER.View.Transition;
 using System;
@@ -10,6 +11,8 @@ namespace SvetlinAnkov.Albite.Tests
 {
     public partial class App : Application, IAlbiteApplication
     {
+        public static string Tag { get { return "App"; } }
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
@@ -92,6 +95,8 @@ namespace SvetlinAnkov.Albite.Tests
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            Log.E(Tag, "Unhandled Exception", e.ExceptionObject);
+
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // An unhandled exception has occurred; break into the debugger
