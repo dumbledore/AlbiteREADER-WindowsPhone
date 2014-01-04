@@ -38,7 +38,7 @@ namespace SvetlinAnkov.Albite.READER
                     else
                     {
                         // Default Settings
-                        cachedSettings = getDefaultSettings();
+                        cachedSettings = DefaultLayoutSettings.LayoutSettings;
 
                         // No need to persist them as
                         // they would be created again
@@ -58,15 +58,6 @@ namespace SvetlinAnkov.Albite.READER
                 // Persist
                 RecordStore[LayoutSettingsKey] = value.ToString();
             }
-        }
-
-        private LayoutSettings getDefaultSettings()
-        {
-            LayoutSettings settings = DefaultLayoutSettings.LayoutSettings;
-
-            // TODO Fill this in appropriately
-
-            return settings;
         }
 
         private static readonly string BookPresenterKey = "book-presenter";
