@@ -1,5 +1,6 @@
 ﻿using Microsoft.Phone.Controls;
 using SvetlinAnkov.Albite.BookLibrary;
+using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Core.Collections;
 using SvetlinAnkov.Albite.READER.View.Controls;
@@ -56,10 +57,43 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Get the book presenter
             BookPresenter bookPresenter = context.BookPresenter;
 
-            // Update the reading location
-            // bookPresenter.BookLocation = control.Bookmark.BookLocation;
+            // Init the path
+            string path = control.Location;
 
-            // TODO: Add to history stack
+            // Init the element id string
+            string elementId = null;
+
+            // Is there a hash?
+            int hashIndex = path.IndexOf('#');
+
+            if (hashIndex >= 0)
+            {
+                elementId = path.Substring(hashIndex + 1);
+                path = path.Substring(0, hashIndex);
+            }
+
+            // Try gettin the chapter for this path
+            Chapter chapter = bookPresenter.Spine[path];
+
+            if (chapter != null)
+            {
+                ChapterLocation chapterLocation;
+                if (elementId != null)
+                {
+                    chapterLocation = new ElementLocation(elementId);
+                }
+                else
+                {
+                    chapterLocation = new FirstPageLocation();
+                }
+
+                BookLocation bookLocation = chapter.CreateLocation(chapterLocation);
+
+                // Update the reading location
+                bookPresenter.BookLocation = bookLocation;
+
+                // TODO: Add to history stack
+            }
 
             // Go back to ReaderPage
             NavigationService.GoBack();
