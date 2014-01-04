@@ -78,7 +78,7 @@ namespace SvetlinAnkov.Albite.Core.Diagnostics
 #if DEBUG
             return new DebugLog();
 #else
-            return new IsolatedStorageLog();
+            return new MessageBoxLog();
 #endif
         }
     }
