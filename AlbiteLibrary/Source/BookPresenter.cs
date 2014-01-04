@@ -2,11 +2,9 @@
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Container;
 using SvetlinAnkov.Albite.Container.Epub;
+using SvetlinAnkov.Albite.Core.Collections;
 using SvetlinAnkov.Albite.Core.IO;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {
@@ -17,21 +15,29 @@ namespace SvetlinAnkov.Albite.BookLibrary
         public BookmarkManager BookmarkManager { get; private set; }
 
         public Spine Spine { get; private set; }
-        // TODO: ToC
-        // TODO: Lists
+
+        public ITree<IContentItem> Contents { get; private set; }
 
         private string cover;
 
         public BookPresenter(Book book)
         {
+            // Set book reference
             Book = book;
-            Spine = prepareSpine();
-            bookLocation = prepareLocation();
+
+            // Create the book manager
             BookmarkManager = new BookmarkManager(this);
+
+            // Process data from book container
+            processContainer();
+
+            // Retrieve the current location
+            bookLocation = prepareLocation();
         }
 
-        private Spine prepareSpine()
+        private void processContainer()
         {
+            // Get data from the book container
             using (AlbiteIsolatedContainer iso = new AlbiteIsolatedContainer(ContentPath))
             {
                 // All installed books are in ePub
@@ -40,7 +46,11 @@ namespace SvetlinAnkov.Albite.BookLibrary
                     // cache the cover path
                     cover = container.Cover;
 
-                    return Spine.Create(this, container);
+                    // cache the contents
+                    Contents = container.Contents;
+
+                    // create the spine from the container
+                    Spine = Spine.Create(this, container);
                 }
             }
         }
