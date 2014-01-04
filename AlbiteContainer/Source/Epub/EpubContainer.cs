@@ -70,6 +70,11 @@ namespace SvetlinAnkov.Albite.Container.Epub
             get { return Opf.Cover; }
         }
 
+        public override Core.Collections.ITree<IContentItem> Contents
+        {
+            get { return Ncx.NavigationMap; }
+        }
+
         public override bool Install(string path)
         {
             bool hadErrors = false;

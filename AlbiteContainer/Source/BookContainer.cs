@@ -1,4 +1,5 @@
 ﻿using SvetlinAnkov.Albite.Container.Epub;
+using SvetlinAnkov.Albite.Core.Collections;
 using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace SvetlinAnkov.Albite.Container
         public abstract string Cover { get; }
 
         public abstract IEnumerable<String> Spine { get; }
+
+        public abstract ITree<IContentItem> Contents { get; }
 
         /// <summary>
         /// Returns true if there was a problem when creating
