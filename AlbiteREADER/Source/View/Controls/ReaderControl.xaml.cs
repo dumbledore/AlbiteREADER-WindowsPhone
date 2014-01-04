@@ -169,14 +169,41 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 return Engine.Navigator.CreateBookmark();
             }
 
+            // HACK
+            //
+            // Sometimes, even though the control has fired the Loaded event
+            // it would *still* return a zero ActualWidth/Height.
+            //
+            // This makes it impossible for the client to further lay out the content
+            //
+            // A working solution is to get the dimensions of the PhoneApplicationFrame.
+            // This means that the control would always be expected to have the same
+            // dimensions as the frame. Not that the frame dimensions do not change
+            // when the page is rotated.
+            //
+            // For the practical use-case this is not a problem, as the ReaderPage has
+            // the ReaderControl taking up the whole page.
+            //
+            // Of course, it would be a problem for other cases and is not a correct solution.
+
             public int Width
             {
-                get { return (int) control.WebBrowser.ActualWidth; }
+                get
+                {
+                    PhoneApplicationFrame frame = Application.Current.RootVisual as PhoneApplicationFrame;
+                    int width = frame.Orientation == PageOrientation.PortraitUp ? (int)frame.ActualWidth : (int)frame.ActualHeight;
+                    return width;
+                }
             }
 
             public int Height
             {
-                get { return (int) control.WebBrowser.ActualHeight; }
+                get
+                {
+                    PhoneApplicationFrame frame = Application.Current.RootVisual as PhoneApplicationFrame;
+                    int height = frame.Orientation == PageOrientation.PortraitUp ? (int)frame.ActualHeight : (int)frame.ActualWidth;
+                    return height;
+                }
             }
 
             public string BasePath
