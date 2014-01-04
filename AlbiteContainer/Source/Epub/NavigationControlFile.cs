@@ -43,7 +43,18 @@ namespace SvetlinAnkov.Albite.Container.Epub
         {
             public static readonly string ElementName = XmlNamespace + "navMap";
 
+            // ITree
             public INode<IContentItem> Root { get; private set; }
+
+            public IEnumerator<INode<IContentItem>> GetEnumerator()
+            {
+                return new DepthFirstTreeEnumerator<IContentItem>(this);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
 
             public NavMap(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
             {

@@ -96,6 +96,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Collections\INode.cs" />
     <Compile Include="Source\Collections\ITree.cs" />
+    <Compile Include="Source\Collections\ITreeEnumerator.cs" />
+    <Compile Include="Source\Collections\DepthFirstTreeEnumerator.cs" />
     <Compile Include="Source\IO\IAlbiteHashableContainer.cs" />
     <Compile Include="Source\IO\Template.cs" />
     <Compile Include="Source\IO\TemplateResource.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="Test\JsonSerializerTest.cs" />
     <Compile Include="Test\RecordStoreTest.cs" />
     <Compile Include="Test\RecordStoreTestWrapper.cs" />
+    <Compile Include="Test\TreeEnumeratorTest.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

@@ -8,6 +8,7 @@ namespace SvetlinAnkov.Albite.Tests
         {
             return new TestCase[]
             {
+                new TreeEnumeratorTest(),
                 new RecordStoreTestWrapper("Test/recordstore.sdf"),
                 new AlbiteIsolatedStorageTest("Test/epub/aliceDynamic.epub"),
                 new AlbiteIsolatedContainerTestWrapper(
