@@ -96,6 +96,12 @@ namespace SvetlinAnkov.Albite.READER
             {
                 // Cache the new book
                 bookPresenterCached = openBookInternal(bookId);
+
+                // Get the current state
+                IDictionary<string, object> state = PhoneApplicationService.Current.State;
+
+                // And add it to the state
+                state[BookPresenterKey] = bookId;
             }
 
             return bookPresenterCached;
