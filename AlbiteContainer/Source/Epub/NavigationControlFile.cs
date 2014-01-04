@@ -1,4 +1,5 @@
-﻿using SvetlinAnkov.Albite.Core.Diagnostics;
+﻿using SvetlinAnkov.Albite.Core.Collections;
+using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.Collections;
@@ -38,28 +39,34 @@ namespace SvetlinAnkov.Albite.Container.Epub
             processDocument();
         }
 
-        public class NavMap : NavObject
+        public class NavMap : NavObject, ITree<IContentItem>
         {
             public static readonly string ElementName = XmlNamespace + "navMap";
 
-            public NavPoint FirstPoint { get; private set; }
+            public INode<IContentItem> Root { get; private set; }
 
             public NavMap(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
             {
                 XElement pointElement = element.Element(NavPoint.ElementName);
                 if (pointElement != null)
                 {
-                    FirstPoint = new NavPoint(pointElement, reportError, getPath);
+                    Root = new NavPoint(pointElement, reportError, getPath);
                 }
             }
         }
 
-        public class NavPoint : NavContent
+        public class NavPoint : NavContent, INode<IContentItem>, IContentItem
         {
             public static readonly string ElementName = XmlNamespace + "navPoint";
 
-            public NavPoint FirstChild { get; private set; }
-            public NavPoint NextSibling { get; private set; }
+            // IContentItem
+            public string Title { get { return Label; } }
+            public string EntityName { get { return Src; } }
+
+            // INode<IContentItem>
+            public INode<IContentItem> FirstChild { get; private set; }
+            public INode<IContentItem> NextSibling { get; private set; }
+            public IContentItem Value { get { return this; } }
 
             public NavPoint(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
                 : base(element, reportError, getPath)

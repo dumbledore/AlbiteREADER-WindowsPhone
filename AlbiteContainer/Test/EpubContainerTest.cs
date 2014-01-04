@@ -1,4 +1,5 @@
 ﻿using SvetlinAnkov.Albite.Container.Epub;
+using SvetlinAnkov.Albite.Core.Collections;
 using SvetlinAnkov.Albite.Core.IO;
 using SvetlinAnkov.Albite.Core.Test;
 using System.IO;
@@ -98,7 +99,7 @@ namespace SvetlinAnkov.Albite.Container.Test
             // Dump the navigation map
             if (ncx.NavigationMap != null)
             {
-                dumpNavPoint(ncx.NavigationMap.FirstPoint, 0);
+                dumpIContentItem(ncx.NavigationMap.Root, 0);
             }
 
             // Dump the navigation lists
@@ -120,18 +121,18 @@ namespace SvetlinAnkov.Albite.Container.Test
             }
         }
 
-        private void dumpNavPoint(NavigationControlFile.NavPoint navPoint, int level)
+        private void dumpIContentItem(INode<IContentItem> node, int level)
         {
-            if (navPoint == null)
+            if (node == null)
             {
                 return;
             }
 
             Log("NavPoint. Level: {0}, Label: {1}, Content: {2}",
-                level, navPoint.Label, navPoint.Src);
+                level, node.Value.Title, node.Value.EntityName);
 
-            dumpNavPoint(navPoint.FirstChild, level + 1);
-            dumpNavPoint(navPoint.NextSibling, level);
+            dumpIContentItem(node.FirstChild, level + 1);
+            dumpIContentItem(node.NextSibling, level);
         }
 
         private void dumpNavList(NavigationControlFile.NavList navList)
