@@ -19,6 +19,9 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void setCurrentState()
         {
+            // Clear the contents
+            BookmarksList.Children.Clear();
+
             // Get the context
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
