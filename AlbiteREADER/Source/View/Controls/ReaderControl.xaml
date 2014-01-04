@@ -10,6 +10,7 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480"
+    Unloaded="ReaderControl_Unloaded"
     x:Name="ReaderRoot">
 
     <Grid x:Name="LayoutRoot">

@@ -1,4 +1,5 @@
-﻿using SvetlinAnkov.Albite.BookLibrary;
+﻿using Microsoft.Phone.Controls;
+using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Core.Diagnostics;
 using SvetlinAnkov.Albite.Engine;
@@ -99,6 +100,11 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 Log.D(tag, "SizeChanged: " + e.NewSize.Width + "x" + e.NewSize.Height);
                 presenter.Engine.UpdateDimensions();
             }
+        }
+
+        public void ReaderControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WebBrowser.NavigateToString("");
         }
         #endregion
 
