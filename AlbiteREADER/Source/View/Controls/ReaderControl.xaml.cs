@@ -52,12 +52,12 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
 
         private void WebBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            Log.D(tag, "Navigated: " + e.Uri.ToString());
+            Log.D(tag, "Navigated: " + e.Uri);
         }
 
         private void WebBrowser_Navigating(object sender, Microsoft.Phone.Controls.NavigatingEventArgs e)
         {
-            Log.D(tag, "Navigating to: " + e.Uri.ToString());
+            Log.D(tag, "Navigating to: " + e.Uri);
 
             // Allow only the Engine Uri to be navigated to.
             if (presenter.Engine.Uri != e.Uri)
@@ -75,7 +75,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             // TODO: Handling failed navigation in the iframe?
             // What about errors from the client?
             // What about an '{loadingError}' event from the client?
-            Log.E(tag, "Navigation failed: " + e.Uri.ToString());
+            Log.E(tag, "Navigation failed: " + e.Uri);
             e.Handled = true;
         }
 
