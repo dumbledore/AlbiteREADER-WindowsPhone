@@ -6,6 +6,8 @@
 
         INode<TValue> NextSibling { get; }
 
+        int Depth { get; }
+
         TValue Value { get; }
     }
 }

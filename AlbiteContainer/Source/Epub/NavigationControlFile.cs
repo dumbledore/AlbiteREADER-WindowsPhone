@@ -50,7 +50,7 @@ namespace SvetlinAnkov.Albite.Container.Epub
                 XElement pointElement = element.Element(NavPoint.ElementName);
                 if (pointElement != null)
                 {
-                    Root = new NavPoint(pointElement, reportError, getPath);
+                    Root = new NavPoint(pointElement, reportError, getPath, 0);
                 }
             }
         }
@@ -66,21 +66,24 @@ namespace SvetlinAnkov.Albite.Container.Epub
             // INode<IContentItem>
             public INode<IContentItem> FirstChild { get; private set; }
             public INode<IContentItem> NextSibling { get; private set; }
+            public int Depth { get; private set; }
             public IContentItem Value { get { return this; } }
 
-            public NavPoint(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath)
+            public NavPoint(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath, int depth)
                 : base(element, reportError, getPath)
             {
+                Depth = depth;
+
                 XElement child = element.Element(ElementName);
                 if (child != null)
                 {
-                    FirstChild = new NavPoint(child, reportError, getPath);
+                    FirstChild = new NavPoint(child, reportError, getPath, depth + 1);
                 }
 
                 IEnumerable<XElement> nextElements = element.ElementsAfterSelf(ElementName);
                 if (nextElements.Count() > 0)
                 {
-                    NextSibling = new NavPoint(nextElements.First(), reportError, getPath);
+                    NextSibling = new NavPoint(nextElements.First(), reportError, getPath, depth);
                 }
             }
         }
