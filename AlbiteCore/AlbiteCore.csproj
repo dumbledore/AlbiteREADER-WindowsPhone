@@ -98,6 +98,7 @@
     <Compile Include="Source\Collections\ITree.cs" />
     <Compile Include="Source\Collections\ITreeEnumerator.cs" />
     <Compile Include="Source\Collections\DepthFirstTreeEnumerator.cs" />
+    <Compile Include="Source\Diagnostics\MessageBoxLog.cs" />
     <Compile Include="Source\IO\IAlbiteHashableContainer.cs" />
     <Compile Include="Source\IO\Template.cs" />
     <Compile Include="Source\IO\TemplateResource.cs" />
