@@ -72,7 +72,7 @@ namespace SvetlinAnkov.Albite.Container.Epub
 
             // IContentItem
             public string Title { get { return Label; } }
-            public string EntityName { get { return Src; } }
+            public string Location { get { return Src; } }
 
             // INode<IContentItem>
             public INode<IContentItem> FirstChild { get; private set; }

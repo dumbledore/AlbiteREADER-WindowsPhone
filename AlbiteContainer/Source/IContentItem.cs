@@ -3,6 +3,6 @@
     public interface IContentItem
     {
         string Title { get; }
-        string EntityName { get; }
+        string Location { get; }
     }
 }

@@ -102,7 +102,7 @@ namespace SvetlinAnkov.Albite.Container.Test
                 foreach (INode<IContentItem> node in ncx.NavigationMap)
                 {
                     Log("NavPoint. Level: {0}, Label: {1}, Content: {2}",
-                        node.Depth, node.Value.Title, node.Value.EntityName);
+                        node.Depth, node.Value.Title, node.Value.Location);
                 }
             }
 
