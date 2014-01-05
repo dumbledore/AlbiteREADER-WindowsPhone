@@ -15,6 +15,12 @@ namespace SvetlinAnkov.Albite.Core.Collections
             AddHead(item);
         }
 
+        public void Update(TValue item)
+        {
+            ThrowIfEmpty();
+            SetHead(item);
+        }
+
         public TValue Pop()
         {
             return RemoveHead();
