@@ -16,10 +16,10 @@ namespace SvetlinAnkov.Albite.Core.Collections
         protected TValue[] data;
 
         // offset of current item
-        protected int offset = 0;
+        protected int offset;
 
         // total number of items
-        protected int size = 0;
+        protected int size;
 
         public CircularBuffer(int maximumCapacity)
         {
@@ -29,6 +29,8 @@ namespace SvetlinAnkov.Albite.Core.Collections
             }
 
             data = new TValue[maximumCapacity];
+
+            reset(false);
         }
 
         public CircularBuffer(IEnumerable<TValue> collection)
@@ -46,12 +48,25 @@ namespace SvetlinAnkov.Albite.Core.Collections
             }
 
             this.data = data;
+
+            reset(false);
         }
 
         public void Clear()
         {
+            reset(true);
+        }
+
+        private void reset(bool clear)
+        {
             offset = 0;
             size = 0;
+
+            if (clear)
+            {
+                // Clear the data, so that we don't leak resources
+                Array.Clear(data, 0, data.Length);
+            }
         }
 
         public int Count
@@ -109,6 +124,9 @@ namespace SvetlinAnkov.Albite.Core.Collections
             // remove?
             if (remove)
             {
+                // don't leak
+                data[offset] = default(TValue);
+
                 // move offset to the right, not forgetting it might wrap
                 offset = wrapIndex(offset + 1);
 
@@ -159,6 +177,9 @@ namespace SvetlinAnkov.Albite.Core.Collections
             // remove?
             if (remove)
             {
+                // don't leak
+                data[index] = default(TValue);
+
                 // decrement total size
                 size--;
             }
