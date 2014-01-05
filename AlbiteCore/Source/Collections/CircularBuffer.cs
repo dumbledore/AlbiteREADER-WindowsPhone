@@ -33,7 +33,7 @@ namespace SvetlinAnkov.Albite.Core.Collections
             reset(false);
         }
 
-        public CircularBuffer(IEnumerable<TValue> collection)
+        public CircularBuffer(IEnumerable<TValue> collection, int maximumCapacity)
         {
             if (collection == null)
             {
@@ -47,9 +47,22 @@ namespace SvetlinAnkov.Albite.Core.Collections
                 throw new ArgumentException("collection is empty");
             }
 
-            this.data = data;
+            if (data.Length > maximumCapacity)
+            {
+                throw new ArgumentException("collection has more data than provided maximumCapacity");
+            }
 
+            // reset
             reset(false);
+
+            // get the current size <= maximumCapacity
+            this.size = data.Length;
+
+            // create the new data array
+            this.data = new TValue[maximumCapacity];
+
+            // copy to store array
+            Array.Copy(data, this.data, size);
         }
 
         public void Clear()

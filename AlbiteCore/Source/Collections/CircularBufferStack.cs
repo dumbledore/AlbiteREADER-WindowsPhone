@@ -7,8 +7,8 @@ namespace SvetlinAnkov.Albite.Core.Collections
         public CircularBufferStack(int maximumCapacity)
             : base(maximumCapacity) { }
 
-        public CircularBufferStack(IEnumerable<TValue> collection)
-            : base(collection) { }
+        public CircularBufferStack(IEnumerable<TValue> collection, int maximumCapacity)
+            : base(collection, maximumCapacity) { }
 
         public void Push(TValue item)
         {

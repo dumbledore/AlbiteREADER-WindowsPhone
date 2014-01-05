@@ -7,8 +7,8 @@ namespace SvetlinAnkov.Albite.Core.Collections
         public CircularBufferQueue(int maximumCapacity)
             : base(maximumCapacity) { }
 
-        public CircularBufferQueue(IEnumerable<TValue> collection)
-            : base(collection) { }
+        public CircularBufferQueue(IEnumerable<TValue> collection, int maximumCapacity)
+            : base(collection, maximumCapacity) { }
 
         public void Queue(TValue item)
         {
