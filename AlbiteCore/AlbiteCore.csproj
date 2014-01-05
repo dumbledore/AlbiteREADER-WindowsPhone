@@ -97,6 +97,7 @@
     <Compile Include="Source\Collections\GenericEnumerator.cs" />
     <Compile Include="Source\Collections\CircularBuffer.cs" />
     <Compile Include="Source\Collections\CircularBufferQueue.cs" />
+    <Compile Include="Source\Collections\CircularBufferStack.cs" />
     <Compile Include="Source\Collections\INode.cs" />
     <Compile Include="Source\Collections\ITree.cs" />
     <Compile Include="Source\Collections\ITreeEnumerator.cs" />
