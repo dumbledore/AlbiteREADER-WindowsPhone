@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SvetlinAnkov.Albite.Core.Collections
 {
@@ -37,14 +38,7 @@ namespace SvetlinAnkov.Albite.Core.Collections
                 throw new NullReferenceException("collection is null");
             }
 
-            List<TValue> list = new List<TValue>();
-
-            foreach (TValue item in collection)
-            {
-                list.Add(item);
-            }
-
-            TValue[] data = list.ToArray();
+            TValue[] data = collection.ToArray();
 
             if (data.Length == 0)
             {
