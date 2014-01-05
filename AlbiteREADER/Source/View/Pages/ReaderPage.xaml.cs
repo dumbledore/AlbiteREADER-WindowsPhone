@@ -188,6 +188,10 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 bookPresenter.Persist();
             }
 
+            // Show the wait control so that there would be no glitches,
+            // e.g. flash of a blank web-page, etc.
+            WaitControl.Start();
+
             // Remove the ReaderControl
             ReaderControl = null;
             ReaderControlGrid.Children.Clear();
@@ -209,6 +213,10 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Disable the buttons until enabled by the client
             BackButton.IsEnabled = false;
             PinButton.IsEnabled = false;
+
+            // Show the wait control so that there would be no glitches,
+            // e.g. flash of a blank web-page, etc.
+            WaitControl.Start();
 
             // Add the ReaderControl
             ReaderControl = new ReaderControl();

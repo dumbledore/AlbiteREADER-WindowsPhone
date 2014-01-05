@@ -22,33 +22,17 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         {
             InitializeComponent();
             presenter = new EnginePresenter(this);
-            load();
         }
-
-        #region LifeCycle
-        private void load()
-        {
-        }
-
-        private void unload()
-        {
-            // Call LoadingCompleted so to hide the popup
-            // and cancel the animation.
-            presenter.LoadingCompleted();
-        }
-        #endregion
 
         #region UI Events
         private void WebBrowser_Loaded(object sender, RoutedEventArgs e)
         {
             Log.D(tag, "WebBrowser Loaded");
-            load();
         }
 
         private void WebBrowser_Unloaded(object sender, RoutedEventArgs e)
         {
             Log.D(tag, "WebBrowser Unloaded");
-            unload();
         }
 
         private void WebBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
