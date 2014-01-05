@@ -7,6 +7,10 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
 {
     public class HistoryStack : IContextAttachable<BookPresenter>
     {
+        public static readonly int DefaultMaximumCapacity = 20;
+
+        private readonly int maximumCapacity;
+
         private BookPresenter context_;
 
         public bool IsAttached
@@ -55,30 +59,76 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
             }
         }
 
-        private readonly Stack<BookLocation> history;
+        private readonly List<BookLocation> history;
         private int bookId;
 
+
         public HistoryStack()
+            : this(DefaultMaximumCapacity) { }
+
+        public HistoryStack(int maximumCapacity)
         {
-            history = new Stack<BookLocation>();
+            if (maximumCapacity <= 0)
+            {
+                throw new ArgumentException("maximumCapacity must be positive");
+            }
+
+            this.maximumCapacity = maximumCapacity;
+
+            // Create a new list to hold the locations
+            history = new List<BookLocation>(maximumCapacity);
         }
 
         internal HistoryStack(SerializedHistoryStack stack)
         {
-            history = new Stack<BookLocation>(stack.Data);
+            history = new List<BookLocation>(stack.Data);
+            maximumCapacity = stack.MaximumCapacity;
             bookId = stack.BookId;
+
+            // trim the list in case it was serialized incorrectly
+            trimItems(maximumCapacity);
         }
 
         public void Push(BookLocation location)
         {
             throwIfNotAttached();
-            history.Push(location);
+
+            // trim to max - 1 as we are adding a new item
+            trimItems(maximumCapacity - 1);
+
+            // add to tail
+            history.Add(location);
         }
 
         public BookLocation Pop()
         {
             throwIfNotAttached();
-            return history.Pop();
+
+            if (history.Count == 0)
+            {
+                throw new InvalidOperationException("History stack is empty");
+            }
+
+            // tail index
+            int index = history.Count - 1;
+
+            // get tail
+            BookLocation location = history[index];
+
+            // remove tail from list
+            history.RemoveAt(index);
+
+            return location;
+        }
+
+        private void trimItems(int maxItems)
+        {
+            int itemsToRemove = history.Count - maxItems;
+
+            if (itemsToRemove > 0)
+            {
+                history.RemoveRange(0, itemsToRemove);
+            }
         }
 
         public bool IsEmpty
@@ -109,6 +159,9 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
                 Data = stack.history.ToArray();
                 BookId = stack.Context.Book.Id;
             }
+
+            [DataMember(Name = "maximumCapacity")]
+            public int MaximumCapacity { get; private set; }
 
             [DataMember(Name = "data")]
             public BookLocation[] Data { get; private set; }
