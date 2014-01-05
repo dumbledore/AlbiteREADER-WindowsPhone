@@ -202,12 +202,71 @@ namespace SvetlinAnkov.Albite.Core.Collections
 
         public IEnumerator<TValue> GetEnumerator()
         {
-            return new GenericEnumerator<TValue>(data);
+            return new Enumerator(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return data.GetEnumerator();
+            return GetEnumerator();
+        }
+
+        private class Enumerator : IEnumerator<TValue>
+        {
+            TValue[] data;
+
+            int offset;
+
+            int size;
+
+            int currentIndex;
+
+            TValue currentItem;
+
+            public Enumerator(CircularBuffer<TValue> buffer)
+            {
+                data = buffer.data;
+                offset = buffer.offset;
+                size = buffer.size;
+
+                Reset();
+            }
+
+            public void Reset()
+            {
+                currentIndex = -1;
+                currentItem = default(TValue);
+            }
+
+            public bool MoveNext()
+            {
+                bool hasNext = false;
+
+                if (currentIndex + 1 < size)
+                {
+                    // increment to next index
+                    currentIndex++;
+
+                    // update current item
+                    currentItem = data[(offset + currentIndex) % data.Length];
+
+                    // there's an item
+                    hasNext = true;
+                }
+
+                return hasNext;
+            }
+
+            void IDisposable.Dispose() { }
+
+            public TValue Current
+            {
+                get { return currentItem; }
+            }
+
+            object IEnumerator.Current
+            {
+                get { return Current; }
+            }
         }
     }
 }
