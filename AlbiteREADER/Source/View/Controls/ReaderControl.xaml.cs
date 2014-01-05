@@ -149,9 +149,13 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             {
                 get
                 {
-                    BookLocation location = BookPresenter.BookLocation;
+                    BookLocation location = null;
 
-                    if (!Engine.IsLoading)
+                    if (Engine.IsLoading)
+                    {
+                        location = bookPresenter.HistoryStack.GetCurrentLocation();
+                    }
+                    else
                     {
                         // Can't get a book location when loading, so:
                         // 1. If it's the first load, nothing to persist anyway
@@ -242,7 +246,7 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                     engine = new AlbiteEngine(this, bookPresenter, settings);
 
                     // Go to the last reading location
-                    BookLocation = bookPresenter.BookLocation;
+                    BookLocation = bookPresenter.HistoryStack.GetCurrentLocation();
                 }
             }
 
@@ -284,14 +288,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
                 }
 
                 return false;
-            }
-
-            public void Navigating(BookLocation currentLocation)
-            {
-                if (control.Observer != null)
-                {
-                    control.Observer.OnNavigating(currentLocation);
-                }
             }
 
             public void OnError(string message)

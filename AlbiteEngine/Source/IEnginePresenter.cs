@@ -57,14 +57,6 @@ namespace SvetlinAnkov.Albite.Engine
         bool NavigationRequested(Uri uri);
 
         /// <summary>
-        /// Inform the control that the engine is about to navigate,
-        /// i.e. to a different location and / or chapter
-        /// </summary>
-        /// <param name="currentLocation">The BookLocation just before
-        /// navigation is going to happen</param>
-        void Navigating(BookLocation currentLocation);
-
-        /// <summary>
         /// Inform the control in case of an error.
         /// E.g., this might happen if the data from the client is
         /// malformed, or if the client has generated an error itself.

@@ -26,6 +26,6 @@ namespace SvetlinAnkov.Albite.BookLibrary.DataContext
 
         // Reading Persistance
         [Column]
-        public string Location;
+        public string HistoryStack;
     }
 }

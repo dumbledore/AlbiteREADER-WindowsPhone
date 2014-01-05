@@ -30,7 +30,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             PageTitle.Text = titleUppercase;
 
             // Get the current location
-            BookLocation location = bookPresenter.BookLocation;
+            BookLocation location = bookPresenter.HistoryStack.GetCurrentLocation();
 
             // Update slider's maximum number
             // We need to subtract 1, because we start at 0, e.g.
@@ -87,10 +87,8 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 // Create the BookLocation
                 BookLocation location = chapter.CreateLocation(relativeLocation);
 
-                // TODO: Add to history stack
-
                 // Set the new location
-                bookPresenter.BookLocation = location;
+                bookPresenter.HistoryStack.AddNewLocation(location);
             }
         }
 

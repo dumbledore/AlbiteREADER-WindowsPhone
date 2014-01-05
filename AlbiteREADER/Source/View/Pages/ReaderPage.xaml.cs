@@ -6,7 +6,6 @@ using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.Engine.Layout;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -41,11 +40,13 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void updateApplicationBarButtons()
         {
+            BookPresenter bookPresenter = App.Context.BookPresenter;
+
             // Should the back button be enabled?
-            BackButton.IsEnabled = !historyStack.IsEmpty;
+            BackButton.IsEnabled = bookPresenter.HistoryStack.HasHistory;
 
             // Should the Pin-To-Start button be enabled?
-            PinButton.IsEnabled = true;
+            PinButton.IsEnabled = !TileManager.IsPinned(bookPresenter.Book);
         }
 
         private void updateColors()
@@ -92,12 +93,14 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            if (!historyStack.IsEmpty)
+            HistoryStack historyStack = App.Context.BookPresenter.HistoryStack;
+
+            if (historyStack.HasHistory)
             {
                 // Not empty
-                BookLocation previousLocation = historyStack.Pop();
+                BookLocation previousLocation = historyStack.GetPreviousLocation();
 
-                if (historyStack.IsEmpty)
+                if (!historyStack.HasHistory)
                 {
                     // No more locations, so disable the button
                     BackButton.IsEnabled = false;
@@ -179,7 +182,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             {
                 // Update the BookLocation of BookPresenter to match
                 // the current BookLocation
-                bookPresenter.BookLocation = ReaderControl.BookLocation;
+                bookPresenter.HistoryStack.SetCurrentLocation(ReaderControl.BookLocation);
 
                 // Now persist BookPresenter
                 bookPresenter.Persist();
@@ -189,15 +192,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             ReaderControl = null;
             ReaderControlGrid.Children.Clear();
 
-            // Try persisting the history stack
-            if (e.NavigationMode != NavigationMode.Back)
-            {
-                // No need to persist it if the page
-                // is going to be discarded
-                string historyStackData = historyStack.ToString();
-                State[historyStackTag] = historyStackData;
-            }
-
             base.OnNavigatingFrom(e);
         }
 
@@ -206,48 +200,15 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Update sys tray & app bar colors
             updateColors();
 
-            if (e.NavigationMode == NavigationMode.New)
-            {
-                // New navigation, clear the state if there was
-                // anything already persisted... (Shouldn't happen)
-                // Note, IDictionary<>.Remove() doesn't throw if the
-                // item is not found.
-                State.Remove(historyStackTag);
-            }
-            else
-            {
-                // Try to get it from the State
-                if (historyStack == null && State.ContainsKey(historyStackTag))
-                {
-                    string historyStackData = (string)State[historyStackTag];
-                    historyStack = HistoryStack.FromString(historyStackData);
-                }
-            }
-
-            if (historyStack == null)
-            {
-                // The stack was not persisted, so create a new one
-                historyStack = new HistoryStack();
-            }
-
             // Get the book id from the query string
             int bookId = int.Parse(NavigationContext.QueryString["id"]);
 
             // Open the book
             BookPresenter bookPresenter = App.Context.OpenBook(bookId);
 
-            // Attach the history stack to the book presenter
-            if (!historyStack.IsAttached)
-            {
-                // As the control is removed *every* time the
-                // page is navigated from, this could easily be
-                // called more than once. We need to
-                // attach it only the first time.
-                historyStack.Attach(bookPresenter);
-            }
-
-            // Update the application bar
-            updateApplicationBarButtons();
+            // Disable the buttons until enabled by the client
+            BackButton.IsEnabled = false;
+            PinButton.IsEnabled = false;
 
             // Add the ReaderControl
             ReaderControl = new ReaderControl();
@@ -263,11 +224,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Now, open the book in the control
             ReaderControl.BookPresenter = App.Context.BookPresenter;
         }
-#endregion
-
-#region History Stack
-        private static readonly string historyStackTag = "HistoryStack";
-        private HistoryStack historyStack = null;
 #endregion
 
 #region IReaderContenObserver
@@ -303,6 +259,9 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
                 // Show the bar if adequate
                 page.ApplicationBar.IsVisible = page.shouldShowApplicationBar(page.Orientation);
+
+                // Update the buttons
+                page.updateApplicationBarButtons();
             }
 
             public bool OnNavigationRequested(Uri uri)
@@ -351,12 +310,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
                 // The UI doesn't handle internal jumps
                 return false;
-            }
-
-            public void OnNavigating(BookLocation currentLocation)
-            {
-                page.historyStack.Push(currentLocation);
-                page.BackButton.IsEnabled = true;
             }
 
             public int ApplicationBarHeight

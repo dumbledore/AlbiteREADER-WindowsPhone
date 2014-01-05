@@ -90,9 +90,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                 BookLocation bookLocation = chapter.CreateLocation(chapterLocation);
 
                 // Update the reading location
-                bookPresenter.BookLocation = bookLocation;
-
-                // TODO: Add to history stack
+                bookPresenter.HistoryStack.AddNewLocation(bookLocation);
             }
 
             // Go back to ReaderPage

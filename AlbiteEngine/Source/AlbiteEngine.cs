@@ -190,8 +190,11 @@ namespace SvetlinAnkov.Albite.Engine
                             // Get the BookLocation
                             BookLocation bookLocation = chapter.CreateLocation(chapterLocation);
 
-                            // Inform the client we're indeed navigating away
-                            EnginePresenter.Navigating(Navigator.BookLocation);
+                            // Save current location
+                            BookPresenter.HistoryStack.SetCurrentLocation(Navigator.BookLocation);
+
+                            // Add the new location to the stack
+                            BookPresenter.HistoryStack.AddNewLocation(bookLocation);
 
                             // Go there
                             Navigator.BookLocation = bookLocation;
@@ -222,7 +225,7 @@ namespace SvetlinAnkov.Albite.Engine
             if (canGetDomLocation)
             {
                 // Cache the location
-                BookPresenter.BookLocation = Navigator.BookLocation;
+                BookPresenter.HistoryStack.SetCurrentLocation(Navigator.BookLocation);
             }
         }
 
@@ -248,7 +251,7 @@ namespace SvetlinAnkov.Albite.Engine
             BookLocation bookLocation = Navigator.BookLocation;
 
             // Update the location in the BookPresenter
-            BookPresenter.BookLocation = bookLocation;
+            BookPresenter.HistoryStack.SetCurrentLocation(bookLocation);
 
             TemplateController.UpdateInitialLocation(bookLocation.Location);
 

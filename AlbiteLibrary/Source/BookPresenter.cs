@@ -31,8 +31,8 @@ namespace SvetlinAnkov.Albite.BookLibrary
             // Process data from book container
             processContainer();
 
-            // Retrieve the current location
-            bookLocation = prepareLocation();
+            // Retrieve the current history
+            history = prepareHistoryStack();
         }
 
         private void processContainer()
@@ -55,71 +55,47 @@ namespace SvetlinAnkov.Albite.BookLibrary
             }
         }
 
-        private BookLocation prepareLocation()
+        private HistoryStack prepareHistoryStack()
         {
             using (LibraryDataContext dc = Book.Library.GetDataContext(true))
             {
                 BookEntity bookEntity = getEntity(dc);
 
-                BookLocation bookLocation;
+                HistoryStack history;
 
-                // Deserialize
-                if (bookEntity.Location != null
-                    && bookEntity.Location != string.Empty)
+                try
                 {
-                    bookLocation = BookLocation.FromString(bookEntity.Location);
+                    // Deserialize
+                    history = HistoryStack.FromString(bookEntity.HistoryStack);
 
-                    // Attach to the context
-                    bookLocation.Attach(this);
+                    // Attach
+                    history.Attach(this);
                 }
-                else
+                catch
                 {
-                    // Not a valid string. Perhaps, it's the first time the book has
-                    // been opened. Default to the first page of the first chapter.
-                    bookLocation = Spine[0].CreateLocation(ChapterLocation.Default);
-
-                    // No need to attach as the created location is already attached
+                    history = new HistoryStack(this);
                 }
 
-
-                return bookLocation;
+                return history;
             }
         }
 
-        private BookLocation bookLocation;
+        private HistoryStack history;
 
-        /// <summary>
-        /// Get/set the persisted location.
-        /// Note: Call Persist to actually
-        /// write the data to the library
-        /// </summary>
-        public BookLocation BookLocation
+        public HistoryStack HistoryStack
         {
-            get
-            {
-                return bookLocation;
-            }
-            set
-            {
-                if (value.Chapter.BookPresenter.Book.Id != Book.Id)
-                {
-                    throw new EntityInvalidException(
-                        "Bad location: Spine is not from this book");
-                }
-
-                bookLocation = value;
-            }
+            get { return history; }
         }
 
         /// <summary>
-        /// Persist the location to the library
+        /// Persist the history stack to the library
         /// </summary>
         public void Persist()
         {
             using (LibraryDataContext dc = Book.Library.GetDataContext())
             {
                 BookEntity bookEntity = getEntity(dc);
-                bookEntity.Location = bookLocation.ToString();
+                bookEntity.HistoryStack = history.ToString();
 
                 dc.SubmitChanges();
             }

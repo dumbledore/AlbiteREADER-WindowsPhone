@@ -85,9 +85,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             BookPresenter bookPresenter = context.BookPresenter;
 
             // Update the reading location
-            bookPresenter.BookLocation = control.Bookmark.BookLocation;
-
-            // TODO: Add to history stack
+            bookPresenter.HistoryStack.AddNewLocation(control.Bookmark.BookLocation);
 
             // Go back to ReaderPage
             NavigationService.GoBack();

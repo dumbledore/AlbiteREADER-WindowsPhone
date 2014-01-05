@@ -9,7 +9,6 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
         void OnContentLoadingStarted();
         void OnContentLoadingCompleted();
         bool OnNavigationRequested(Uri uri);
-        void OnNavigating(BookLocation currentLocation);
         int ApplicationBarHeight { get; }
     }
 }

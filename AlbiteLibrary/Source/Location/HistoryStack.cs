@@ -1,15 +1,17 @@
-﻿using SvetlinAnkov.Albite.Core.Serialization;
+﻿using SvetlinAnkov.Albite.Core.Collections;
+using SvetlinAnkov.Albite.Core.Serialization;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace SvetlinAnkov.Albite.BookLibrary.Location
 {
     public class HistoryStack : IContextAttachable<BookPresenter>
     {
-        public static readonly int DefaultMaximumCapacity = 20;
-
-        private readonly int maximumCapacity;
+        public static int MaximumCapacity
+        {
+            get { return 12; }
+        }
 
         private BookPresenter context_;
 
@@ -33,7 +35,7 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
 
             // Validate the context. While the stack is empty and not attached,
             // one can attach it to any context
-            if (history.Count > 0)
+            if (!history.IsEmpty)
             {
                 if (bookId != context.Book.Id) // different book
                 {
@@ -59,85 +61,87 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
             }
         }
 
-        private readonly List<BookLocation> history;
+        private readonly CircularBufferStack<BookLocation> history;
+
         private int bookId;
 
-
-        public HistoryStack()
-            : this(DefaultMaximumCapacity) { }
-
-        public HistoryStack(int maximumCapacity)
+        public HistoryStack(BookPresenter bookPresenter)
         {
-            if (maximumCapacity <= 0)
-            {
-                throw new ArgumentException("maximumCapacity must be positive");
-            }
-
-            this.maximumCapacity = maximumCapacity;
+            // Set up the context
+            context_ = bookPresenter;
+            bookId = context_.Book.Id;
 
             // Create a new list to hold the locations
-            history = new List<BookLocation>(maximumCapacity);
+            history = new CircularBufferStack<BookLocation>(MaximumCapacity);
         }
 
         internal HistoryStack(SerializedHistoryStack stack)
         {
-            history = new List<BookLocation>(stack.Data);
-            maximumCapacity = stack.MaximumCapacity;
+            history = new CircularBufferStack<BookLocation>(stack.Data, MaximumCapacity);
             bookId = stack.BookId;
-
-            // trim the list in case it was serialized incorrectly
-            trimItems(maximumCapacity);
         }
 
-        public void Push(BookLocation location)
+        public BookLocation GetCurrentLocation()
         {
             throwIfNotAttached();
 
-            // trim to max - 1 as we are adding a new item
-            trimItems(maximumCapacity - 1);
+            BookLocation location;
 
-            // add to tail
-            history.Add(location);
-        }
-
-        public BookLocation Pop()
-        {
-            throwIfNotAttached();
-
-            if (history.Count == 0)
+            if (history.IsEmpty)
             {
-                throw new InvalidOperationException("History stack is empty");
+                location = context_.Spine[0].CreateLocation(ChapterLocation.Default);
             }
-
-            // tail index
-            int index = history.Count - 1;
-
-            // get tail
-            BookLocation location = history[index];
-
-            // remove tail from list
-            history.RemoveAt(index);
+            else
+            {
+                location = history.Peek();
+            }
 
             return location;
         }
 
-        private void trimItems(int maxItems)
+        public void SetCurrentLocation(BookLocation location)
         {
-            int itemsToRemove = history.Count - maxItems;
+            throwIfNotAttached();
 
-            if (itemsToRemove > 0)
+            if (history.IsEmpty)
             {
-                history.RemoveRange(0, itemsToRemove);
+                history.Push(location);
+            }
+            else
+            {
+                history.Update(location);
             }
         }
 
-        public bool IsEmpty
+        // Needs to have more than one item.
+        // First item is always the last (current) location
+        public bool HasHistory
         {
             get
             {
                 throwIfNotAttached();
-                return history.Count == 0;
+                return history.Count > 1;
             }
+        }
+
+        public void AddNewLocation(BookLocation location)
+        {
+            throwIfNotAttached();
+            history.Push(location);
+        }
+
+        public BookLocation GetPreviousLocation()
+        {
+            if (!HasHistory)
+            {
+                throw new InvalidOperationException("No history");
+            }
+
+            // remove current location
+            history.Pop();
+
+            // return previous location
+            return history.Peek();
         }
 
         public static HistoryStack FromString(string encodedData)
@@ -160,9 +164,6 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
                 BookId = stack.Context.Book.Id;
             }
 
-            [DataMember(Name = "maximumCapacity")]
-            public int MaximumCapacity { get; private set; }
-
             [DataMember(Name = "data")]
             public BookLocation[] Data { get; private set; }
 
@@ -171,11 +172,6 @@ namespace SvetlinAnkov.Albite.BookLibrary.Location
 
             public static HistoryStack FromString(string encodedData)
             {
-                if (encodedData == null || encodedData.Length == 0)
-                {
-                    return new HistoryStack();
-                }
-
                 LocationSerializer serializer = new LocationSerializer();
                 SerializedHistoryStack stack = (SerializedHistoryStack)serializer.Decode(encodedData);
                 return new HistoryStack(stack);
