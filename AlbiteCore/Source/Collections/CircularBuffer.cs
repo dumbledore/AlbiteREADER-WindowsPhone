@@ -129,7 +129,7 @@ namespace SvetlinAnkov.Albite.Core.Collections
 
         private TValue getHead(bool remove)
         {
-            throwIfEmpty();
+            ThrowIfEmpty();
 
             // get head
             TValue item = data[offset];
@@ -179,7 +179,7 @@ namespace SvetlinAnkov.Albite.Core.Collections
 
         private TValue getTail(bool remove)
         {
-            throwIfEmpty();
+            ThrowIfEmpty();
 
             // get index
             int index = wrapIndex(offset + size - 1);
@@ -200,7 +200,7 @@ namespace SvetlinAnkov.Albite.Core.Collections
             return item;
         }
 
-        private void throwIfEmpty()
+        protected void ThrowIfEmpty()
         {
             if (IsEmpty)
             {
