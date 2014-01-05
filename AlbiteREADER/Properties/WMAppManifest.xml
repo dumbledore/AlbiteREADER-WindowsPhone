@@ -31,6 +31,18 @@
         </TemplateFlip>
       </PrimaryToken>
     </Tokens>
+    <Extensions>
+      <FileTypeAssociation Name="ePub e-book file type" TaskID="_default" NavUriFragment="fileToken=%s">
+        <Logos>
+          <Logo Size="small" IsRelative="true">Resources/albite-epub-33.png</Logo>
+          <Logo Size="medium" IsRelative="true">Resources/albite-epub-66.png</Logo>
+          <Logo Size="large" IsRelative="true">Resources/albite-epub-173.png</Logo>
+        </Logos>
+        <SupportedFileTypes>
+          <FileType ContentType="application/epub+zip">.epub</FileType>
+        </SupportedFileTypes>
+      </FileTypeAssociation>
+    </Extensions>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />
       <ScreenResolution Name="ID_RESOLUTION_WXGA" />
