@@ -94,6 +94,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Collections\GenericEnumerator.cs" />
     <Compile Include="Source\Collections\INode.cs" />
     <Compile Include="Source\Collections\ITree.cs" />
     <Compile Include="Source\Collections\ITreeEnumerator.cs" />
