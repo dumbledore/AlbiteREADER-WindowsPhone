@@ -135,6 +135,7 @@
     <Compile Include="Test\AlbiteIsolatedContainerTest.cs" />
     <Compile Include="Test\AlbiteIsolatedContainerTestWrapper.cs" />
     <Compile Include="Test\AlbiteIsolatedStorageTest.cs" />
+    <Compile Include="Test\CircularBufferTest.cs" />
     <Compile Include="Test\JsonSerializerTest.cs" />
     <Compile Include="Test\RecordStoreTest.cs" />
     <Compile Include="Test\RecordStoreTestWrapper.cs" />
