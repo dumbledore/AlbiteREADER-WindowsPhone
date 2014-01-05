@@ -117,6 +117,13 @@ namespace SvetlinAnkov.Albite.Core.Collections
             }
         }
 
+        public void SetHead(TValue item)
+        {
+            ThrowIfEmpty();
+            int index = getHeadIndex();
+            data[index] = item;
+        }
+
         public TValue GetHead()
         {
             return getHead(false);
@@ -172,6 +179,13 @@ namespace SvetlinAnkov.Albite.Core.Collections
 
             int index = wrapIndex(offset + size - 1);
 
+            data[index] = item;
+        }
+
+        public void SetTail(TValue item)
+        {
+            ThrowIfEmpty();
+            int index = getTailIndex();
             data[index] = item;
         }
 
