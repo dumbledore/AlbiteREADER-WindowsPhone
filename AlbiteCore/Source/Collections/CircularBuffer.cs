@@ -131,14 +131,17 @@ namespace SvetlinAnkov.Albite.Core.Collections
         {
             ThrowIfEmpty();
 
+            // get index
+            int index = getHeadIndex();
+
             // get head
-            TValue item = data[offset];
+            TValue item = data[index];
 
             // remove?
             if (remove)
             {
                 // don't leak
-                data[offset] = default(TValue);
+                data[index] = default(TValue);
 
                 // move offset to the right, not forgetting it might wrap
                 offset = wrapIndex(offset + 1);
@@ -148,6 +151,11 @@ namespace SvetlinAnkov.Albite.Core.Collections
             }
 
             return item;
+        }
+
+        private int getHeadIndex()
+        {
+            return offset;
         }
 
         public void AddTail(TValue item)
@@ -182,7 +190,7 @@ namespace SvetlinAnkov.Albite.Core.Collections
             ThrowIfEmpty();
 
             // get index
-            int index = wrapIndex(offset + size - 1);
+            int index = getTailIndex();
 
             // get head
             TValue item = data[index];
@@ -198,6 +206,11 @@ namespace SvetlinAnkov.Albite.Core.Collections
             }
 
             return item;
+        }
+
+        private int getTailIndex()
+        {
+            return wrapIndex(offset + size - 1);
         }
 
         protected void ThrowIfEmpty()
