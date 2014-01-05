@@ -48,6 +48,7 @@ namespace SvetlinAnkov.Albite.READER
             // Phone-specific initialization
             InitializePhoneApplication();
 
+#if false
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -67,6 +68,7 @@ namespace SvetlinAnkov.Albite.READER
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
+#endif
         }
 
         // Code to execute when the application is launching (eg, from Start)
