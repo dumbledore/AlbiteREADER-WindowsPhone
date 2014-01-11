@@ -359,7 +359,7 @@ namespace SvetlinAnkov.Albite.Engine.Internal
             set
             {
                 justified = value;
-                string textAlign = value ? "justified" : "left";
+                string textAlign = value ? "justify" : "left";
                 set(RegisteredNames.TextAlign, textAlign);
             }
         }
