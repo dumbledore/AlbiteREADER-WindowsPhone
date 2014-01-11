@@ -140,6 +140,9 @@ namespace SvetlinAnkov.Albite.READER
             // Handle navigation failures
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
 
+            // Custom uri mapper
+            RootFrame.UriMapper = new AlbiteUriMapper();
+
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
         }
