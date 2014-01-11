@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SvetlinAnkov.Albite.Container
 {
@@ -48,6 +50,9 @@ namespace SvetlinAnkov.Albite.Container
         /// <param name="path">The path on the isolated storage to copy to.</param>
         /// <returns>True if there were no errors</returns>
         public abstract bool Install(string path);
+
+        public abstract Task<bool> InstallAsync(
+            string path, CancellationToken cancelToken, IProgress<double> progress);
 
         public abstract Stream Stream(string entityName);
 

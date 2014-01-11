@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SvetlinAnkov.Albite.Container.Epub
 {
@@ -86,19 +88,29 @@ namespace SvetlinAnkov.Albite.Container.Epub
 
         public override bool Install(string path)
         {
+            return Install(path, false, CancellationToken.None, null);
+        }
+
+        private bool Install(
+            string path, bool isTask,
+            CancellationToken cancelToken, IProgress<double> progress)
+        {
             bool hadErrors = false;
-            IEnumerable<string> items = Items;
+            string[] items = getItems();
+
+            int i = 0;
+            int itemCount = items.Length;
 
             foreach (string item in items)
             {
+                if (isTask && cancelToken.IsCancellationRequested)
+                {
+                    // Cancelled
+                    return hadErrors;
+                }
+
                 try
                 {
-                    // This assumes that all items have been thoroughly checked before being
-                    // added to the list, i.e. that their names are valid and that
-                    // they are not using relative paths so that they wouldn't be
-                    // a security issue.
-                    // Doing the check here is not as easy as it seems, therefore it's
-                    // the responsibility of the implementing class
                     using (AlbiteIsolatedStorage output = new AlbiteIsolatedStorage(System.IO.Path.Combine(path, item)))
                     {
                         using (Stream input = Stream(item))
@@ -117,9 +129,26 @@ namespace SvetlinAnkov.Albite.Container.Epub
                         throw e;
                     }
                 }
+
+                if (isTask && progress != null)
+                {
+                    // if we are in a task, report the
+                    // current normalized progress
+                    progress.Report(++i / itemCount);
+                }
             }
 
             return hadErrors;
+        }
+
+        public override Task<bool> InstallAsync(
+            string path, CancellationToken cancelToken, IProgress<double> progress)
+        {
+            return Task<bool>.Factory.StartNew(() =>
+                {
+                    return Install(path, true, cancelToken, progress);
+                },
+                cancelToken);
         }
 
         public override Stream Stream(string entityName)
