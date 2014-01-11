@@ -134,6 +134,9 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
                     // Get the library
                     Library library = context.Library;
 
+                    // Unpin
+                    TileManager.UnpinBook(control.Book);
+
                     // Remove the book
                     library.Books.Remove(control.Book);
 
