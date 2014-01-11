@@ -31,9 +31,11 @@ namespace SvetlinAnkov.Albite.Container.Epub
             processDocuments();
         }
 
-        public override IEnumerable<string> Items
+        private string[] items_;
+
+        private string[] getItems()
         {
-            get
+            if (items_ == null)
             {
                 // Copy the items from the manifest
                 List<string> itemsRes = new List<string>(Opf.Items);
@@ -46,8 +48,15 @@ namespace SvetlinAnkov.Albite.Container.Epub
                     itemsRes.Add(Opf.NcxPath);
                 }
 
-                return itemsRes;
+                items_ = itemsRes.ToArray();
             }
+
+            return items_;
+        }
+
+        public override IEnumerable<string> Items
+        {
+            get { return getItems(); }
         }
 
         public override IEnumerable<String> Spine
