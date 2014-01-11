@@ -115,5 +115,8 @@ namespace SvetlinAnkov.Albite.READER
             // return the new book presenter for this book
             return new BookPresenter(book);
         }
+
+        // File token used when adding books
+        public string FileToken { get; set; }
     }
 }
