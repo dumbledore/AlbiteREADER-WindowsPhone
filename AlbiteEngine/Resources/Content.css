@@ -121,7 +121,7 @@ hr {
 /*
  *  Theme
  */
-html {
+html, body, p, span {
   background-color: #(background_color) !important; /* Default: white */
   color:            #(text_color)       !important; /* Default: black */
 }
