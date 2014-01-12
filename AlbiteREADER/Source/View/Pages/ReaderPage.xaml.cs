@@ -25,6 +25,12 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         private void ApplicationBar_StateChanged(object sender, ApplicationBarStateChangedEventArgs e)
         {
             SystemTray.IsVisible = e.IsMenuVisible;
+
+            if (e.IsMenuVisible)
+            {
+                // Update the buttons
+                updateApplicationBarButtons();
+            }
         }
 
         private bool shouldShowApplicationBar(PageOrientation orientation)
@@ -267,9 +273,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
                 // Show the bar if adequate
                 page.ApplicationBar.IsVisible = page.shouldShowApplicationBar(page.Orientation);
-
-                // Update the buttons
-                page.updateApplicationBarButtons();
             }
 
             public bool OnNavigationRequested(Uri uri)
