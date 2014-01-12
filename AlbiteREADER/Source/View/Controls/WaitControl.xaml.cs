@@ -16,7 +16,11 @@ namespace SvetlinAnkov.Albite.READER.View.Controls
             set { LoadingText.Text = value; }
         }
 
-        public bool IsIndeterminate { get; set; }
+        public bool IsIndeterminate
+        {
+            get { return ProgressBar.IsIndeterminate; }
+            set { ProgressBar.IsIndeterminate = value; }
+        }
 
         public double Progress
         {
