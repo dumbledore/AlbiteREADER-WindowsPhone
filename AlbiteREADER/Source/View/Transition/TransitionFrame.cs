@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -44,8 +45,15 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
                 return;
             }
 
-            // Cache the current screen
-            bitmap = new WriteableBitmap(Content as UIElement, null);
+            // Try caching the current screen
+            try
+            {
+                bitmap = new WriteableBitmap(Content as UIElement, null);
+            }
+            catch (OutOfMemoryException)
+            {
+                // Not enough memory, so skip it
+            }
         }
 
         void OnNavigated(object sender, NavigationEventArgs e)
@@ -56,6 +64,7 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             // Do we want the transition?
             if (!e.IsNavigationInitiator || !transitionEnabled())
             {
+                clearBitmap();
                 return;
             }
 
