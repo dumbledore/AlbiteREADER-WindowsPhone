@@ -10,7 +10,7 @@ namespace SvetlinAnkov.Albite.READER
 {
     public static class TileManager
     {
-        private const string pageNameQuery = "ReaderPage.xaml?id=";
+        private const string pageNameQuery = "BooksPage.xaml?id=";
         private const string pagePath = "/AlbiteREADER;component/Source/View/Pages/";
 
         public static bool PinBook(BookPresenter bookPresenter)

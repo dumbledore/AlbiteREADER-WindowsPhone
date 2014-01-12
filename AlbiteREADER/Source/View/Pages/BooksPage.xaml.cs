@@ -82,11 +82,25 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // Set the current state
-            setCurrentState();
-
             // Go on as usual
             base.OnNavigatedTo(e);
+
+            // Remove previous journal entries (e.g. AddBookPage, etc.)
+            while (NavigationService.RemoveBackEntry() != null) { }
+
+            if (e.NavigationMode == NavigationMode.New &&
+                NavigationContext.QueryString.ContainsKey("id"))
+            {
+                // Pass through directly to ReaderPage
+                NavigationService.Navigate(
+                    new Uri("/AlbiteREADER;component/Source/View/Pages/ReaderPage.xaml?id=" +
+                        NavigationContext.QueryString["id"], UriKind.Relative));
+            }
+            else
+            {
+                // Set the current state
+                setCurrentState();
+            }
         }
 
         #region MyControl
