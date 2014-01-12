@@ -88,65 +88,54 @@ namespace SvetlinAnkov.Albite.Container.Epub
 
         public override bool Install(string path)
         {
-            return Install(path, false, CancellationToken.None, null);
+            return InstallAsync(path, CancellationToken.None, null).Result;
         }
 
-        private bool Install(
-            string path, bool isTask,
-            CancellationToken cancelToken, IProgress<double> progress)
-        {
-            bool hadErrors = false;
-            string[] items = getItems();
-
-            int i = 0;
-            int itemCount = items.Length;
-
-            foreach (string item in items)
-            {
-                if (isTask && cancelToken.IsCancellationRequested)
-                {
-                    // Cancelled
-                    return hadErrors;
-                }
-
-                try
-                {
-                    using (AlbiteIsolatedStorage output = new AlbiteIsolatedStorage(System.IO.Path.Combine(path, item)))
-                    {
-                        using (Stream input = Stream(item))
-                        {
-                            output.Write(input);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.E(tag, "Failed unpacking " + item, e);
-                    hadErrors = true;
-
-                    if (!Fallback)
-                    {
-                        throw e;
-                    }
-                }
-
-                if (isTask && progress != null)
-                {
-                    // if we are in a task, report the
-                    // current normalized progress
-                    progress.Report(++i / itemCount);
-                }
-            }
-
-            return hadErrors;
-        }
-
-        public override Task<bool> InstallAsync(
+        public override async Task<bool> InstallAsync(
             string path, CancellationToken cancelToken, IProgress<double> progress)
         {
-            return Task<bool>.Factory.StartNew(() =>
+            return await Task.Run(() =>
                 {
-                    return Install(path, true, cancelToken, progress);
+                    bool hadErrors = false;
+                    string[] items = getItems();
+
+                    int i = 0;
+                    int itemCount = items.Length;
+
+                    foreach (string item in items)
+                    {
+                        cancelToken.ThrowIfCancellationRequested();
+
+                        try
+                        {
+                            using (AlbiteIsolatedStorage output = new AlbiteIsolatedStorage(System.IO.Path.Combine(path, item)))
+                            {
+                                using (Stream input = Stream(item))
+                                {
+                                    output.Write(input);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Log.E(tag, "Failed unpacking " + item, e);
+                            hadErrors = true;
+
+                            if (!Fallback)
+                            {
+                                throw e;
+                            }
+                        }
+
+                        if (progress != null)
+                        {
+                            // if we are in a task, report the
+                            // current normalized progress
+                            progress.Report(++i / itemCount);
+                        }
+                    }
+
+                    return hadErrors;
                 },
                 cancelToken);
         }

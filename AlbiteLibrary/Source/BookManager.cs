@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SvetlinAnkov.Albite.BookLibrary
 {
@@ -31,11 +33,23 @@ namespace SvetlinAnkov.Albite.BookLibrary
         /// <returns>Book from the library for this BookContainer</returns>
         public Book Add(BookContainer bookContainer)
         {
+            return AddAsync(bookContainer, CancellationToken.None, null).Result;
+        }
+
+        public async Task<Book> AddAsync(BookContainer bookContainer,
+            CancellationToken cancelToken, IProgress<double> progress)
+        {
+            // have we been cancelled?
+            cancelToken.ThrowIfCancellationRequested();
+
             using (LibraryDataContext dc = Library.GetDataContext())
             {
                 // Compute container's hash
                 HashAlgorithm hashAlgorithm = new SHA1Managed();
                 byte[] hash = bookContainer.ComputeHash(hashAlgorithm);
+
+                // have we been cancelled?
+                cancelToken.ThrowIfCancellationRequested();
 
                 // Check if this book already exists
                 IQueryable<BookEntity> bookEntities =
@@ -59,13 +73,22 @@ namespace SvetlinAnkov.Albite.BookLibrary
                 // Fill in the hash
                 bookEntity.Hash = hash;
 
+                // have we been cancelled?
+                cancelToken.ThrowIfCancellationRequested();
+
                 try
                 {
                     // Remove the temp folder
                     removeDirectory(booksTempPath);
 
+                    // have we been cancelled?
+                    cancelToken.ThrowIfCancellationRequested();
+
                     // Unpack
-                    bookContainer.Install(booksTempPath);
+                    await bookContainer.InstallAsync(booksTempPath, cancelToken, progress);
+
+                    // have we been cancelled?
+                    cancelToken.ThrowIfCancellationRequested();
 
                     // Add to the database
                     dc.Books.InsertOnSubmit(bookEntity);
