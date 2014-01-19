@@ -101,6 +101,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\AlbiteContext.cs" />
+    <Compile Include="Source\ExternalLauncher.cs" />
     <Compile Include="Source\AlbiteUriMapper.cs" />
     <Compile Include="Source\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

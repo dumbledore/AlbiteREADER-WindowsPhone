@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Navigation;
-using Windows.System;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace SvetlinAnkov.Albite.READER.View.Pages
@@ -37,7 +36,7 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private async void RateButton_Click(object sender, EventArgs e)
         {
-            await Launcher.LaunchUriAsync(new Uri("zune:reviewapp"));
+            await ExternalLauncher.LaunchAppRatePage();
         }
         #endregion
 
