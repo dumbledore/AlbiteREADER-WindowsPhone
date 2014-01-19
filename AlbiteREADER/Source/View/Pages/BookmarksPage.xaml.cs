@@ -1,8 +1,8 @@
 ﻿using Microsoft.Phone.Controls;
 using SvetlinAnkov.Albite.BookLibrary;
-using SvetlinAnkov.Albite.BookLibrary.Location;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -12,15 +12,11 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 {
     public partial class BookmarksPage : PhoneApplicationPage
     {
+        ObservableCollection<Bookmark> bookmarks;
+
         public BookmarksPage()
         {
             InitializeComponent();
-        }
-
-        private void setCurrentState()
-        {
-            // Clear the contents
-            BookmarksList.Children.Clear();
 
             // Get the context
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
@@ -33,56 +29,54 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             PageTitle.Text = titleUppercase;
 
             // Get all current bookmakrs
-            Bookmark[] bookmarks = bookPresenter.BookmarkManager.GetAll();
+            Bookmark[] bookmarkArray = bookPresenter.BookmarkManager.GetAll();
 
             // Sort them so that they are listed correctly
-            Array.Sort(bookmarks);
+            Array.Sort(bookmarkArray);
+
+            // Create an observable collection so that
+            // it will be in sync
+            bookmarks = new ObservableCollection<Bookmark>(bookmarkArray);
 
             // Fill the bookmarks
-            foreach (Bookmark bookmark in bookmarks)
+            BookmarksList.ItemsSource = bookmarks;
+        }
+
+        private void RemoveBookmark_Click(object sender, EventArgs e)
+        {
+            // The sender is actually the menu item
+            MenuItem item = (MenuItem)sender;
+
+            // The bookmark
+            Bookmark bookmark = (Bookmark)item.CommandParameter;
+
+            // Note that we could get the containing control,
+            // by taking into account that MenuItem.ParentMenuBase
+            // is a ContextMenu, and using ContextMenu.Owner
+
+            if (MessageBox.Show(
+                "Are you sure you want to delete this bookmark?",
+                "Delete bookmark",
+                MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
-                // Create the control
-                BookmarkControl control = new BookmarkControl(bookmark);
+                // Get the book presenter
+                BookPresenter bookPresenter = App.Context.BookPresenter;
 
-                // Enable tilt effect
-                control.SetValue(TiltEffect.IsTiltEnabledProperty, true);
+                // Remove the bookmark
+                bookPresenter.BookmarkManager.Remove(bookmark);
 
-                // Attach the context menu
-                attachContextMenu(control);
-
-                // Attach the tap event handler
-                control.Tap += bookmarkControl_Tap;
-
-                // Add to the other controls
-                BookmarksList.Children.Add(control);
+                // Remove from the observable collection and
+                // therefore from the ListBox
+                bookmarks.Remove(bookmark);
             }
         }
 
-        private static void attachContextMenu(DependencyObject control)
-        {
-            // Create the menu item
-            MenuItem menuItem = new MenuItem();
-            menuItem.Header = "Remove";
-            menuItem.Command = new RemoveBookmarkCommand();
-            menuItem.CommandParameter = control;
-
-            // Create the context menu
-            ContextMenu contextMenu = new ContextMenu();
-            contextMenu.Items.Add(menuItem);
-
-            // Add the context menu
-            control.SetValue(ContextMenuService.ContextMenuProperty, contextMenu);
-        }
-
-        private void bookmarkControl_Tap(object sender, GEArgs e)
+        private void BookmarkControl_Tap(object sender, GEArgs e)
         {
             BookmarkControl control = (BookmarkControl)sender;
 
-            // Get the context
-            AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
-
             // Get the book presenter
-            BookPresenter bookPresenter = context.BookPresenter;
+            BookPresenter bookPresenter = App.Context.BookPresenter;
 
             // Update the reading location
             bookPresenter.HistoryStack.AddNewLocation(control.Bookmark.BookLocation);
@@ -90,87 +84,5 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             // Go back to ReaderPage
             NavigationService.GoBack();
         }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            // Set the current state
-            setCurrentState();
-
-            // Go on as usual
-            base.OnNavigatedTo(e);
-        }
-
-        #region BookmarkControl
-        private class BookmarkControl : HeaderedContentControl
-        {
-            public Bookmark Bookmark { get; private set; }
-
-            public BookmarkControl(Bookmark bookmark)
-            {
-                Bookmark = bookmark;
-
-                // Set up book position as header text
-                HeaderText = string.Format(
-                    "{0:P0}", getReadingPosition(bookmark));
-
-                // Set up bookmark text as content text
-                ContentText = bookmark.Text;
-            }
-
-            private static double getReadingPosition(Bookmark bookmark)
-            {
-                BookLocation location = bookmark.BookLocation;
-
-                // Total number of chapters
-                int chapterCount = location.Chapter.BookPresenter.Spine.Length;
-
-                // Each chapter gets this interval in [0, 1]
-                double chapterInterval = 1 / (double)chapterCount;
-
-                // Chapter starts at this position
-                double chapterPosition = location.Chapter.Number * chapterInterval;
-
-                // Additional offset to account for chapter location
-                double chapterOffset = location.Location.RelativeLocation * chapterInterval;
-
-                // return the total
-                return chapterPosition + chapterOffset;
-            }
-        }
-        #endregion
-
-        #region RemoveBookmarkCommand
-        private class RemoveBookmarkCommand : ICommand
-        {
-#pragma warning disable 0067
-            public event EventHandler CanExecuteChanged;
-#pragma warning restore 0067
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public void Execute(object parameter)
-            {
-                BookmarkControl control = (BookmarkControl)parameter;
-
-                // Get the context
-                AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
-
-                // Get the book presenter
-                BookPresenter bookPresenter = context.BookPresenter;
-
-                // Remove the bookmark
-                bookPresenter.BookmarkManager.Remove(control.Bookmark);
-
-                // Get the parent
-                Panel parent = (Panel)control.Parent;
-
-                // Remove the control
-                parent.Children.Remove(control);
-            }
-        }
-        #endregion
     }
 }

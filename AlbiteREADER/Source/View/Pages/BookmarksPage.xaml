@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:albite="clr-namespace:SvetlinAnkov.Albite.READER.View.Controls"
     xmlns:transitions="clr-namespace:SvetlinAnkov.Albite.READER.View.Transition"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -31,11 +32,24 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid Grid.Row="1" Margin="12,0,12,0">
-            <ScrollViewer>
-                <StackPanel
-                    x:Name="BookmarksList"
-                    Orientation="Vertical" />
-            </ScrollViewer>
+            <ListBox x:Name="BookmarksList">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <albite:BookmarkControl
+                            Bookmark="{Binding}"
+                            toolkit:TiltEffect.IsTiltEnabled="True"
+                            Tap="BookmarkControl_Tap" >
+                            <toolkit:ContextMenuService.ContextMenu>
+                                <toolkit:ContextMenu>
+                                    <toolkit:MenuItem Header="Remove"
+                                                      Click="RemoveBookmark_Click"
+                                                      CommandParameter="{Binding}" />
+                                </toolkit:ContextMenu>
+                            </toolkit:ContextMenuService.ContextMenu>
+                        </albite:BookmarkControl>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>
