@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Navigation;
+using Windows.System;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace SvetlinAnkov.Albite.READER.View.Pages
@@ -32,6 +33,11 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             AboutButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
 
             // Then the menu buttons
+        }
+
+        private async void RateButton_Click(object sender, EventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri("zune:reviewapp"));
         }
         #endregion
 
