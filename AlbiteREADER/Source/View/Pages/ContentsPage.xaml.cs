@@ -1,8 +1,6 @@
 ﻿using Microsoft.Phone.Controls;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.BookLibrary.Location;
-using SvetlinAnkov.Albite.Container;
-using SvetlinAnkov.Albite.Core.Collections;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System.Windows.Navigation;
 using GEArgs = System.Windows.Input.GestureEventArgs;
@@ -14,12 +12,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         public ContentsPage()
         {
             InitializeComponent();
-        }
-
-        private void setCurrentState()
-        {
-            // Clear the contents
-            ContentsList.Children.Clear();
 
             // Get the context
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
@@ -32,24 +24,12 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             PageTitle.Text = titleUppercase;
 
             // Fill the contents
-            foreach (INode<IContentItem> node in bookPresenter.Contents)
-            {
-                // Create the control
-                MyControl control = new MyControl(node);
-
-                // Enable tilt effect
-                control.SetValue(TiltEffect.IsTiltEnabledProperty, true);
-
-                // Add handler
-                control.Tap += control_Tap;
-                // Add to the other controls
-                ContentsList.Children.Add(control);
-            }
+            ContentsList.ItemsSource = bookPresenter.Contents;
         }
 
-        private void control_Tap(object sender, GEArgs e)
+        private void Control_Tap(object sender, GEArgs e)
         {
-            MyControl control = (MyControl)sender;
+            TocControl control = (TocControl)sender;
 
             // Get the context
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
@@ -95,32 +75,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
             // Go back to ReaderPage
             NavigationService.GoBack();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            // Set the current state
-            setCurrentState();
-
-            // Go on as usual
-            base.OnNavigatedTo(e);
-        }
-
-        private class MyControl : HierarchicalTextControl
-        {
-            public MyControl(INode<IContentItem> node)
-            {
-                // Set text
-                Text = node.Value.Title;
-
-                // Set level
-                Level = node.Depth;
-
-                // Set book location
-                Location = node.Value.Location;
-            }
-
-            public string Location { get; private set; }
         }
     }
 }
