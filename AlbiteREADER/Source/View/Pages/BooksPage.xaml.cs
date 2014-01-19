@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
@@ -15,7 +16,24 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         public BooksPage()
         {
             InitializeComponent();
+            InitializeApplicationBar();
         }
+
+        #region ApplicationBar
+        private void InitializeApplicationBar()
+        {
+            // The buttons can't be addressed using "x:Name", see this:
+            // http://stackoverflow.com/questions/5933109/applicationbar-is-always-null
+            //
+            // So we need to do it the ugly way...
+
+            // First, the icon buttons
+            RateButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            AboutButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
+
+            // Then the menu buttons
+        }
+        #endregion
 
         private void setCurrentState()
         {

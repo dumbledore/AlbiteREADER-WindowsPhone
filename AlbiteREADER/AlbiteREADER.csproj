@@ -214,7 +214,9 @@
     <Content Include="Resources\Images\bookmark.add.png" />
     <Content Include="Resources\Images\feature.settings.png" />
     <Content Include="Resources\Images\gotoslide.png" />
+    <Content Include="Resources\Images\like.png" />
     <Content Include="Resources\Images\next.png" />
+    <Content Include="Resources\Images\questionmark.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
