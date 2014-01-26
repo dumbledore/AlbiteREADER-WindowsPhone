@@ -86,7 +86,7 @@ namespace SvetlinAnkov.Albite.READER
             return tile;
         }
 
-        private static Uri DefaultCover = new Uri("Resources/Book.png", UriKind.Relative);
+        private static readonly Uri DefaultCover = new Uri("Resources/Book.png", UriKind.Relative);
 
         private static Uri makeCover(BookPresenter bookPresenter)
         {
