@@ -111,9 +111,6 @@ namespace SvetlinAnkov.Albite.READER
                         // Output name
                         string outputName = getTilePath(bookPresenter.Book);
 
-                        // Cover uri
-                        coverUri = new Uri("isostore:/" + outputName, UriKind.Absolute);
-
                         using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(outputName))
                         {
                             using (Stream outputStream = iso.GetStream(FileAccess.Write))
@@ -122,6 +119,9 @@ namespace SvetlinAnkov.Albite.READER
                                 wbmp.SaveJpeg(outputStream, 173, 173, 0, 95);
                             }
                         }
+
+                        // Set cover uri only after it successfully created the pin image
+                        coverUri = new Uri("isostore:/" + outputName, UriKind.Absolute);
                     }
                     catch { }
                 }
