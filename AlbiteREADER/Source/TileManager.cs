@@ -4,6 +4,8 @@ using SvetlinAnkov.Albite.Core.IO;
 using System;
 using System.IO;
 using System.Linq;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace SvetlinAnkov.Albite.READER
@@ -107,8 +109,23 @@ namespace SvetlinAnkov.Albite.READER
                         // Use the cover stream. Would it work with non-JPEG images?
                         bmp.SetSource(coverStream);
 
-                        // Make a new WriteableBitmap so we could save it
-                        WriteableBitmap wbmp = new WriteableBitmap(bmp);
+                        // Create a new image control
+                        Image image = new Image();
+
+                        // Set up its dimensions
+                        image.Width = TileSize;
+                        image.Height = TileSize;
+
+                        // Uniform stretch, so that the whole book cover
+                        // would be visible, without being stretched
+                        image.Stretch = Stretch.Uniform;
+
+                        // Set the bitmap image to the image control
+                        image.Source = bmp;
+
+                        // Make a new WriteableBitmap from the image control,
+                        // so we could save it. No transform is needed
+                        WriteableBitmap wbmp = new WriteableBitmap(image, null);
 
                         // Output name
                         string outputName = getTilePath(bookPresenter.Book);
