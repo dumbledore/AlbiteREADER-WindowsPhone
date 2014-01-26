@@ -88,6 +88,8 @@ namespace SvetlinAnkov.Albite.READER
 
         private static readonly Uri DefaultCover = new Uri("Resources/Book.png", UriKind.Relative);
 
+        private static readonly int TileSize = 173;
+
         private static Uri makeCover(BookPresenter bookPresenter)
         {
             Uri coverUri = DefaultCover;
@@ -116,7 +118,7 @@ namespace SvetlinAnkov.Albite.READER
                             using (Stream outputStream = iso.GetStream(FileAccess.Write))
                             {
                                 // Save & resize
-                                wbmp.SaveJpeg(outputStream, 173, 173, 0, 95);
+                                wbmp.SaveJpeg(outputStream, TileSize, TileSize, 0, 95);
                             }
                         }
 
