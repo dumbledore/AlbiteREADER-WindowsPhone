@@ -1,9 +1,11 @@
 ﻿using Microsoft.Phone.Shell;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.Core.IO;
+using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -98,10 +100,12 @@ namespace SvetlinAnkov.Albite.READER
 
             using (Stream coverStream = bookPresenter.GetCoverStream())
             {
-                // Is there a cover?
-                if (coverStream != null)
+                try
                 {
-                    try
+                    FrameworkElement coverElement;
+
+                    // Is there a cover?
+                    if (coverStream != null)
                     {
                         // New bitmap image
                         BitmapImage bmp = new BitmapImage();
@@ -112,10 +116,6 @@ namespace SvetlinAnkov.Albite.READER
                         // Create a new image control
                         Image image = new Image();
 
-                        // Set up its dimensions
-                        image.Width = TileSize;
-                        image.Height = TileSize;
-
                         // Uniform stretch, so that the whole book cover
                         // would be visible, without being stretched
                         image.Stretch = Stretch.Uniform;
@@ -123,30 +123,67 @@ namespace SvetlinAnkov.Albite.READER
                         // Set the bitmap image to the image control
                         image.Source = bmp;
 
-                        // Make a new WriteableBitmap from the image control,
-                        // so we could save it. No transform is needed
-                        WriteableBitmap wbmp = new WriteableBitmap(image, null);
+                        // Set up its dimensions
+                        image.Width = TileSize;
+                        image.Height = TileSize;
 
-                        // Output name
-                        string outputName = getTilePath(bookPresenter.Book);
-
-                        using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(outputName))
-                        {
-                            using (Stream outputStream = iso.GetStream(FileAccess.Write))
-                            {
-                                // Save & resize
-                                wbmp.SaveJpeg(outputStream, TileSize, TileSize, 0, 95);
-                            }
-                        }
-
-                        // Set cover uri only after it successfully created the pin image
-                        coverUri = new Uri("isostore:/" + outputName, UriKind.Absolute);
+                        // Set the cover element
+                        coverElement = image;
                     }
-                    catch { }
+                    else
+                    {
+                        // Create a new BookTileControl
+                        BookTileControl bookTile = new BookTileControl();
+
+                        // Create a random color for the book cover
+                        bookTile.BookColor = createRandomColor();
+
+                        // Set the title of the book cover
+                        bookTile.BookTitle = bookPresenter.Book.Title;
+
+                        // Set up its dimensions
+                        bookTile.Measure(new Size(TileSize, TileSize));
+                        bookTile.Arrange(new Rect(0, 0, TileSize, TileSize));
+
+                        // Set the cover element
+                        coverElement = bookTile;
+                    }
+
+
+                    // Make a new WriteableBitmap from the image control,
+                    // so we could save it. No transform is needed
+                    WriteableBitmap wbmp = new WriteableBitmap(coverElement, null);
+
+                    // Output name
+                    string outputName = getTilePath(bookPresenter.Book);
+
+                    using (AlbiteIsolatedStorage iso = new AlbiteIsolatedStorage(outputName))
+                    {
+                        using (Stream outputStream = iso.GetStream(FileAccess.Write))
+                        {
+                            // Save & resize
+                            wbmp.SaveJpeg(outputStream, TileSize, TileSize, 0, 95);
+                        }
+                    }
+
+                    // Set cover uri only after it successfully created the pin image
+                    coverUri = new Uri("isostore:/" + outputName, UriKind.Absolute);
                 }
+                catch { }
             }
 
             return coverUri;
+        }
+
+        private static Color createRandomColor()
+        {
+            Random random = new Random();
+
+            byte r = (byte)random.Next(0xFF);
+            byte g = (byte)random.Next(0xFF);
+            byte b = (byte)random.Next(0xFF);
+
+            return Color.FromArgb(0xFF, r, g, b);
         }
 
         private static string getTilePath(Book book)

@@ -109,6 +109,9 @@
     <Compile Include="Source\AppUtils.cs" />
     <Compile Include="Source\TileManager.cs" />
     <Compile Include="Source\View\Controls\BookmarkControl.cs" />
+    <Compile Include="Source\View\Controls\BookTileControl.xaml.cs">
+      <DependentUpon>BookTileControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\View\Controls\HeaderedContentControl.xaml.cs">
       <DependentUpon>HeaderedContentControl.xaml</DependentUpon>
     </Compile>
@@ -204,6 +207,7 @@
     <Content Include="Resources\albite-epub-66.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\albite-tile-mark.png" />
     <Content Include="Resources\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -227,6 +231,10 @@
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Source\View\Controls\BookTileControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Source\View\Controls\HeaderedContentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
