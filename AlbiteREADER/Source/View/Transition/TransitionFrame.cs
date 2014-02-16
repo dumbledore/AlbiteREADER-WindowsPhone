@@ -48,7 +48,10 @@ namespace SvetlinAnkov.Albite.READER.View.Transition
             // Try caching the current screen
             try
             {
-                bitmap = new WriteableBitmap(Content as UIElement, null);
+                // TODO: Disable the bitmap as it's not
+                //       much value to the effect, but
+                //       may be costly on low-mem devices.
+                // bitmap = new WriteableBitmap(Content as UIElement, null);
             }
             catch (OutOfMemoryException)
             {
