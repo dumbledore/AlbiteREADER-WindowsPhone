@@ -180,18 +180,22 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 #region Open/persist book on load/navigating from
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            BookPresenter bookPresenter = ReaderControl.BookPresenter;
-
-            // ReaderControl.BookPresenter can be null if the user navigates
-            // from *before* it has actually loaded
-            if (bookPresenter != null)
+            if (ReaderControl != null)
             {
-                // Update the BookLocation of BookPresenter to match
-                // the current BookLocation
-                bookPresenter.HistoryStack.SetCurrentLocation(ReaderControl.BookLocation);
+                // TODO: Sometimes ReaderControl is null here. Why?
+                BookPresenter bookPresenter = ReaderControl.BookPresenter;
 
-                // Now persist BookPresenter
-                bookPresenter.Persist();
+                // ReaderControl.BookPresenter can be null if the user navigates
+                // from *before* it has actually loaded
+                if (bookPresenter != null)
+                {
+                    // Update the BookLocation of BookPresenter to match
+                    // the current BookLocation
+                    bookPresenter.HistoryStack.SetCurrentLocation(ReaderControl.BookLocation);
+
+                    // Now persist BookPresenter
+                    bookPresenter.Persist();
+                }
             }
 
             // Show the wait control so that there would be no glitches,
@@ -236,7 +240,13 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         private void ReaderControl_Loaded(object sender, RoutedEventArgs e)
         {
             // Now, open the book in the control
-            ReaderControl.BookPresenter = App.Context.BookPresenter;
+            if (ReaderControl != null)
+            {
+                // ReaderControl *can* be null if ReaderControl_Loaded was
+                // called after OnNavigatingFrom(). Sounds unlikely
+                // but it's possible...
+                ReaderControl.BookPresenter = App.Context.BookPresenter;
+            }
         }
 #endregion
 
