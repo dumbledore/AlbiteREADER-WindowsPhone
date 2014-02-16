@@ -179,9 +179,11 @@ namespace SvetlinAnkov.Albite.READER
         {
             Random random = new Random();
 
-            byte r = (byte)random.Next(0xFF);
-            byte g = (byte)random.Next(0xFF);
-            byte b = (byte)random.Next(0xFF);
+            int color = random.Next();
+
+            byte r = (byte)((color >>  0) & 0xFF);
+            byte g = (byte)((color >>  8) & 0xFF);
+            byte b = (byte)((color >> 16) & 0xFF);
 
             return Color.FromArgb(0xFF, r, g, b);
         }
