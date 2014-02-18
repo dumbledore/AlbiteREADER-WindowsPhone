@@ -14,10 +14,8 @@
               Background="DarkSlateBlue"
               Margin="30,0,30,0">
             <Border
-                Margin="12,12,12,72"
+                Margin="0,30,0,80"
                 Background="White"
-                BorderBrush="Black"
-                BorderThickness="1"
                 >
                 <TextBlock
                     x:Name="BookTitleText"
@@ -31,7 +29,7 @@
                 </TextBlock>
             </Border>
             <Image
-                    Margin="20,110,20,10"
+                    Margin="30,130,30,10"
                     Source="/Resources/albite-tile-mark.png"
                     Stretch="Uniform"
                     />
