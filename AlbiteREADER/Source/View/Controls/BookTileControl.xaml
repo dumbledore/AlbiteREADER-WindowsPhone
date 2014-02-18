@@ -11,7 +11,7 @@
     
     <Grid x:Name="LayoutRoot" Background="Black">
         <Grid x:Name="BookCoverGrid"
-              Background="DarkSlateBlue"
+              Background="{StaticResource PhoneAccentBrush}"
               Margin="30,0,30,0">
             <Border
                 Margin="0,30,0,80"
