@@ -108,6 +108,7 @@
     </Compile>
     <Compile Include="Source\AppUtils.cs" />
     <Compile Include="Source\TileManager.cs" />
+    <Compile Include="Source\View\Controls\BookHeaderedControl.cs" />
     <Compile Include="Source\View\Controls\BookmarkControl.cs" />
     <Compile Include="Source\View\Controls\BookTileControl.xaml.cs">
       <DependentUpon>BookTileControl.xaml</DependentUpon>

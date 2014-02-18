@@ -3,6 +3,7 @@ using Microsoft.Phone.Shell;
 using SvetlinAnkov.Albite.BookLibrary;
 using SvetlinAnkov.Albite.READER.View.Controls;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -13,6 +14,8 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 {
     public partial class BooksPage : PhoneApplicationPage
     {
+        private ObservableCollection<Book> books;
+
         public BooksPage()
         {
             InitializeComponent();
@@ -42,9 +45,6 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
 
         private void setCurrentState()
         {
-            // Clear the contents
-            BookList.Children.Clear();
-
             // Get the context
             AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
@@ -52,55 +52,13 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             Library library = context.Library;
 
             // Get the books
-            Book[] books = library.Books.GetAll();
+            Book[] booksArray = library.Books.GetAll();
 
-            // Fill with books
-            foreach (Book book in books)
-            {
-                // Create the control
-                MyControl control = new MyControl(book);
+            // Fill the observable list
+            books = new ObservableCollection<Book>(booksArray);
 
-                // Enable tilt effect
-                control.SetValue(TiltEffect.IsTiltEnabledProperty, true);
-
-                // Attach the context menu
-                attachContextMenu(control);
-
-                // Add handler
-                control.Tap += control_Tap;
-
-                // Add to the other controls
-                BookList.Children.Add(control);
-            }
-        }
-
-        private static void attachContextMenu(DependencyObject control)
-        {
-            // Create the menu item
-            MenuItem menuItem = new MenuItem();
-            menuItem.Header = "Remove";
-            menuItem.Command = new RemoveBookCommand();
-            menuItem.CommandParameter = control;
-
-            // Create the context menu
-            ContextMenu contextMenu = new ContextMenu();
-            contextMenu.Items.Add(menuItem);
-
-            // Add the context menu
-            control.SetValue(ContextMenuService.ContextMenuProperty, contextMenu);
-        }
-
-        private void control_Tap(object sender, GEArgs e)
-        {
-            MyControl control = (MyControl)sender;
-
-            // Get the context
-            AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
-
-            // Get the library
-            Library library = context.Library;
-
-            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/ReaderPage.xaml?id=" + control.Book.Id, UriKind.Relative));
+            // Fill the books
+            BooksList.ItemsSource = books;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -126,65 +84,48 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
             }
         }
 
-        #region MyControl
-        private class MyControl : HeaderedContentControl
+
+        private void BookHeaderedControl_Tap(object sender, GEArgs e)
         {
-            public MyControl(Book book)
-            {
-                // Set title
-                HeaderText = book.Title;
+            BookHeaderedControl control = (BookHeaderedControl)sender;
 
-                // Set author
-                ContentText = book.Author;
+            // Get the context
+            AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
-                // Set book
-                Book = book;
-            }
+            // Get the library
+            Library library = context.Library;
 
-            public Book Book { get; private set; }
+            NavigationService.Navigate(new Uri("/AlbiteREADER;component/Source/View/Pages/ReaderPage.xaml?id=" + control.Book.Id, UriKind.Relative));
         }
-        #endregion
 
-        #region RemoveBookCommand
-        private class RemoveBookCommand : ICommand
+        private void RemoveBook_Click(object sender, EventArgs e)
         {
-#pragma warning disable 0067
-            public event EventHandler CanExecuteChanged;
-#pragma warning restore 0067
+            // The sender is actually the menu item
+            MenuItem item = (MenuItem)sender;
 
-            public bool CanExecute(object parameter)
+            // The book
+            Book book = (Book)item.CommandParameter;
+
+            string message = string.Format("Are you sure you want to remove \"{0}\" by {1}?", book.Title, book.Author);
+
+            if (MessageBox.Show(message, "Remove book", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
-                return true;
-            }
+                // Get the context
+                AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
 
-            public void Execute(object parameter)
-            {
-                MyControl control = (MyControl)parameter;
+                // Get the library
+                Library library = context.Library;
 
-                string message = string.Format("Are you sure you want to remove \"{0}\" by {1}?", control.Book.Title, control.Book.Author);
+                // Unpin
+                TileManager.UnpinBook(book);
 
-                if (MessageBox.Show(message, "Remove book", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                {
-                    // Get the context
-                    AlbiteContext context = ((IAlbiteApplication)App.Current).CurrentContext;
+                // Remove the book
+                library.Books.Remove(book);
 
-                    // Get the library
-                    Library library = context.Library;
-
-                    // Unpin
-                    TileManager.UnpinBook(control.Book);
-
-                    // Remove the book
-                    library.Books.Remove(control.Book);
-
-                    // Get the parent
-                    Panel parent = (Panel)control.Parent;
-
-                    // Remove the control
-                    parent.Children.Remove(control);
-                }
+                // Remove from the observable collection and
+                // therefore from the ListBox
+                books.Remove(book);
             }
         }
-        #endregion
     }
 }
