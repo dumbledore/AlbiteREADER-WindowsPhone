@@ -41,6 +41,11 @@ namespace SvetlinAnkov.Albite.READER.View.Pages
         {
             await ExternalLauncher.LaunchAppRatePage();
         }
+
+        private void AboutButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Svetlin Ankov, 2016", "Albite READER", MessageBoxButton.OK);
+        }
         #endregion
 
         private void setCurrentState()

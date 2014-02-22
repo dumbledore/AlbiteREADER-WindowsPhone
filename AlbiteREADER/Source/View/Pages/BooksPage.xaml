@@ -56,7 +56,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsMenuEnabled="True" Mode="Minimized" >
             <shell:ApplicationBarIconButton IconUri="/Resources/Images/like.png" Text="Rate" x:Name="RateButton" Click="RateButton_Click" />
-            <shell:ApplicationBarIconButton IconUri="/Resources/Images/questionmark.png" Text="About" x:Name="AboutButton" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/questionmark.png" Text="About" x:Name="AboutButton" Click="AboutButton_Click" />
             <shell:ApplicationBar.MenuItems>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
