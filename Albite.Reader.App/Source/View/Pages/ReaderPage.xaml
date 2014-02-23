@@ -1,0 +1,40 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Albite.Reader.App.View.Pages.ReaderPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:albite="clr-namespace:Albite.Reader.App.View.Controls"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False"
+    shell:SystemTray.Opacity="0.95">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid x:Name="ReaderControlGrid" />
+        <albite:WaitControl x:Name="WaitControl" IsIndeterminate="True" Text="Preparing content..." />
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True" Mode="Minimized"
+            BackgroundColor="{StaticResource PhoneBackgroundColor}" Opacity="0.95" StateChanged="ApplicationBar_StateChanged">
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/back.png" Text="Back" x:Name="BackButton" Click="BackButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/feature.settings.png" Text="Settings" x:Name="SettingsButton" Click="SettingsButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/gotoslide.png" Text="contents" x:Name="ContentsButton" Click="ContentsButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/bookmark.add.png" Text="Bookmark" x:Name="AddBookmarkButton" Click="AddBookmarkButton_Click"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Reading Location" x:Name="ReadingPositionButton" Click="ReadingPositionButton_Click"/>
+                <shell:ApplicationBarMenuItem Text="Bookmarks" x:Name="BookmarksButton" Click="BookmarksButton_Click"/>
+                <shell:ApplicationBarMenuItem Text="Share" x:Name="ShareButton" Click="ShareButton_Click"/>
+                <shell:ApplicationBarMenuItem Text="Pin to Start" x:Name="PinButton" Click="PinButton_Click"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

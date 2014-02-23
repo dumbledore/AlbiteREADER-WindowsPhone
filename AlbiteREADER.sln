@@ -1,24 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Phone
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbiteREADER", "AlbiteREADER\AlbiteREADER.csproj", "{CB6FF657-56D3-43B4-BA40-BD707F6403F7}"
+# Visual Studio Express 2013 for Windows
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albite.Reader.App", "Albite.Reader.App\Albite.Reader.App.csproj", "{CB6FF657-56D3-43B4-BA40-BD707F6403F7}"
 	ProjectSection(ProjectDependencies) = postProject
 		{85084981-FCBE-4271-A231-6D8CC83CA774} = {85084981-FCBE-4271-A231-6D8CC83CA774}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbiteCore", "AlbiteCore\AlbiteCore.csproj", "{85084981-FCBE-4271-A231-6D8CC83CA774}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albite.Reader.Core", "Albite.Reader.Core\Albite.Reader.Core.csproj", "{85084981-FCBE-4271-A231-6D8CC83CA774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbiteTests", "Tests\AlbiteTests.csproj", "{6CE58526-B4C4-4433-9671-9E2081E45193}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albite.Reader.Tests", "Albite.Reader.Tests\Albite.Reader.Tests.csproj", "{6CE58526-B4C4-4433-9671-9E2081E45193}"
 	ProjectSection(ProjectDependencies) = postProject
 		{85084981-FCBE-4271-A231-6D8CC83CA774} = {85084981-FCBE-4271-A231-6D8CC83CA774}
 		{CB6FF657-56D3-43B4-BA40-BD707F6403F7} = {CB6FF657-56D3-43B4-BA40-BD707F6403F7}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbiteLibrary", "AlbiteLibrary\AlbiteLibrary.csproj", "{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albite.Reader.BookLibrary", "Albite.Reader.BookLibrary\Albite.Reader.BookLibrary.csproj", "{070C27E9-87CE-45AF-A6E2-CA8A70B13A8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbiteContainer", "AlbiteContainer\AlbiteContainer.csproj", "{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albite.Reader.Container", "Albite.Reader.Container\Albite.Reader.Container.csproj", "{0DE6BBB7-CBB2-458C-ADD0-FF1F033D9302}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbiteEngine", "AlbiteEngine\AlbiteEngine.csproj", "{31F7CE9E-1E66-49CA-AB5A-DC52C1441B60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albite.Reader.Engine", "Albite.Reader.Engine\Albite.Reader.Engine.csproj", "{31F7CE9E-1E66-49CA-AB5A-DC52C1441B60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

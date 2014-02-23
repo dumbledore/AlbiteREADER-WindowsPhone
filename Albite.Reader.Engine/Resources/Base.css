@@ -1,0 +1,52 @@
+/*
+ * Albite READER
+ *
+ * Copyright (c) 2014 Svetlin Ankov
+ * All Rights Reserved
+ *
+ * This product is protected by copyright and distributed under
+ * licenses restricting copying, distribution, and decompilation.
+ */
+
+body {
+  font-family:      "Arial", sans-serif;
+  font-size:        28px; /* No need to make it dynamic */
+
+  -ms-touch-action: none;
+  -ms-user-select:  none;
+}
+
+html, body {
+  margin: 0;
+  width:  #(width)px;
+  height: 100%;
+}
+
+#page {
+  width:      #(width)px;
+  height:     #(height)px;
+  position:   absolute;
+  visibility: hidden;
+}
+
+#page_content_box {
+  width:    100%;
+  height:   100%;
+  overflow: hidden;
+}
+
+/*
+ * Theme
+ */
+html {
+  background-color: #(background_color);
+  color:            #(text_color);         /* Default: black */
+}
+
+#page {
+  background-color: #(background_color);  /* Default: white */
+}
+
+hr {
+  border-bottom-color: #(text_color);
+}

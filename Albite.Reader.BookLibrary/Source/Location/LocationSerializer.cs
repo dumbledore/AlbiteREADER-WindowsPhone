@@ -1,0 +1,40 @@
+﻿using Albite.Reader.BookLibrary.Location;
+using Albite.Reader.Core.Json;
+using Albite.Reader.Core.Serialization;
+using System;
+
+namespace Albite.Reader.BookLibrary
+{
+    internal class LocationSerializer: ISerializer<object>
+    {
+        private static readonly Type[] expectedTypes = new Type[]
+        {
+            typeof(ChapterLocation),
+            typeof(FirstPageLocation),
+            typeof(LastPageLocation),
+            typeof(PageLocation),
+            typeof(ElementLocation),
+            typeof(DomLocation),
+            typeof(BookLocation),
+            typeof(RelativeChapterLocation),
+            typeof(HistoryStack.SerializedHistoryStack),
+        };
+
+        private readonly JsonSerializer<object> serializer;
+
+        public LocationSerializer()
+        {
+            serializer = new JsonSerializer<object>(expectedTypes);
+        }
+
+        public string Encode(object entity)
+        {
+            return serializer.Encode(entity);
+        }
+
+        public object Decode(string data)
+        {
+            return serializer.Decode(data);
+        }
+    }
+}
