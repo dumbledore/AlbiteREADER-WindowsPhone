@@ -38,24 +38,34 @@
                     Orientation="Vertical"
                     toolkit:TiltEffect.IsTiltEnabled="True">
                     <albite:ThemeControl
+                        ForegroundColor="Black"
+                        BackgroundColor="White"
+                        Text="black on white"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
+                        ForegroundColor="#FF000060"
+                        BackgroundColor="#FFFAFAEC"
+                        Text="ink on paper"
+                        Tap="ThemeControl_Tap" />
+                    <albite:ThemeControl
                         ForegroundColor="White"
                         BackgroundColor="Black"
                         Text="white on black"
                         Tap="ThemeControl_Tap" />
                     <albite:ThemeControl
                         ForegroundColor="Beige"
-                        BackgroundColor="#FF201800"
+                        BackgroundColor="#FF1D1200"
                         Text="beige on brown"
                         Tap="ThemeControl_Tap" />
                     <albite:ThemeControl
-                        ForegroundColor="Black"
-                        BackgroundColor="White"
-                        Text="black on white"
+                        ForegroundColor="#FF99EEFF"
+                        BackgroundColor="#FF000020"
+                        Text="azure on dark blue"
                         Tap="ThemeControl_Tap" />
                     <albite:ThemeControl
-                        ForegroundColor="#FF000040"
-                        BackgroundColor="Beige"
-                        Text="ink on paper"
+                        ForegroundColor="#FFCCFFCC"
+                        BackgroundColor="#FF002000"
+                        Text="green on dark green"
                         Tap="ThemeControl_Tap" />
                 </StackPanel>
             </ScrollViewer>
