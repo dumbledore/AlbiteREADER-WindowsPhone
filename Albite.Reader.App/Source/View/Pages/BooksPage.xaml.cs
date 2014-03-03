@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Navigation;
+using System.Reflection;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -44,7 +45,14 @@ namespace Albite.Reader.App.View.Pages
 
         private void AboutButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Svetlin Ankov, 2016", "Albite READER", MessageBoxButton.OK);
+            AssemblyName name = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
+
+            string message = String.Format(
+                "Albite READER ver. {0} by Svetlin Ankov\n\n" +
+                "Contact me at svetlin.ankov@live.com\n\n" +
+                "© 2016 Svetlin Ankov\n", name.Version);
+
+            MessageBox.Show(message, "Albite READER", MessageBoxButton.OK);
         }
         #endregion
 
