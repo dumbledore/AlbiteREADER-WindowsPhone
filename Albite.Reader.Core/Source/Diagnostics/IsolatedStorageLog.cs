@@ -107,6 +107,12 @@ namespace Albite.Reader.Core.Diagnostics
 
         public override void Dispose()
         {
+            if (writer != null)
+            {
+                writer.Dispose();
+                writer = null;
+            }
+
             if (stream != null)
             {
                 stream.Dispose();
