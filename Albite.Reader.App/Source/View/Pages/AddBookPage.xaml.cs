@@ -21,7 +21,7 @@ namespace Albite.Reader.App.View.Pages
             InitializeComponent();
         }
 
-        private CancellationTokenSource cancelSourse = new CancellationTokenSource();
+        private CancellationTokenSource cancelSource = new CancellationTokenSource();
 
         private static readonly string newBookFilename = "incoming.epub";
 
@@ -95,7 +95,7 @@ namespace Albite.Reader.App.View.Pages
             try
             {
                 // Get book async
-                Book book = await addBook(cancelSourse.Token, null);
+                Book book = await addBook(cancelSource.Token, null);
 
                 // Remove file token from the context
                 App.Context.FileToken = null;
@@ -130,7 +130,7 @@ namespace Albite.Reader.App.View.Pages
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             // Cancel the task just in case
-            cancelSourse.Cancel();
+            cancelSource.Cancel();
 
             // Finished loading
             WaitControl.Finish();
