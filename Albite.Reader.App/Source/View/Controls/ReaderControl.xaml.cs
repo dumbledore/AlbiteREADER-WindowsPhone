@@ -55,12 +55,16 @@ namespace Albite.Reader.App.View.Controls
 
         private void WebBrowser_NavigationFailed(object sender, System.Windows.Navigation.NavigationFailedEventArgs e)
         {
-            // TODO: How should the user be informed and/or
-            // what has to be done? This a fault of the app, not the epub.
-            // TODO: Handling failed navigation in the iframe?
-            // What about errors from the client?
-            // What about an '{loadingError}' event from the client?
-            Log.E(tag, "Navigation failed: " + e.Uri);
+            // As WebBrowserControl is navigated to
+            // an empty string whenever ReaderControl is Unloaded, i.e.
+            // at a time it would not exist in the UI hierarchy,
+            // it would cause a NavigationFailed event.
+            // It appears that Navigating the WebBrowserControl away
+            // is the only way to make sure that the JavaScript engine
+            // would not be working in the background by any chance
+            // after ReaderControl is unloaded or even after it's page
+            // is not active any more.
+            // There's nothing we can do but ignore it.
             e.Handled = true;
         }
 
