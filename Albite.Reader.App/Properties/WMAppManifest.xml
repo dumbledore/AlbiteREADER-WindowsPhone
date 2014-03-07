@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{95b37562-175c-46d9-a063-36c2d4d9b280}" Title="Albite READER" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Svetlin Ankov" Description="Albite READER is an e-book reader that supports the ePub format." Publisher="Svetlin Ankov" PublisherID="{f9859660-09b1-41c9-8868-07593ffda049}">
+  <App xmlns="" ProductID="{95b37562-175c-46d9-a063-36c2d4d9b280}" Title="Albite READER" RuntimeType="Silverlight" Version="1.0.0.1" Genre="apps.normal" Author="Svetlin Ankov" Description="Albite READER is an e-book reader that supports the ePub format." Publisher="Svetlin Ankov" PublisherID="{f9859660-09b1-41c9-8868-07593ffda049}">
     <IconPath IsRelative="true" IsResource="false">Resources\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
