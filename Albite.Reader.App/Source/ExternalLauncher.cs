@@ -7,15 +7,20 @@ namespace Albite.Reader.App
 {
     public static class ExternalLauncher
     {
+        private static Uri getUri(string action)
+        {
+            return new Uri(
+                    String.Format("zune:{0}?appid={1}", action, CurrentApp.AppId));
+        }
+
         public static async Task LaunchAppDetailsPage()
         {
-            string uri = String.Format("zune:navigate?appid={0}", CurrentApp.AppId);
-            await Launcher.LaunchUriAsync(new Uri(uri));
+            await Launcher.LaunchUriAsync(getUri("navigate"));
         }
 
         public static async Task LaunchAppRatePage()
         {
-            await Launcher.LaunchUriAsync(new Uri("zune:reviewapp"));
+            await Launcher.LaunchUriAsync(getUri("reviewapp"));
         }
     }
 }
