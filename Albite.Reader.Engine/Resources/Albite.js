@@ -175,16 +175,15 @@ Albite.Pager = function(context) {
   var current;
 
   function setUp() {
+    // Sometimes pagination doesn't work absolutely correctly,
+    // producing an extra pixel.
+    // Change the strategy:
+    // 1. Do not fail
+    // 2. Floor the value
     var pages = bodyWidth / pageWidth;
 
-    // Warn if pagination worked incorrectly
-    if (pages % 1 !== 0) {
-      throw new Error(0, "Page count is not integer: " +
-        pages + " pages x " + pageWidth + " = " + bodyWidth);
-    }
-
     // Don't count the first and last dummy pages
-    count = Math.ceil(pages) - 2;
+    count = Math.floor(pages) - 2;
 
     // Clamp it just in case
     if (count < 1) {
