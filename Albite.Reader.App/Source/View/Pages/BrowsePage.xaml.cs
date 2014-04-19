@@ -6,6 +6,7 @@ using Albite.Reader.App.View.Controls;
 using System.Windows.Input;
 using Albite.Reader.App.Browse;
 using System;
+using System.Threading.Tasks;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -48,19 +49,23 @@ namespace Albite.Reader.App.View.Pages
 
         private string currentPath = "/";
 
-        private async void setCurrentPath(string path)
+        private async Task setCurrentPath(string path)
         {
-            try
+            if (service.LoginRequired)
             {
-                await service.LogIn();
-            } catch (Exception)
-            {
-                MessageBox.Show(
-                    "Failed connecting to " + service.Name,
-                    "Error",
-                    MessageBoxButton.OK);
+                try
+                {
+                    await service.LogIn();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(
+                        "Failed connecting to " + service.Name,
+                        "Error",
+                        MessageBoxButton.OK);
 
-                NavigationService.GoBack();
+                    NavigationService.GoBack();
+                }
             }
 
             ICollection<IFolderItem> items = await service.GetFolderContentsAsync(path);
@@ -80,12 +85,12 @@ namespace Albite.Reader.App.View.Pages
             currentPath = path;
         }
 
-        private void refresh()
+        private async Task refresh()
         {
-            setCurrentPath(currentPath);
+            await setCurrentPath(currentPath);
         }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        private async void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             if (service == null)
             {
@@ -93,7 +98,26 @@ namespace Albite.Reader.App.View.Pages
                     NavigationContext.QueryString["service"]);
             }
 
-            refresh();
+            await refresh();
+
+            ApplicationBar.IsVisible = service.LoginRequired;
+        }
+
+        private void LogoutButton_Click(object sender, EventArgs e)
+        {
+            if (service.LoginRequired)
+            {
+                if (MessageBox.Show(
+                    "Do you want to log out?",
+                    service.Name,
+                    MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                {
+                    service.LogOut();
+
+                    // Go back to previous page
+                    NavigationService.GoBack();
+                }
+            }
         }
     }
 }
