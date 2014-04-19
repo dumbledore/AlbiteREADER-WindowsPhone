@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Live;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -11,6 +13,17 @@ namespace Albite.Reader.App.Browse
         private OneDriveBrowsingService() { }
 
         private static readonly OneDriveBrowsingService instance_ = new OneDriveBrowsingService();
+
+        private static readonly string ClientId = "ba7a5dbf-a049-48a1-b68c-f615ff680d6f";
+
+        private static readonly string[] LoginScopes =
+            new string[]
+        {
+            "wl.signin",
+            "wl.basic",
+            "wl.skydrive",
+            "wl.offline_access",
+        };
 
         public static IBrowsingService Instance
         {
@@ -32,35 +45,69 @@ namespace Albite.Reader.App.Browse
 
         public bool LoginRequired { get { return true; } }
 
-        public void LogIn()
+        private LiveAuthClient client = null;
+
+        public async Task LogIn()
         {
-            //TODO
+            if (LoggedIn)
+            {
+                // Already logged in
+                return;
+            }
+
+            LiveAuthClient client = new LiveAuthClient(ClientId);
+
+            LiveLoginResult result = await client.InitializeAsync();
+
+            if (result == null || result.Status != LiveConnectSessionStatus.Connected)
+            {
+                result = await client.LoginAsync(LoginScopes);
+            }
+
+            if (result.Status != LiveConnectSessionStatus.Connected)
+            {
+                throw new InvalidOperationException("Couldn't connect");
+            }
+
+            // Connected
+            this.client = client;
         }
 
         public void LogOut()
         {
-            // TODO
+            if (client == null)
+            {
+                return;
+            }
+
+            client.Logout();
+            client = null;
         }
 
         public bool LoggedIn
         {
             get
             {
-                //TODO
-                return false;
+                return client != null && client.Session != null;
             }
         }
 
-        public ICollection<IFolderItem> GetFolderContentsAsync(string path)
+        public async Task<ICollection<IFolderItem>> GetFolderContentsAsync(string path)
         {
             //TODO
-            return null;
-        }
+            return await Task<ICollection<IFolderItem>>.Run(() =>
+            {
+                return new IFolderItem[0];
+            });
+    }
 
-        public Stream GetFileContentsAsync(string path)
+        public async Task<Stream> GetFileContentsAsync(string path)
         {
-            //TODO
-            return null;
+            // TODO
+            return await Task<Stream>.Run(() =>
+            {
+                return Stream.Null;
+            });
         }
     }
 }

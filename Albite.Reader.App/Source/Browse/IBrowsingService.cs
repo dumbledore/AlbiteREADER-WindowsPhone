@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace Albite.Reader.App.Browse
@@ -24,7 +25,7 @@ namespace Albite.Reader.App.Browse
         /// <summary>
         /// Logs the user in
         /// </summary>
-        void LogIn();
+        Task LogIn();
 
         /// <summary>
         /// Logs the user out
@@ -42,13 +43,13 @@ namespace Albite.Reader.App.Browse
         /// </summary>
         /// <param name="path">The folder path</param>
         /// <returns></returns>
-        ICollection<IFolderItem> GetFolderContentsAsync(string path);
+        Task<ICollection<IFolderItem>> GetFolderContentsAsync(string path);
 
         /// <summary>
         /// Retrieves the contents of a file
         /// </summary>
         /// <param name="path">The file path</param>
         /// <returns></returns>
-        Stream GetFileContentsAsync(string path);
+        Task<Stream> GetFileContentsAsync(string path);
     }
 }

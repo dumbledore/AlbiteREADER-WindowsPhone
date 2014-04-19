@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using System.Collections.ObjectModel;
-using System.IO;
 using Albite.Reader.App.View.Controls;
 using System.Windows.Input;
 using Albite.Reader.App.Browse;
+using System;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -23,24 +17,11 @@ namespace Albite.Reader.App.View.Pages
             InitializeComponent();
         }
 
-        //private string currentPath = "/";
+        // TODO handle hibernation:
+        // 1. Restore current path
+        // 2. Restore browsing service -> Shouldn't it be serializable?
 
-        private IBrowsingService browsingService = null;
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            if (browsingService == null)
-            {
-                browsingService = BrowsingServices.GetService(
-                    NavigationContext.QueryString["service"]);
-            }
-
-            // TODO handle hibernation:
-            // 1. Restore current path
-            // 2. Restore browsing service -> Shouldn't it be serializable?
-
-            base.OnNavigatedTo(e);
-        }
+        private IBrowsingService service = null;
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
@@ -63,6 +44,56 @@ namespace Albite.Reader.App.View.Pages
             FolderControl control = (FolderControl)sender;
 
             // TODO
+        }
+
+        private string currentPath = "/";
+
+        private async void setCurrentPath(string path)
+        {
+            try
+            {
+                await service.LogIn();
+            } catch (Exception)
+            {
+                MessageBox.Show(
+                    "Failed connecting to " + service.Name,
+                    "Error",
+                    MessageBoxButton.OK);
+
+                NavigationService.GoBack();
+            }
+
+            ICollection<IFolderItem> items = await service.GetFolderContentsAsync(path);
+            if (items.Count == 0)
+            {
+                // Empty folder
+                FoldersList.ItemsSource = null;
+                EmptyTextBlock.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // Has items
+                FoldersList.ItemsSource = items;
+                EmptyTextBlock.Visibility = Visibility.Collapsed;
+            }
+
+            currentPath = path;
+        }
+
+        private void refresh()
+        {
+            setCurrentPath(currentPath);
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (service == null)
+            {
+                service = BrowsingServices.GetService(
+                    NavigationContext.QueryString["service"]);
+            }
+
+            refresh();
         }
     }
 }
