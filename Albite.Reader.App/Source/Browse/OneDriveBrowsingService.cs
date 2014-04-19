@@ -88,7 +88,16 @@ namespace Albite.Reader.App.Browse
         {
             get
             {
-                return client != null && client.Session != null;
+                if (client == null || client.Session == null)
+                {
+                    return false;
+                }
+
+                TimeSpan diff = client.Session.Expires - DateTimeOffset.Now;
+
+                // If there's one minute or less before session expiration,
+                // report false, so that the session would be refreshed in time
+                return diff.TotalMinutes > 1;
             }
         }
 
