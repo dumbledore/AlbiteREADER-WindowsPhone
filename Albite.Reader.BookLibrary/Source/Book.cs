@@ -1,9 +1,10 @@
 ﻿using Albite.Reader.BookLibrary.DataContext;
 using Albite.Reader.Container;
+using System;
 
 namespace Albite.Reader.BookLibrary
 {
-    public class Book : LibraryEntity
+    public class Book : LibraryEntity, IComparable<Book>
     {
         public BookManager Manager { get; private set; }
 
@@ -19,6 +20,11 @@ namespace Albite.Reader.BookLibrary
             // Other entity fields
             Title = entity.Title;
             Author = entity.Author;
+        }
+
+        public int CompareTo(Book other)
+        {
+            return Title.CompareTo(other.Title);
         }
     }
 }

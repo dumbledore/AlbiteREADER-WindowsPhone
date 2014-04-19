@@ -67,6 +67,9 @@ namespace Albite.Reader.App.View.Pages
             // Get the books
             Book[] booksArray = library.Books.GetAll();
 
+            // Sort the books
+            Array.Sort<Book>(booksArray);
+
             // Fill the observable list
             books = new ObservableCollection<Book>(booksArray);
 
