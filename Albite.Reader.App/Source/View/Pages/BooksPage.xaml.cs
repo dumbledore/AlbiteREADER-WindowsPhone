@@ -32,10 +32,16 @@ namespace Albite.Reader.App.View.Pages
             // So we need to do it the ugly way...
 
             // First, the icon buttons
-            RateButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-            AboutButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
+            AddButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
 
             // Then the menu buttons
+            RateButton = ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+            AboutButton = ApplicationBar.MenuItems[1] as ApplicationBarMenuItem;
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            //TODO
         }
 
         private async void RateButton_Click(object sender, EventArgs e)
