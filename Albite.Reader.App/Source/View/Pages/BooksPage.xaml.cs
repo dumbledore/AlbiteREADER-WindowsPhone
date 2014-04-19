@@ -41,7 +41,8 @@ namespace Albite.Reader.App.View.Pages
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            //TODO
+            NavigationService.Navigate(
+                new Uri("/Albite.Reader.App;component/Source/View/Pages/BrowsingServicesPage.xaml", UriKind.Relative));
         }
 
         private async void RateButton_Click(object sender, EventArgs e)

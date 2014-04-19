@@ -134,6 +134,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\Context.cs" />
+    <Compile Include="Source\Browse\BrowsingServices.cs" />
+    <Compile Include="Source\Browse\IBrowsingService.cs" />
+    <Compile Include="Source\Browse\IFolderItem.cs" />
+    <Compile Include="Source\Browse\OneDriveBrowsingService.cs" />
     <Compile Include="Source\ExternalLauncher.cs" />
     <Compile Include="Source\CustomUriMapper.cs" />
     <Compile Include="Source\App.xaml.cs">
@@ -146,11 +150,16 @@
     <Compile Include="Source\View\Controls\BookTileControl.xaml.cs">
       <DependentUpon>BookTileControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Controls\BrowsingServiceControl.cs" />
+    <Compile Include="Source\View\Controls\FolderControl.cs" />
     <Compile Include="Source\View\Controls\HeaderedContentControl.xaml.cs">
       <DependentUpon>HeaderedContentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\View\Controls\HierarchicalTextControl.xaml.cs">
       <DependentUpon>HierarchicalTextControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\View\Controls\IconContentControl.xaml.cs">
+      <DependentUpon>IconContentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\View\Controls\IReaderControlObserver.cs" />
     <Compile Include="Source\View\Controls\ReaderControl.xaml.cs">
@@ -189,6 +198,12 @@
     </Compile>
     <Compile Include="Source\View\Pages\BooksPage.xaml.cs">
       <DependentUpon>BooksPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\View\Pages\BrowsePage.xaml.cs">
+      <DependentUpon>BrowsePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\View\Pages\BrowsingServicesPage.xaml.cs">
+      <DependentUpon>BrowsingServicesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\View\Pages\ContentsPage.xaml.cs">
       <DependentUpon>ContentsPage.xaml</DependentUpon>
@@ -242,6 +257,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Images\add.png" />
+    <Content Include="Resources\Images\folder.png" />
+    <Content Include="Resources\Images\onedrive.png" />
     <Content Include="Resources\tile-mark.png" />
     <Content Include="Resources\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -275,6 +292,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\View\Controls\HierarchicalTextControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\View\Controls\IconContentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -319,6 +340,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\View\Pages\BooksPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\View\Pages\BrowsePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\View\Pages\BrowsingServicesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

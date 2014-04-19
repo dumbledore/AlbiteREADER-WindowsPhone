@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Albite.Reader.App.View.Controls.IconContentControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+
+    <Grid Background="Transparent" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="72"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Image
+            Grid.Column="0"
+            IsHitTestVisible="False"
+            x:Name="Icon" />
+        <TextBlock
+            Grid.Column="1"
+            Margin="0, 12, 12, 12"
+            VerticalAlignment="Center"
+            Style="{StaticResource PhoneTextLargeStyle}"
+            x:Name="ContentTextBlock"
+            TextWrapping="NoWrap"
+            IsHitTestVisible="False" />
+    </Grid>
+</UserControl>
