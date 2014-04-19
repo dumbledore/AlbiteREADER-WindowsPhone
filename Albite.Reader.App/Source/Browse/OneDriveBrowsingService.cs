@@ -4,16 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Albite.Reader.App.Browse
 {
-    public class OneDriveBrowsingService : IBrowsingService
+    public class OneDriveBrowsingService : BrowsingService
     {
-        private OneDriveBrowsingService() { }
-
-        private static readonly OneDriveBrowsingService instance_ = new OneDriveBrowsingService();
-
         private static readonly string ClientId = "ba7a5dbf-a049-48a1-b68c-f615ff680d6f";
 
         private static readonly string[] LoginScopes =
@@ -25,29 +20,29 @@ namespace Albite.Reader.App.Browse
             "wl.offline_access",
         };
 
-        public static IBrowsingService Instance
-        {
-            get { return instance_; }
-        }
+        public override string Name { get { return "OneDrive"; } }
 
-        public string Name { get { return "OneDrive"; } }
+        public override string Id { get { return "onedrive"; } }
 
-        public string Id { get { return "onedrive"; } }
+        private static CachedResourceImage cachedImage
+            = new CachedResourceImage("/Resources/Images/onedrive.png");
 
-        public ImageSource Icon
+        private static CachedResourceImage cachedImageDark
+            = new CachedResourceImage("/Resources/Images/onedrive-dark.png");
+
+        public override ImageSource Icon
         {
             get
             {
-                Uri uri = new Uri("/Resources/Images/onedrive.png", UriKind.Relative);
-                return new BitmapImage(uri);
+                return ThemeInfo.ThemeIsDark ? cachedImageDark.Value : cachedImage.Value;
             }
         }
 
-        public bool LoginRequired { get { return true; } }
+        public override bool LoginRequired { get { return true; } }
 
         private LiveAuthClient client = null;
 
-        public async Task LogIn()
+        public override async Task LogIn()
         {
             if (LoggedIn)
             {
@@ -73,7 +68,7 @@ namespace Albite.Reader.App.Browse
             this.client = client;
         }
 
-        public void LogOut()
+        public override void LogOut()
         {
             if (client == null)
             {
@@ -84,7 +79,7 @@ namespace Albite.Reader.App.Browse
             client = null;
         }
 
-        public bool LoggedIn
+        public override bool LoggedIn
         {
             get
             {
@@ -101,22 +96,74 @@ namespace Albite.Reader.App.Browse
             }
         }
 
-        public async Task<ICollection<IFolderItem>> GetFolderContentsAsync(string path)
+        public override async Task<ICollection<IFolderItem>> GetFolderContentsAsync(string path)
         {
-            //TODO
-            return await Task<ICollection<IFolderItem>>.Run(() =>
+            if (!LoggedIn)
             {
-                return new IFolderItem[0];
-            });
-    }
+                await LogIn();
+            }
 
-        public async Task<Stream> GetFileContentsAsync(string path)
+            LiveConnectClient connectClient = new LiveConnectClient(client.Session);
+            LiveOperationResult operationResult = await connectClient.GetAsync("me/skydrive/files");
+            dynamic result = operationResult.Result;
+            dynamic data = result.data;
+
+            List<IFolderItem> items = new List<IFolderItem>(data.Count);
+
+            ImageSource fileIcon = null;
+            if (GetFileIconDelegate != null)
+            {
+                fileIcon = GetFileIconDelegate();
+            }
+
+            foreach (dynamic d in data)
+            {
+                string id = (string)d.id;
+                string name = (string)d.name;
+                string type = (string)d.type;
+
+                if (type == "folder")
+                {
+                    items.Add(new FolderItem(id, name, true, null));
+                }
+                else if (type == "file")
+                {
+                    if (IsFileAcceptedDelegate == null
+                        || IsFileAcceptedDelegate(name))
+                    {
+                        items.Add(new FolderItem(id, name, false, fileIcon));
+                    }
+                }
+
+                // skip non-folder/file types, e.g. albums
+            }
+
+            return items.ToArray();
+        }
+
+        public override async Task<Stream> GetFileContentsAsync(string path)
         {
             // TODO
             return await Task<Stream>.Run(() =>
             {
                 return Stream.Null;
             });
+        }
+
+        private class FolderItem : IFolderItem
+        {
+            public string Id { get; private set; }
+            public string Name { get; private set; }
+            public bool IsFolder { get; private set; }
+            public ImageSource FileIcon{get;private set;}
+
+            public FolderItem(string id, string name, bool isFolder, ImageSource fileIcon)
+            {
+                Id = id;
+                Name = name;
+                IsFolder = isFolder;
+                FileIcon = fileIcon;
+            }
         }
     }
 }

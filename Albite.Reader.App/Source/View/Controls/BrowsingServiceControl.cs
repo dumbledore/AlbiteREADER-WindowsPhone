@@ -13,12 +13,12 @@ namespace Albite.Reader.App.View.Controls
         }
 
         public static readonly DependencyProperty BrowsingServiceProperty
-            = DependencyProperty.Register("BrowsingService", typeof(IBrowsingService), typeof(BrowsingServiceControl),
+            = DependencyProperty.Register("BrowsingService", typeof(BrowsingService), typeof(BrowsingServiceControl),
             new PropertyMetadata(onBookmarkChanged));
 
-        public IBrowsingService BrowsingService
+        public BrowsingService BrowsingService
         {
-            get { return (IBrowsingService)GetValue(BrowsingServiceProperty); }
+            get { return (BrowsingService)GetValue(BrowsingServiceProperty); }
             set { SetValue(BrowsingServiceProperty, value); }
         }
 
@@ -26,12 +26,10 @@ namespace Albite.Reader.App.View.Controls
         {
             BrowsingServiceControl control = (BrowsingServiceControl)d;
 
-            IBrowsingService newValue = (IBrowsingService)e.NewValue;
+            BrowsingService newValue = (BrowsingService)e.NewValue;
 
             control.ContentTextBlock.Text = newValue.Name;
-            control.Icon.Source = new BitmapImage(
-                new Uri("/Resources/Images/onedrive.png", UriKind.Relative));
+            control.Icon.Source = newValue.Icon;
         }
     }
-
 }

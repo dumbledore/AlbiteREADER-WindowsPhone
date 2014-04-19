@@ -20,17 +20,23 @@ namespace Albite.Reader.App.View.Controls
             set { SetValue(FolderItemProperty, value); }
         }
 
+        private static CachedResourceImage cachedFolderImage
+            = new CachedResourceImage("/Resources/Images/folder.png");
+
+        private static CachedResourceImage cachedFolderImageDark
+            = new CachedResourceImage("/Resources/Images/folder-dark.png");
+
         private static void onFolderItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             FolderControl control = (FolderControl)d;
 
             IFolderItem newValue = (IFolderItem)e.NewValue;
 
-            //// Set up book position as header text
-            //control.HeaderText = string.Format("{0:P0}", getReadingPosition(newValue));
+            control.ContentTextBlock.Text = newValue.Name;
 
-            //// Set up bookmark text as content text
-            //control.ContentText = newValue.Text;
+            control.Icon.Source = newValue.IsFolder
+                ? (ThemeInfo.ThemeIsDark ? cachedFolderImageDark.Value : cachedFolderImage.Value)
+                : newValue.FileIcon;
         }
     }
 }

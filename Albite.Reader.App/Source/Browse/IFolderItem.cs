@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Media;
 
 namespace Albite.Reader.App.Browse
 {
     public interface IFolderItem
     {
         string Name { get; }
-        bool IsFile { get; }
+        bool IsFolder { get; }
+        ImageSource FileIcon { get; }
     }
 }

@@ -14,9 +14,9 @@ namespace Albite.Reader.App.View.Pages
             InitializeComponent();
 
             // Add services
-            ObservableCollection<IBrowsingService> services =
-                new ObservableCollection<IBrowsingService>(
-                    BrowsingServices.Services);
+            ObservableCollection<BrowsingService> services =
+                new ObservableCollection<BrowsingService>(
+                    BookBrowsingServices.Services);
 
             SourcesList.ItemsSource = services;
         }
@@ -24,7 +24,7 @@ namespace Albite.Reader.App.View.Pages
         private void Control_Tap(object sender, GEArgs e)
         {
             BrowsingServiceControl control = (BrowsingServiceControl)sender;
-            IBrowsingService service = control.BrowsingService;
+            BrowsingService service = control.BrowsingService;
             NavigationService.Navigate(new Uri(
                 "/Albite.Reader.App;component/Source/View/Pages/BrowsePage.xaml?service="
                 + service.Id, UriKind.Relative));

@@ -134,16 +134,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\Context.cs" />
-    <Compile Include="Source\Browse\BrowsingServices.cs" />
-    <Compile Include="Source\Browse\IBrowsingService.cs" />
+    <Compile Include="Source\Browse\BookBrowsingServices.cs" />
+    <Compile Include="Source\Browse\BrowsingService.cs" />
     <Compile Include="Source\Browse\IFolderItem.cs" />
     <Compile Include="Source\Browse\OneDriveBrowsingService.cs" />
+    <Compile Include="Source\CachedResourceImage.cs" />
     <Compile Include="Source\ExternalLauncher.cs" />
     <Compile Include="Source\CustomUriMapper.cs" />
     <Compile Include="Source\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\AppUtils.cs" />
+    <Compile Include="Source\ThemeInfo.cs" />
     <Compile Include="Source\TileManager.cs" />
     <Compile Include="Source\View\Controls\BookHeaderedControl.cs" />
     <Compile Include="Source\View\Controls\BookmarkControl.cs" />
@@ -257,7 +259,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Images\add.png" />
+    <Content Include="Resources\Images\epub-dark.png" />
+    <Content Include="Resources\Images\epub.png" />
+    <Content Include="Resources\Images\folder-dark.png" />
     <Content Include="Resources\Images\folder.png" />
+    <Content Include="Resources\Images\onedrive-dark.png" />
     <Content Include="Resources\Images\onedrive.png" />
     <Content Include="Resources\tile-mark.png" />
     <Content Include="Resources\ApplicationIcon.png">

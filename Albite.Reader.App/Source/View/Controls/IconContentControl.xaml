@@ -7,6 +7,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
+    Margin="0,0,0,12"
     d:DesignHeight="480" d:DesignWidth="480">
 
     <Grid Background="Transparent" VerticalAlignment="Center">
@@ -14,13 +15,15 @@
             <ColumnDefinition Width="72"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Image
-            Grid.Column="0"
-            IsHitTestVisible="False"
-            x:Name="Icon" />
+        <Grid Background="{StaticResource PhoneForegroundBrush}">
+            <Image
+                Grid.Column="0"
+                IsHitTestVisible="False"
+                x:Name="Icon" />
+        </Grid>
         <TextBlock
             Grid.Column="1"
-            Margin="0, 12, 12, 12"
+            Margin="12"
             VerticalAlignment="Center"
             Style="{StaticResource PhoneTextLargeStyle}"
             x:Name="ContentTextBlock"

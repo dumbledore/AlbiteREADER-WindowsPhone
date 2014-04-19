@@ -22,7 +22,7 @@ namespace Albite.Reader.App.View.Pages
         // 1. Restore current path
         // 2. Restore browsing service -> Shouldn't it be serializable?
 
-        private IBrowsingService service = null;
+        private BrowsingService service = null;
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
@@ -68,18 +68,31 @@ namespace Albite.Reader.App.View.Pages
                 }
             }
 
-            ICollection<IFolderItem> items = await service.GetFolderContentsAsync(path);
-            if (items.Count == 0)
+            try
             {
-                // Empty folder
-                FoldersList.ItemsSource = null;
-                EmptyTextBlock.Visibility = Visibility.Visible;
+                ICollection<IFolderItem> items = await service.GetFolderContentsAsync(path);
+
+                if (items.Count == 0)
+                {
+                    // Empty folder
+                    FoldersList.ItemsSource = null;
+                    EmptyTextBlock.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    // Has items
+                    FoldersList.ItemsSource = items;
+                    EmptyTextBlock.Visibility = Visibility.Collapsed;
+                }
             }
-            else
+            catch (Exception)
             {
-                // Has items
-                FoldersList.ItemsSource = items;
-                EmptyTextBlock.Visibility = Visibility.Collapsed;
+                MessageBox.Show(
+                    "Failed accessing folder",
+                    "Error",
+                    MessageBoxButton.OK);
+
+                NavigationService.GoBack();
             }
 
             currentPath = path;
@@ -94,7 +107,7 @@ namespace Albite.Reader.App.View.Pages
         {
             if (service == null)
             {
-                service = BrowsingServices.GetService(
+                service = BookBrowsingServices.GetService(
                     NavigationContext.QueryString["service"]);
             }
 
