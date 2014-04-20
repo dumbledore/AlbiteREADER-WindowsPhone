@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
@@ -29,6 +30,8 @@ namespace Albite.Reader.App.Browse
 
         private static CachedResourceImage cachedImageDark
             = new CachedResourceImage("/Resources/Images/onedrive-dark.png");
+
+        private static FolderItem RootFolder = new FolderItem("me/skydrive", "root", true, null);
 
         public override ImageSource Icon
         {
@@ -96,15 +99,23 @@ namespace Albite.Reader.App.Browse
             }
         }
 
-        public override async Task<ICollection<IFolderItem>> GetFolderContentsAsync(string path)
+        public override async Task<ICollection<IFolderItem>> GetFolderContentsAsync(
+            IFolderItem folder, CancellationToken ct)
         {
             if (!LoggedIn)
             {
                 await LogIn();
             }
 
+            FolderItem oneDriveFolder = (FolderItem) folder;
+
+            if (oneDriveFolder == null)
+            {
+                oneDriveFolder = RootFolder;
+            }
+
             LiveConnectClient connectClient = new LiveConnectClient(client.Session);
-            LiveOperationResult operationResult = await connectClient.GetAsync("me/skydrive/files");
+            LiveOperationResult operationResult = await connectClient.GetAsync(oneDriveFolder.Id + "/files", ct);
             dynamic result = operationResult.Result;
             dynamic data = result.data;
 

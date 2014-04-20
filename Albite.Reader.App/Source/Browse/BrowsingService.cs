@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
@@ -47,9 +48,14 @@ namespace Albite.Reader.App.Browse
         /// <summary>
         /// Retrieves the folder contents for a particular path
         /// </summary>
-        /// <param name="path">The folder path</param>
+        /// <param name="path">The folder item. If null, it looks in the root folder.</param>
         /// <returns></returns>
-        public abstract Task<ICollection<IFolderItem>> GetFolderContentsAsync(string path);
+        public abstract Task<ICollection<IFolderItem>> GetFolderContentsAsync(IFolderItem folder, CancellationToken ct);
+
+        public Task<ICollection<IFolderItem>> GetFolderContentsAsync(IFolderItem folder)
+        {
+            return GetFolderContentsAsync(folder, CancellationToken.None);
+        }
 
         /// <summary>
         /// Retrieves the contents of a file

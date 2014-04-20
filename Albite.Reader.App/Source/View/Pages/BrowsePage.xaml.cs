@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Albite.Reader.App.Browse;
 using System;
 using System.Threading.Tasks;
+using System.Threading;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -37,19 +38,82 @@ namespace Albite.Reader.App.View.Pages
             // 1. Cancel async operations (if any)
             // 2. Go to root folder (if any)
             // 3. Go to previous page
+
+            // Cancel any previous tasks and wait for them to finish
+            cancelCurrentTask();
+
+            if (path.Count > 0)
+            {
+                // Go up one folder
+                cts = new CancellationTokenSource();
+                currentTask = goToParentFolder(cts.Token);
+                e.Cancel = true;
+            }
+
             base.OnBackKeyPress(e);
+        }
+
+        private Task currentTask = null;
+        private CancellationTokenSource cts = null;
+
+        private void cancelCurrentTask()
+        {
+            if (cts != null)
+            {
+                cts.Cancel();
+                cts = null;
+            }
+
+            if (currentTask != null)
+            {
+                currentTask.Wait();
+                currentTask = null;
+            }
         }
 
         private void FolderControl_Tap(object sender, GEArgs e)
         {
             FolderControl control = (FolderControl)sender;
 
-            // TODO
+            // Cancel any previous tasks and wait for them to finish
+            cancelCurrentTask();
+
+            IFolderItem item = control.FolderItem;
+            if (item.IsFolder)
+            {
+                cts = new CancellationTokenSource();
+                currentTask = goTo(item, cts.Token);
+            }
+            else
+            {
+                MessageBox.Show("Downloading " + item.Name);
+            }
         }
 
-        private string currentPath = "/";
+        private Stack<IFolderItem> path = new Stack<IFolderItem>();
 
-        private async Task setCurrentPath(string path)
+        private async Task goTo(IFolderItem folder, CancellationToken ct)
+        {
+            await loadFolderContents(folder, ct);
+            path.Push(folder);
+        }
+
+        private async Task goToParentFolder(CancellationToken ct)
+        {
+            // First, remove the current folder
+            path.Pop();
+
+            // Then update contents
+            await refreshFolderContents(ct);
+        }
+
+        private async Task refreshFolderContents(CancellationToken ct)
+        {
+            await loadFolderContents(
+                path.Count > 0 ? path.Peek() : null, ct);
+        }
+
+        private async Task loadFolderContents(IFolderItem folder, CancellationToken ct)
         {
             if (service.LoginRequired)
             {
@@ -68,9 +132,12 @@ namespace Albite.Reader.App.View.Pages
                 }
             }
 
+            // Check if cancelled in the meantime
+            ct.ThrowIfCancellationRequested();
+
             try
             {
-                ICollection<IFolderItem> items = await service.GetFolderContentsAsync(path);
+                ICollection<IFolderItem> items = await service.GetFolderContentsAsync(folder, ct);
 
                 if (items.Count == 0)
                 {
@@ -85,25 +152,20 @@ namespace Albite.Reader.App.View.Pages
                     EmptyTextBlock.Visibility = Visibility.Collapsed;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 MessageBox.Show(
-                    "Failed accessing folder",
+                    "Failed accessing folder: " + e.Message,
                     "Error",
                     MessageBoxButton.OK);
 
                 NavigationService.GoBack();
             }
 
-            currentPath = path;
+            FolderText.Text = folder == null ? service.Name : folder.Name;
         }
 
-        private async Task refresh()
-        {
-            await setCurrentPath(currentPath);
-        }
-
-        private async void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             if (service == null)
             {
@@ -111,7 +173,15 @@ namespace Albite.Reader.App.View.Pages
                     NavigationContext.QueryString["service"]);
             }
 
-            await refresh();
+            // Initial state
+            FolderText.Text = service.Name;
+            FoldersList.ItemsSource = null;
+
+            // Cancel current task (if any)
+            cancelCurrentTask();
+
+            cts = new CancellationTokenSource();
+            currentTask = refreshFolderContents(cts.Token);
 
             ApplicationBar.IsVisible = service.LoginRequired;
         }
