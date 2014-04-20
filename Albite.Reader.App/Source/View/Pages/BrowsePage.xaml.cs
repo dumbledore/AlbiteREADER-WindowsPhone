@@ -28,7 +28,7 @@ namespace Albite.Reader.App.View.Pages
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            // TODO cancel async operations
+            cancelCurrentTask();
             base.OnNavigatingFrom(e);
         }
 
@@ -53,9 +53,11 @@ namespace Albite.Reader.App.View.Pages
         {
             if (currentTask != null)
             {
-                currentTask.CancelOrComplete();
+                currentTask.Cancel();
                 currentTask = null;
             }
+
+            WaitControl.Finish();
         }
 
         private void FolderControl_Tap(object sender, GEArgs e)
@@ -139,6 +141,8 @@ namespace Albite.Reader.App.View.Pages
 
         private async Task loadFolderContentsAsync(IFolderItem folder, CancellationToken ct)
         {
+            WaitControl.Start();
+
             if (service.LoginRequired)
             {
                 try
@@ -152,7 +156,9 @@ namespace Albite.Reader.App.View.Pages
                         "Error",
                         MessageBoxButton.OK);
 
+                    WaitControl.Finish();
                     NavigationService.GoBack();
+                    return;
                 }
             }
 
@@ -172,8 +178,8 @@ namespace Albite.Reader.App.View.Pages
                     "Error",
                     MessageBoxButton.OK);
 
+                WaitControl.Finish();
                 NavigationService.GoBack();
-
                 return;
             }
 
@@ -194,6 +200,7 @@ namespace Albite.Reader.App.View.Pages
             }
 
             FolderText.Text = folder == null ? service.Name : folder.Name;
+            WaitControl.Finish();
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -245,7 +252,7 @@ namespace Albite.Reader.App.View.Pages
                 this.cts = cts;
             }
 
-            public void CancelOrComplete()
+            public void Cancel()
             {
                 if (Task.IsCanceled || Task.IsCompleted)
                 {
@@ -262,8 +269,6 @@ namespace Albite.Reader.App.View.Pages
 
                 // cts is not needed anymore
                 cts = null;
-
-                Albite.Reader.Core.Diagnostics.Log.D("BP", "task cancelled");
             }
         }
     }
