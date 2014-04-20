@@ -1,4 +1,5 @@
-﻿using Microsoft.Live;
+﻿using Albite.Reader.Core.Diagnostics;
+using Microsoft.Live;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,8 @@ namespace Albite.Reader.App.Browse
     public class OneDriveBrowsingService : BrowsingService
     {
         private static readonly string ClientId = "ba7a5dbf-a049-48a1-b68c-f615ff680d6f";
+
+        private static readonly string Tag = "OneDrive";
 
         private static readonly string[] LoginScopes =
             new string[]
@@ -113,6 +116,8 @@ namespace Albite.Reader.App.Browse
             {
                 oneDriveFolder = RootFolder;
             }
+
+            Log.D(Tag, "Getting folder contents of " + oneDriveFolder.Name);
 
             LiveConnectClient connectClient = new LiveConnectClient(client.Session);
             LiveOperationResult operationResult = await connectClient.GetAsync(oneDriveFolder.Id + "/files", ct);

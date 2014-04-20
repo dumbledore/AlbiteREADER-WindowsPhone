@@ -8,6 +8,7 @@ using Albite.Reader.App.Browse;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
+using Microsoft.Live;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -33,40 +34,26 @@ namespace Albite.Reader.App.View.Pages
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            // TODO
-            // Three things:
-            // 1. Cancel async operations (if any)
-            // 2. Go to root folder (if any)
-            // 3. Go to previous page
-
             // Cancel any previous tasks and wait for them to finish
             cancelCurrentTask();
 
             if (path.Count > 0)
             {
                 // Go up one folder
-                cts = new CancellationTokenSource();
-                currentTask = goToParentFolder(cts.Token);
+                goToParentFolder();
                 e.Cancel = true;
             }
 
             base.OnBackKeyPress(e);
         }
 
-        private Task currentTask = null;
-        private CancellationTokenSource cts = null;
+        private CancellableTask currentTask;
 
         private void cancelCurrentTask()
         {
-            if (cts != null)
-            {
-                cts.Cancel();
-                cts = null;
-            }
-
             if (currentTask != null)
             {
-                currentTask.Wait();
+                currentTask.CancelOrComplete();
                 currentTask = null;
             }
         }
@@ -81,8 +68,7 @@ namespace Albite.Reader.App.View.Pages
             IFolderItem item = control.FolderItem;
             if (item.IsFolder)
             {
-                cts = new CancellationTokenSource();
-                currentTask = goTo(item, cts.Token);
+                goTo(item);
             }
             else
             {
@@ -92,28 +78,66 @@ namespace Albite.Reader.App.View.Pages
 
         private Stack<IFolderItem> path = new Stack<IFolderItem>();
 
-        private async Task goTo(IFolderItem folder, CancellationToken ct)
+        private void goTo(IFolderItem folder)
         {
-            await loadFolderContents(folder, ct);
+            CancellationTokenSource cts = new CancellationTokenSource();
+            currentTask = new CancellableTask(
+                goToAsync(folder, cts.Token), cts);
+        }
+
+        private void goToParentFolder()
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            currentTask = new CancellableTask(
+                goToParentFolderAsync(cts.Token), cts);
+        }
+
+        private void refreshFolderContents()
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            currentTask = new CancellableTask(
+                loadFolderContentsAsync(getCurrentFolder(), cts.Token), cts);
+        }
+
+        private async Task goToAsync(IFolderItem folder, CancellationToken ct)
+        {
+            // Wait for listing the parent folder
+            await loadFolderContentsAsync(folder, ct);
+
+            // Have we been cancelled?
+            ct.ThrowIfCancellationRequested();
+
+            // Everything was fine, update the path as well
             path.Push(folder);
         }
 
-        private async Task goToParentFolder(CancellationToken ct)
+        private async Task goToParentFolderAsync(CancellationToken ct)
         {
             // First, remove the current folder
+            IFolderItem currentFolder = path.Pop();
+
+            // Then get the parent folder
+            IFolderItem parent = getCurrentFolder();
+
+            // Now bring the current folder back
+            path.Push(currentFolder);
+
+            // Now wait for listing the parent folder
+            await loadFolderContentsAsync(parent, ct);
+
+            // Have we been cancelled?
+            ct.ThrowIfCancellationRequested();
+
+            // Everything was fine, update the path as well
             path.Pop();
-
-            // Then update contents
-            await refreshFolderContents(ct);
         }
 
-        private async Task refreshFolderContents(CancellationToken ct)
+        private IFolderItem getCurrentFolder()
         {
-            await loadFolderContents(
-                path.Count > 0 ? path.Peek() : null, ct);
+            return path.Count > 0 ? path.Peek() : null;
         }
 
-        private async Task loadFolderContents(IFolderItem folder, CancellationToken ct)
+        private async Task loadFolderContentsAsync(IFolderItem folder, CancellationToken ct)
         {
             if (service.LoginRequired)
             {
@@ -135,24 +159,13 @@ namespace Albite.Reader.App.View.Pages
             // Check if cancelled in the meantime
             ct.ThrowIfCancellationRequested();
 
+            ICollection<IFolderItem> items = null;
+
             try
             {
-                ICollection<IFolderItem> items = await service.GetFolderContentsAsync(folder, ct);
-
-                if (items.Count == 0)
-                {
-                    // Empty folder
-                    FoldersList.ItemsSource = null;
-                    EmptyTextBlock.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    // Has items
-                    FoldersList.ItemsSource = items;
-                    EmptyTextBlock.Visibility = Visibility.Collapsed;
-                }
+                items = await service.GetFolderContentsAsync(folder, ct);
             }
-            catch (Exception e)
+            catch (LiveConnectException e)
             {
                 MessageBox.Show(
                     "Failed accessing folder: " + e.Message,
@@ -160,6 +173,24 @@ namespace Albite.Reader.App.View.Pages
                     MessageBoxButton.OK);
 
                 NavigationService.GoBack();
+
+                return;
+            }
+
+            // Not cancelled?
+            ct.ThrowIfCancellationRequested();
+
+            if (items.Count == 0)
+            {
+                // Empty folder
+                FoldersList.ItemsSource = null;
+                EmptyTextBlock.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // Has items
+                FoldersList.ItemsSource = items;
+                EmptyTextBlock.Visibility = Visibility.Collapsed;
             }
 
             FolderText.Text = folder == null ? service.Name : folder.Name;
@@ -180,8 +211,7 @@ namespace Albite.Reader.App.View.Pages
             // Cancel current task (if any)
             cancelCurrentTask();
 
-            cts = new CancellationTokenSource();
-            currentTask = refreshFolderContents(cts.Token);
+            refreshFolderContents();
 
             ApplicationBar.IsVisible = service.LoginRequired;
         }
@@ -200,6 +230,40 @@ namespace Albite.Reader.App.View.Pages
                     // Go back to previous page
                     NavigationService.GoBack();
                 }
+            }
+        }
+
+        private class CancellableTask
+        {
+            public Task Task { get; private set; }
+
+            private CancellationTokenSource cts;
+
+            public CancellableTask(Task task, CancellationTokenSource cts)
+            {
+                this.Task = task;
+                this.cts = cts;
+            }
+
+            public void CancelOrComplete()
+            {
+                if (Task.IsCanceled || Task.IsCompleted)
+                {
+                    return;
+                }
+
+                // Cancel it
+                cts.Cancel();
+
+                // Do not wait for it finish!
+                // In out case the task is running on the UI thread,
+                // but we are waiting for it on the UI thread,
+                // which would obviously cause a dead-lock.
+
+                // cts is not needed anymore
+                cts = null;
+
+                Albite.Reader.Core.Diagnostics.Log.D("BP", "task cancelled");
             }
         }
     }
