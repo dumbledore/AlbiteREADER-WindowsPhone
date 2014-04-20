@@ -25,6 +25,7 @@ namespace Albite.Reader.App.View.Pages
         // 2. Restore browsing service -> Shouldn't it be serializable?
 
         private BrowsingService service = null;
+        private string loadingString = "";
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
@@ -141,6 +142,8 @@ namespace Albite.Reader.App.View.Pages
 
         private async Task loadFolderContentsAsync(IFolderItem folder, CancellationToken ct)
         {
+            WaitControl.Text = loadingString;
+            WaitControl.IsIndeterminate = true;
             WaitControl.Start();
 
             if (service.LoginRequired)
@@ -209,6 +212,7 @@ namespace Albite.Reader.App.View.Pages
             {
                 service = BookBrowsingServices.GetService(
                     NavigationContext.QueryString["service"]);
+                loadingString = "Accessing " + service.Name + "...";
             }
 
             // Initial state
@@ -227,12 +231,20 @@ namespace Albite.Reader.App.View.Pages
         {
             if (service.LoginRequired)
             {
+                // cancel any tasks first!
+                cancelCurrentTask();
+
                 if (MessageBox.Show(
                     "Do you want to log out?",
                     service.Name,
                     MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
                     service.LogOut();
+
+                    MessageBox.Show(
+                        "You were logged out.",
+                        service.Name,
+                        MessageBoxButton.OK);
 
                     // Go back to previous page
                     NavigationService.GoBack();
