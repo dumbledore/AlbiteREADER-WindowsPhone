@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Navigation;
 using Windows.Phone.Storage.SharedAccess;
 using Windows.Storage;
+using Albite.Reader.Core.Threading;
 
 namespace Albite.Reader.App.View.Pages
 {
@@ -21,35 +22,89 @@ namespace Albite.Reader.App.View.Pages
             InitializeComponent();
         }
 
-        private CancellationTokenSource cancelSource = new CancellationTokenSource();
+        private CancellableTask currentTask;
 
         private static readonly string newBookFilename = "incoming.epub";
 
-        private async Task<Book> addBook(CancellationToken cancelToken, IProgress<double> progress)
+        private void cancelCurrentTask()
         {
+            if (currentTask != null)
+            {
+                currentTask.Cancel();
+                currentTask = null;
+            }
+
+            WaitControl.Finish();
+        }
+
+        private void addBook(IProgress<double> progress)
+        {
+            // Now create the task
+            CancellationTokenSource cts = new CancellationTokenSource();
+            currentTask = new CancellableTask(addBookAsync(cts.Token, progress), cts);
+        }
+
+        private async Task addBookAsync(CancellationToken cancelToken, IProgress<double> progress)
+        {
+
             Stream fileStream = App.Context.FileStream;
             string fileToken = App.Context.FileToken;
             Book book;
 
-            if (fileStream != null)
+            try
             {
-                book = await addBookStream(fileStream, cancelToken, progress);
-                App.Context.FileStream = null;
-            }
-            else if (fileToken != null)
-            {
-                book = await addBookToken(fileToken, cancelToken, progress);
-                App.Context.FileToken = null;
-            }
-            else
-            {
-                throw new InvalidOperationException("No book source found");
-            }
+                // Get book async
+                if (fileStream != null)
+                {
+                    book = await addBookStreamAsync(fileStream, cancelToken, progress);
+                    App.Context.FileStream = null;
+                }
+                else if (fileToken != null)
+                {
+                    book = await addBookTokenAsync(fileToken, cancelToken, progress);
+                    App.Context.FileToken = null;
+                }
+                else
+                {
+                    throw new InvalidOperationException("No book source found");
+                }
 
-            return book;
+                // Navigate to the book
+                NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/BooksPage.xaml?id=" + book.Id, UriKind.Relative));
+            }
+            catch (Exception ex)
+            {
+                if (ex is OperationCanceledException)
+                {
+                    MessageBox.Show(
+                        "Book was not added to library",
+                        "Cancelled",
+                        MessageBoxButton.OK);
+                }
+                else
+                {
+                    // Errors
+                    MessageBox.Show(
+                        "An error has occurred while processing the file: " + ex.Message,
+                        "Could not add book",
+                        MessageBoxButton.OK);
+                }
+
+                // Canceled
+                if (NavigationService.CanGoBack)
+                {
+                    // Return to previous page
+                    NavigationService.GoBack();
+                }
+                else
+                {
+                    // Terminate the app completely
+                    Application.Current.Terminate();
+                }
+            }
         }
 
-        private async Task<Book> addBookStream(
+        private async Task<Book> addBookStreamAsync(
             Stream fileStream, CancellationToken cancelToken, IProgress<double> progress)
         {
             Library library = App.Context.Library;
@@ -80,7 +135,7 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
-        private async Task<Book> addBookToken(string fileToken, CancellationToken cancelToken, IProgress<double> progress)
+        private async Task<Book> addBookTokenAsync(string fileToken, CancellationToken cancelToken, IProgress<double> progress)
         {
             Library library = App.Context.Library;
 
@@ -133,54 +188,54 @@ namespace Albite.Reader.App.View.Pages
             base.OnBackKeyPress(e);
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            // Start loading
-            WaitControl.Start();
+            // If going back, the task must have been cancelled,
+            // we are not going to start a new one.
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                // Start loading
+                WaitControl.Start();
 
-            try
-            {
-                // Get book async
-                Book book = await addBook(cancelSource.Token, null);
-
-                // Navigate to the book
-                NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/BooksPage.xaml?id=" + book.Id, UriKind.Relative));
-            }
-            catch (OperationCanceledException)
-            {
-                // Canceled
-                if (NavigationService.CanGoBack)
-                {
-                    // Return to previous page
-                    NavigationService.GoBack();
-                }
-                else
-                {
-                    // Terminate the app completely
-                    Application.Current.Terminate();
-                }
-            }
-            catch (Exception ex)
-            {
-                // Errors
-                MessageBox.Show(
-                    "An error has occurred while processing the file: " + ex.Message,
-                    "Could not add book",
-                    MessageBoxButton.OK);
+                // Start async operation
+                addBook(new Progress(this));
             }
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             // Cancel the task just in case
-            cancelSource.Cancel();
-
-            // Finished loading
-            WaitControl.Finish();
+            cancelCurrentTask();
 
             base.OnNavigatingFrom(e);
+        }
+
+        private class Progress : IProgress<double>
+        {
+            private AddBookPage page;
+
+            public Progress(AddBookPage page)
+            {
+                this.page = page;
+            }
+
+            public void Report(double value)
+            {
+                page.WaitControl.Dispatcher.BeginInvoke(() =>
+                    {
+                        if (double.IsNaN(value))
+                        {
+                            page.WaitControl.IsIndeterminate = true;
+                        }
+                        else
+                        {
+                            page.WaitControl.Progress = value;
+                            page.WaitControl.IsIndeterminate = false;
+                        }
+                    });
+            }
         }
     }
 }
