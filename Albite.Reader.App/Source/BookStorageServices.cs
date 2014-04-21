@@ -11,6 +11,7 @@ namespace Albite.Reader.App.Browse
     {
         private static readonly StorageService[] services_ =
         {
+            new ExternalStorageService(),
             new OneDriveBrowsingService(),
         };
 
