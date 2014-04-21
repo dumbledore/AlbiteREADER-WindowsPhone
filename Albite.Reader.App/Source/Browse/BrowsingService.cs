@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,7 +63,8 @@ namespace Albite.Reader.App.Browse
         /// </summary>
         /// <param name="path">The file path</param>
         /// <returns></returns>
-        public abstract Task<Stream> GetFileContentsAsync(string path);
+        public abstract Task<Stream> GetFileContentsAsync(
+            FolderItem file, CancellationToken ct, IProgress<double> progress);
 
         /// <summary>
         /// Returns true if a file should be listed

@@ -105,20 +105,29 @@ namespace Albite.Reader.App.Browse
         public override async Task<ICollection<FolderItem>> GetFolderContentsAsync(
             FolderItem folder, CancellationToken ct)
         {
-            if (!LoggedIn)
-            {
-                await LogIn();
-            }
-
             if (folder == null)
             {
                 folder = RootFolder;
             }
 
+            if (!folder.IsFolder)
+            {
+                throw new InvalidOperationException("provided item is not a folder");
+            }
+
+            if (!LoggedIn)
+            {
+                await LogIn();
+            }
+
             Log.D(Tag, "Getting folder contents of " + folder.Name);
 
+            // Connect to OneDrive
             LiveConnectClient connectClient = new LiveConnectClient(client.Session);
+
+            // Wait for objects properties (folder's contents in our case)
             LiveOperationResult operationResult = await connectClient.GetAsync(folder.Id + "/files", ct);
+
             dynamic result = operationResult.Result;
             dynamic data = result.data;
 
@@ -155,13 +164,44 @@ namespace Albite.Reader.App.Browse
             return items.ToArray();
         }
 
-        public override async Task<Stream> GetFileContentsAsync(string path)
+        public override async Task<Stream> GetFileContentsAsync(
+            FolderItem file, CancellationToken ct, IProgress<double> progress)
         {
-            // TODO
-            return await Task<Stream>.Run(() =>
+            if (file.IsFolder)
             {
-                return Stream.Null;
-            });
+                throw new InvalidOperationException("provided item is not a file");
+            }
+
+            if (!LoggedIn)
+            {
+                await LogIn();
+            }
+
+            Log.D(Tag, "Getting file contents of " + file.Name);
+
+            LiveConnectClient connectClient = new LiveConnectClient(client.Session);
+
+            ProgressProxy progressProxy = progress == null ? null : new ProgressProxy(progress);
+
+            LiveDownloadOperationResult operationResult
+                = await connectClient.DownloadAsync(file.Id + "/content", ct, progressProxy);
+
+            return operationResult.Stream;
+        }
+
+        private class ProgressProxy : IProgress<LiveOperationProgress>
+        {
+            private IProgress<double> progress;
+
+            public ProgressProxy(IProgress<double> progress)
+            {
+                this.progress = progress;
+            }
+
+            public void Report(LiveOperationProgress value)
+            {
+                progress.Report(value.ProgressPercentage);
+            }
         }
     }
 }

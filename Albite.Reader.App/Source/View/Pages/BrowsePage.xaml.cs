@@ -9,6 +9,7 @@ using System;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Live;
+using System.IO;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -89,6 +90,11 @@ namespace Albite.Reader.App.View.Pages
             WaitControl.Finish();
         }
 
+        private void showMessage(string message)
+        {
+            MessageBox.Show(message, service.Name, MessageBoxButton.OK);
+        }
+
         private void FolderControl_Tap(object sender, GEArgs e)
         {
             FolderControl control = (FolderControl)sender;
@@ -103,7 +109,31 @@ namespace Albite.Reader.App.View.Pages
             }
             else
             {
-                MessageBox.Show("Downloading " + item.Name);
+                downloadFile(item);
+            }
+        }
+
+        private async Task logIn()
+        {
+            if (service.LoginRequired)
+            {
+                try
+                {
+                    await service.LogIn();
+                }
+                catch (Exception e)
+                {
+                    string message = string.Format(
+                        "Failed logging in: {0}", e.Message);
+                    showMessage(message);
+
+                    WaitControl.Finish();
+                    NavigationService.GoBack();
+
+                    // Throw back the exception so that
+                    // the call chain won't go on
+                    throw e;
+                }
             }
         }
 
@@ -128,24 +158,7 @@ namespace Albite.Reader.App.View.Pages
 
         private async Task loadFolderContentsAsync(FolderItem folder, CancellationToken ct)
         {
-            if (service.LoginRequired)
-            {
-                try
-                {
-                    await service.LogIn();
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show(
-                        "Failed connecting to " + service.Name,
-                        "Error",
-                        MessageBoxButton.OK);
-
-                    WaitControl.Finish();
-                    NavigationService.GoBack();
-                    return;
-                }
-            }
+            await logIn();
 
             // Check if cancelled in the meantime
             ct.ThrowIfCancellationRequested();
@@ -158,14 +171,16 @@ namespace Albite.Reader.App.View.Pages
             }
             catch (LiveConnectException e)
             {
-                MessageBox.Show(
-                    "Failed accessing folder: " + e.Message,
-                    "Error",
-                    MessageBoxButton.OK);
+                string message = string.Format(
+                    "Failed accessing folder {0} : {1}", folder.Name, e.Message);
+                showMessage(message);
 
                 WaitControl.Finish();
                 NavigationService.GoBack();
-                return;
+
+                // Throw back the exception so that
+                // the call chain won't go on
+                throw e;
             }
 
             // Not cancelled?
@@ -185,6 +200,66 @@ namespace Albite.Reader.App.View.Pages
             }
 
             WaitControl.Finish();
+        }
+
+        private void downloadFile(FolderItem file)
+        {
+            // Start the waiting control
+            WaitControl.Text = "Downloading " + file.Name + "...";
+            WaitControl.Minimum = 0;
+            WaitControl.Maximum = 100;
+            WaitControl.IsIndeterminate = false;
+            WaitControl.Start();
+
+            // Now create the task
+            CancellationTokenSource cts = new CancellationTokenSource();
+            currentTask = new CancellableTask(downloadFileAsync(file, cts.Token, new Progress(this)), cts);
+        }
+
+        private async Task downloadFileAsync(
+            FolderItem file, CancellationToken ct, IProgress<double> progress)
+        {
+            await logIn();
+
+            // Check if cancelled in the meantime
+            ct.ThrowIfCancellationRequested();
+
+            Stream stream = null;
+
+            try
+            {
+                stream = await service.GetFileContentsAsync(file, ct, progress);
+
+                if (stream == null)
+                {
+                    throw new LiveConnectException();
+                }
+            }
+            catch (LiveConnectException e)
+            {
+                string message = string.Format(
+                    "Failed downloading file {0}: {1}", file.Name, e.Message);
+                showMessage(message);
+
+                WaitControl.Finish();
+                NavigationService.GoBack();
+
+                // Throw back the exception so that
+                // the call chain won't go on
+                throw e;
+            }
+
+            // Not cancelled?
+            if (ct.IsCancellationRequested)
+            {
+                stream.Dispose();
+                ct.ThrowIfCancellationRequested();
+            }
+
+            WaitControl.Finish();
+
+            // TODO: Import file
+            stream.Dispose();
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -219,10 +294,7 @@ namespace Albite.Reader.App.View.Pages
                 {
                     service.LogOut();
 
-                    MessageBox.Show(
-                        "You were logged out.",
-                        service.Name,
-                        MessageBoxButton.OK);
+                    showMessage("You were logged out.");
 
                     // Go back to previous page
                     NavigationService.GoBack();
@@ -259,6 +331,21 @@ namespace Albite.Reader.App.View.Pages
 
                 // cts is not needed anymore
                 cts = null;
+            }
+        }
+
+        private class Progress : IProgress<double>
+        {
+            BrowsePage page;
+
+            public Progress(BrowsePage page)
+            {
+                this.page = page;
+            }
+
+            public void Report(double value)
+            {
+                page.WaitControl.Progress = value;
             }
         }
     }
