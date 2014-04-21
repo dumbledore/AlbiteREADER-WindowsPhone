@@ -65,7 +65,15 @@ namespace Albite.Reader.App.View.Pages
             // Cancel any previous tasks and wait for them to finish
             cancelCurrentTask();
 
-            if (history.CanGoBack)
+            if (downloading)
+            {
+                // Cancel the download, but do not go up.
+                e.Cancel = true;
+
+                // Clear downloading flag
+                downloading = false;
+            }
+            else if (history.CanGoBack)
             {
                 // Go back one step
                 history.GoBack();
@@ -78,6 +86,8 @@ namespace Albite.Reader.App.View.Pages
         }
 
         private CancellableTask currentTask;
+
+        private bool downloading = false;
 
         private void cancelCurrentTask()
         {
@@ -210,6 +220,9 @@ namespace Albite.Reader.App.View.Pages
             WaitControl.Maximum = 100;
             WaitControl.IsIndeterminate = false;
             WaitControl.Start();
+
+            // Set downloading flag
+            downloading = true;
 
             // Now create the task
             CancellationTokenSource cts = new CancellationTokenSource();
