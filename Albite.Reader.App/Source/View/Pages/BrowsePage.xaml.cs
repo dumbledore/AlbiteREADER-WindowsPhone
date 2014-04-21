@@ -182,7 +182,7 @@ namespace Albite.Reader.App.View.Pages
             catch (StorageException e)
             {
                 string message = string.Format(
-                    "Failed accessing folder {0} : {1}", folder.Name, e.Message);
+                    "Failed accessing folder {0}: {1}", folder == null ? "root" : folder.Name, e.Message);
                 showMessage(message);
 
                 WaitControl.Finish();
