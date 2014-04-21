@@ -167,6 +167,7 @@
     <Compile Include="Source\Diagnostics\DebugLog.cs" />
     <Compile Include="Source\Diagnostics\IsolatedStorageLog.cs" />
     <Compile Include="Source\Diagnostics\ThreadCheck.cs" />
+    <Compile Include="Source\Threading\CancellableTask.cs" />
     <Compile Include="Source\Xml\FixedXmlReader.cs" />
     <Compile Include="Test\IsolatedContainerTest.cs" />
     <Compile Include="Test\IsolatedContainerTestWrapper.cs" />

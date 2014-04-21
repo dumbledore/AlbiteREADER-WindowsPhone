@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 using Albite.Reader.Storage;
+using Albite.Reader.Core.Threading;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -323,38 +324,6 @@ namespace Albite.Reader.App.View.Pages
                     // Go back to previous page
                     NavigationService.GoBack();
                 }
-            }
-        }
-
-        private class CancellableTask
-        {
-            public Task Task { get; private set; }
-
-            private CancellationTokenSource cts;
-
-            public CancellableTask(Task task, CancellationTokenSource cts)
-            {
-                this.Task = task;
-                this.cts = cts;
-            }
-
-            public void Cancel()
-            {
-                if (Task.IsCanceled || Task.IsCompleted)
-                {
-                    return;
-                }
-
-                // Cancel it
-                cts.Cancel();
-
-                // Do not wait for it finish!
-                // In out case the task is running on the UI thread,
-                // but we are waiting for it on the UI thread,
-                // which would obviously cause a dead-lock.
-
-                // cts is not needed anymore
-                cts = null;
             }
         }
 
