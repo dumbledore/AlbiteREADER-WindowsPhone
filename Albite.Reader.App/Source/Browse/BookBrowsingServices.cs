@@ -43,7 +43,7 @@ namespace Albite.Reader.App.Browse
 
         private static bool isFileAccepted(string file)
         {
-            return file.EndsWith(".epub");
+            return file.ToLowerInvariant().EndsWith(".epub");
         }
 
         private static CachedResourceImage cachedFileIcon
