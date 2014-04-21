@@ -82,6 +82,9 @@ namespace Albite.Reader.App.View.Pages
 
             // Fill the books
             BooksList.ItemsSource = books;
+
+            LayoutRoot.Visibility = Visibility.Visible;
+            ApplicationBar.IsVisible = true;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
