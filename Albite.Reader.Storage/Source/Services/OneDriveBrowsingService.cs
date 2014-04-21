@@ -4,12 +4,11 @@ using Microsoft.Live;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace Albite.Reader.Storage
+namespace Albite.Reader.Storage.Services
 {
     public class OneDriveBrowsingService : StorageService
     {

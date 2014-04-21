@@ -1,5 +1,6 @@
-﻿using Albite.Reader.Core.App;
+using Albite.Reader.Core.App;
 using Albite.Reader.Storage;
+using Albite.Reader.Storage.Services;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;

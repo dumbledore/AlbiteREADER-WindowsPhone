@@ -89,7 +89,7 @@
     <Compile Include="Source\StorageService.cs" />
     <Compile Include="Source\FolderHistoryStack.cs" />
     <Compile Include="Source\StorageItem.cs" />
-    <Compile Include="Source\OneDriveBrowsingService.cs" />
+    <Compile Include="Source\Services\OneDriveBrowsingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Albite.Reader.Core\Albite.Reader.Core.csproj">
