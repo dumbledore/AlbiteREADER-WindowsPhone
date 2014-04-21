@@ -83,38 +83,14 @@ namespace Albite.Reader.App.View.Pages
 
         private void goTo(IFolderItem folder)
         {
-            CancellationTokenSource cts = new CancellationTokenSource();
-            currentTask = new CancellableTask(
-                goToAsync(folder, cts.Token), cts);
+            // Update the path
+            path.Push(folder);
+
+            // List the folder
+            loadFolderContents(folder);
         }
 
         private void goToParentFolder()
-        {
-            CancellationTokenSource cts = new CancellationTokenSource();
-            currentTask = new CancellableTask(
-                goToParentFolderAsync(cts.Token), cts);
-        }
-
-        private void refreshFolderContents()
-        {
-            CancellationTokenSource cts = new CancellationTokenSource();
-            currentTask = new CancellableTask(
-                loadFolderContentsAsync(getCurrentFolder(), cts.Token), cts);
-        }
-
-        private async Task goToAsync(IFolderItem folder, CancellationToken ct)
-        {
-            // Wait for listing the parent folder
-            await loadFolderContentsAsync(folder, ct);
-
-            // Have we been cancelled?
-            ct.ThrowIfCancellationRequested();
-
-            // Everything was fine, update the path as well
-            path.Push(folder);
-        }
-
-        private async Task goToParentFolderAsync(CancellationToken ct)
         {
             // First, remove the current folder
             IFolderItem currentFolder = path.Pop();
@@ -122,17 +98,13 @@ namespace Albite.Reader.App.View.Pages
             // Then get the parent folder
             IFolderItem parent = getCurrentFolder();
 
-            // Now bring the current folder back
-            path.Push(currentFolder);
+            // List the parent folder
+            loadFolderContents(parent);
+        }
 
-            // Now wait for listing the parent folder
-            await loadFolderContentsAsync(parent, ct);
-
-            // Have we been cancelled?
-            ct.ThrowIfCancellationRequested();
-
-            // Everything was fine, update the path as well
-            path.Pop();
+        private void refreshFolderContents()
+        {
+            loadFolderContents(getCurrentFolder());
         }
 
         private IFolderItem getCurrentFolder()
@@ -140,12 +112,27 @@ namespace Albite.Reader.App.View.Pages
             return path.Count > 0 ? path.Peek() : null;
         }
 
-        private async Task loadFolderContentsAsync(IFolderItem folder, CancellationToken ct)
+        private void loadFolderContents(IFolderItem folder)
         {
+            // Update the folder title
+            FolderText.Text = folder == null ? service.Name : folder.Name;
+
+            // Start the waiting control
             WaitControl.Text = loadingString;
             WaitControl.IsIndeterminate = true;
             WaitControl.Start();
 
+            // Reset the folder contents
+            FoldersList.ItemsSource = null;
+            EmptyTextBlock.Visibility = Visibility.Collapsed;
+
+            // Now create the task
+            CancellationTokenSource cts = new CancellationTokenSource();
+            currentTask = new CancellableTask(loadFolderContentsAsync(folder, cts.Token), cts);
+        }
+
+        private async Task loadFolderContentsAsync(IFolderItem folder, CancellationToken ct)
+        {
             if (service.LoginRequired)
             {
                 try
@@ -202,7 +189,6 @@ namespace Albite.Reader.App.View.Pages
                 EmptyTextBlock.Visibility = Visibility.Collapsed;
             }
 
-            FolderText.Text = folder == null ? service.Name : folder.Name;
             WaitControl.Finish();
         }
 
@@ -214,10 +200,6 @@ namespace Albite.Reader.App.View.Pages
                     NavigationContext.QueryString["service"]);
                 loadingString = "Accessing " + service.Name + "...";
             }
-
-            // Initial state
-            FolderText.Text = service.Name;
-            FoldersList.ItemsSource = null;
 
             // Cancel current task (if any)
             cancelCurrentTask();
