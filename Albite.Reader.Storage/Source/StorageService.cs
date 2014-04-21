@@ -22,29 +22,38 @@ namespace Albite.Reader.Storage
         /// <summary>
         /// Service icon
         /// </summary>
-        public abstract ImageSource Icon { get; }
+        public virtual ImageSource Icon { get { return null; } }
 
         /// <summary>
         /// True if the user ought to log in before
         /// they can use the service
         /// </summary>
-        public abstract bool LoginRequired { get; }
+        public virtual bool LoginRequired { get { return false; } }
 
         /// <summary>
         /// Logs the user in
         /// </summary>
-        public abstract Task LogIn();
+        public virtual Task LogIn()
+        {
+            throw new InvalidOperationException(NoLoginExceptionMessage);
+        }
 
         /// <summary>
         /// Logs the user out
         /// </summary>
-        public abstract void LogOut();
+        public virtual void LogOut()
+        {
+            throw new InvalidOperationException(NoLoginExceptionMessage);
+        }
 
         /// <summary>
         /// True if the user is currently logged in
         /// Throws InvalidOperationException if LoginRequired is false
         /// </summary>
-        public abstract bool LoggedIn { get; }
+        public virtual bool LoggedIn
+        {
+            get { throw new InvalidOperationException(NoLoginExceptionMessage); }
+        }
 
         /// <summary>
         /// Retrieves the folder contents for a particular path
@@ -79,5 +88,8 @@ namespace Albite.Reader.Storage
         /// </summary>
         public delegate ImageSource GetFileIcon();
         public GetFileIcon GetFileIconDelegate { get; set; }
+
+        private static readonly string NoLoginExceptionMessage
+            = "This service does not support authentication";
     }
 }
