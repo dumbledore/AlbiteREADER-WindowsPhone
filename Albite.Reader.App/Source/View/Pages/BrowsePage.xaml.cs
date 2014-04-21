@@ -278,6 +278,9 @@ namespace Albite.Reader.App.View.Pages
                 ct.ThrowIfCancellationRequested();
             }
 
+            // Download finished
+            downloading = false;
+
             WaitControl.Finish();
 
             // Add stream to context
