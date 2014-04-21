@@ -3,6 +3,7 @@ using Microsoft.Live;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -101,29 +102,27 @@ namespace Albite.Reader.App.Browse
             }
         }
 
-        public override async Task<ICollection<IFolderItem>> GetFolderContentsAsync(
-            IFolderItem folder, CancellationToken ct)
+        public override async Task<ICollection<FolderItem>> GetFolderContentsAsync(
+            FolderItem folder, CancellationToken ct)
         {
             if (!LoggedIn)
             {
                 await LogIn();
             }
 
-            FolderItem oneDriveFolder = (FolderItem) folder;
-
-            if (oneDriveFolder == null)
+            if (folder == null)
             {
-                oneDriveFolder = RootFolder;
+                folder = RootFolder;
             }
 
-            Log.D(Tag, "Getting folder contents of " + oneDriveFolder.Name);
+            Log.D(Tag, "Getting folder contents of " + folder.Name);
 
             LiveConnectClient connectClient = new LiveConnectClient(client.Session);
-            LiveOperationResult operationResult = await connectClient.GetAsync(oneDriveFolder.Id + "/files", ct);
+            LiveOperationResult operationResult = await connectClient.GetAsync(folder.Id + "/files", ct);
             dynamic result = operationResult.Result;
             dynamic data = result.data;
 
-            List<IFolderItem> items = new List<IFolderItem>(data.Count);
+            List<FolderItem> items = new List<FolderItem>(data.Count);
 
             ImageSource fileIcon = null;
             if (GetFileIconDelegate != null)
@@ -163,22 +162,6 @@ namespace Albite.Reader.App.Browse
             {
                 return Stream.Null;
             });
-        }
-
-        private class FolderItem : IFolderItem
-        {
-            public string Id { get; private set; }
-            public string Name { get; private set; }
-            public bool IsFolder { get; private set; }
-            public ImageSource FileIcon{get;private set;}
-
-            public FolderItem(string id, string name, bool isFolder, ImageSource fileIcon)
-            {
-                Id = id;
-                Name = name;
-                IsFolder = isFolder;
-                FileIcon = fileIcon;
-            }
         }
     }
 }

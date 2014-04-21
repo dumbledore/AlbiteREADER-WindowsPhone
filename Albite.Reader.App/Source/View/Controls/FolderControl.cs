@@ -11,12 +11,12 @@ namespace Albite.Reader.App.View.Controls
     public class FolderControl : IconContentControl
     {
         public static readonly DependencyProperty FolderItemProperty
-            = DependencyProperty.Register("FolderItem", typeof(IFolderItem), typeof(FolderControl),
+            = DependencyProperty.Register("FolderItem", typeof(FolderItem), typeof(FolderControl),
             new PropertyMetadata(onFolderItemChanged));
 
-        public IFolderItem FolderItem
+        public FolderItem FolderItem
         {
-            get { return (IFolderItem)GetValue(FolderItemProperty); }
+            get { return (FolderItem)GetValue(FolderItemProperty); }
             set { SetValue(FolderItemProperty, value); }
         }
 
@@ -30,7 +30,7 @@ namespace Albite.Reader.App.View.Controls
         {
             FolderControl control = (FolderControl)d;
 
-            IFolderItem newValue = (IFolderItem)e.NewValue;
+            FolderItem newValue = (FolderItem)e.NewValue;
 
             control.ContentTextBlock.Text = newValue.Name;
 

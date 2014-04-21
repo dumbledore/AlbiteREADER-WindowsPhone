@@ -20,16 +20,42 @@ namespace Albite.Reader.App.View.Pages
             InitializeComponent();
         }
 
-        // TODO handle hibernation:
-        // 1. Restore current path
-        // 2. Restore browsing service -> Shouldn't it be serializable?
-
         private BrowsingService service = null;
         private string loadingString = "";
 
+        private FolderHistoryStack history;
+
+        private static readonly string HistoryKey = "history";
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (State.ContainsKey(HistoryKey))
+            {
+                // restore history
+                history = FolderHistoryStack.FromString((string)State[HistoryKey]);
+            }
+            else
+            {
+                history = new FolderHistoryStack();
+            }
+
+            // Add callback
+            history.FolderChangedDelegate = loadFolderContents;
+
+            base.OnNavigatedTo(e);
+        }
+
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            // Cancel any running tasks
             cancelCurrentTask();
+
+            if (e.NavigationMode != NavigationMode.Back)
+            {
+                // Save the history if not going back
+                State[HistoryKey] = history.ToString();
+            }
+
             base.OnNavigatingFrom(e);
         }
 
@@ -38,10 +64,12 @@ namespace Albite.Reader.App.View.Pages
             // Cancel any previous tasks and wait for them to finish
             cancelCurrentTask();
 
-            if (history.Count > 0)
+            if (history.CanGoBack)
             {
-                // Go up one folder
-                goToParentFolder();
+                // Go back one step
+                history.GoBack();
+
+                // Cancel event, i.e. do not leave page
                 e.Cancel = true;
             }
 
@@ -68,10 +96,10 @@ namespace Albite.Reader.App.View.Pages
             // Cancel any previous tasks and wait for them to finish
             cancelCurrentTask();
 
-            IFolderItem item = control.FolderItem;
+            FolderItem item = control.FolderItem;
             if (item.IsFolder)
             {
-                goTo(item);
+                history.GoForward(item);
             }
             else
             {
@@ -79,40 +107,7 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
-        private Stack<IFolderItem> history = new Stack<IFolderItem>();
-
-        private void goTo(IFolderItem folder)
-        {
-            // Add to history
-            history.Push(folder);
-
-            // List the folder
-            loadFolderContents(folder);
-        }
-
-        private void goToParentFolder()
-        {
-            // First, remove the current folder
-            IFolderItem currentFolder = history.Pop();
-
-            // Then get the parent folder
-            IFolderItem parent = getCurrentFolder();
-
-            // List the parent folder
-            loadFolderContents(parent);
-        }
-
-        private void refreshFolderContents()
-        {
-            loadFolderContents(getCurrentFolder());
-        }
-
-        private IFolderItem getCurrentFolder()
-        {
-            return history.Count > 0 ? history.Peek() : null;
-        }
-
-        private void loadFolderContents(IFolderItem folder)
+        private void loadFolderContents(FolderItem folder)
         {
             // Update the folder title
             FolderText.Text = folder == null ? service.Name : folder.Name;
@@ -131,7 +126,7 @@ namespace Albite.Reader.App.View.Pages
             currentTask = new CancellableTask(loadFolderContentsAsync(folder, cts.Token), cts);
         }
 
-        private async Task loadFolderContentsAsync(IFolderItem folder, CancellationToken ct)
+        private async Task loadFolderContentsAsync(FolderItem folder, CancellationToken ct)
         {
             if (service.LoginRequired)
             {
@@ -155,7 +150,7 @@ namespace Albite.Reader.App.View.Pages
             // Check if cancelled in the meantime
             ct.ThrowIfCancellationRequested();
 
-            ICollection<IFolderItem> items = null;
+            ICollection<FolderItem> items = null;
 
             try
             {
@@ -204,7 +199,8 @@ namespace Albite.Reader.App.View.Pages
             // Cancel current task (if any)
             cancelCurrentTask();
 
-            refreshFolderContents();
+            // Refresh current folder contents
+            loadFolderContents(history.CurrentFolder);
 
             ApplicationBar.IsVisible = service.LoginRequired;
         }

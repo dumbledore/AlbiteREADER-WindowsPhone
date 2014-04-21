@@ -50,9 +50,9 @@ namespace Albite.Reader.App.Browse
         /// </summary>
         /// <param name="path">The folder item. If null, it looks in the root folder.</param>
         /// <returns></returns>
-        public abstract Task<ICollection<IFolderItem>> GetFolderContentsAsync(IFolderItem folder, CancellationToken ct);
+        public abstract Task<ICollection<FolderItem>> GetFolderContentsAsync(FolderItem folder, CancellationToken ct);
 
-        public Task<ICollection<IFolderItem>> GetFolderContentsAsync(IFolderItem folder)
+        public Task<ICollection<FolderItem>> GetFolderContentsAsync(FolderItem folder)
         {
             return GetFolderContentsAsync(folder, CancellationToken.None);
         }

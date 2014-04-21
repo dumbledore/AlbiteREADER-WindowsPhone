@@ -136,7 +136,8 @@
     <Compile Include="Source\Context.cs" />
     <Compile Include="Source\Browse\BookBrowsingServices.cs" />
     <Compile Include="Source\Browse\BrowsingService.cs" />
-    <Compile Include="Source\Browse\IFolderItem.cs" />
+    <Compile Include="Source\Browse\FolderHistoryStack.cs" />
+    <Compile Include="Source\Browse\FolderItem.cs" />
     <Compile Include="Source\Browse\OneDriveBrowsingService.cs" />
     <Compile Include="Source\CachedResourceImage.cs" />
     <Compile Include="Source\ExternalLauncher.cs" />
