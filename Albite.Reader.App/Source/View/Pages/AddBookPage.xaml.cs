@@ -27,13 +27,61 @@ namespace Albite.Reader.App.View.Pages
 
         private async Task<Book> addBook(CancellationToken cancelToken, IProgress<double> progress)
         {
+            Stream fileStream = App.Context.FileStream;
             string fileToken = App.Context.FileToken;
+            Book book;
 
-            if (fileToken == null)
+            if (fileStream != null)
             {
-                throw new InvalidOperationException("FileToken is null");
+                book = await addBookStream(fileStream, cancelToken, progress);
+                App.Context.FileStream = null;
+            }
+            else if (fileToken != null)
+            {
+                book = await addBookToken(fileToken, cancelToken, progress);
+                App.Context.FileToken = null;
+            }
+            else
+            {
+                throw new InvalidOperationException("No book source found");
             }
 
+            return book;
+        }
+
+        private async Task<Book> addBookStream(
+            Stream fileStream, CancellationToken cancelToken, IProgress<double> progress)
+        {
+            Library library = App.Context.Library;
+
+            // check if canceled
+            cancelToken.ThrowIfCancellationRequested();
+
+            // Set progress
+            if (progress != null)
+            {
+                progress.Report(double.NaN);
+            }
+
+            // now install it (this will dispose the stream as well)
+            using (Stream inputStream = fileStream)
+            {
+                using (ZipContainer zip = new ZipContainer(inputStream))
+                {
+                    using (EpubContainer epub = new EpubContainer(zip))
+                    {
+                        // check if canceled. this will delete the input e-pub as well
+                        cancelToken.ThrowIfCancellationRequested();
+
+                        // Add to the library
+                        return await library.Books.AddAsync(epub, cancelToken, progress);
+                    }
+                }
+            }
+        }
+
+        private async Task<Book> addBookToken(string fileToken, CancellationToken cancelToken, IProgress<double> progress)
+        {
             Library library = App.Context.Library;
 
             // check if canceled
@@ -96,9 +144,6 @@ namespace Albite.Reader.App.View.Pages
             {
                 // Get book async
                 Book book = await addBook(cancelSource.Token, null);
-
-                // Remove file token from the context
-                App.Context.FileToken = null;
 
                 // Navigate to the book
                 NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/BooksPage.xaml?id=" + book.Id, UriKind.Relative));

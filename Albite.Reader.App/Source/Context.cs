@@ -4,6 +4,7 @@ using Albite.Reader.Core.Serialization;
 using Albite.Reader.Engine.Layout;
 using Albite.Reader.App.View.Pages.BookSettings;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Albite.Reader.App
 {
@@ -118,5 +119,8 @@ namespace Albite.Reader.App
 
         // File token used when adding books
         public string FileToken { get; set; }
+
+        // Stream used when adding books
+        public Stream FileStream { get; set; }
     }
 }

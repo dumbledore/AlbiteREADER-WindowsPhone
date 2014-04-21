@@ -89,7 +89,7 @@ namespace Albite.Reader.App.View.Pages
             // Go on as usual
             base.OnNavigatedTo(e);
 
-            // Remove previous journal entries (e.g. AddBookPage, etc.)
+            // Remove previous journal entries (e.g. AddBookPage, BrowsePage, etc.)
             while (NavigationService.RemoveBackEntry() != null) { }
 
             if (e.NavigationMode == NavigationMode.New &&

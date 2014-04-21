@@ -258,8 +258,11 @@ namespace Albite.Reader.App.View.Pages
 
             WaitControl.Finish();
 
-            // TODO: Import file
-            stream.Dispose();
+            // Add stream to context
+            App.Context.FileStream = stream;
+
+            // Go to AddBookPage
+            NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/AddBookPage.xaml", UriKind.Relative));
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
