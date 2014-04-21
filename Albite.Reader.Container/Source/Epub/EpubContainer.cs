@@ -86,58 +86,63 @@ namespace Albite.Reader.Container.Epub
             get { return Ncx.NavigationMap; }
         }
 
-        public override bool Install(string path)
-        {
-            return InstallAsync(path, CancellationToken.None, null).Result;
-        }
-
-        public override async Task<bool> InstallAsync(
+        public override Task<bool> InstallAsync(
             string path, CancellationToken cancelToken, IProgress<double> progress)
         {
-            return await Task.Run(() =>
+            return Task<bool>.Run(() =>
                 {
-                    bool hadErrors = false;
-                    string[] items = getItems();
+                    return Install(path, cancelToken, progress);
+                }, cancelToken);
+        }
 
-                    int i = 0;
-                    double itemCount = items.Length;
+        public override bool Install(string path)
+        {
+            return Install(path, CancellationToken.None, null);
+        }
 
-                    foreach (string item in items)
+        private bool Install(
+            string path, CancellationToken cancelToken, IProgress<double> progress)
+        {
+            bool hadErrors = false;
+            string[] items = getItems();
+
+            int i = 0;
+            double itemCount = items.Length;
+
+            foreach (string item in items)
+            {
+                cancelToken.ThrowIfCancellationRequested();
+
+                try
+                {
+                    using (IsolatedStorage output = new IsolatedStorage(System.IO.Path.Combine(path, item)))
                     {
-                        cancelToken.ThrowIfCancellationRequested();
-
-                        try
+                        using (Stream input = Stream(item))
                         {
-                            using (IsolatedStorage output = new IsolatedStorage(System.IO.Path.Combine(path, item)))
-                            {
-                                using (Stream input = Stream(item))
-                                {
-                                    output.Write(input);
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Log.E(tag, "Failed unpacking " + item, e);
-                            hadErrors = true;
-
-                            if (!Fallback)
-                            {
-                                throw e;
-                            }
-                        }
-
-                        if (progress != null)
-                        {
-                            // if we are in a task, report the
-                            // current normalized progress
-                            progress.Report(++i / itemCount);
+                            output.Write(input);
                         }
                     }
+                }
+                catch (Exception e)
+                {
+                    Log.E(tag, "Failed unpacking " + item, e);
+                    hadErrors = true;
 
-                    return hadErrors;
-                },
-                cancelToken);
+                    if (!Fallback)
+                    {
+                        throw e;
+                    }
+                }
+
+                if (progress != null)
+                {
+                    // if we are in a task, report the
+                    // current normalized progress
+                    progress.Report(++i / itemCount);
+                }
+            }
+
+            return hadErrors;
         }
 
         public override Stream Stream(string entityName)
