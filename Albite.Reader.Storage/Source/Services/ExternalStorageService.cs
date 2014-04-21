@@ -1,4 +1,5 @@
-﻿using Microsoft.Phone.Storage;
+﻿using Albite.Reader.Core.App;
+using Microsoft.Phone.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,6 +34,20 @@ namespace Albite.Reader.Storage.Services
         public override string Name { get { return "SD card"; } }
 
         public override string Id { get { return "external"; } }
+
+        private static CachedResourceImage cachedImage
+            = new CachedLocalResourceImage("/Resources/Images/sdcard.png");
+
+        private static CachedResourceImage cachedImageDark
+            = new CachedLocalResourceImage("/Resources/Images/sdcard-dark.png");
+
+        public override ImageSource Icon
+        {
+            get
+            {
+                return ThemeInfo.ThemeIsDark ? cachedImageDark.Value : cachedImage.Value;
+            }
+        }
 
         public override async Task<ICollection<StorageItem>> GetFolderContentsAsync(StorageItem folder, System.Threading.CancellationToken ct)
         {

@@ -116,6 +116,10 @@
     <Resource Include="Resources\Images\onedrive-dark.png" />
     <Resource Include="Resources\Images\onedrive.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\sdcard-dark.png" />
+    <Resource Include="Resources\Images\sdcard.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />
