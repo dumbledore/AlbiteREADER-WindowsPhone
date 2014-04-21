@@ -38,7 +38,7 @@ namespace Albite.Reader.App.View.Pages
             // Cancel any previous tasks and wait for them to finish
             cancelCurrentTask();
 
-            if (path.Count > 0)
+            if (history.Count > 0)
             {
                 // Go up one folder
                 goToParentFolder();
@@ -79,12 +79,12 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
-        private Stack<IFolderItem> path = new Stack<IFolderItem>();
+        private Stack<IFolderItem> history = new Stack<IFolderItem>();
 
         private void goTo(IFolderItem folder)
         {
-            // Update the path
-            path.Push(folder);
+            // Add to history
+            history.Push(folder);
 
             // List the folder
             loadFolderContents(folder);
@@ -93,7 +93,7 @@ namespace Albite.Reader.App.View.Pages
         private void goToParentFolder()
         {
             // First, remove the current folder
-            IFolderItem currentFolder = path.Pop();
+            IFolderItem currentFolder = history.Pop();
 
             // Then get the parent folder
             IFolderItem parent = getCurrentFolder();
@@ -109,7 +109,7 @@ namespace Albite.Reader.App.View.Pages
 
         private IFolderItem getCurrentFolder()
         {
-            return path.Count > 0 ? path.Peek() : null;
+            return history.Count > 0 ? history.Peek() : null;
         }
 
         private void loadFolderContents(IFolderItem folder)
