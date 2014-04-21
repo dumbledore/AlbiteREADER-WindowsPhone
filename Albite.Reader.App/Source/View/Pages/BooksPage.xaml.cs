@@ -84,6 +84,7 @@ namespace Albite.Reader.App.View.Pages
             BooksList.ItemsSource = books;
 
             LayoutRoot.Visibility = Visibility.Visible;
+            WaitText.Visibility = Visibility.Collapsed;
             ApplicationBar.IsVisible = true;
         }
 

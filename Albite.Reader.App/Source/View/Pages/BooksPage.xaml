@@ -18,6 +18,7 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid>
     <Grid x:Name="LayoutRoot" Background="Transparent" Visibility="Collapsed">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -51,6 +52,10 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
+    </Grid>
+    <TextBlock x:Name="WaitText"  VerticalAlignment="Center" HorizontalAlignment="Center">
+        Opening book...
+    </TextBlock>
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
