@@ -19,7 +19,6 @@ namespace Albite.Reader.App.Browse
             new string[]
         {
             "wl.signin",
-            "wl.basic",
             "wl.skydrive",
             "wl.offline_access",
         };
