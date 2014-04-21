@@ -100,7 +100,7 @@ namespace Albite.Reader.Container.Epub
                     string[] items = getItems();
 
                     int i = 0;
-                    int itemCount = items.Length;
+                    double itemCount = items.Length;
 
                     foreach (string item in items)
                     {
