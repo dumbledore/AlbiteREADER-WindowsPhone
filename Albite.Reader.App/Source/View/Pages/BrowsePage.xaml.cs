@@ -179,14 +179,18 @@ namespace Albite.Reader.App.View.Pages
             {
                 items = await service.GetFolderContentsAsync(folder, ct);
             }
-            catch (StorageException e)
+            catch (Exception e)
             {
-                string message = string.Format(
-                    "Failed accessing folder {0}: {1}", folder == null ? "root" : folder.Name, e.Message);
-                showMessage(message);
+                // Skip OperationCancelExceptions
+                if (!(e is OperationCanceledException))
+                {
+                    string message = string.Format(
+                        "Failed accessing folder {0}: {1}", folder == null ? "root" : folder.Name, e.Message);
+                    showMessage(message);
 
-                WaitControl.Finish();
-                NavigationService.GoBack();
+                    WaitControl.Finish();
+                    NavigationService.GoBack();
+                }
 
                 // Throw back the exception so that
                 // the call chain won't go on
@@ -245,17 +249,21 @@ namespace Albite.Reader.App.View.Pages
 
                 if (stream == null)
                 {
-                    throw new StorageException();
+                    throw new StorageException("Service returned null stream");
                 }
             }
-            catch (StorageException e)
+            catch (Exception e)
             {
-                string message = string.Format(
-                    "Failed downloading file {0}: {1}", file.Name, e.Message);
-                showMessage(message);
+                // Skip OperationCancelExceptions
+                if (!(e is OperationCanceledException))
+                {
+                    string message = string.Format(
+                        "Failed downloading file {0}: {1}", file.Name, e.Message);
+                    showMessage(message);
 
-                WaitControl.Finish();
-                NavigationService.GoBack();
+                    WaitControl.Finish();
+                    NavigationService.GoBack();
+                }
 
                 // Throw back the exception so that
                 // the call chain won't go on
