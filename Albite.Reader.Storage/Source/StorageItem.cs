@@ -2,10 +2,10 @@
 using System.Runtime.Serialization;
 using System.Windows.Media;
 
-namespace Albite.Reader.App.Browse
+namespace Albite.Reader.Storage
 {
     [DataContract]
-    public class FolderItem
+    public class StorageItem
     {
         [DataMember]
         public string Id { get; private set; }
@@ -18,7 +18,7 @@ namespace Albite.Reader.App.Browse
 
         public ImageSource FileIcon { get; private set; }
 
-        public FolderItem(string id, string name, bool isFolder, ImageSource fileIcon)
+        public StorageItem(string id, string name, bool isFolder, ImageSource fileIcon)
         {
             Id = id;
             Name = name;

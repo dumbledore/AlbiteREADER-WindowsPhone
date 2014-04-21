@@ -1,7 +1,5 @@
-﻿using Albite.Reader.App.Browse;
-using System;
+﻿using Albite.Reader.Storage;
 using System.Windows;
-using System.Windows.Media.Imaging;
 
 namespace Albite.Reader.App.View.Controls
 {
@@ -13,12 +11,12 @@ namespace Albite.Reader.App.View.Controls
         }
 
         public static readonly DependencyProperty BrowsingServiceProperty
-            = DependencyProperty.Register("BrowsingService", typeof(BrowsingService), typeof(BrowsingServiceControl),
+            = DependencyProperty.Register("BrowsingService", typeof(StorageService), typeof(BrowsingServiceControl),
             new PropertyMetadata(onBookmarkChanged));
 
-        public BrowsingService BrowsingService
+        public StorageService BrowsingService
         {
-            get { return (BrowsingService)GetValue(BrowsingServiceProperty); }
+            get { return (StorageService)GetValue(BrowsingServiceProperty); }
             set { SetValue(BrowsingServiceProperty, value); }
         }
 
@@ -26,7 +24,7 @@ namespace Albite.Reader.App.View.Controls
         {
             BrowsingServiceControl control = (BrowsingServiceControl)d;
 
-            BrowsingService newValue = (BrowsingService)e.NewValue;
+            StorageService newValue = (StorageService)e.NewValue;
 
             control.ContentTextBlock.Text = newValue.Name;
             control.Icon.Source = newValue.Icon;

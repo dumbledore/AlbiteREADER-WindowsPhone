@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace Albite.Reader.App.Browse
+namespace Albite.Reader.Storage
 {
-    public abstract class BrowsingService
+    public abstract class StorageService
     {
         /// <summary>
         /// Service name, e.g. SD, OneDrive, etc.
@@ -51,9 +51,9 @@ namespace Albite.Reader.App.Browse
         /// </summary>
         /// <param name="path">The folder item. If null, it looks in the root folder.</param>
         /// <returns></returns>
-        public abstract Task<ICollection<FolderItem>> GetFolderContentsAsync(FolderItem folder, CancellationToken ct);
+        public abstract Task<ICollection<StorageItem>> GetFolderContentsAsync(StorageItem folder, CancellationToken ct);
 
-        public Task<ICollection<FolderItem>> GetFolderContentsAsync(FolderItem folder)
+        public Task<ICollection<StorageItem>> GetFolderContentsAsync(StorageItem folder)
         {
             return GetFolderContentsAsync(folder, CancellationToken.None);
         }
@@ -64,7 +64,7 @@ namespace Albite.Reader.App.Browse
         /// <param name="path">The file path</param>
         /// <returns></returns>
         public abstract Task<Stream> GetFileContentsAsync(
-            FolderItem file, CancellationToken ct, IProgress<double> progress);
+            StorageItem file, CancellationToken ct, IProgress<double> progress);
 
         /// <summary>
         /// Returns true if a file should be listed

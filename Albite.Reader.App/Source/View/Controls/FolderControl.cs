@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using Albite.Reader.App.Browse;
+using Albite.Reader.Storage;
+using Albite.Reader.Core.App;
 
 namespace Albite.Reader.App.View.Controls
 {
     public class FolderControl : IconContentControl
     {
         public static readonly DependencyProperty FolderItemProperty
-            = DependencyProperty.Register("FolderItem", typeof(FolderItem), typeof(FolderControl),
+            = DependencyProperty.Register("FolderItem", typeof(StorageItem), typeof(FolderControl),
             new PropertyMetadata(onFolderItemChanged));
 
-        public FolderItem FolderItem
+        public StorageItem FolderItem
         {
-            get { return (FolderItem)GetValue(FolderItemProperty); }
+            get { return (StorageItem)GetValue(FolderItemProperty); }
             set { SetValue(FolderItemProperty, value); }
         }
 
@@ -30,7 +26,7 @@ namespace Albite.Reader.App.View.Controls
         {
             FolderControl control = (FolderControl)d;
 
-            FolderItem newValue = (FolderItem)e.NewValue;
+            StorageItem newValue = (StorageItem)e.NewValue;
 
             control.ContentTextBlock.Text = newValue.Name;
 

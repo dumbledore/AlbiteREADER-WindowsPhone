@@ -1,36 +1,38 @@
-﻿using System;
+﻿using Albite.Reader.Core.App;
+using Albite.Reader.Storage;
+using System;
 using System.Collections.Generic;
 using System.Windows.Media;
 
 namespace Albite.Reader.App.Browse
 {
-    public static class BookBrowsingServices
+    public static class BookStorageServices
     {
-        private static readonly BrowsingService[] services_ =
+        private static readonly StorageService[] services_ =
         {
             new OneDriveBrowsingService(),
         };
 
-        static BookBrowsingServices()
+        static BookStorageServices()
         {
-            foreach (BrowsingService service in services_)
+            foreach (StorageService service in services_)
             {
                 service.IsFileAcceptedDelegate = isFileAccepted;
                 service.GetFileIconDelegate = getFileIcon;
             }
         }
 
-        public static ICollection<BrowsingService> Services
+        public static ICollection<StorageService> Services
         {
             get
             {
-                return Array.AsReadOnly<BrowsingService>(services_);
+                return Array.AsReadOnly<StorageService>(services_);
             }
         }
 
-        public static BrowsingService GetService(string id)
+        public static StorageService GetService(string id)
         {
-            foreach (BrowsingService service in services_)
+            foreach (StorageService service in services_)
             {
                 if (service.Id == id)
                 {

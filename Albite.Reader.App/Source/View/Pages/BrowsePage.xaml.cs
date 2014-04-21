@@ -8,8 +8,8 @@ using Albite.Reader.App.Browse;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
-using Microsoft.Live;
 using System.IO;
+using Albite.Reader.Storage;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -21,7 +21,7 @@ namespace Albite.Reader.App.View.Pages
             InitializeComponent();
         }
 
-        private BrowsingService service = null;
+        private StorageService service = null;
         private string loadingString = "";
 
         private FolderHistoryStack history;
@@ -112,7 +112,7 @@ namespace Albite.Reader.App.View.Pages
             // Cancel any previous tasks and wait for them to finish
             cancelCurrentTask();
 
-            FolderItem item = control.FolderItem;
+            StorageItem item = control.FolderItem;
             if (item.IsFolder)
             {
                 history.GoForward(item);
@@ -147,7 +147,7 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
-        private void loadFolderContents(FolderItem folder)
+        private void loadFolderContents(StorageItem folder)
         {
             // Update the folder title
             FolderText.Text = folder == null ? service.Name : folder.Name;
@@ -166,20 +166,20 @@ namespace Albite.Reader.App.View.Pages
             currentTask = new CancellableTask(loadFolderContentsAsync(folder, cts.Token), cts);
         }
 
-        private async Task loadFolderContentsAsync(FolderItem folder, CancellationToken ct)
+        private async Task loadFolderContentsAsync(StorageItem folder, CancellationToken ct)
         {
             await logIn();
 
             // Check if cancelled in the meantime
             ct.ThrowIfCancellationRequested();
 
-            ICollection<FolderItem> items = null;
+            ICollection<StorageItem> items = null;
 
             try
             {
                 items = await service.GetFolderContentsAsync(folder, ct);
             }
-            catch (LiveConnectException e)
+            catch (StorageException e)
             {
                 string message = string.Format(
                     "Failed accessing folder {0} : {1}", folder.Name, e.Message);
@@ -212,7 +212,7 @@ namespace Albite.Reader.App.View.Pages
             WaitControl.Finish();
         }
 
-        private void downloadFile(FolderItem file)
+        private void downloadFile(StorageItem file)
         {
             // Start the waiting control
             WaitControl.Text = "Downloading " + file.Name + "...";
@@ -230,7 +230,7 @@ namespace Albite.Reader.App.View.Pages
         }
 
         private async Task downloadFileAsync(
-            FolderItem file, CancellationToken ct, IProgress<double> progress)
+            StorageItem file, CancellationToken ct, IProgress<double> progress)
         {
             await logIn();
 
@@ -245,10 +245,10 @@ namespace Albite.Reader.App.View.Pages
 
                 if (stream == null)
                 {
-                    throw new LiveConnectException();
+                    throw new StorageException();
                 }
             }
-            catch (LiveConnectException e)
+            catch (StorageException e)
             {
                 string message = string.Format(
                     "Failed downloading file {0}: {1}", file.Name, e.Message);
@@ -282,7 +282,7 @@ namespace Albite.Reader.App.View.Pages
         {
             if (service == null)
             {
-                service = BookBrowsingServices.GetService(
+                service = BookStorageServices.GetService(
                     NavigationContext.QueryString["service"]);
                 loadingString = "Accessing " + service.Name + "...";
             }

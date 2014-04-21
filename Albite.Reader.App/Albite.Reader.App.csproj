@@ -134,19 +134,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\Context.cs" />
-    <Compile Include="Source\Browse\BookBrowsingServices.cs" />
-    <Compile Include="Source\Browse\BrowsingService.cs" />
-    <Compile Include="Source\Browse\FolderHistoryStack.cs" />
-    <Compile Include="Source\Browse\FolderItem.cs" />
-    <Compile Include="Source\Browse\OneDriveBrowsingService.cs" />
-    <Compile Include="Source\CachedResourceImage.cs" />
+    <Compile Include="Source\BookStorageServices.cs" />
     <Compile Include="Source\ExternalLauncher.cs" />
     <Compile Include="Source\CustomUriMapper.cs" />
     <Compile Include="Source\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\AppUtils.cs" />
-    <Compile Include="Source\ThemeInfo.cs" />
     <Compile Include="Source\TileManager.cs" />
     <Compile Include="Source\View\Controls\BookHeaderedControl.cs" />
     <Compile Include="Source\View\Controls\BookmarkControl.cs" />
@@ -264,8 +258,6 @@
     <Content Include="Resources\Images\epub.png" />
     <Content Include="Resources\Images\folder-dark.png" />
     <Content Include="Resources\Images\folder.png" />
-    <Content Include="Resources\Images\onedrive-dark.png" />
-    <Content Include="Resources\Images\onedrive.png" />
     <Content Include="Resources\tile-mark.png" />
     <Content Include="Resources\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -404,18 +396,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Fonts\LiveSymbol.ttf" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.Live, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveSDK.5.6\lib\WindowsPhone8\Microsoft.Live.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Live.Controls, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveSDK.5.6\lib\WindowsPhone8\Microsoft.Live.Controls.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <ProjectReference Include="..\Albite.Reader.Storage\Albite.Reader.Storage.csproj">
+      <Project>{9768A8C6-9594-45FD-A139-D073F9D451EE}</Project>
+      <Name>Albite.Reader.Storage</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

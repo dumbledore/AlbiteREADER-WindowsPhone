@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Albite.Reader.App
+namespace Albite.Reader.Core.App
 {
     public static class ThemeInfo
     {

@@ -2,7 +2,7 @@
 using Albite.Reader.Core.Collections;
 using System.Windows.Media.Imaging;
 
-namespace Albite.Reader.App
+namespace Albite.Reader.Core.App
 {
     public class CachedResourceImage : CachedObject<BitmapImage>
     {
