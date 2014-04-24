@@ -49,13 +49,8 @@ namespace Albite.Reader.Storage.Services
             }
         }
 
-        public override async Task<ICollection<StorageItem>> GetFolderContentsAsync(StorageItem folder, System.Threading.CancellationToken ct)
+        public override async Task<ICollection<IStorageItem>> GetFolderContentsAsync(StorageFolder folder, System.Threading.CancellationToken ct)
         {
-            if (folder != null && !folder.IsFolder)
-            {
-                throw new InvalidOperationException("provided item is not a folder");
-            }
-
             // Get external storage
             ExternalStorageDevice externalStorage = await getExternalStorage();
 
@@ -90,12 +85,12 @@ namespace Albite.Reader.Storage.Services
             ct.ThrowIfCancellationRequested();
 
             // Create list of items
-            List<StorageItem> items = new List<StorageItem>();
+            List<IStorageItem> items = new List<IStorageItem>();
 
             // Add folders to list
             foreach (ExternalStorageFolder subFolder in subFolders)
             {
-                items.Add(new StorageItem(subFolder.Path, subFolder.Name, true, null));
+                items.Add(new StorageFolder(subFolder.Path, subFolder.Name));
             }
 
             ImageSource fileIcon = null;
@@ -110,8 +105,7 @@ namespace Albite.Reader.Storage.Services
                 if (IsFileAcceptedDelegate == null
                     || IsFileAcceptedDelegate(file.Name))
                 {
-                    items.Add(new StorageItem(
-                        file.Path, file.Name, false, fileIcon));
+                    items.Add(new StorageFile(file.Path, file.Name, fileIcon));
                     file.Dispose();
                 }
             }
@@ -119,13 +113,8 @@ namespace Albite.Reader.Storage.Services
             return items.ToArray();
         }
 
-        public override async Task<Stream> GetFileContentsAsync(StorageItem file, System.Threading.CancellationToken ct, IProgress<double> progress)
+        public override async Task<Stream> GetFileContentsAsync(StorageFile file, System.Threading.CancellationToken ct, IProgress<double> progress)
         {
-            if (file.IsFolder)
-            {
-                throw new InvalidOperationException("provided item is not a file");
-            }
-
             // Get folder path
             string folder = Path.GetDirectoryName(file.Id);
 

@@ -113,14 +113,16 @@ namespace Albite.Reader.App.View.Pages
             // Cancel any previous tasks and wait for them to finish
             cancelCurrentTask();
 
-            StorageItem item = control.FolderItem;
-            if (item.IsFolder)
+            IStorageItem item = control.FolderItem;
+            if (item is StorageFolder)
             {
-                history.GoForward(item);
+                StorageFolder folder = (StorageFolder)item;
+                history.GoForward(folder);
             }
-            else
+            else if (item is StorageFile)
             {
-                downloadFile(item);
+                StorageFile file = (StorageFile)item;
+                downloadFile(file);
             }
         }
 
@@ -148,7 +150,7 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
-        private void loadFolderContents(StorageItem folder)
+        private void loadFolderContents(StorageFolder folder)
         {
             // Update the folder title
             FolderText.Text = folder == null ? service.Name : folder.Name;
@@ -167,14 +169,14 @@ namespace Albite.Reader.App.View.Pages
             currentTask = new CancellableTask(loadFolderContentsAsync(folder, cts.Token), cts);
         }
 
-        private async Task loadFolderContentsAsync(StorageItem folder, CancellationToken ct)
+        private async Task loadFolderContentsAsync(StorageFolder folder, CancellationToken ct)
         {
             await logIn();
 
             // Check if cancelled in the meantime
             ct.ThrowIfCancellationRequested();
 
-            ICollection<StorageItem> items = null;
+            ICollection<IStorageItem> items = null;
 
             try
             {
@@ -217,7 +219,7 @@ namespace Albite.Reader.App.View.Pages
             WaitControl.Finish();
         }
 
-        private void downloadFile(StorageItem file)
+        private void downloadFile(StorageFile file)
         {
             // Start the waiting control
             WaitControl.Text = "Downloading " + file.Name + "...";
@@ -235,7 +237,7 @@ namespace Albite.Reader.App.View.Pages
         }
 
         private async Task downloadFileAsync(
-            StorageItem file, CancellationToken ct, IProgress<double> progress)
+            StorageFile file, CancellationToken ct, IProgress<double> progress)
         {
             await logIn();
 

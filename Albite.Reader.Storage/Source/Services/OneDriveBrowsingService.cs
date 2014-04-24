@@ -34,7 +34,7 @@ namespace Albite.Reader.Storage.Services
         private static CachedResourceImage cachedImageDark
             = new CachedLocalResourceImage("/Resources/Images/onedrive-dark.png");
 
-        private static StorageItem RootFolder = new StorageItem("me/skydrive", "root", true, null);
+        private static StorageFolder RootFolder = new StorageFolder("me/skydrive", "root");
 
         public override ImageSource Icon
         {
@@ -114,17 +114,12 @@ namespace Albite.Reader.Storage.Services
             }
         }
 
-        public override async Task<ICollection<StorageItem>> GetFolderContentsAsync(
-            StorageItem folder, CancellationToken ct)
+        public override async Task<ICollection<IStorageItem>> GetFolderContentsAsync(
+            StorageFolder folder, CancellationToken ct)
         {
             if (folder == null)
             {
                 folder = RootFolder;
-            }
-
-            if (!folder.IsFolder)
-            {
-                throw new InvalidOperationException("provided item is not a folder");
             }
 
             try
@@ -145,7 +140,7 @@ namespace Albite.Reader.Storage.Services
                 dynamic result = operationResult.Result;
                 dynamic data = result.data;
 
-                List<StorageItem> items = new List<StorageItem>(data.Count);
+                List<IStorageItem> items = new List<IStorageItem>(data.Count);
 
                 ImageSource fileIcon = null;
                 if (GetFileIconDelegate != null)
@@ -161,14 +156,14 @@ namespace Albite.Reader.Storage.Services
 
                     if (type == "folder")
                     {
-                        items.Add(new StorageItem(id, name, true, null));
+                        items.Add(new StorageFolder(id, name));
                     }
                     else if (type == "file")
                     {
                         if (IsFileAcceptedDelegate == null
                             || IsFileAcceptedDelegate(name))
                         {
-                            items.Add(new StorageItem(id, name, false, fileIcon));
+                            items.Add(new StorageFile(id, name, fileIcon));
                         }
                     }
 
@@ -184,13 +179,8 @@ namespace Albite.Reader.Storage.Services
         }
 
         public override async Task<Stream> GetFileContentsAsync(
-            StorageItem file, CancellationToken ct, IProgress<double> progress)
+            StorageFile file, CancellationToken ct, IProgress<double> progress)
         {
-            if (file.IsFolder)
-            {
-                throw new InvalidOperationException("provided item is not a file");
-            }
-
             try
             {
                 if (!LoggedIn)

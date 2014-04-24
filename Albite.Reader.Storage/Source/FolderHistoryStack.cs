@@ -9,32 +9,27 @@ namespace Albite.Reader.Storage
     public class FolderHistoryStack
     {
         [DataMember]
-        private Stack<StorageItem> history;
+        private Stack<StorageFolder> history;
 
         public FolderHistoryStack()
         {
-            history = new Stack<StorageItem>();
+            history = new Stack<StorageFolder>();
         }
 
         private FolderHistoryStack(SerializedHistoryStack stack)
         {
-            history = new Stack<StorageItem>(stack.Data);
+            history = new Stack<StorageFolder>(stack.Data);
         }
 
         public bool CanGoBack { get { return history.Count > 0; } }
 
-        public StorageItem CurrentFolder
+        public StorageFolder CurrentFolder
         {
             get { return history.Count > 0 ? history.Peek() : null; }
         }
 
-        public StorageItem GoForward(StorageItem folder)
+        public StorageFolder GoForward(StorageFolder folder)
         {
-            if (!folder.IsFolder)
-            {
-                throw new InvalidOperationException("provided item is not a folder");
-            }
-
             // Add to history
             history.Push(folder);
 
@@ -48,7 +43,7 @@ namespace Albite.Reader.Storage
             return folder;
         }
 
-        public StorageItem GoBack()
+        public StorageFolder GoBack()
         {
             if (history.Count == 0)
             {
@@ -59,7 +54,7 @@ namespace Albite.Reader.Storage
             history.Pop();
 
             // Previous folder
-            StorageItem folder = CurrentFolder;
+            StorageFolder folder = CurrentFolder;
 
             // Callback
             if (FolderChangedDelegate != null)
@@ -71,7 +66,7 @@ namespace Albite.Reader.Storage
             return folder;
         }
 
-        public delegate void FolderChanged(StorageItem folder);
+        public delegate void FolderChanged(StorageFolder folder);
 
         public FolderChanged FolderChangedDelegate { get; set; }
 
@@ -100,7 +95,7 @@ namespace Albite.Reader.Storage
             }
 
             [DataMember]
-            public StorageItem[] Data { get; private set; }
+            public StorageFolder[] Data { get; private set; }
 
             public static FolderHistoryStack FromString(string encodedData)
             {
@@ -117,7 +112,7 @@ namespace Albite.Reader.Storage
             private static readonly Type[] ExpectedTypes =
             {
                     typeof(SerializedHistoryStack),
-                    typeof(StorageItem),
+                    typeof(StorageFolder),
             };
 
             private static JsonSerializer<object> getSerializer()

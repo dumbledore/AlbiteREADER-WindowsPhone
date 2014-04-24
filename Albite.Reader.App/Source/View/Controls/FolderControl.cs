@@ -7,12 +7,12 @@ namespace Albite.Reader.App.View.Controls
     public class FolderControl : IconContentControl
     {
         public static readonly DependencyProperty FolderItemProperty
-            = DependencyProperty.Register("FolderItem", typeof(StorageItem), typeof(FolderControl),
+            = DependencyProperty.Register("FolderItem", typeof(IStorageItem), typeof(FolderControl),
             new PropertyMetadata(onFolderItemChanged));
 
-        public StorageItem FolderItem
+        public IStorageItem FolderItem
         {
-            get { return (StorageItem)GetValue(FolderItemProperty); }
+            get { return (IStorageItem)GetValue(FolderItemProperty); }
             set { SetValue(FolderItemProperty, value); }
         }
 
@@ -26,13 +26,13 @@ namespace Albite.Reader.App.View.Controls
         {
             FolderControl control = (FolderControl)d;
 
-            StorageItem newValue = (StorageItem)e.NewValue;
+            IStorageItem newValue = (IStorageItem)e.NewValue;
 
             control.ContentTextBlock.Text = newValue.Name;
 
-            control.Icon.Source = newValue.IsFolder
+            control.Icon.Source = newValue is StorageFolder
                 ? (ThemeInfo.ThemeIsDark ? cachedFolderImageDark.Value : cachedFolderImage.Value)
-                : newValue.FileIcon;
+                : ((StorageFile)newValue).FileIcon;
         }
     }
 }
