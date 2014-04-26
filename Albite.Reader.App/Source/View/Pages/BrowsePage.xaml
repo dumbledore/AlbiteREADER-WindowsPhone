@@ -59,11 +59,7 @@
                 Text="Accessing service..." />
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Mode="Minimized" IsVisible="False">
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="log out" x:Name="LogoutButton" Click="LogoutButton_Click" />
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
+        <shell:ApplicationBar Mode="Minimized" IsVisible="False" />
     </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

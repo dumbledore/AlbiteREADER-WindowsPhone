@@ -11,6 +11,7 @@ using System.Threading;
 using System.IO;
 using Albite.Reader.Storage;
 using Albite.Reader.Core.Threading;
+using Microsoft.Phone.Shell;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -307,7 +308,34 @@ namespace Albite.Reader.App.View.Pages
             // Refresh current folder contents
             loadFolderContents(history.CurrentFolder);
 
-            ApplicationBar.IsVisible = service.LoginRequired;
+            // Ready to update application bar
+            initializeApplicationBar();
+        }
+
+        private bool appbarInitialized = false;
+
+        private void initializeApplicationBar()
+        {
+            if (!appbarInitialized)
+            {
+                // Clear the menu items just in case
+                ApplicationBar.MenuItems.Clear();
+
+                // Log out menu button
+                if (service.LoginRequired)
+                {
+                    ApplicationBarMenuItem logoutButton = new ApplicationBarMenuItem("log out");
+                    logoutButton.Click += LogoutButton_Click;
+                    ApplicationBar.MenuItems.Add(logoutButton);
+                }
+
+                if (ApplicationBar.MenuItems.Count > 0)
+                {
+                    ApplicationBar.IsVisible = true;
+                }
+
+                appbarInitialized = true;
+            }
         }
 
         private void LogoutButton_Click(object sender, EventArgs e)
