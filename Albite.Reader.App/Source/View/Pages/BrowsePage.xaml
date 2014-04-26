@@ -57,9 +57,23 @@
                 IsIndeterminate="True"
                 Opacity=".85"
                 Text="Accessing service..." />
+        <StackPanel
+            x:Name="SearchPanel"
+            Margin="12"
+            Background="{StaticResource PhoneBackgroundBrush}"
+            Visibility="Collapsed">
+            <TextBlock
+                FontWeight="Bold"
+                Margin="{StaticResource PhoneHorizontalMargin}">
+                SEARCH
+            </TextBlock>
+            <TextBox
+                x:Name="SearchBox"
+                KeyUp="SearchBox_KeyUp"
+                />
+        </StackPanel>
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="False" />
     </phone:PhoneApplicationPage.ApplicationBar>
-
 </phone:PhoneApplicationPage>

@@ -53,6 +53,9 @@ namespace Albite.Reader.App.View.Pages
             // Cancel any running tasks
             cancelCurrentTask();
 
+            // Close the search
+            closeSearch();
+
             if (e.NavigationMode != NavigationMode.Back)
             {
                 // Save the history if not going back
@@ -74,6 +77,14 @@ namespace Albite.Reader.App.View.Pages
 
                 // Clear downloading flag
                 downloading = false;
+            }
+            else if (SearchPanel.Visibility == Visibility.Visible)
+            {
+                // Close the search
+                closeSearch();
+
+                // Cancel the event
+                e.Cancel = true;
             }
             else if (history.CanGoBack)
             {
@@ -358,12 +369,19 @@ namespace Albite.Reader.App.View.Pages
                         ApplicationBar.Buttons.Count > 0
                         ? ApplicationBarMode.Default
                         : ApplicationBarMode.Minimized;
-
-                    ApplicationBar.IsVisible = true;
                 }
+
+                showAppBar();
 
                 appbarInitialized = true;
             }
+        }
+
+        private void showAppBar()
+        {
+            ApplicationBar.IsVisible
+                = ApplicationBar.MenuItems.Count > 0
+                ||  ApplicationBar.Buttons.Count > 0;
         }
 
         private void LogoutButton_Click(object sender, EventArgs e)
@@ -390,7 +408,44 @@ namespace Albite.Reader.App.View.Pages
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            // TODO
+            // Cancel any tasks
+            cancelCurrentTask();
+
+            // Reset the text box
+            SearchBox.Text = "";
+
+            // Show the search panel
+            SearchPanel.Visibility = Visibility.Visible;
+
+            // Try focusing on the text box
+            SearchBox.Focus();
+        }
+
+        private void SearchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                // Cancel any tasks
+                cancelCurrentTask();
+
+                // Close the search
+                closeSearch();
+
+                // Initiate a search
+                // TODO
+            }
+        }
+
+        private void closeSearch()
+        {
+            if (SearchPanel.Visibility == Visibility.Visible)
+            {
+                // Hide the search panel
+                SearchPanel.Visibility = Visibility.Collapsed;
+
+                // Show the appbar
+                showAppBar();
+            }
         }
 
         private class Progress : IProgress<double>
