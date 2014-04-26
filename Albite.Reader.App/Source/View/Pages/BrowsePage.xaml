@@ -59,7 +59,7 @@
                 Text="Accessing service..." />
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Mode="Minimized" IsVisible="False" />
+        <shell:ApplicationBar IsVisible="False" />
     </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

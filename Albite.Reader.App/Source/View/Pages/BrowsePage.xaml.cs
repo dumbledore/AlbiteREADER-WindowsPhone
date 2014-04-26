@@ -328,6 +328,19 @@ namespace Albite.Reader.App.View.Pages
         {
             if (!appbarInitialized)
             {
+                // Clear the icon items just in case
+                ApplicationBar.Buttons.Clear();
+
+                // Search menu icon
+                if (service.IsSearchSupported)
+                {
+                    ApplicationBarIconButton searchButton = new ApplicationBarIconButton();
+                    searchButton.Text = "Search";
+                    searchButton.Click += SearchButton_Click;
+                    searchButton.IconUri = new Uri("", UriKind.Relative);
+                    ApplicationBar.Buttons.Add(searchButton);
+                }
+
                 // Clear the menu items just in case
                 ApplicationBar.MenuItems.Clear();
 
@@ -339,8 +352,13 @@ namespace Albite.Reader.App.View.Pages
                     ApplicationBar.MenuItems.Add(logoutButton);
                 }
 
-                if (ApplicationBar.MenuItems.Count > 0)
+                if (ApplicationBar.MenuItems.Count > 0 ||  ApplicationBar.Buttons.Count > 0)
                 {
+                    ApplicationBar.Mode =
+                        ApplicationBar.Buttons.Count > 0
+                        ? ApplicationBarMode.Default
+                        : ApplicationBarMode.Minimized;
+
                     ApplicationBar.IsVisible = true;
                 }
 
@@ -368,6 +386,11 @@ namespace Albite.Reader.App.View.Pages
                     NavigationService.GoBack();
                 }
             }
+        }
+
+        private void SearchButton_Click(object sender, EventArgs e)
+        {
+            // TODO
         }
 
         private class Progress : IProgress<double>
