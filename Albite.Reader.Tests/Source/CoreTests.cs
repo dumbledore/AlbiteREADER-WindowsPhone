@@ -34,6 +34,7 @@ namespace Albite.Reader.Tests
                         new string[] {"chapter01.xhtml"},
                         new string[] {"chapter01.xhtml", "/root/home/mydata/../../../notmine"}),
                     typeof(System.IO.FileNotFoundException)),
+                new JsonSerializerTest(),
             };
         }
     }

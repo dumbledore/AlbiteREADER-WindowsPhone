@@ -13,7 +13,6 @@ namespace Albite.Reader.Tests
                 new CoreTests(),
                 new EpubTests(),
                 new TemplateTest("Test/Template/Main.xhtml"),
-                new JsonSerializerTest(),
             };
         }
     }
