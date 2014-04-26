@@ -17,18 +17,15 @@ namespace Albite.Reader.Core.Xml.Atom
 
         private XDocument getDocument(Stream stream)
         {
-            using (Stream stream_ = stream)
-            {
-                // Setup the reader so that XDocument won't waste time on
-                // comments and whitespace.
-                XmlReaderSettings settings = new XmlReaderSettings();
-                settings.IgnoreComments = true;
-                settings.IgnoreWhitespace = true;
+            // Setup the reader so that XDocument won't waste time on
+            // comments and whitespace.
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.IgnoreComments = true;
+            settings.IgnoreWhitespace = true;
 
-                using (XmlReader reader = new FixedXmlReader(stream, settings))
-                {
-                    return XDocument.Load(reader);
-                }
+            using (XmlReader reader = new FixedXmlReader(stream, settings))
+            {
+                return XDocument.Load(reader);
             }
         }
 
