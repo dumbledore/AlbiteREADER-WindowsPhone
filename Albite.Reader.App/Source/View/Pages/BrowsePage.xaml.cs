@@ -308,8 +308,18 @@ namespace Albite.Reader.App.View.Pages
             // Refresh current folder contents
             loadFolderContents(history.CurrentFolder);
 
-            // Ready to update application bar
-            initializeApplicationBar();
+            // currentTask was set by loadFolderContents
+            // Update the application bar only after
+            // it has finished loading the folder
+
+            currentTask.Task.ContinueWith((continuation) =>
+                {
+                    // Ready to update application bar
+                    initializeApplicationBar();
+                },
+                CancellationToken.None,
+                TaskContinuationOptions.OnlyOnRanToCompletion,
+                TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private bool appbarInitialized = false;
