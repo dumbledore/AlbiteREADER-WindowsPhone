@@ -56,7 +56,7 @@ namespace Albite.Reader.Core.Net
             }
         }
 
-        public Task<Stream> DownloadAsync(Uri uri, CancellationToken ct)
+        public Task<Stream> DownloadAsync(Uri uri, CancellationToken ct, IProgress<double> progress)
         {
             lock (myLock)
             {
@@ -66,6 +66,7 @@ namespace Albite.Reader.Core.Net
                 }
 
                 currentTaskSource = new TaskCompletionSource<Stream>();
+                currentProgress = progress;
 
                 // Call CancelAsync on cancellation
                 if (ct != CancellationToken.None)
@@ -81,6 +82,16 @@ namespace Albite.Reader.Core.Net
 
                 return currentTaskSource.Task;
             }
+        }
+
+        public Task<Stream> DownloadAsync(Uri uri, CancellationToken ct)
+        {
+            return DownloadAsync(uri, ct, null);
+        }
+
+        public Task<Stream> DownloadAsync(Uri uri)
+        {
+            return DownloadAsync(uri, CancellationToken.None);
         }
     }
 }
