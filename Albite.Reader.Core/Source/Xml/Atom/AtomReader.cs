@@ -154,6 +154,12 @@ namespace Albite.Reader.Core.Xml.Atom
                 }
                 else if (attribute.Name == HrefAttributeName)
                 {
+                    // Even if the link Uri is an absolute one,
+                    // Uri(Uri, string) would not throw an exception
+                    // and would create a valid absolute uri, i.e.
+                    // it will have the same effect as
+                    // Uri(string, UriKind.Absolute)
+
                     uri = baseUri != null
                         ? new Uri(baseUri, attribute.Value)
                         : new Uri(attribute.Value);
