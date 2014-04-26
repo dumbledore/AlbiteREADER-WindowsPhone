@@ -144,13 +144,20 @@ namespace Albite.Reader.Storage.Services
                     fileIcon = GetFileIconDelegate();
                 }
 
-                // process the feed
-                processEntry(feed, items, SupportedMimetypes, fileIcon);
+                IEnumerable<IAtomEntry> entries = feed.Entries;
 
-                // process the entries
-                foreach (IAtomEntry entry in feed.Entries)
+                if (feed.Entries.Count() > 0)
                 {
-                    processEntry(entry, items, SupportedMimetypes, fileIcon);
+                    // not an empty feed, so get links only from the entries
+                    foreach (IAtomEntry entry in feed.Entries)
+                    {
+                        processEntry(entry, items, SupportedMimetypes, fileIcon);
+                    }
+                }
+                else
+                {
+                    // empty feed, therefore it's the only entry
+                    processEntry(feed, items, SupportedMimetypes, fileIcon);
                 }
 
                 return items.ToArray();
