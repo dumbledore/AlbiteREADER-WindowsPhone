@@ -30,9 +30,9 @@ namespace Albite.Reader.App.View.Controls
 
             control.ContentTextBlock.Text = newValue.Name;
 
-            control.Icon.Source = newValue is StorageFolder
+            control.Icon.Source = newValue is IStorageFolder
                 ? (ThemeInfo.ThemeIsDark ? cachedFolderImageDark.Value : cachedFolderImage.Value)
-                : ((StorageFile)newValue).FileIcon;
+                : ((IStorageFile)newValue).FileIcon;
         }
     }
 }

@@ -9,26 +9,26 @@ namespace Albite.Reader.Storage
     public class FolderHistoryStack
     {
         [DataMember]
-        private Stack<StorageFolder> history;
+        private Stack<IStorageFolder> history;
 
         public FolderHistoryStack()
         {
-            history = new Stack<StorageFolder>();
+            history = new Stack<IStorageFolder>();
         }
 
         private FolderHistoryStack(SerializedHistoryStack stack)
         {
-            history = new Stack<StorageFolder>(stack.Data);
+            history = new Stack<IStorageFolder>(stack.Data);
         }
 
         public bool CanGoBack { get { return history.Count > 0; } }
 
-        public StorageFolder CurrentFolder
+        public IStorageFolder CurrentFolder
         {
             get { return history.Count > 0 ? history.Peek() : null; }
         }
 
-        public StorageFolder GoForward(StorageFolder folder)
+        public IStorageFolder GoForward(IStorageFolder folder)
         {
             // Add to history
             history.Push(folder);
@@ -43,7 +43,7 @@ namespace Albite.Reader.Storage
             return folder;
         }
 
-        public StorageFolder GoBack()
+        public IStorageFolder GoBack()
         {
             if (history.Count == 0)
             {
@@ -54,7 +54,7 @@ namespace Albite.Reader.Storage
             history.Pop();
 
             // Previous folder
-            StorageFolder folder = CurrentFolder;
+            IStorageFolder folder = CurrentFolder;
 
             // Callback
             if (FolderChangedDelegate != null)
@@ -66,7 +66,7 @@ namespace Albite.Reader.Storage
             return folder;
         }
 
-        public delegate void FolderChanged(StorageFolder folder);
+        public delegate void FolderChanged(IStorageFolder folder);
 
         public FolderChanged FolderChangedDelegate { get; set; }
 
@@ -95,7 +95,7 @@ namespace Albite.Reader.Storage
             }
 
             [DataMember]
-            public StorageFolder[] Data { get; private set; }
+            public IStorageFolder[] Data { get; private set; }
 
             public static FolderHistoryStack FromString(string encodedData)
             {

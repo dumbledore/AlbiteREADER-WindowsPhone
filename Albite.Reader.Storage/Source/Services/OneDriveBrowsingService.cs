@@ -115,7 +115,7 @@ namespace Albite.Reader.Storage.Services
         }
 
         public override async Task<ICollection<IStorageItem>> GetFolderContentsAsync(
-            StorageFolder folder, CancellationToken ct)
+            IStorageFolder folder, CancellationToken ct)
         {
             if (folder == null)
             {
@@ -179,7 +179,7 @@ namespace Albite.Reader.Storage.Services
         }
 
         public override async Task<Stream> GetFileContentsAsync(
-            StorageFile file, CancellationToken ct, IProgress<double> progress)
+            IStorageFile file, CancellationToken ct, IProgress<double> progress)
         {
             try
             {

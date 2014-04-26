@@ -60,9 +60,9 @@ namespace Albite.Reader.Storage
         /// </summary>
         /// <param name="path">The folder item. If null, it looks in the root folder.</param>
         /// <returns></returns>
-        public abstract Task<ICollection<IStorageItem>> GetFolderContentsAsync(StorageFolder folder, CancellationToken ct);
+        public abstract Task<ICollection<IStorageItem>> GetFolderContentsAsync(IStorageFolder folder, CancellationToken ct);
 
-        public Task<ICollection<IStorageItem>> GetFolderContentsAsync(StorageFolder folder)
+        public Task<ICollection<IStorageItem>> GetFolderContentsAsync(IStorageFolder folder)
         {
             return GetFolderContentsAsync(folder, CancellationToken.None);
         }
@@ -73,7 +73,7 @@ namespace Albite.Reader.Storage
         /// <param name="path">The file path</param>
         /// <returns></returns>
         public abstract Task<Stream> GetFileContentsAsync(
-            StorageFile file, CancellationToken ct, IProgress<double> progress);
+            IStorageFile file, CancellationToken ct, IProgress<double> progress);
 
         /// <summary>
         /// Returns true if a file should be listed

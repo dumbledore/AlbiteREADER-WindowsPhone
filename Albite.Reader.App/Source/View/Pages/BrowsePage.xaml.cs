@@ -114,14 +114,14 @@ namespace Albite.Reader.App.View.Pages
             cancelCurrentTask();
 
             IStorageItem item = control.FolderItem;
-            if (item is StorageFolder)
+            if (item is IStorageFolder)
             {
-                StorageFolder folder = (StorageFolder)item;
+                IStorageFolder folder = (IStorageFolder)item;
                 history.GoForward(folder);
             }
-            else if (item is StorageFile)
+            else if (item is IStorageFile)
             {
-                StorageFile file = (StorageFile)item;
+                IStorageFile file = (IStorageFile)item;
                 downloadFile(file);
             }
         }
@@ -150,7 +150,7 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
-        private void loadFolderContents(StorageFolder folder)
+        private void loadFolderContents(IStorageFolder folder)
         {
             // Update the folder title
             FolderText.Text = folder == null ? service.Name : folder.Name;
@@ -169,7 +169,7 @@ namespace Albite.Reader.App.View.Pages
             currentTask = new CancellableTask(loadFolderContentsAsync(folder, cts.Token), cts);
         }
 
-        private async Task loadFolderContentsAsync(StorageFolder folder, CancellationToken ct)
+        private async Task loadFolderContentsAsync(IStorageFolder folder, CancellationToken ct)
         {
             await logIn();
 
@@ -219,7 +219,7 @@ namespace Albite.Reader.App.View.Pages
             WaitControl.Finish();
         }
 
-        private void downloadFile(StorageFile file)
+        private void downloadFile(IStorageFile file)
         {
             // Start the waiting control
             WaitControl.Text = "Downloading " + file.Name + "...";
@@ -237,7 +237,7 @@ namespace Albite.Reader.App.View.Pages
         }
 
         private async Task downloadFileAsync(
-            StorageFile file, CancellationToken ct, IProgress<double> progress)
+            IStorageFile file, CancellationToken ct, IProgress<double> progress)
         {
             await logIn();
 

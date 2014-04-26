@@ -1,8 +1,20 @@
-﻿namespace Albite.Reader.Storage
+﻿using System.Runtime.Serialization;
+
+namespace Albite.Reader.Storage
 {
-    public interface IStorageItem
+    [DataContract]
+    internal class StorageItem : IStorageItem
     {
-        string Id { get; }
-        string Name { get; }
+        [DataMember]
+        public string Id { get; private set; }
+
+        [DataMember]
+        public string Name { get; private set; }
+
+        public StorageItem(string id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

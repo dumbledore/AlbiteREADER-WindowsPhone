@@ -2,18 +2,13 @@
 
 namespace Albite.Reader.Storage
 {
-    public class StorageFile : IStorageItem
+    internal class StorageFile : StorageItem, IStorageFile
     {
-        public string Id { get; private set; }
-
-        public string Name { get; private set; }
-
         public ImageSource FileIcon { get; private set; }
 
-        internal StorageFile(string id, string name, ImageSource fileIcon)
+        public StorageFile(string id, string name, ImageSource fileIcon)
+            : base(id, name)
         {
-            Id = id;
-            Name = name;
             FileIcon = fileIcon;
         }
     }

@@ -4,9 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media;
 
 namespace Albite.Reader.Storage.Services
@@ -49,7 +48,7 @@ namespace Albite.Reader.Storage.Services
             }
         }
 
-        public override async Task<ICollection<IStorageItem>> GetFolderContentsAsync(StorageFolder folder, System.Threading.CancellationToken ct)
+        public override async Task<ICollection<IStorageItem>> GetFolderContentsAsync(IStorageFolder folder, CancellationToken ct)
         {
             // Get external storage
             ExternalStorageDevice externalStorage = await getExternalStorage();
@@ -113,7 +112,7 @@ namespace Albite.Reader.Storage.Services
             return items.ToArray();
         }
 
-        public override async Task<Stream> GetFileContentsAsync(StorageFile file, System.Threading.CancellationToken ct, IProgress<double> progress)
+        public override async Task<Stream> GetFileContentsAsync(IStorageFile file, CancellationToken ct, IProgress<double> progress)
         {
             // Get folder path
             string folder = Path.GetDirectoryName(file.Id);
