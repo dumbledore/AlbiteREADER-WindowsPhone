@@ -168,7 +168,15 @@
     <Compile Include="Source\Diagnostics\IsolatedStorageLog.cs" />
     <Compile Include="Source\Diagnostics\ThreadCheck.cs" />
     <Compile Include="Source\Threading\CancellableTask.cs" />
+    <Compile Include="Source\Xml\Atom\AtomEntity.cs" />
+    <Compile Include="Source\Xml\Atom\AtomEntry.cs" />
+    <Compile Include="Source\Xml\Atom\AtomException.cs" />
+    <Compile Include="Source\Xml\Atom\AtomFeed.cs" />
+    <Compile Include="Source\Xml\Atom\AtomLink.cs" />
+    <Compile Include="Source\Xml\Atom\Interface.cs" />
+    <Compile Include="Source\Xml\Atom\AtomReader.cs" />
     <Compile Include="Source\Xml\FixedXmlReader.cs" />
+    <Compile Include="Test\AtomReaderTest.cs" />
     <Compile Include="Test\IsolatedContainerTest.cs" />
     <Compile Include="Test\IsolatedContainerTestWrapper.cs" />
     <Compile Include="Test\IsolatedStorageTest.cs" />
