@@ -65,7 +65,8 @@ namespace Albite.Reader.App.Browse
 
         private class FeedBooksService : OpdsService
         {
-            private static readonly string Url = "http://www.feedbooks.com/catalog.atom";
+            // Go directly to books only from the public domain
+            private static readonly string Url = "http://www.feedbooks.com/publicdomain/catalog.atom";
 
             protected override IEnumerable<string> SupportedMimetypes
             {
