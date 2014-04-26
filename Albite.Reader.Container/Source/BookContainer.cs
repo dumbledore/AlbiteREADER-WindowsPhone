@@ -72,5 +72,27 @@ namespace Albite.Reader.Container
 
             throw new InvalidOperationException("Unknown container type");
         }
+
+        private static readonly IEnumerable<string> Extensions
+            = Array.AsReadOnly<string>(new string[]
+        {
+            "epub",
+        });
+
+        public static IEnumerable<string> SupportedExtensions
+        {
+            get { return Extensions; }
+        }
+
+        private static readonly IEnumerable<string> Mimetypes
+            = Array.AsReadOnly<string>(new string[]
+        {
+            "application/epub+zip",
+        });
+
+        public static IEnumerable<string> SupportedMimetypes
+        {
+            get { return Mimetypes; }
+        }
     }
 }
