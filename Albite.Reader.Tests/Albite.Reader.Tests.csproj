@@ -190,6 +190,9 @@
     <Content Include="Resources\Test\Epub\Invalid\Pass\06.epub" />
     <Content Include="Resources\Test\Epub\Invalid\Pass\07.epub" />
     <Content Include="Resources\Test\Epub\Invalid\Pass\08.epub" />
+    <Content Include="Resources\Test\Opds\1-ebooks.opds.xml" />
+    <Content Include="Resources\Test\Opds\2-downloads.opds.xml" />
+    <Content Include="Resources\Test\Opds\3-1661.opds.xml" />
     <Content Include="Resources\Test\Template\Main.xhtml" />
     <Content Include="Resources\Test\WebBrowser\Stability\allocation_test.html" />
     <Content Include="Resources\Test\WebBrowser\Stability\content_test.html" />

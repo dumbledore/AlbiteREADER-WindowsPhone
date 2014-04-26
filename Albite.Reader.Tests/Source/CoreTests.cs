@@ -8,6 +8,9 @@ namespace Albite.Reader.Tests
         {
             return new TestCase[]
             {
+                new AtomReaderTest("Test/Opds/1-ebooks.opds.xml"),
+                new AtomReaderTest("Test/Opds/2-downloads.opds.xml"),
+                new AtomReaderTest("Test/Opds/3-1661.opds.xml"),
                 new CircularBufferTest(1024),
                 new TreeEnumeratorTest(),
                 new RecordStoreTestWrapper("Test/recordstore.sdf"),

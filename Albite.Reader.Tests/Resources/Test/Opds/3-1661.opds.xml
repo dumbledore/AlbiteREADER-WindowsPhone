@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+DON'T USE THIS PAGE FOR SCRAPING.
+
+Seriously. You'll only get your IP blocked.
+
+Download http://www.gutenberg.org/feeds/catalog.rdf.bz2 instead,
+which contains *all* Project Gutenberg metadata in one RDF/XML file.
+
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:opds="http://opds-spec.org/2010/catalog" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:relevance="http://a9.com/-/opensearch/extensions/relevance/1.0/" xml:base="http://m.gutenberg.org/ebooks/1661.opds">
+	<id>http://m.gutenberg.org/ebooks/1661.opds</id>
+	<updated>2014-04-25T16:54:04Z</updated>
+	<title>The Adventures of Sherlock Holmes by Arthur Conan Doyle</title>
+	<subtitle>Free ebooks since 1971.</subtitle>
+	<author>
+		<name>Marcello Perathoner</name>
+		<uri>http://www.gutenberg.org</uri>
+		<email>webmaster@gutenberg.org</email>
+	</author>
+	<icon>http://m.gutenberg.org/pics/favicon.png</icon>
+	<link rel="search" type="application/opensearchdescription+xml" title="Project Gutenberg Catalog Search" href="http://m.gutenberg.org/catalog/osd-books.xml" />
+	<link rel="self" title="This Page" type="application/atom+xml;profile=opds-catalog" href="/ebooks/1661.opds" />
+	<link rel="alternate" type="text/html" title="HTML Page" href="/ebooks/1661" />
+	<link rel="start" title="Start Page" type="application/atom+xml;profile=opds-catalog" href="/ebooks.opds/" />
+	<opensearch:itemsPerPage>25</opensearch:itemsPerPage>
+	<opensearch:startIndex>1</opensearch:startIndex>
+	<entry>
+		<updated>2014-04-25T16:54:04Z</updated>
+		<title>The Adventures of Sherlock Holmes</title>
+		<content type="xhtml">
+			<div xmlns="http://www.w3.org/1999/xhtml">
+				<p>Title:
+The Adventures of Sherlock Holmes</p>
+				<p>
+					Note:
+Also available as audio book:
+					<a href="/ebooks/9551.bibrec.mobile">#9551</a>
+				</p>
+				<p>
+					Contents:
+A Scandal in Bohemia
+					<br />
+					The Red-Headed League
+					<br />
+					A Case of Identity
+					<br />
+					The Boscombe Valley Mystery
+					<br />
+					The Five Orange Pips
+					<br />
+					The Man with the Twisted Lip
+					<br />
+					The Adventure of the Blue Carbuncle
+					<br />
+					The Adventure of the Speckled Band
+					<br />
+					The Adventure of the Engineer's Thumb
+					<br />
+					The Adventure of the Noble Bachelor
+					<br />
+					The Adventure of the Beryl Coronet
+					<br />
+					The Adventure of the Copper Beeches
+				</p>
+				<p>Author: Doyle, Arthur Conan, 1859-1930</p>
+				<p>Ebook No.: 1661</p>
+				<p>Published: 1 Mar 1999</p>
+				<p>Downloads: 21963</p>
+				<p>Language: English</p>
+				<p>Subject: Holmes, Sherlock (Fictitious character) -- Fiction</p>
+				<p>Subject: Private investigators -- England -- Fiction</p>
+				<p>Subject: Detective and mystery stories, English</p>
+				<p>LoCC: Language and Literatures: English literature</p>
+				<p>Category: Text</p>
+				<p>Rights: Public domain in the USA.</p>
+			</div>
+		</content>
+		<id>urn:gutenberg:1661:0</id>
+		<published>1999-03-01T00:00:00+00:00</published>
+		<rights>Public domain in the USA.</rights>
+		<author>
+			<name>Doyle, Arthur Conan</name>
+		</author>
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Holmes, Sherlock (Fictitious character) -- Fiction" />
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Private investigators -- England -- Fiction" />
+		<category scheme="http://purl.org/dc/terms/LCSH" term="Detective and mystery stories, English" />
+		<category scheme="http://purl.org/dc/terms/LCC" term="PR" label="Language and Literatures: English literature" />
+		<category scheme="http://purl.org/dc/terms/DCMIType" term="Text" />
+		<dcterms:language>en</dcterms:language>
+		<relevance:score>1</relevance:score>
+		<link type="application/epub+zip" rel="http://opds-spec.org/acquisition" title="EPUB (no images)" length="248199" href="http://www.gutenberg.org/ebooks/1661.epub.noimages" />
+		<link type="application/x-mobipocket-ebook" rel="http://opds-spec.org/acquisition" title="Kindle (no images)" length="1020983" href="http://www.gutenberg.org/ebooks/1661.kindle.noimages" />
+		<link type="application/atom+xml;profile=opds-catalog" rel="related" href="/ebooks/1661/also/.opds" title="Readers also downloaded…" />
+		<link type="application/atom+xml;profile=opds-catalog" rel="related" href="/ebooks/author/69.opds" title="By Doyle, Arthur Conan…" />
+		<link type="application/atom+xml;profile=opds-catalog" rel="related" href="/ebooks/subject/76.opds" title="On Holmes, Sherlock (Fictitious character) -- Fiction…" />
+		<link type="application/atom+xml;profile=opds-catalog" rel="related" href="/ebooks/subject/150.opds" title="On Private investigators -- England -- Fiction…" />
+		<link type="application/atom+xml;profile=opds-catalog" rel="related" href="/ebooks/subject/2572.opds" title="On Detective and mystery stories, English…" />
+		<link type="application/atom+xml;profile=opds-catalog" rel="related" href="/ebooks/bookshelf/30.opds" title="In Detective Fiction…" />
+		<link type="application/atom+xml;profile=opds-catalog" rel="related" href="/ebooks/bookshelf/12.opds" title="In Banned Books…" />
+		<link type="application/atom+xml;profile=opds-catalog" rel="related" href="/ebooks/bookshelf/25.opds" title="In Contemporary Reviews…" />
+	</entry>
+</feed>
