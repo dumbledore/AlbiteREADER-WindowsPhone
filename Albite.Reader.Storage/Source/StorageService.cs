@@ -89,6 +89,16 @@ namespace Albite.Reader.Storage
         public delegate ImageSource GetFileIcon();
         public GetFileIcon GetFileIconDelegate { get; set; }
 
+        public virtual bool IsSearchSupported
+        {
+            get { return false; }
+        }
+
+        public Task<ICollection<IStorageFolder>> Search(string query)
+        {
+            throw new InvalidOperationException("Search is not supported");
+        }
+
         private static readonly string NoLoginExceptionMessage
             = "This service does not support authentication";
     }
