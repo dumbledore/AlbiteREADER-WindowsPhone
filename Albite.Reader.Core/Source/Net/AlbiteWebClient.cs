@@ -1,5 +1,4 @@
-﻿using Albite.Reader.Core.Diagnostics;
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -9,8 +8,6 @@ namespace Albite.Reader.Core.Net
 {
     public class AlbiteWebClient
     {
-        private static readonly string Tag = "AlbiteWebClient";
-
         TaskCompletionSource<Stream> currentTaskSource;
         IProgress<double> currentProgress;
 
@@ -31,8 +28,6 @@ namespace Albite.Reader.Core.Net
                 {
                     currentProgress.Report(e.ProgressPercentage);
                 }
-
-                Log.D(Tag, "Downloaded " + e.ProgressPercentage + "%");
             }
         }
 
@@ -44,17 +39,14 @@ namespace Albite.Reader.Core.Net
                 {
                     if (e.Cancelled)
                     {
-                        Log.D(Tag, "Cancelled");
                         currentTaskSource.SetCanceled();
                     }
                     else if (e.Error != null)
                     {
-                        Log.D(Tag, "Error occured", e.Error);
                         currentTaskSource.SetException(e.Error);
                     }
                     else
                     {
-                        Log.D(Tag, "Completed");
                         currentTaskSource.SetResult(e.Result);
                     }
 
