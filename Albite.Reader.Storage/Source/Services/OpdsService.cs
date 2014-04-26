@@ -72,35 +72,49 @@ namespace Albite.Reader.Storage.Services
             return title;
         }
 
+        private static bool isLinkSupported(IAtomLink link)
+        {
+            IEnumerable<string> values = getTypeValues(link.Mimetype);
+
+            if (!(values.Contains(AtomType) && values.Contains(OpdsCatalogProfile)))
+            {
+                // support only atom opds catolog links
+                return false;
+            }
+
+            switch (link.Rel)
+            {
+                // Skip links that only clutter
+                case "self":
+                case "start":
+                case "previous":
+                case "alternate":
+                    return false;
+            }
+
+            if (!isUriSupported(link.Uri))
+            {
+                // Skip unsupported Uris
+                return false;
+            }
+
+            return true;
+        }
+
         private static void processEntry(
             IAtomEntry entry, IList<StorageItem> items,
             IEnumerable<string> supportedMimetypes, ImageSource fileIcon)
         {
             foreach (IAtomLink link in entry.Links)
             {
-                IEnumerable<string> values = getTypeValues(link.Mimetype);
-
-                if (values.Contains(AtomType) && values.Contains(OpdsCatalogProfile))
+                if (isLinkSupported(link))
                 {
-                    // A valid opds link
-
-                    if (link.Rel == "self")
-                    {
-                        // Skip self links
-                        continue;
-                    }
-
-                    if (!isUriSupported(link.Uri))
-                    {
-                        // Skip unsupported Uris
-                        continue;
-                    }
-
-                    // A valid link, which can be treated as a virtual folder
+                    // A valid opds link, which can be treated as a virtual folder
                     items.Add(new StorageFolder(link.Uri.ToString(), getLinkTitle(entry, link)));
                 }
                 else if (link.Rel == AcquisitionRel && supportedMimetypes.Contains(link.Mimetype))
                 {
+                    // It's not an OPDS link, is it's an acquisition link
                     items.Add(new StorageFile(link.Uri.ToString(), getLinkTitle(entry, link), fileIcon));
                 }
             }
