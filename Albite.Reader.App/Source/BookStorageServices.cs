@@ -1,3 +1,4 @@
+using Albite.Reader.Container;
 using Albite.Reader.Core.App;
 using Albite.Reader.Storage;
 using Albite.Reader.Storage.Services;
@@ -13,6 +14,7 @@ namespace Albite.Reader.App.Browse
         {
             new ExternalStorageService(),
             new OneDriveBrowsingService(),
+            new FeedBooksService(),
         };
 
         static BookStorageServices()
@@ -59,6 +61,28 @@ namespace Albite.Reader.App.Browse
         private static ImageSource getFileIcon()
         {
             return ThemeInfo.ThemeIsDark ? cachedFileIconDark.Value : cachedFileIcon.Value;
+        }
+
+        private class FeedBooksService : OpdsService
+        {
+            private static readonly string Url = "http://www.feedbooks.com/catalog.atom";
+
+            protected override IEnumerable<string> SupportedMimetypes
+            {
+                get { return BookContainer.SupportedMimetypes; }
+            }
+
+            public FeedBooksService() : base(Url) { }
+
+            public override string Name
+            {
+                get { return "FeedBooks"; }
+            }
+
+            public override string Id
+            {
+                get { return "feedbooks"; }
+            }
         }
     }
 }
