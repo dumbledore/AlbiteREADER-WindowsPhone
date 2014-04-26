@@ -60,7 +60,7 @@ namespace Albite.Reader.Core.Xml.Atom
             XElement rootElement = doc.Root;
 
             if (rootElement.Name != FeedElementName
-                && rootElement.Name == EntryElementName)
+                && rootElement.Name != EntryElementName)
             {
                 throw new AtomException("Invalid root element name " + rootElement.Name);
             }
