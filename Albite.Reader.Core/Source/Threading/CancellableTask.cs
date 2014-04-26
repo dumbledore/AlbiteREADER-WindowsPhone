@@ -21,7 +21,7 @@ namespace Albite.Reader.Core.Threading
 
         public void Cancel()
         {
-            if (Task.IsCanceled || Task.IsCompleted)
+            if (Task.IsCanceled || Task.IsCompleted || Task.IsFaulted)
             {
                 cts = null;
                 return;
