@@ -3,6 +3,10 @@ using System.Threading.Tasks;
 
 namespace Albite.Reader.Core.Threading
 {
+    /// <summary>
+    /// Used to handle both the Task and
+    /// its CancellationTokenSource in one class
+    /// </summary>
     public class CancellableTask
     {
         public Task Task { get; private set; }
