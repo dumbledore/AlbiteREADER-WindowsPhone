@@ -172,7 +172,7 @@ namespace Albite.Reader.Storage.Services
             // Create a uri from the file id
             Uri uri = new Uri(file.Id);
 
-            return client.DownloadAsync(uri, ct);
+            return client.DownloadAsync(uri, ct, progress);
         }
     }
 }
