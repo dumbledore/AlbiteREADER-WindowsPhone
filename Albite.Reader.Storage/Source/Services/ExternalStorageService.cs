@@ -50,6 +50,14 @@ namespace Albite.Reader.Storage.Services
 
         public override async Task<ICollection<IStorageItem>> GetFolderContentsAsync(IStorageFolder folder, CancellationToken ct)
         {
+            string query = null;
+
+            if (folder != null && GetSearchQuery(folder, ref query))
+            {
+                // A search is what is needed
+                return await Search(query, ct);
+            }
+
             // Get external storage
             ExternalStorageDevice externalStorage = await getExternalStorage();
 

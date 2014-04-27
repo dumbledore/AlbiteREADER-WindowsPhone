@@ -13,7 +13,29 @@ namespace Albite.Reader.Storage.Services
             get { return true; }
         }
 
-        public override async Task<ICollection<IStorageItem>> Search(string query, CancellationToken ct)
+        private static readonly string SearchPrefix = "search:";
+
+        public override IStorageFolder GetSearchFolder(string query)
+        {
+            return new StorageFolder(SearchPrefix + query, "Search for " + query);
+        }
+
+        protected bool IsSearchFolder(IStorageFolder folder)
+        {
+            return folder.Id.StartsWith(SearchPrefix);
+        }
+
+        protected bool GetSearchQuery(IStorageFolder folder, ref string query)
+        {
+            if (IsSearchFolder(folder))
+            {
+                query = folder.Id.Substring(SearchPrefix.Length);
+                return true;
+            }
+            return false;
+        }
+
+        protected async Task<ICollection<IStorageItem>> Search(string query, CancellationToken ct)
         {
             // List of results
             List<SearchResult> results = new List<SearchResult>();
