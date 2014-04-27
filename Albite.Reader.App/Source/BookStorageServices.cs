@@ -68,6 +68,8 @@ namespace Albite.Reader.App.Browse
             // Go directly to books only from the public domain
             private static readonly string Url = "http://www.feedbooks.com/publicdomain/catalog.atom";
 
+            private static readonly string SearchUrl = "http://www.feedbooks.com/search.atom?query=";
+
             protected override IEnumerable<string> SupportedMimetypes
             {
                 get { return BookContainer.SupportedMimetypes; }
@@ -83,6 +85,13 @@ namespace Albite.Reader.App.Browse
             public override string Id
             {
                 get { return "feedbooks"; }
+            }
+
+            public override bool IsSearchSupported { get { return true; } }
+
+            protected override string GetSearchUrl(string query)
+            {
+                return SearchUrl + query;
             }
         }
     }
