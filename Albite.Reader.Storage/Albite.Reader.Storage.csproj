@@ -87,6 +87,7 @@
     <Compile Include="Source\CachedLocalResourceImage.cs" />
     <Compile Include="Source\Services\ExternalStorageService.cs" />
     <Compile Include="Source\Services\OpdsService.cs" />
+    <Compile Include="Source\Services\SearchableStorageService.cs" />
     <Compile Include="Source\StorageException.cs" />
     <Compile Include="Source\StorageFile.cs" />
     <Compile Include="Source\StorageFolder.cs" />

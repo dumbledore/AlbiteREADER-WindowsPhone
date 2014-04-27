@@ -12,6 +12,7 @@ using System.IO;
 using Albite.Reader.Storage;
 using Albite.Reader.Core.Threading;
 using Microsoft.Phone.Shell;
+using System.Windows.Controls;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages
@@ -231,6 +232,75 @@ namespace Albite.Reader.App.View.Pages
             WaitControl.Finish();
         }
 
+        private void getSearchResults(string query)
+        {
+            // Update the folder title
+            FolderText.Text = "Search for " + query;
+
+            // Start the waiting control
+            WaitControl.Text = loadingString;
+            WaitControl.IsIndeterminate = true;
+            WaitControl.Start();
+
+            // Reset the folder contents
+            FoldersList.ItemsSource = null;
+            EmptyTextBlock.Visibility = Visibility.Collapsed;
+
+            // Now create the task
+            CancellationTokenSource cts = new CancellationTokenSource();
+            currentTask = new CancellableTask(getSearchResultsAsync(query, cts.Token), cts);
+        }
+
+        private async Task getSearchResultsAsync(string query, CancellationToken ct)
+        {
+            await logIn();
+
+            // Check if cancelled in the meantime
+            ct.ThrowIfCancellationRequested();
+
+            ICollection<IStorageItem> items = null;
+
+            try
+            {
+                items = await service.Search(query, ct);
+            }
+            catch (Exception e)
+            {
+                // Skip OperationCancelExceptions
+                if (!(e is OperationCanceledException))
+                {
+                    string message = string.Format(
+                        "Failed searching for {0}: {1}", query, e.Message);
+                    showMessage(message);
+
+                    WaitControl.Finish();
+                    NavigationService.GoBack();
+                }
+
+                // Throw back the exception so that
+                // the call chain won't go on
+                throw e;
+            }
+
+            // Not cancelled?
+            ct.ThrowIfCancellationRequested();
+
+            if (items.Count == 0)
+            {
+                // Empty folder
+                FoldersList.ItemsSource = null;
+                EmptyTextBlock.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // Has items
+                FoldersList.ItemsSource = items;
+                EmptyTextBlock.Visibility = Visibility.Collapsed;
+            }
+
+            WaitControl.Finish();
+        }
+
         private void downloadFile(IStorageFile file)
         {
             // Start the waiting control
@@ -414,6 +484,9 @@ namespace Albite.Reader.App.View.Pages
             // Reset the text box
             SearchBox.Text = "";
 
+            // Hide the app bar (if there)
+            ApplicationBar.IsVisible = false;
+
             // Show the search panel
             SearchPanel.Visibility = Visibility.Visible;
 
@@ -432,7 +505,8 @@ namespace Albite.Reader.App.View.Pages
                 closeSearch();
 
                 // Initiate a search
-                // TODO
+                TextBox box = (TextBox)sender;
+                getSearchResults(box.Text);
             }
         }
 

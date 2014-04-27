@@ -146,6 +146,7 @@
     <Compile Include="Source\Json\JsonSerializer.cs" />
     <Compile Include="Source\Net\AlbiteWebClient.cs" />
     <Compile Include="Source\RelativeUriResolver.cs" />
+    <Compile Include="Source\Search\Query.cs" />
     <Compile Include="Source\Serialization\Serializer.cs" />
     <Compile Include="Source\Serialization\Messenger.cs" />
     <Compile Include="Source\Serialization\ISerializer.cs" />

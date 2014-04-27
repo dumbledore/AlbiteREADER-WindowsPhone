@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace Albite.Reader.Storage.Services
 {
-    public class ExternalStorageService : StorageService
+    public class ExternalStorageService : SearchableStorageService
     {
         private ExternalStorageDevice externalStorage_ = null;
         private async Task<ExternalStorageDevice> getExternalStorage()

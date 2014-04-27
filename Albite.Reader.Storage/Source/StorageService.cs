@@ -94,7 +94,7 @@ namespace Albite.Reader.Storage
             get { return false; }
         }
 
-        public Task<ICollection<IStorageFolder>> Search(string query)
+        public virtual Task<ICollection<IStorageItem>> Search(string query, CancellationToken ct)
         {
             throw new InvalidOperationException("Search is not supported");
         }
