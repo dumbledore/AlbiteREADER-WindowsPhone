@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace Albite.Reader.Storage.Services
 {
-    public class OneDriveBrowsingService : StorageService
+    public class OneDriveBrowsingService : SearchableStorageService
     {
         private static readonly string ClientId = "ba7a5dbf-a049-48a1-b68c-f615ff680d6f";
 
@@ -117,6 +117,14 @@ namespace Albite.Reader.Storage.Services
         public override async Task<ICollection<IStorageItem>> GetFolderContentsAsync(
             IStorageFolder folder, CancellationToken ct)
         {
+            string query = null;
+
+            if (folder != null && GetSearchQuery(folder, ref query))
+            {
+                // A search is what is needed
+                return await Search(query, ct);
+            }
+
             if (folder == null)
             {
                 folder = RootFolder;
