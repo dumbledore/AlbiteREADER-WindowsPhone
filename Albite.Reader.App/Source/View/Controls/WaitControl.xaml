@@ -19,6 +19,8 @@
                     Height="10" />
                 <TextBlock
                     x:Name="LoadingText"
+                    TextWrapping="Wrap"
+                    Margin="80, 0"
                     HorizontalAlignment="Center">
                     Loading
                 </TextBlock>
