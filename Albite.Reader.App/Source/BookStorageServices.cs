@@ -14,8 +14,15 @@ namespace Albite.Reader.App.Browse
         {
             new ExternalStorageService(),
             new OneDriveBrowsingService(),
-            new FeedBooksService(),
-            new ProjectGutenbergService(),
+            // OPDS services
+            new Service(
+                "http://www.feedbooks.com/publicdomain/catalog.atom",
+                "http://www.feedbooks.com/search.atom?query=",
+                "FeedBooks", "feedbooks"),
+            new Service(
+                "http://m.gutenberg.org/ebooks/?format=opds",
+                "http://m.gutenberg.org/ebooks/search.opds/?query=",
+                "Project Gutenberg", "gutenberg"),
         };
 
         static BookStorageServices()
@@ -64,67 +71,36 @@ namespace Albite.Reader.App.Browse
             return ThemeInfo.ThemeIsDark ? cachedFileIconDark.Value : cachedFileIcon.Value;
         }
 
-        private class FeedBooksService : OpdsService
+        private class Service : OpdsService
         {
-            // Go directly to books only from the public domain
-            private static readonly string Url = "http://www.feedbooks.com/publicdomain/catalog.atom";
+            private string searchUrl_;
+            private string name_;
+            private string id_;
 
-            private static readonly string SearchUrl = "http://www.feedbooks.com/search.atom?query=";
+            public override string Name { get { return name_; } }
+            public override string Id { get { return id_; } }
+
+            public Service(string url, string searchUrl, string name, string id)
+                : base(url)
+            {
+                searchUrl_ = searchUrl;
+                name_ = name;
+                id_ = id;
+            }
 
             protected override IEnumerable<string> SupportedMimetypes
             {
                 get { return BookContainer.SupportedMimetypes; }
             }
 
-            public FeedBooksService() : base(Url) { }
-
-            public override string Name
+            public override bool IsSearchSupported
             {
-                get { return "FeedBooks"; }
+                get { return searchUrl_ != null; }
             }
-
-            public override string Id
-            {
-                get { return "feedbooks"; }
-            }
-
-            public override bool IsSearchSupported { get { return true; } }
 
             protected override string GetSearchUrl(string query)
             {
-                return SearchUrl + query;
-            }
-        }
-
-        private class ProjectGutenbergService : OpdsService
-        {
-            // Go directly to books only from the public domain
-            private static readonly string Url = "http://m.gutenberg.org/ebooks/?format=opds";
-
-            private static readonly string SearchUrl = "http://m.gutenberg.org/ebooks/search.opds/?query=";
-
-            protected override IEnumerable<string> SupportedMimetypes
-            {
-                get { return BookContainer.SupportedMimetypes; }
-            }
-
-            public ProjectGutenbergService() : base(Url) { }
-
-            public override string Name
-            {
-                get { return "Project Gutenberg"; }
-            }
-
-            public override string Id
-            {
-                get { return "gutenberg"; }
-            }
-
-            public override bool IsSearchSupported { get { return true; } }
-
-            protected override string GetSearchUrl(string query)
-            {
-                return SearchUrl + query;
+                return searchUrl_ + query;
             }
         }
     }
