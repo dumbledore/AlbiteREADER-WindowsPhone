@@ -174,5 +174,18 @@ namespace Albite.Reader.Storage.Services
 
             return client.DownloadAsync(uri, ct, progress);
         }
+
+        // IsSearchSupported is not overriden here, so it's up to the
+        // concrete OPDS service to enable it or not.
+        protected virtual string GetSearchUrl(string query)
+        {
+            throw new InvalidOperationException("Search is not supported");
+        }
+
+        public override IStorageFolder GetSearchFolder(string query)
+        {
+            // No need to escape the Uri string as looks like it's done in WebClient already
+            return new StorageFolder(GetSearchUrl(query), "Search for " + query);
+        }
     }
 }
