@@ -13,7 +13,7 @@
     <Grid Background="Transparent" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="72"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid Background="{StaticResource PhoneForegroundBrush}">
             <Image
@@ -27,7 +27,7 @@
             VerticalAlignment="Center"
             Style="{StaticResource PhoneTextLargeStyle}"
             x:Name="ContentTextBlock"
-            TextWrapping="NoWrap"
+            TextWrapping="Wrap"
             IsHitTestVisible="False" />
     </Grid>
 </UserControl>
