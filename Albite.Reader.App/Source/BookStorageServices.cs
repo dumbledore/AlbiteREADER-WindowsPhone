@@ -15,6 +15,7 @@ namespace Albite.Reader.App.Browse
             new ExternalStorageService(),
             new OneDriveBrowsingService(),
             new FeedBooksService(),
+            new ProjectGutenbergService(),
         };
 
         static BookStorageServices()
@@ -85,6 +86,38 @@ namespace Albite.Reader.App.Browse
             public override string Id
             {
                 get { return "feedbooks"; }
+            }
+
+            public override bool IsSearchSupported { get { return true; } }
+
+            protected override string GetSearchUrl(string query)
+            {
+                return SearchUrl + query;
+            }
+        }
+
+        private class ProjectGutenbergService : OpdsService
+        {
+            // Go directly to books only from the public domain
+            private static readonly string Url = "http://m.gutenberg.org/ebooks/?format=opds";
+
+            private static readonly string SearchUrl = "http://m.gutenberg.org/ebooks/search.opds/?query=";
+
+            protected override IEnumerable<string> SupportedMimetypes
+            {
+                get { return BookContainer.SupportedMimetypes; }
+            }
+
+            public ProjectGutenbergService() : base(Url) { }
+
+            public override string Name
+            {
+                get { return "Project Gutenberg"; }
+            }
+
+            public override string Id
+            {
+                get { return "gutenberg"; }
             }
 
             public override bool IsSearchSupported { get { return true; } }
