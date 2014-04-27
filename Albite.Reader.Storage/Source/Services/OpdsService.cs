@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Albite.Reader.Core.Net;
 using Albite.Reader.Core.Xml.Atom;
 using System.Windows.Media;
+using Albite.Reader.Core.App;
 
 namespace Albite.Reader.Storage.Services
 {
@@ -20,6 +21,20 @@ namespace Albite.Reader.Storage.Services
         public OpdsService(string rootFolderId)
         {
             root_ = new StorageFolder(rootFolderId, "root");
+        }
+
+        private static CachedResourceImage cachedImage
+            = new CachedLocalResourceImage("/Resources/Images/opds.png");
+
+        private static CachedResourceImage cachedImageDark
+            = new CachedLocalResourceImage("/Resources/Images/opds-dark.png");
+
+        public override ImageSource Icon
+        {
+            get
+            {
+                return ThemeInfo.ThemeIsDark ? cachedImageDark.Value : cachedImage.Value;
+            }
         }
 
         private static readonly string AtomType = "application/atom+xml";
