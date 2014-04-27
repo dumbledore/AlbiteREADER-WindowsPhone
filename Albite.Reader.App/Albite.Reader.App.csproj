@@ -256,6 +256,7 @@
     <Content Include="Resources\Images\add.png" />
     <Content Include="Resources\Images\epub-dark.png" />
     <Content Include="Resources\Images\epub.png" />
+    <Content Include="Resources\Images\feature.search.png" />
     <Content Include="Resources\Images\folder-dark.png" />
     <Content Include="Resources\Images\folder.png" />
     <Content Include="Resources\tile-mark.png" />

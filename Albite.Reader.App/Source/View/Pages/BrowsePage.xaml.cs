@@ -349,7 +349,7 @@ namespace Albite.Reader.App.View.Pages
                     ApplicationBarIconButton searchButton = new ApplicationBarIconButton();
                     searchButton.Text = "Search";
                     searchButton.Click += SearchButton_Click;
-                    searchButton.IconUri = new Uri("", UriKind.Relative);
+                    searchButton.IconUri = new Uri("/Resources/Images/feature.search.png", UriKind.Relative);
                     ApplicationBar.Buttons.Add(searchButton);
                 }
 
