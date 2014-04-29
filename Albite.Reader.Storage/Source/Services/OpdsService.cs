@@ -126,7 +126,7 @@ namespace Albite.Reader.Storage.Services
                     // A valid opds link, which can be treated as a virtual folder
                     items.Add(new StorageFolder(link.Uri.ToString(), getLinkTitle(entry, link)));
                 }
-                else if (link.Rel == AcquisitionRel && supportedMimetypes.Contains(link.Mimetype))
+                else if (supportedMimetypes.Contains(link.Mimetype))
                 {
                     // It's not an OPDS link, is it's an acquisition link
                     items.Add(new StorageFile(link.Uri.ToString(), getLinkTitle(entry, link), fileIcon));
