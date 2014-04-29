@@ -20,7 +20,7 @@ namespace Albite.Reader.Storage.Services
 
         public OpdsService(string rootFolderId)
         {
-            root_ = new StorageFolder(rootFolderId, "root");
+            root_ = new StorageFolder(rootFolderId, Name);
         }
 
         private static CachedResourceImage cachedImage
