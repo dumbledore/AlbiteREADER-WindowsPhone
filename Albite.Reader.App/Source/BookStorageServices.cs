@@ -44,10 +44,6 @@ namespace Albite.Reader.App.Browse
                 "http://www.ebooksgratuits.com/opds/feed.php?mode=search&query=",
                 "Ebooks gratuits", "ebooks-gratuits"),
             new Service(
-                "http://lib.rus.ec/opds",
-                "http://lib.rus.ec/searchopds?ask=",
-                "Либрусек", "librusek"),
-            new Service(
                 "http://coollib.com/opds",
                 "http://coollib.com/opds/search?searchTerm=",
                 "КулЛиб", "coollib-net"),
