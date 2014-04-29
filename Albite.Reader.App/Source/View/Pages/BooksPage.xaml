@@ -34,6 +34,11 @@
         <!--ContentPanel - place additional content here-->
         <Grid Grid.Row="1" Margin="12,0,12,0">
             <ListBox x:Name="BooksList">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <albite:BookHeaderedControl
