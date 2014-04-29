@@ -12,9 +12,13 @@ namespace Albite.Reader.App.Browse
     {
         private static readonly StorageService[] services_ =
         {
+            // Physical storage
             new ExternalStorageService(),
+
+            // Cloud services
             new OneDriveBrowsingService(),
-            // OPDS services
+
+            // OPDS services. Check http://wiki.mobileread.com/wiki/OPDS
             new Service(
                 "http://www.feedbooks.com/publicdomain/catalog.atom",
                 "http://www.feedbooks.com/search.atom?query=",
@@ -22,7 +26,35 @@ namespace Albite.Reader.App.Browse
             new Service(
                 "http://m.gutenberg.org/ebooks/?format=opds",
                 "http://m.gutenberg.org/ebooks/search.opds/?query=",
-                "Project Gutenberg", "gutenberg"),
+                "Project Gutenberg", "project-gutenberg"),
+            new Service(
+                "http://manybooks.net/opds/index.php",
+                null, // skip the search as it only points to the web page, so it's useless
+                "ManyBooks.net", "manybooks"),
+            new Service(
+                "http://www.baenebooks.com/stanza.aspx?feed=free",
+                null, // Skip the search as it lists all its books anyway
+                "Baen Ebooks", "baen-ebooks"),
+            new Service(
+                "http://pragprog.com/magazines.opds",
+                null,
+                "The Pragmatic Bookshelf", "pragmatic-bookshelf"),
+            new Service(
+                "http://www.ebooksgratuits.com/opds/",
+                "http://www.ebooksgratuits.com/opds/feed.php?mode=search&query=",
+                "Ebooks gratuits", "ebooks-gratuits"),
+            new Service(
+                "http://lib.rus.ec/opds",
+                "http://lib.rus.ec/searchopds?ask=",
+                "Либрусек", "librusek"),
+            new Service(
+                "http://coollib.com/opds",
+                "http://coollib.com/opds/search?searchTerm=",
+                "КулЛиб", "coollib-net"),
+            new Service(
+                "http://chitanka.info/catalog.opds",
+                null,
+                "Читанка", "chitanka"),
         };
 
         static BookStorageServices()
