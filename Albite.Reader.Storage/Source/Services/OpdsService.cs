@@ -137,6 +137,9 @@ namespace Albite.Reader.Storage.Services
             }
         }
 
+        private static readonly string MorePrefix = "More of '";
+        private static readonly string MoreSuffix = "'";
+
         public override async Task<ICollection<IStorageItem>> GetFolderContentsAsync(IStorageFolder folder, CancellationToken ct)
         {
             if (folder == null)
@@ -163,12 +166,39 @@ namespace Albite.Reader.Storage.Services
 
                 IEnumerable<IAtomEntry> entries = feed.Entries;
 
-                if (feed.Entries.Count() > 0)
+                if (entries.Count() > 0)
                 {
                     // not an empty feed, so get links only from the entries
+                    // problem is: the links in the feed are usually totally useless
+                    // and without any context...
                     foreach (IAtomEntry entry in feed.Entries)
                     {
                         processEntry(entry, items, SupportedMimetypes, fileIcon);
+                    }
+
+                    // Add a "More" button only, if we actually got some results
+                    // (or more precisely, some passed thorugh the filter)
+                    if (items.Count() > 0)
+                    {
+                        // still, check for a "next" link, it's important that we get it
+                        IAtomLink nextLink = feed.Links.FirstOrDefault(x => x.Rel == "next");
+                        if (nextLink != null)
+                        {
+                            // It still has to be valid
+                            if (isLinkSupported(nextLink))
+                            {
+                                // Add a "next" link. Do not use it's title,
+                                // sometimes it may not have one!
+                                string title = folder.Name;
+
+                                if (!title.StartsWith(MorePrefix))
+                                {
+                                    title = MorePrefix + title + MoreSuffix;
+                                }
+
+                                items.Add(new StorageFolder(nextLink.Uri.ToString(), title));
+                            }
+                        }
                     }
                 }
                 else
