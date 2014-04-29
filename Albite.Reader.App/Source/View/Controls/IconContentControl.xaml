@@ -15,17 +15,19 @@
             <ColumnDefinition Width="72"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid Background="{StaticResource PhoneForegroundBrush}">
+        <Grid
+            Height="72"
+            Grid.Column="0"
+            Background="{StaticResource PhoneForegroundBrush}">
             <Image
-                Grid.Column="0"
                 IsHitTestVisible="False"
                 x:Name="Icon" />
         </Grid>
         <TextBlock
             Grid.Column="1"
-            Margin="12"
+            Margin="12,0"
             VerticalAlignment="Center"
-            Style="{StaticResource PhoneTextLargeStyle}"
+            FontSize="{StaticResource PhoneFontSizeMediumLarge}"
             x:Name="ContentTextBlock"
             TextWrapping="Wrap"
             IsHitTestVisible="False" />
