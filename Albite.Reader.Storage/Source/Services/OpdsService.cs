@@ -69,19 +69,18 @@ namespace Albite.Reader.Storage.Services
 
         private static string getLinkTitle(IAtomEntry entry, IAtomLink link)
         {
-            // if it's a feed, get the link title directly
-            if (entry is IAtomFeed)
+            string title = link.Title;
+
+            if (title == null || title == string.Empty)
             {
-                return link.Title;
+                // Try entrie's title
+                title = entry.Title;
             }
 
-            // It's an entry, so use the entrie's title
-            string title = entry.Title;
-
-            // And add the author (if any)
-            if (entry.Author != null)
+            if (title == null || title == string.Empty)
             {
-                title += " by " + entry.Author;
+                // No luck
+                title = "Untitled";
             }
 
             return title;
