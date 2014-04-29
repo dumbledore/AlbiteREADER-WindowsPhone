@@ -99,10 +99,13 @@ namespace Albite.Reader.Storage.Services
             switch (link.Rel)
             {
                 // Skip links that only clutter
+                //case "related": // should we remove those?
                 case "self":
+                case "search":
                 case "start":
                 case "previous":
-                case "alternate":
+                case "alternate": // on FeedBooks it returns pages that
+                                  // don't have acqusation links, so skip it
                     return false;
             }
 
