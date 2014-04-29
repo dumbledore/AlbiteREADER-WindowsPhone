@@ -90,7 +90,7 @@ namespace Albite.Reader.Storage.Services
         {
             IEnumerable<string> values = getTypeValues(link.Mimetype);
 
-            if (!(values.Contains(AtomType) && values.Contains(OpdsCatalogProfile)))
+            if (!(values.Contains(AtomType)))
             {
                 // support only atom opds catolog links
                 return false;
