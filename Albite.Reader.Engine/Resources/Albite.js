@@ -1599,7 +1599,7 @@ Albite.Main = function(options) {
 
   var context;
 
-  var requiredOptions = [ "mainWindow", "width", "height", "cssLocation" ];
+  var requiredOptions = [ "mainWindow", "width", "height", "cssLocation", "contentLocation" ];
 
   var defaultOptions = {
     "initialLocation" : "",
@@ -1640,9 +1640,14 @@ Albite.Main = function(options) {
       // Add the contentFrame from the start
       context.contentWindow = contentFrame.contentWindow;
 
+      // Cache content document
+      var doc = context.contentWindow.document;
+
+      // Fix images with absolute urls
+      setUpImages(doc);
+
       // Add a div around the content in order to fix the problem
       // with the margins
-      var doc = context.contentWindow.document;
       var rootElement = Albite.Helpers.createElement('div', doc);
       rootElement.id = 'albite_root';
 
@@ -1683,6 +1688,26 @@ Albite.Main = function(options) {
 
   function getElement(id) {
     return options.mainWindow.document.getElementById(id);
+  }
+
+  function setUpImages(doc) {
+    // Create an anchor. We'll use it to fix the url in an
+    // easy way, i.e. without the need to manually parse the url.
+    var anchor = Albite.Helpers.createElement('a', doc);
+
+    // Get all the images in the document
+    var images = doc.getElementsByTagName('img');
+
+    for (var i = 0; i < images.length; i++) {
+      anchor.href = images[i].src;
+
+      if (anchor.pathname.indexOf(context.contentLocation) != 0) {
+        // Doesn't start with the content location,
+        // therefore it must have been an absolute path. Fix it
+        anchor.pathname = context.contentLocation + anchor.pathname;
+        images[i].src = anchor.href;
+      }
+    }
   }
 
   function setUpAnchors(doc) {

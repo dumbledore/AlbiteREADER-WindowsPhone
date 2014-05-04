@@ -87,6 +87,7 @@ namespace Albite.Reader.Engine.Internal
             public static readonly string IsLastChapter = "is_last_chapter";
             public static readonly string ChapterFile = "chapter_file";
             public static readonly string CssLocation = "css_location";
+            public static readonly string ContentLocation = "content_location";
             public static readonly string TypeNamespace = "type_namespace";
 
             public static readonly string Width = "width";
@@ -201,6 +202,17 @@ namespace Albite.Reader.Engine.Internal
             {
                 cssLocation = value;
                 set(RegisteredNames.CssLocation, value);
+            }
+        }
+
+        private string contentLocation;
+        public string ContentLocation
+        {
+            get { return contentLocation; }
+            set
+            {
+                contentLocation = value;
+                set(RegisteredNames.ContentLocation, value);
             }
         }
 

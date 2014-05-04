@@ -13,6 +13,8 @@ namespace Albite.Reader.Engine.Internal
         private static readonly string absoluteContentStylesPath
             = "/" + BookPresenter.RelativeEnginePath + "/" + Paths.ContentStyles;
 
+        private static readonly string contentPath = BookPresenter.RelativeContentPath + "/";
+
         private static readonly string tag = "EngineTemplateController";
 
         public LayoutSettings Settings { get; private set; }
@@ -56,6 +58,9 @@ namespace Albite.Reader.Engine.Internal
 
             // Set up css location
             mainPageTemplate.CssLocation = absoluteContentStylesPath;
+
+            // Set up content location
+            mainPageTemplate.ContentLocation = contentPath;
 
             // Set up the namespace
             mainPageTemplate.TypeNamespace = EngineMessenger.TypeNamespace;
