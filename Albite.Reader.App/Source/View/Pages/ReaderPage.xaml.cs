@@ -117,14 +117,23 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
+        private void navigate(string path)
+        {
+            WaitControl.Start();
+            WaitControl.Dispatcher.BeginInvoke(() =>
+            {
+                NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/" + path, UriKind.Relative));
+            });
+        }
+
         private void SettingsButton_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/BookSettings/BookSettingsPage.xaml", UriKind.Relative));
+            navigate("BookSettings/BookSettingsPage.xaml");
         }
 
         private void ContentsButton_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/ContentsPage.xaml", UriKind.Relative));
+            navigate("ContentsPage.xaml");
         }
 
         private void AddBookmarkButton_Click(object sender, EventArgs e)
@@ -141,12 +150,12 @@ namespace Albite.Reader.App.View.Pages
 
         private void ReadingPositionButton_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/ReadingLocationPage.xaml", UriKind.Relative));
+            navigate("ReadingLocationPage.xaml");
         }
 
         private void BookmarksButton_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/BookmarksPage.xaml", UriKind.Relative));
+            navigate("BookmarksPage.xaml");
         }
 
         private void ShareButton_Click(object sender, EventArgs e)
