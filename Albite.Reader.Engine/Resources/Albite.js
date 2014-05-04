@@ -1779,6 +1779,9 @@ Albite.Main = function(options) {
       // Unhide the content
       pageElement.show();
 
+      // Fade in the content
+      pageElement.className = "opacity_visible";
+
       // Notify the host we are done, but after it has rendered it all
       requestAnimationFrame(context.host.notifyLoaded);
 

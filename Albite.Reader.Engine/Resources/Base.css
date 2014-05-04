@@ -35,6 +35,15 @@ html, body {
   overflow: hidden;
 }
 
+.opacity_hidden {
+  opacity: 0;
+}
+
+.opacity_visible {
+  opacity: 1;
+  transition: opacity ease 0.8s;
+}
+
 /*
  * Theme
  */
