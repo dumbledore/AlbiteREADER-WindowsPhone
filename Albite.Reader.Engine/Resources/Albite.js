@@ -808,8 +808,6 @@ Albite.Pager = function(context) {
   }
 
   function goToPageInternal(page) {
-    page = validate(page);
-
     // Scroll the pages
     scroller.scrollTo(page * pageWidth);
 
@@ -818,6 +816,8 @@ Albite.Pager = function(context) {
   }
 
   function goToPage(page) {
+    page = validate(page);
+
     // this is the wrapper
     goToPageInternal(page);
 
