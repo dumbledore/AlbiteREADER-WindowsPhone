@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Albite.Reader.App.View.Controls
 {
@@ -14,6 +15,24 @@ namespace Albite.Reader.App.View.Controls
         {
             get { return LoadingText.Text; }
             set { LoadingText.Text = value; }
+        }
+
+        public Color BackgroundColor
+        {
+            set
+            {
+                LayoutRoot.Background = new SolidColorBrush(value);
+            }
+        }
+
+        public Color ForegroundColor
+        {
+            set
+            {
+                Brush brush = new SolidColorBrush(value);
+                ProgressBar.Foreground = brush;
+                LoadingText.Foreground = brush;
+            }
         }
 
         private bool isIndeterminate_ = false;
