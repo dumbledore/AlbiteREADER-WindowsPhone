@@ -73,6 +73,10 @@ namespace Albite.Reader.App.View.Pages
             // Now set-up the application bar
             ApplicationBar.BackgroundColor = theme.BackgroundColor;
             ApplicationBar.ForegroundColor = theme.TextColor;
+
+            // And the wait control
+            WaitControl.BackgroundColor = theme.BackgroundColor;
+            WaitControl.ForegroundColor = theme.TextColor;
         }
 #endregion
 
