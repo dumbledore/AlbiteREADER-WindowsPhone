@@ -1268,6 +1268,7 @@ Albite.PresentationController = function(context) {
           else
           {
             // That's the first chapter.
+            context.notifications.showNotification("start of book");
             scrollToPage(PageType.current, samePageVelocityRatio);
             break;
           }
@@ -1288,6 +1289,7 @@ Albite.PresentationController = function(context) {
           else
           {
             // That's the last chapter.
+            context.notifications.showNotification("end of book");
             scrollToPage(PageType.current, samePageVelocityRatio);
             break;
           }
