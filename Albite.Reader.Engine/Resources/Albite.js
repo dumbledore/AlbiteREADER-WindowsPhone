@@ -164,6 +164,31 @@ Albite.WindowScroller = function(window) {
   this.getPosition  = getPosition;
 };
 
+Albite.Notifications = function(context) {
+  var mainDocument  = context.mainWindow.document;
+  var notifications = mainDocument.getElementById("notifications");
+  var notificationsBox = mainDocument.getElementById("notifications_box");
+  var timer = null;
+
+  function hideNotification() {
+    notifications.className = "opacity_hidden_transition";
+    timer = null;
+  }
+
+  function showNotification(text) {
+    if (timer != null) {
+      clearTimeout(timer);
+      timer = null;
+    }
+
+    notificationsBox.innerText = text;
+    notifications.className = "opacity_visible_transition";
+    timer = setTimeout(hideNotification, 2000);
+  }
+
+  this.showNotification = showNotification;
+}
+
 Albite.Pager = function(context) {
 
   var scroller  = context.scroller;
@@ -782,7 +807,7 @@ Albite.Pager = function(context) {
     goToPage(page);
   }
 
-  function goToPage(page) {
+  function goToPageInternal(page) {
     page = validate(page);
 
     // Scroll the pages
@@ -792,11 +817,19 @@ Albite.Pager = function(context) {
     current = page;
   }
 
+  function goToPage(page) {
+    // this is the wrapper
+    goToPageInternal(page);
+
+    // Show current page
+    context.notifications.showNotification(page + " of " + lastPage());
+  }
+
   // Don't forget to set up
   setUp();
 
   // Go to the first page as an initial state
-  goToPage(1);
+  goToPageInternal(1);
 
   // Public API
   this.isFirstPage      = function() { return isFirstPage(current); };
@@ -1760,6 +1793,9 @@ Albite.Main = function(options) {
     try {
       var pageElement = getElement("page");
 
+      // Set up the notifications element
+      context.notifications = new Albite.Notifications(context);
+
       // Set up the scroller
       context.scroller = new Albite.WindowScroller(context.contentWindow);
 
@@ -1780,7 +1816,7 @@ Albite.Main = function(options) {
       pageElement.show();
 
       // Fade in the content
-      pageElement.className = "opacity_visible";
+      pageElement.className = "opacity_visible_transition";
 
       // Notify the host we are done, but after it has rendered it all
       requestAnimationFrame(context.host.notifyLoaded);
