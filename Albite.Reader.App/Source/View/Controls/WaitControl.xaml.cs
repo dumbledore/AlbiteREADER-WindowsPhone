@@ -16,10 +16,15 @@ namespace Albite.Reader.App.View.Controls
             set { LoadingText.Text = value; }
         }
 
+        private bool isIndeterminate_ = false;
         public bool IsIndeterminate
         {
-            get { return ProgressBar.IsIndeterminate; }
-            set { ProgressBar.IsIndeterminate = value; }
+            get { return isIndeterminate_; }
+            set
+            {
+                isIndeterminate_ = value;
+                ProgressBar.IsIndeterminate = value;
+            }
         }
 
         public double Progress
@@ -44,16 +49,16 @@ namespace Albite.Reader.App.View.Controls
         {
             Progress = Minimum;
 
-            if (IsIndeterminate)
-            {
-                ProgressBar.IsIndeterminate = true;
-            }
+            // Update the control using the cached value
+            ProgressBar.IsIndeterminate = IsIndeterminate;
 
             Visibility = Visibility.Visible;
         }
 
         public void Finish()
         {
+            // Unset IsIndeterminate *directly* on the control,
+            // and leave the cached value untouched.
             ProgressBar.IsIndeterminate = false;
             Progress = Maximum;
             Visibility = Visibility.Collapsed;
