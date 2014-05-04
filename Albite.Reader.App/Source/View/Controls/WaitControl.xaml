@@ -9,22 +9,19 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480">
 
-    <Grid x:Name="LayoutRoot">
-        <Border
-            Background="{StaticResource PhoneBackgroundBrush}">
-            <StackPanel VerticalAlignment="Center">
-                <ProgressBar
-                    x:Name="ProgressBar"
-                    Background="Transparent"
-                    Height="10" />
-                <TextBlock
-                    x:Name="LoadingText"
-                    TextWrapping="Wrap"
-                    Margin="80, 0"
-                    HorizontalAlignment="Center">
-                    Loading
-                </TextBlock>
-            </StackPanel>
-        </Border>
+    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
+        <StackPanel VerticalAlignment="Center">
+            <ProgressBar
+                x:Name="ProgressBar"
+                Background="Transparent"
+                Height="10" />
+            <TextBlock
+                x:Name="LoadingText"
+                TextWrapping="Wrap"
+                Margin="80, 0"
+                HorizontalAlignment="Center">
+                Loading
+            </TextBlock>
+        </StackPanel>
     </Grid>
 </UserControl>
