@@ -54,11 +54,11 @@ html, body {
 }
 
 .opacity_semivisible {
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .opacity_semivisible_transition {
-  opacity: 0.7;
+  opacity: 0.5;
   transition: opacity ease 1s;
 }
 
@@ -72,9 +72,9 @@ html, body {
 }
 
 #notifications_box {
-  font-size:    1.4em;
+  font-size:    1.2em;
   color:        #(text_color);
-  text-shadow:  0px 0px 8px #(text_color);
+  text-shadow:  0px 0px 10px #(text_color);
 }
 
 /*
