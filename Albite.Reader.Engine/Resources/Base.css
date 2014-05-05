@@ -74,7 +74,7 @@ html, body {
 #notifications_box {
   font-size:    1.4em;
   color:        #(text_color);
-  text-shadow:  0px 0px 10px #(background_color);
+  text-shadow:  0px 0px 8px #(text_color);
 }
 
 /*
