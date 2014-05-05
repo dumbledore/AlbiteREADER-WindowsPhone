@@ -182,7 +182,7 @@ Albite.Notifications = function(context) {
     }
 
     notificationsBox.innerText = text;
-    notifications.className = "opacity_visible_transition";
+    notifications.className = "opacity_semivisible_transition";
     timer = setTimeout(hideNotification, 2000);
   }
 
