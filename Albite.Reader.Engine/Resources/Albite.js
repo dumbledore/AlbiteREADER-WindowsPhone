@@ -145,6 +145,39 @@ Math.sign = function(value) {
   return value ? value < 0 ? -1 : 1 : 0;
 };
 
+Albite.FPSCounter = function() {
+  var previousTime = null;
+  var totalTime = 0;
+  var iterations = 0;
+
+  function tick() {
+    var now = Date.now();
+
+    if (previousTime != null) {
+      totalTime += now - previousTime;
+      iterations += 1;
+    }
+
+    previousTime = now;
+  }
+
+  function getAverageFps() {
+    var averageTime = totalTime / iterations;
+    var averageFPS = Math.round(1000 / averageTime);
+    return averageFPS;
+  }
+
+  function reset() {
+    previousTime = null;
+    totalTime = 0;
+    iterations = 0;
+  }
+
+  this.tick           = tick;
+  this.getAverageFps  = getAverageFps;
+  this.reset          = reset;
+}
+
 Albite.WindowScroller = function(window) {
 
   function scrollBy(dx) {
@@ -866,6 +899,9 @@ Albite.Animation = function(context) {
   var timer               = null;
   var renderCached        = null;
 
+  // Debug: fps counter
+  var fpsCounter = new Albite.FPSCounter();
+
   function isRunning() {
     return timer !== null;
   }
@@ -887,9 +923,7 @@ Albite.Animation = function(context) {
     var startTime = Date.now();
 
     if (context.debugEnabled) {
-      var debugPreviousTime = startTime;
-      var debugTotalElapsedTime = 0;
-      var debugTotalRenderIterations = 0;
+      fpsCounter.reset();
     }
 
     function render(time, fill) {
@@ -901,9 +935,7 @@ Albite.Animation = function(context) {
       var finished = false;
 
       if (context.debugEnabled) {
-        debugTotalElapsedTime += now - debugPreviousTime;
-        debugTotalRenderIterations += 1;
-        debugPreviousTime = now;
+        fpsCounter.tick();
       }
 
       if (easingFunction) {
@@ -920,11 +952,11 @@ Albite.Animation = function(context) {
 
       if (finished) {
         stop(false);
+
         if (context.debugEnabled) {
-          var averageElapsedTime = debugTotalElapsedTime / debugTotalRenderIterations;
-          var averageFPS = Math.round(1000 / averageElapsedTime);
-          context.debug.log("Average FPS: " + averageFPS);
+          context.debug.log("Animation average FPS: " + fpsCounter.getAverageFps());
         }
+
         if (finishedFunction) {
           finishedFunction();
         }
