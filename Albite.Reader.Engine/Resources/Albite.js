@@ -852,7 +852,7 @@ Albite.Pager = function(context) {
   this.getBookmark      = getBookmark;
 };
 
-Albite.Animation = function() {
+Albite.Animation = function(context) {
 
   this.duration           = 0; // in ms
   this.speedRatio         = 1;
@@ -886,6 +886,12 @@ Albite.Animation = function() {
     var distance  = to - from;
     var startTime = Date.now();
 
+    if (context.debugEnabled) {
+      var debugPreviousTime = startTime;
+      var debugTotalElapsedTime = 0;
+      var debugTotalRenderIterations = 0;
+    }
+
     function render(time, fill) {
       // Will not use the passed time stamp as it is somewhat different
       // Date.now() and therefore elapsed may get to be negative
@@ -893,6 +899,12 @@ Albite.Animation = function() {
       var elapsed = now - startTime;
       var normalisedTime = elapsed / duration;
       var finished = false;
+
+      if (context.debugEnabled) {
+        debugTotalElapsedTime += now - debugPreviousTime;
+        debugTotalRenderIterations += 1;
+        debugPreviousTime = now;
+      }
 
       if (easingFunction) {
         normalisedTime = easingFunction(normalisedTime);
@@ -908,6 +920,11 @@ Albite.Animation = function() {
 
       if (finished) {
         stop(false);
+        if (context.debugEnabled) {
+          var averageElapsedTime = debugTotalElapsedTime / debugTotalRenderIterations;
+          var averageFPS = Math.round(1000 / averageElapsedTime);
+          context.debug.log("Average FPS: " + averageFPS);
+        }
         if (finishedFunction) {
           finishedFunction();
         }
@@ -1154,7 +1171,7 @@ Albite.PresentationController = function(context) {
   var scroller        = context.scroller;
   var pager           = context.pager;
 
-  var animation = new Albite.Animation();
+  var animation = new Albite.Animation(context);
   var scrollingPageType;
 
   // If the total delta is within these bounds
