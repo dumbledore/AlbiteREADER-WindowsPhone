@@ -160,8 +160,9 @@ namespace Albite.Reader.Engine
                 if (uri.IsFile
                     || uri.Scheme.StartsWith("x-wmapp", StringComparison.OrdinalIgnoreCase))
                 {
-                    // Get the absolute path
-                    string path = uri.AbsolutePath;
+                    // Get the absolute path, but unescape it first as it would be
+                    // in escaped form.
+                    string path = Uri.UnescapeDataString(uri.AbsolutePath);
 
                     // Is it a valid path?
                     if (path.StartsWith(absoluteContentPath)
