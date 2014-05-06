@@ -236,6 +236,13 @@ namespace Albite.Reader.Container.Epub
             const string metaContentAttributeName = "content";
             const string metaCoverValue = "cover";
 
+            List<string> titles = new List<string>();
+            List<string> authors = new List<string>();
+            List<string> publicationDates = new List<string>();
+            List<string> languages = new List<string>();
+            List<string> rights = new List<string>();
+            List<string> publishers = new List<string>();
+
             foreach (XElement element in metadataElement.Elements())
             {
                 string name = element.Name.ToString();
@@ -243,61 +250,41 @@ namespace Albite.Reader.Container.Epub
                 switch (name)
                 {
                     case titleName:
-                        // Only use the first title element
-                        if (Title == null)
-                        {
-                            Title = element.Value;
-                        }
+                        titles.Add(element.Value);
                         break;
 
                     case authorName:
-                        // Only use the first creator (that is an author of course)
-                        if (Author == null)
                         {
                             XAttribute attribute = element.Attribute(authorAttributeName);
                             // Either no attribute or its value must be "aut"
                             if (attribute == null || attribute.Value == "aut")
                             {
-                                Author = element.Value;
+                                authors.Add(element.Value);
                             }
                         }
                         break;
 
                     case dateName:
-                        // Only use the first publication date
-                        if (PublicationDate == null)
                         {
                             XAttribute attribute = element.Attribute(dateAttributeName);
                             // Either no attribute or its value must be "publication"
                             if (attribute == null || attribute.Value == "publication")
                             {
-                                PublicationDate = element.Value;
+                                publicationDates.Add(element.Value);
                             }
                         }
                         break;
 
                     case languageName:
-                        // Only use the first language
-                        if (Language == null)
-                        {
-                            Language = element.Value;
-                        }
+                        languages.Add(element.Value);
                         break;
 
                     case rightsName:
-                        // Only use the first rights element
-                        if (Rights == null)
-                        {
-                            Rights = element.Value;
-                        }
+                        rights.Add(element.Value);
                         break;
 
                     case publisherName:
-                        // Only use the first publisher
-                        if (Publisher == null)
-                        {
-                            Publisher = element.Value;
-                        }
+                        publishers.Add(element.Value);
                         break;
 
                     case metaName:
@@ -313,8 +300,40 @@ namespace Albite.Reader.Container.Epub
                         }
                         break;
                     }
-
                 }
+            }
+
+            // Now set up the found meta data
+            const string separator = ", ";
+
+            if (titles.Count > 0)
+            {
+                Title = string.Join<string>(separator, titles);
+            }
+
+            if (authors.Count > 0)
+            {
+                Author = string.Join<string>(separator, authors);
+            }
+
+            if (publicationDates.Count > 0)
+            {
+                PublicationDate = string.Join<string>(separator, publicationDates);
+            }
+
+            if (languages.Count > 0)
+            {
+                Language = string.Join<string>(separator, languages);
+            }
+
+            if (rights.Count > 0)
+            {
+                Rights = string.Join<string>(separator, rights);
+            }
+
+            if (publishers.Count > 0)
+            {
+                Publisher = string.Join<string>(separator, publishers);
             }
         }
 
