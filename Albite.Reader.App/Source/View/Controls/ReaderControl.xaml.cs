@@ -268,14 +268,32 @@ namespace Albite.Reader.App.View.Controls
                 }
             }
 
-            public bool NavigationRequested(Uri uri)
+            public bool ExternalNavigationRequested(Uri uri, string title)
             {
                 if (control.Observer != null)
                 {
-                    return control.Observer.OnNavigationRequested(uri);
+                    return control.Observer.OnExternalNavigationRequested(uri, title);
                 }
 
                 return false;
+            }
+
+            public bool InternalNavigationApprovalRequested(Uri uri, string title)
+            {
+                if (control.Observer != null)
+                {
+                    return control.Observer.OnInternalNavigationApprovalRequested(uri, title);
+                }
+
+                return false;
+            }
+
+            public void NavigationFailed(Uri uri, string title)
+            {
+                if (control.Observer != null)
+                {
+                    control.Observer.OnNavigationFailed(uri, title);
+                }
             }
 
             public void OnError(string message)

@@ -164,17 +164,30 @@ namespace Albite.Reader.Engine
                     // in escaped form.
                     string path = Uri.UnescapeDataString(uri.AbsolutePath);
 
-                    // Is it a valid path?
+                    // In case of links specified with relative paths in the xhtml,
+                    // remove the "content" folder. If they used an absolute path
+                    // in the href, there wouldn't be one.
                     if (path.StartsWith(absoluteContentPath)
                         && path.Length > absoluteContentPath.Length)
                     {
                         // Remove the initial part of the path, e.g. "/content"
                         path = path.Substring(absoluteContentPath.Length);
+                    }
+                    else if (path.StartsWith("/"))
+                    {
+                        // Make the path relative
+                        path = path.Substring(1);
+                    }
 
-                        // Try looking for the chapter with this path
-                        Chapter chapter = BookPresenter.Spine[path];
+                    // Try looking for the chapter with this path
+                    Chapter chapter = BookPresenter.Spine[path];
 
-                        if (chapter != null)
+                    if (chapter != null)
+                    {
+                        // Handled, indeed
+                        handled = true;
+
+                        if (EnginePresenter.InternalNavigationApprovalRequested(uri, title))
                         {
                             string fragment = uri.Fragment;
                             ChapterLocation chapterLocation;
@@ -201,13 +214,10 @@ namespace Albite.Reader.Engine
 
                             // Go there
                             Navigator.BookLocation = bookLocation;
-
-                            // Handled, indeed
-                            handled = true;
                         }
                     }
                 }
-                else if (EnginePresenter.NavigationRequested(uri))
+                else if (EnginePresenter.ExternalNavigationRequested(uri, title))
                 {
                     // Handled by the UI
                     handled = true;
@@ -216,7 +226,7 @@ namespace Albite.Reader.Engine
 
             if (!handled)
             {
-                Log.W(tag, "The Uri wasn't handled: " + uri);
+                EnginePresenter.NavigationFailed(uri, title);
             }
         }
 

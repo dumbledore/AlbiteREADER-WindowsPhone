@@ -156,7 +156,7 @@ namespace Albite.Reader.Tests.Pages
                 page.clientLoaded();
             }
 
-            public bool NavigationRequested(Uri uri)
+            public bool ExternalNavigationRequested(Uri uri)
             {
                 Log.D(tag, "Navigation: " + uri);
                 return false;

@@ -51,10 +51,24 @@ namespace Albite.Reader.Engine
         /// Inform the control that the client has requested
         /// to navigate.
         /// </summary>
-        /// <param name="uri">Internal or external URI</param>
+        /// <param name="uri">External URI</param>
         /// <returns>Returns true if the navigation was handled by the control,
         /// e.g. in cases of external links</returns>
-        bool NavigationRequested(Uri uri);
+        bool ExternalNavigationRequested(Uri uri, string title);
+
+        /// <summary>
+        /// Check if the internal navigation should be approved
+        /// </summary>
+        /// <param name="uri">Internal URI</param>
+        /// <param name="title">Title of the link</param>
+        /// <returns>Returns true if the internal navigation was approved.</returns>
+        bool InternalNavigationApprovalRequested(Uri uri, string title);
+
+        /// <summary>
+        /// Informs the presenter when the engine navigation has failed
+        /// </summary>
+        /// <param name="title">link address</param>
+        void NavigationFailed(Uri uri, string title);
 
         /// <summary>
         /// Inform the control in case of an error.

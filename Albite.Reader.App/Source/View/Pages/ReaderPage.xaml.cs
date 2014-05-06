@@ -298,7 +298,7 @@ namespace Albite.Reader.App.View.Pages
                 page.ApplicationBar.IsVisible = page.shouldShowApplicationBar(page.Orientation);
             }
 
-            public bool OnNavigationRequested(Uri uri)
+            public bool OnExternalNavigationRequested(Uri uri, string title)
             {
                 if (uri.IsAbsoluteUri)
                 {
@@ -342,8 +342,34 @@ namespace Albite.Reader.App.View.Pages
                     return true;
                 }
 
-                // The UI doesn't handle internal jumps
+                // The UI doesn't handle relative uris
                 return false;
+            }
+
+            public bool OnInternalNavigationApprovalRequested(Uri uri, string title)
+            {
+                if (title == null || title == string.Empty)
+                {
+                    title = "this link";
+                }
+
+                return MessageBox.Show(
+                    string.Format("Jump to {0}?", title),
+                    "Book navigation",
+                    MessageBoxButton.OKCancel) == MessageBoxResult.OK;
+            }
+
+            public void OnNavigationFailed(Uri uri, string title)
+            {
+                if (title == null || title == string.Empty)
+                {
+                    title = "this link";
+                }
+
+                MessageBox.Show(
+                    string.Format("Failed to navigate to {0}", title),
+                    "Navigation failed",
+                    MessageBoxButton.OK);
             }
 
             public int ApplicationBarHeight
