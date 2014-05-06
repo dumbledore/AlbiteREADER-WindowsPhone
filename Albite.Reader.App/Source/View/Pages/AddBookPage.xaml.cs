@@ -88,19 +88,24 @@ namespace Albite.Reader.App.View.Pages
                         "An error has occurred while processing the file: " + ex.Message,
                         "Could not add book",
                         MessageBoxButton.OK);
-                }
 
-                // Canceled
-                if (NavigationService.CanGoBack)
-                {
-                    // Return to previous page
-                    NavigationService.GoBack();
+                    // Discard the page on error
+                    discard();
                 }
-                else
-                {
-                    // Terminate the app completely
-                    Application.Current.Terminate();
-                }
+            }
+        }
+
+        private void discard()
+        {
+            if (NavigationService.CanGoBack)
+            {
+                // Return to previous page
+                NavigationService.GoBack();
+            }
+            else
+            {
+                // Terminate the app completely
+                Application.Current.Terminate();
             }
         }
 
@@ -202,6 +207,14 @@ namespace Albite.Reader.App.View.Pages
         {
             // Cancel the task just in case
             cancelCurrentTask();
+
+            if (!e.IsNavigationInitiator)
+            {
+                // Going away from the app.
+                // Most likely the home button has been pressed.
+                // Discard the page
+                discard();
+            }
 
             base.OnNavigatingFrom(e);
         }
