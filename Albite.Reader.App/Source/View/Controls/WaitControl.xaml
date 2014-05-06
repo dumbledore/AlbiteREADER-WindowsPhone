@@ -9,7 +9,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480">
 
-    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}" Margin="-10">
         <StackPanel VerticalAlignment="Center">
             <ProgressBar
                 x:Name="ProgressBar"
