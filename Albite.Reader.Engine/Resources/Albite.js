@@ -1717,7 +1717,7 @@ Albite.Main = function(options) {
   // error reports
   context.host = new Albite.Host(context);
 
-  // Setup debug
+  // Set up debug
   context.debug = new Albite.Debug(context);
 
   function contentLoaded(contentFrame) {
