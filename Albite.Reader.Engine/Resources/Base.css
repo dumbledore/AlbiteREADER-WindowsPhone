@@ -64,7 +64,7 @@ html, body {
 
 #notifications {
   position:     fixed;
-  bottom:       25px;
+  bottom:       30px;
   width:        100%;
   z-index:      10;
 
@@ -72,7 +72,7 @@ html, body {
 }
 
 #notifications_box {
-  font-size:    1.2em;
+  font-size:    1.0em;
   color:        #(text_color);
   text-shadow:  0px 0px 10px #(text_color);
 }
