@@ -17,10 +17,6 @@ body {
   margin-bottom:  #(margin_bottom)px      !important;
   width:          #(width)px              !important;
   height:         #(content_height)px     !important;
-
-  font-size:      #(font_size)px          !important; /* default: 28      */
-  font-family:    "#(font_family)", serif !important; /* default: Georgia */
-  word-wrap:      break-word              !important;
 }
 
 p {
@@ -35,8 +31,9 @@ p {
   /* define these so that they don't get overriden by a common selector,
    * e.g. a div selector, by the client CSS.
    */
-  border:           none;
-  background-color: transparent;
+  border:         none;
+  width:          auto;
+  height:         auto;
 }
 
 #albite_start {
@@ -58,10 +55,6 @@ body {
   column-gap:   0px           !important;
   column-rule:  none          !important;
   column-fill:  auto          !important;
-}
-
-body {
-  -ms-hyphens: auto !important;
 }
 
 pre {
@@ -89,7 +82,15 @@ h3 {
   font-size: 115%;
 }
 
-body {
+/* Apply these to both body and root
+ * as they might be overwritten by generic client selectors,
+ * e.g. a div selector
+ */
+body, #albite_root {
+  font-size:      #(font_size)px          !important; /* default: 28      */
+  font-family:    "#(font_family)", serif !important; /* default: Georgia */
+  word-wrap:      break-word              !important;
+  -ms-hyphens: auto !important;
   text-align:   #(text_align) !important; /* default: justify */
 }
 
@@ -141,7 +142,7 @@ svg {
 /*
  *  Theme
  */
-html, body, p, span {
+html, body, p, span, #albite_root {
   background-color: #(background_color) !important; /* Default: white */
   color:            #(text_color)       !important; /* Default: black */
 }
