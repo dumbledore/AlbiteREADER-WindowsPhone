@@ -270,9 +270,12 @@ namespace Albite.Reader.Engine.Internal
             [DataMember(Name = "url")]
             public string Url { get; private set; }
 
+            [DataMember(Name = "title")]
+            public string Title { get; private set; }
+
             public override void Callback(IClientHandler handler)
             {
-                handler.ClientNavigationRequest(Url);
+                handler.ClientNavigationRequest(Url, Title);
             }
         }
 
@@ -326,7 +329,7 @@ namespace Albite.Reader.Engine.Internal
             void ClientLoaded(int page, int pageCount);
             void GoToPreviousChapter();
             void GoToNextChapter();
-            void ClientNavigationRequest(string url);
+            void ClientNavigationRequest(string url, string title);
         }
     }
 }

@@ -33,9 +33,9 @@ namespace Albite.Reader.Engine.Internal
             engine.Navigator.GoToNextChapter();
         }
 
-        public void ClientNavigationRequest(string url)
+        public void ClientNavigationRequest(string url, string title)
         {
-            engine.OnNavigationRequested(url);
+            engine.OnNavigationRequested(url, title);
         }
     }
 }

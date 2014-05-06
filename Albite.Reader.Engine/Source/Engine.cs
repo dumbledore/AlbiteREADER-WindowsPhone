@@ -149,7 +149,7 @@ namespace Albite.Reader.Engine
         private static readonly string absoluteContentPath
             = Path.Combine("/", BookPresenter.RelativeContentPath) + "/";
 
-        internal void OnNavigationRequested(string url)
+        internal void OnNavigationRequested(string url, string title)
         {
             bool handled = false;
 

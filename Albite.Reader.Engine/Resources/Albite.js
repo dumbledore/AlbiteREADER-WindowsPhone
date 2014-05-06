@@ -1394,7 +1394,7 @@ Albite.PresentationController = function(context) {
     var anchor = getAnchor(tappedElement);
     if (anchor) {
       // Don't scroll when tapping on anchors and notify the host
-      context.host.navigate(anchor.href);
+      context.host.navigate(anchor.href, anchor.text);
       return;
     }
 
@@ -1561,9 +1561,10 @@ Albite.Host = function(context) {
     message.send();
   }
 
-  function navigate(url) {
+  function navigate(url, title) {
     var message = new Message(ClientMessages.navigate);
     message.url = url;
+    message.title = title;
     message.send();
   }
 
