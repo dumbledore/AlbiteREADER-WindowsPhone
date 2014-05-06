@@ -189,17 +189,17 @@ namespace Albite.Reader.Container.Epub
                     }
                     else
                     {
-                        Log.E(tag, "NCX not available");
+                        Log.W(tag, "NCX not available");
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.E(tag, "Couldn't parse the ncx", e);
+                    Log.W(tag, "Couldn't parse the ncx", e);
                 }
             }
             catch (Exception e)
             {
-                Log.E(tag, "Couldn't create the ePub container", e);
+                Log.W(tag, "Couldn't create the ePub container", e);
                 throw new BookContainerException("Processing the ePub container failed", e);
             }
 
