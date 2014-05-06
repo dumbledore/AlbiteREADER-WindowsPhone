@@ -1728,6 +1728,9 @@ Albite.Main = function(options) {
       // Cache content document
       var doc = context.contentWindow.document;
 
+      // Fix svgs
+      setUpSvgs(doc);
+
       // Fix images with absolute urls
       setUpImages(doc);
 
@@ -1773,6 +1776,14 @@ Albite.Main = function(options) {
 
   function getElement(id) {
     return options.mainWindow.document.getElementById(id);
+  }
+
+  function setUpSvgs(doc) {
+    var svgs = doc.getElementsByTagName('svg');
+
+    for (var i = 0; i < svgs.length; i++) {
+      svgs[i].setAttribute("preserveAspectRatio", "xMidyMid meet");
+    }
   }
 
   function setUpImages(doc) {

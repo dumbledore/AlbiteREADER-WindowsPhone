@@ -119,6 +119,15 @@ hr {
 }
 
 /*
+ * Svgs produced by calibre were not displayed
+ * correctly in XHTML mode
+ */
+svg {
+  width:          90%                   !important;
+  height:         #(content_height)px   !important;
+}
+
+/*
  *  Theme
  */
 html, body, p, span {
