@@ -89,7 +89,7 @@ namespace Albite.Reader.Container.Epub
             XElement rootElement = doc.Root;
             if (rootElement.Name != xmlns + "package")
             {
-                reportError("Root element for opf has an incorrect name: " + rootElement.Name);
+                reportWarning("Root element for opf has an incorrect name: " + rootElement.Name);
             }
 
             // process the manifest
@@ -140,14 +140,14 @@ namespace Albite.Reader.Container.Epub
 
                 if (id == null || href == null)
                 {
-                    reportError("id or href not found for item");
+                    reportWarning("id or href not found for item");
                     continue;
                 }
 
                 string path = UriResolver.ResolveToString(href.Value);
                 if (!IsValidFileName(path))
                 {
-                    reportError("href not a valid filename: " + path);
+                    reportWarning("href not a valid filename: " + path);
                     continue;
                 }
 
@@ -169,7 +169,7 @@ namespace Albite.Reader.Container.Epub
                 XAttribute idref = element.Attribute("idref");
                 if (idref == null)
                 {
-                    reportError("itemref without a valid idref");
+                    reportWarning("itemref without a valid idref");
                     continue;
                 }
 
@@ -188,7 +188,7 @@ namespace Albite.Reader.Container.Epub
                 }
                 else
                 {
-                    reportError("Couldn't add " + idref.Value + " to spine");
+                    reportWarning("Couldn't add " + idref.Value + " to spine");
                 }
             }
 
@@ -202,13 +202,13 @@ namespace Albite.Reader.Container.Epub
             XAttribute ncxAttribute = spineElement.Attribute("toc");
             if (ncxAttribute == null)
             {
-                reportError("Spine element doesn't specify a toc attribute");
+                reportWarning("Spine element doesn't specify a toc attribute");
                 return;
             }
 
             if (!items.ContainsKey(ncxAttribute.Value))
             {
-                reportError("Couldn't find the path for the ncx with id "
+                reportWarning("Couldn't find the path for the ncx with id "
                     + ncxAttribute.Value);
                 return;
             }
@@ -337,10 +337,9 @@ namespace Albite.Reader.Container.Epub
             }
         }
 
-        private void reportError(string msg)
+        private void reportWarning(string msg)
         {
-            Log.E(tag, msg);
-            HadErrors = true;
+            Log.W(tag, msg);
         }
 
         private void reportError(string msg, Exception e)
