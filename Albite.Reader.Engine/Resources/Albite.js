@@ -1352,7 +1352,7 @@ Albite.PresentationController = function(context) {
     }
   };
 
-  var gestureHandler = new Albite.GestureHandler(contentDocument.body);
+  var gestureHandler = new Albite.GestureHandler(contentDocument.documentElement);
 
   gestureHandler.onChange = function(dx, dy) {
     if (animation.isRunning()) {
