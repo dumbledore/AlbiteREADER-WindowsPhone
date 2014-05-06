@@ -1792,34 +1792,30 @@ Albite.Main = function(options) {
   function fixImages(doc, contentLocation) {
     // Fix all svg images
     var images = doc.getElementsByTagNameNS('http://www.w3.org/2000/svg', 'image');
-    fixUrls(doc, images, 'http://www.w3.org/1999/xlink', 'href', contentLocation);
+    fixUrls(images, 'http://www.w3.org/1999/xlink', 'href', contentLocation);
   }
 
   function fixImgs(doc, contentLocation) {
     var ns = doc.documentElement.namespaceURI;
     var imgs = doc.getElementsByTagNameNS(ns, 'img');
-    fixUrls(doc, imgs, null, 'src', contentLocation);
+    fixUrls(imgs, null, 'src', contentLocation);
   }
 
   // Fix absolute urls
-  function fixUrls(doc, items, attrNS, attr, contentLocation) {
-    // Create an anchor. We'll use it to fix the url in an
-    // easy way, i.e. without the need to manually parse the url.
-    var anchor = Albite.Helpers.createElement('a', doc);
-
+  function fixUrls(items, attrNS, attr, contentLocation) {
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
+
+      // Getting the url this way would result in a relative one,
+      // i.e. path only - both for img and svg image.
       var url = item.getAttributeNS(attrNS, attr);
 
-      if (url != null) {
-        anchor.href = url;
-
-        if (anchor.pathname.indexOf(contentLocation) != 0) {
-          // Doesn't start with the content location,
-          // therefore it must have been an absolute path. Fix it
-          anchor.pathname = contentLocation + anchor.pathname;
-          item.setAttributeNS(attrNS, attr, anchor.href);
-        }
+      // If it starts with a '/' or '\', then it's an absolute path
+      // Add the content location to the start of the url
+      // and do *not* forget to add a '/' as contentLocation might not
+      // be an absolute path, and we now need an absolute path
+      if ((url != null) && (url.length > 0) && (url[0] == '/' || url[0] == '\\')) {
+        item.setAttributeNS(attrNS, attr, '/' + contentLocation + url);
       }
     }
   }
