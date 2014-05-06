@@ -83,7 +83,7 @@ namespace Albite.Reader.Container.Epub
 
         public override Core.Collections.ITree<IContentItem> Contents
         {
-            get { return Ncx.NavigationMap; }
+            get { return Ncx != null ? Ncx.NavigationMap : null; }
         }
 
         public override Task<bool> InstallAsync(
