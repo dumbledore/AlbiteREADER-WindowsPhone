@@ -31,18 +31,26 @@ p {
   padding:        0;
   padding-left:   #(margin_left)px;
   padding-right:  #(margin_right)px;
+
+  /* define these so that they don't get overriden by a common selector,
+   * e.g. a div selector, by the client CSS.
+   */
+  border:           none;
+  background-color: transparent;
 }
 
 #albite_start {
   width:        10px;
   height:       10px;
   break-after:  column;
+  visibility:   hidden;
 }
 
 #albite_end {
   width:        10px;
   height:       10px;
   break-before: column;
+  visibility:   hidden;
 }
 
 body {
