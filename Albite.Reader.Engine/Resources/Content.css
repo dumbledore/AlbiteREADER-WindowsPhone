@@ -81,8 +81,11 @@ h3 {
   font-size: 115%;
 }
 
-p {
+body {
   text-align:   #(text_align) !important; /* default: justify */
+}
+
+p {
   text-indent:  5%            !important;
   padding:      0;
   margin:       0;
