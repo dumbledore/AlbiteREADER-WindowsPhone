@@ -95,7 +95,7 @@ namespace Albite.Reader.Storage.Services
             List<IStorageItem> items = new List<IStorageItem>();
 
             // Add folders to list
-            foreach (ExternalStorageFolder subFolder in subFolders)
+            foreach (ExternalStorageFolder subFolder in subFolders.OrderBy(x => x.Name))
             {
                 items.Add(new StorageFolder(subFolder.Path, subFolder.Name));
             }
@@ -107,7 +107,7 @@ namespace Albite.Reader.Storage.Services
             }
 
             // Add files to list
-            foreach (ExternalStorageFile file in files)
+            foreach (ExternalStorageFile file in files.OrderBy(x => x.Name))
             {
                 if (IsFileAcceptedDelegate == null
                     || IsFileAcceptedDelegate(file.Name))
