@@ -1728,11 +1728,14 @@ Albite.Main = function(options) {
       // Cache content document
       var doc = context.contentWindow.document;
 
-      // Fix svgs
-      setUpSvgs(doc);
+      // Fix SVGs
+      fixSVGs(doc);
 
-      // Fix images with absolute urls
-      setUpImages(doc);
+      // Fix SVG images with absolute urls
+      fixImages(doc, context.contentLocation);
+
+      // Fix imgs with absolute urls
+      fixImgs(doc, context.contentLocation);
 
       // Add a div around the content in order to fix the problem
       // with the margins
@@ -1778,7 +1781,7 @@ Albite.Main = function(options) {
     return options.mainWindow.document.getElementById(id);
   }
 
-  function setUpSvgs(doc) {
+  function fixSVGs(doc) {
     var svgs = doc.getElementsByTagName('svg');
 
     for (var i = 0; i < svgs.length; i++) {
@@ -1786,22 +1789,37 @@ Albite.Main = function(options) {
     }
   }
 
-  function setUpImages(doc) {
+  function fixImages(doc, contentLocation) {
+    // Fix all svg images
+    var images = doc.getElementsByTagNameNS('http://www.w3.org/2000/svg', 'image');
+    fixUrls(doc, images, 'http://www.w3.org/1999/xlink', 'href', contentLocation);
+  }
+
+  function fixImgs(doc, contentLocation) {
+    var ns = doc.documentElement.namespaceURI;
+    var imgs = doc.getElementsByTagNameNS(ns, 'img');
+    fixUrls(doc, imgs, null, 'src', contentLocation);
+  }
+
+  // Fix absolute urls
+  function fixUrls(doc, items, attrNS, attr, contentLocation) {
     // Create an anchor. We'll use it to fix the url in an
     // easy way, i.e. without the need to manually parse the url.
     var anchor = Albite.Helpers.createElement('a', doc);
 
-    // Get all the images in the document
-    var images = doc.getElementsByTagName('img');
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var url = item.getAttributeNS(attrNS, attr);
 
-    for (var i = 0; i < images.length; i++) {
-      anchor.href = images[i].src;
+      if (url != null) {
+        anchor.href = url;
 
-      if (anchor.pathname.indexOf(context.contentLocation) != 0) {
-        // Doesn't start with the content location,
-        // therefore it must have been an absolute path. Fix it
-        anchor.pathname = context.contentLocation + anchor.pathname;
-        images[i].src = anchor.href;
+        if (anchor.pathname.indexOf(contentLocation) != 0) {
+          // Doesn't start with the content location,
+          // therefore it must have been an absolute path. Fix it
+          anchor.pathname = contentLocation + anchor.pathname;
+          item.setAttributeNS(attrNS, attr, anchor.href);
+        }
       }
     }
   }
