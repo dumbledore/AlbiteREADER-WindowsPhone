@@ -182,12 +182,6 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
-        protected override void OnBackKeyPress(CancelEventArgs e)
-        {
-            e.Cancel = true;
-            base.OnBackKeyPress(e);
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
