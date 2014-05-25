@@ -144,6 +144,7 @@
     <Compile Include="Source\IO\TemplateResource.cs" />
     <Compile Include="Source\Json\JsonMessenger.cs" />
     <Compile Include="Source\Json\JsonSerializer.cs" />
+    <Compile Include="Source\Media\HslColor.cs" />
     <Compile Include="Source\Net\AlbiteWebClient.cs" />
     <Compile Include="Source\RelativeUriResolver.cs" />
     <Compile Include="Source\Search\Query.cs" />
