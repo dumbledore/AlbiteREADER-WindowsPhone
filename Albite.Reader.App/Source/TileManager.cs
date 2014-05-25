@@ -175,10 +175,12 @@ namespace Albite.Reader.App
             return coverUri;
         }
 
+        // The random needs to be created once,
+        // otherwise it would not be random at all!
+        private static Random random = new Random();
+
         private static Color createRandomColor()
         {
-            Random random = new Random();
-
             int color = random.Next();
 
             byte r = (byte)((color >>  0) & 0xFF);
