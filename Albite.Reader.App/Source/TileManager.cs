@@ -96,7 +96,7 @@ namespace Albite.Reader.App
 
         private static readonly Uri BackTileImage = new Uri("Resources/BackTile.png", UriKind.Relative);
 
-        private static readonly int TileSize = 173;
+        private static readonly int TileSize = 336;
 
         private static Uri makeCover(BookPresenter bookPresenter)
         {

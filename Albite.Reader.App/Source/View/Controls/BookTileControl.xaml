@@ -7,21 +7,21 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="173" d:DesignWidth="173">
+    d:DesignHeight="336" d:DesignWidth="336">
     
     <Grid x:Name="LayoutRoot" Background="Black">
         <Grid x:Name="BookCoverGrid"
               Background="{StaticResource PhoneAccentBrush}"
-              Margin="30,0,30,0">
+              Margin="60,0,60,0">
             <Border
-                Margin="0,30,0,80"
+                Margin="0,60,0,160"
                 Background="White"
                 >
                 <TextBlock
                     x:Name="BookTitleText"
-                    Margin="10"
+                    Margin="20"
                     Foreground="Black"
-                    FontSize="12"
+                    FontSize="24"
                     TextWrapping="Wrap"
                     TextAlignment="Center"
                     TextTrimming="WordEllipsis">
@@ -29,7 +29,7 @@
                 </TextBlock>
             </Border>
             <Image
-                    Margin="30,130,30,10"
+                    Margin="60,260,60,20"
                     Source="/Resources/tile-mark.png"
                     Stretch="Uniform"
                     />
