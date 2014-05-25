@@ -259,11 +259,14 @@
     <Content Include="Resources\Images\feature.search.png" />
     <Content Include="Resources\Images\folder-dark.png" />
     <Content Include="Resources\Images\folder.png" />
-    <Content Include="Resources\tile-mark.png" />
-    <Content Include="Resources\ApplicationIcon.png">
+    <Content Include="Resources\MediumTile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Background.png">
+    <Content Include="Resources\SmallTile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\tile-mark.png" />
+    <Content Include="Resources\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Book.png">

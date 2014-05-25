@@ -14,10 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="albite-logo-LAST.svg"
-   inkscape:export-filename="S:\Svetlin\work\software\AlbiteReader\Integrity\logo\albite-logo-173.png"
-   inkscape:export-xdpi="30.41"
-   inkscape:export-ydpi="30.41">
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="S:\temp\logo.png"
+   inkscape:export-xdpi="59.060001"
+   inkscape:export-ydpi="59.060001">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -28,7 +28,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.90529003"
-     inkscape:cx="367.86505"
+     inkscape:cx="235.86315"
      inkscape:cy="180.31149"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -122,9 +122,16 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-540.36217)">
+    <rect
+       style="fill:#0066aa;fill-opacity:1;stroke:none"
+       id="rect3002"
+       width="512"
+       height="512"
+       x="0"
+       y="540.36218" />
     <g
        id="g4026"
-       transform="matrix(0.71875,0,0,0.71875,53.329707,205.97686)"
+       transform="matrix(0.71875,0,0,0.71875,53.329707,223.97686)"
        style="fill:#ffffff;stroke:none">
       <path
          sodipodi:nodetypes="cccccccccccccscccccccccccc"
@@ -132,7 +139,7 @@
          id="path3786"
          transform="translate(0,540.36217)"
          d="m 240.03125,96 -99.375,266.15625 c 0,0 -5.30079,12.97656 -7.5625,17.5 -6.02428,12.51212 -13.81916,17.44859 -26.59375,17.5 l -8.53125,0 0,18.84375 109.4375,0 0,-18.84375 -10.28125,0 c -22.99922,-0.64258 -33.12427,-9.60237 -28.6875,-30.75 5.32012,-19.1067 20.15625,-57.4375 20.15625,-57.4375 l 117.75,0 c 0,0 21.54535,44.13151 21.65625,66.75 -2.3e-4,14.30007 -8.95845,21.4375 -26.90625,21.4375 l -10.28125,0 0,18.84375 123.21875,0 0,-18.84375 -5.90625,0 c -18.50863,0.41701 -31.75,-23.84375 -31.75,-23.84375 L 275.03125,96 z m 8.09375,41.125 49.60729,149.125 -100.60729,0.15625 z"
-         style="font-size:448.26266478999997000px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Droid Serif;-inkscape-font-specification:Droid Serif" />
+         style="font-size:448.26266479px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Droid Serif;-inkscape-font-specification:Droid Serif" />
       <path
          sodipodi:nodetypes="cccc"
          inkscape:connector-curvature="0"

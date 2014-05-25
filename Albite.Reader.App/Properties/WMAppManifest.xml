@@ -16,9 +16,9 @@
     <Tokens>
       <PrimaryToken TokenID="AlbiteREADERToken" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsResource="false" IsRelative="true">Resources\Background.png</SmallImageURI>
+          <SmallImageURI IsResource="false" IsRelative="true">Resources\SmallTile.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsResource="false" IsRelative="true">Resources\Background.png</BackgroundImageURI>
+          <BackgroundImageURI IsResource="false" IsRelative="true">Resources\MediumTile.png</BackgroundImageURI>
           <Title>Albite READER</Title>
           <BackContent>
           </BackContent>
