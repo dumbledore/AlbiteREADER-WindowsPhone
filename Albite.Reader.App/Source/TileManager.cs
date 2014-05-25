@@ -31,6 +31,7 @@ namespace Albite.Reader.App
                 tileData.BackgroundImage = makeCover(bookPresenter);
                 tileData.BackTitle = bookPresenter.Book.Author;
                 tileData.BackContent = bookPresenter.Book.Title;
+                tileData.BackBackgroundImage = BackTileImage;
 
                 // Create the navigation URI
                 Uri navigationUri = new Uri(
@@ -92,6 +93,8 @@ namespace Albite.Reader.App
         }
 
         private static readonly Uri DefaultCover = new Uri("Resources/Book.png", UriKind.Relative);
+
+        private static readonly Uri BackTileImage = new Uri("Resources/BackTile.png", UriKind.Relative);
 
         private static readonly int TileSize = 173;
 
