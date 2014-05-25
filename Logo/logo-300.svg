@@ -15,7 +15,7 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="logo-300.svg"
-   inkscape:export-filename="c:\Svetlin\WP\wp8-host\Logo\albite-store-300.png"
+   inkscape:export-filename="S:\temp\albite-store-300.png"
    inkscape:export-xdpi="52.73"
    inkscape:export-ydpi="52.73">
   <defs
@@ -28,13 +28,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.7460938"
-     inkscape:cx="256"
+     inkscape:cx="166.65772"
      inkscape:cy="247.61682"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
+     inkscape:window-width="1680"
+     inkscape:window-height="987"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -123,7 +123,7 @@
      id="layer1"
      transform="translate(0,-540.36217)">
     <rect
-       style="fill:#2d2d2d;fill-opacity:1"
+       style="fill:#0066aa;fill-opacity:1"
        id="rect3010"
        width="512"
        height="512"
