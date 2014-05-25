@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Albite.Reader.Core.Media;
 
 namespace Albite.Reader.App
 {
@@ -181,13 +182,9 @@ namespace Albite.Reader.App
 
         private static Color createRandomColor()
         {
-            int color = random.Next();
-
-            byte r = (byte)((color >>  0) & 0xFF);
-            byte g = (byte)((color >>  8) & 0xFF);
-            byte b = (byte)((color >> 16) & 0xFF);
-
-            return Color.FromArgb(0xFF, r, g, b);
+            int hue = random.Next(360);
+            HslColor hslColor = new HslColor(hue, 1.0, 0.3333);
+            return hslColor.ToColor();
         }
 
         private static string getTilePath(Book book)
