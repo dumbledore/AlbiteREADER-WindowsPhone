@@ -214,12 +214,21 @@ Albite.Notifications = function(context) {
       timer = null;
     }
 
-    notificationsBox.innerText = text;
-    notifications.className = "opacity_semivisible_transition";
-    timer = setTimeout(hideNotification, 2000);
+    if (context.loaded) {
+      notificationsBox.innerText = text;
+      notifications.className = "opacity_semivisible_transition";
+      timer = setTimeout(hideNotification, 2000);
+    }
+  }
+
+  function showPageNumbers() {
+    var currentPage = context.pager.getCurrentPage();
+    var pageCount = context.pager.getPageCount();
+    showNotification(currentPage + " of " + pageCount);
   }
 
   this.showNotification = showNotification;
+  this.showPageNumbers = showPageNumbers;
 }
 
 Albite.Pager = function(context) {
@@ -855,7 +864,7 @@ Albite.Pager = function(context) {
     goToPageInternal(page);
 
     // Show current page
-    context.notifications.showNotification(page + " of " + lastPage());
+    context.notifications.showPageNumbers();
   }
 
   // Don't forget to set up
@@ -1720,6 +1729,9 @@ Albite.Main = function(options) {
   // Set up debug
   context.debug = new Albite.Debug(context);
 
+  // Set up loading state
+  context.loaded = false;
+
   function contentLoaded(contentFrame) {
     try {
       // Add the contentFrame from the start
@@ -1858,7 +1870,7 @@ Albite.Main = function(options) {
       // Finally, scheduling for some milliseconds will make it even less
       // likely that the columnization is not complete, because of the
       // fixed wait interval (rather than waiting for the next paint).
-      setTimeout(cssApplied, 250);
+      setTimeout(function() { waitFrames(10, cssApplied); }, 250);
     } else {
       // Scheduling for the next paint makes it more likely that
       // the reflow would've finished
@@ -1892,15 +1904,40 @@ Albite.Main = function(options) {
       // Unhide the content
       pageElement.show();
 
-      // Fade in the content
-      pageElement.className = "opacity_visible_transition";
+      // Wait some frames, to make sure it has rendered it all
+      waitFrames(10, function() {
+        // Fade in the content
+        pageElement.className = "opacity_visible_transition";
 
-      // Notify the host we are done, but after it has rendered it all
-      requestAnimationFrame(context.host.notifyLoaded);
+        // We are done
+        context.loaded = true;
 
+        // Display page numbers
+        context.notifications.showPageNumbers();
+
+        // Notify the host we are done
+        context.host.notifyLoaded();
+      });
     } catch (exception) {
       context.host.reportError(exception);
     }
+  }
+
+  function waitFrames(frameCount, callback) {
+    var loadingFramesLeft = frameCount;
+
+    function waiter() {
+      if (loadingFramesLeft > 0) {
+        loadingFramesLeft -= 1;
+        requestAnimationFrame(waiter);
+      } else {
+        if (callback) {
+          callback();
+        }
+      }
+    }
+
+    waiter();
   }
 
   function notify(message) {
