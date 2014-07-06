@@ -156,10 +156,21 @@ namespace Albite.Reader.Tests.Pages
                 page.clientLoaded();
             }
 
-            public bool ExternalNavigationRequested(Uri uri)
+            public bool ExternalNavigationRequested(Uri uri, string title)
             {
-                Log.D(tag, "Navigation: " + uri);
+                Log.D(tag, "ExternalNavigationRequested: " + uri + " (" + title + ")");
                 return false;
+            }
+
+            public bool InternalNavigationApprovalRequested(Uri uri, string title)
+            {
+                Log.D(tag, "InternalNavigationApprovalRequested: " + uri + " (" + title + ")");
+                return false;
+            }
+
+            public void NavigationFailed(Uri uri, string title)
+            {
+                Log.D(tag, "NavigationFailed: " + uri + " (" + title + ")");
             }
 
             public void OnError(string message)
