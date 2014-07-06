@@ -197,6 +197,8 @@
     <Content Include="Resources\Test\WebBrowser\Stability\allocation_test.html" />
     <Content Include="Resources\Test\WebBrowser\Stability\content_test.html" />
     <Content Include="Resources\Test\WebBrowser\Stability\loop_test.html" />
+    <Content Include="Resources\Test\Speech\down-the-rabbit-hole.xhtml" />
+    <Content Include="Resources\Test\Speech\pig-and-pepper.xhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ApplicationIcon.png">
@@ -251,6 +253,10 @@
     <ProjectReference Include="..\Albite.Reader.App\Albite.Reader.App.csproj">
       <Project>{CB6FF657-56D3-43B4-BA40-BD707F6403F7}</Project>
       <Name>Albite.Reader.App</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albite.Reader.Speech\Albite.Reader.Speech.csproj">
+      <Project>{C53D8264-29BC-43C1-9ED7-40F851FB9426}</Project>
+      <Name>Albite.Reader.Speech</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
