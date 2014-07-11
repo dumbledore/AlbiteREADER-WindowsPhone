@@ -40,12 +40,10 @@ namespace Albite.Reader.Speech.Narration.Xhtml
             // TODO: Check if comments are ignored in IE10
             settings.IgnoreComments = false;
 
-            using (XmlReader reader = XmlReader.Create(stream, settings))
-            {
-                XDocument doc = XDocument.Load(reader);
-                Parser parser = new Parser(doc, defaultLanguage);
-                return parser.Parse();
-            }
+            XmlReader reader = XmlReader.Create(stream, settings);
+            XDocument doc = XDocument.Load(reader);
+            Parser parser = new Parser(doc, defaultLanguage);
+            return parser.Parse();
         }
 
         private class Parser
