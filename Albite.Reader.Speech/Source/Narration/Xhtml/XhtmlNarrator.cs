@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using Albite.Reader.Speech.Narration.Commands;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Albite.Reader.Speech.Narration.Xhtml
 {
-    public class XhtmlbNarrator : Narrator<XhtmlNarrationExpression>
+    public class XhtmlNarrator : Narrator<XhtmlNarrationExpression>
     {
-        public XhtmlbNarrator(Stream stream, NarrationSettings settings)
-            : base(createRoot(stream, settings))
+        public XhtmlNarrator(Stream stream, NarrationSettings settings)
+            : base(createRoot(stream, settings), settings)
         {
         }
 
-        private static INarrationCommand createRoot(Stream stream, NarrationSettings settings)
+        private static NarrationCommand createRoot(Stream stream, NarrationSettings settings)
         {
-            using (XhtmlNarrationParser parser = new XhtmlNarrationParser(stream, settings.BaseLanguage))
+            using (XhtmlNarrationParser parser = new XhtmlNarrationParser(stream, settings))
             {
                 return parser.Parse();
             }

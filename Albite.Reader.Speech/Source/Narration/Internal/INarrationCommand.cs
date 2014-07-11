@@ -1,6 +1,6 @@
-﻿namespace Albite.Reader.Speech.Narration
+﻿namespace Albite.Reader.Speech.Narration.Internal
 {
-    public interface INarrationCommand
+    internal interface INarrationCommand
     {
         INarrationCommand Previous { get; }
         INarrationCommand Next { get; }

@@ -11,8 +11,8 @@ namespace Albite.Reader.Speech.Narration
         public static readonly int DefaultSentencePause = 200;
         public static readonly int DefaultHeadingSentencePause = 300;
         public static readonly int DefaultHeadingAfterPause = 1500;
-        public static readonly int DefaultParagraphSentencePause = DefaultSentencePause;
         public static readonly int DefaultParagraphAfterPause = 1000;
+        public static readonly float DefaultSpeedRatio = 1.0f;
         public static readonly float DefaultEmphasisSpeedRatio = 0.7f;
         public static readonly float DefaultQuoteSpeedRatio = 0.85f;
 
@@ -20,8 +20,8 @@ namespace Albite.Reader.Speech.Narration
         public int SentencePause { get; set; }
         public int HeadingSentencePause { get; set; }
         public int HeadingAfterPause { get; set; }
-        public int ParagraphSentencePause { get; set; }
         public int ParagraphAfterPause { get; set; }
+        public float BaseSpeedRatio { get; set; }
         public float EmphasisSpeedRatio { get; set; }
         public float QuoteSpeedRatio { get; set; }
 
@@ -31,8 +31,8 @@ namespace Albite.Reader.Speech.Narration
             SentencePause = DefaultSentencePause;
             HeadingSentencePause = DefaultHeadingSentencePause;
             HeadingAfterPause = DefaultHeadingAfterPause;
-            ParagraphSentencePause = DefaultParagraphSentencePause;
             ParagraphAfterPause = DefaultParagraphAfterPause;
+            BaseSpeedRatio = DefaultSpeedRatio;
             EmphasisSpeedRatio = DefaultEmphasisSpeedRatio;
             QuoteSpeedRatio = DefaultQuoteSpeedRatio;
         }

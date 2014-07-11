@@ -1,4 +1,5 @@
 ﻿using Albite.Reader.Core.Diagnostics;
+using Albite.Reader.Speech.Narration.Commands;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,12 +20,12 @@ namespace Albite.Reader.Speech.Narration.Xhtml
         private static readonly string Tag = "XhtmlNarrationParser";
 
         private Stream stream;
-        private string defaultLanguage;
+        private NarrationSettings settings;
 
-        public XhtmlNarrationParser(Stream stream, string defaultLanguage)
+        public XhtmlNarrationParser(Stream stream, NarrationSettings settings)
         {
             this.stream = stream;
-            this.defaultLanguage = defaultLanguage;
+            this.settings = settings;
         }
 
         public void Dispose()
@@ -32,17 +33,17 @@ namespace Albite.Reader.Speech.Narration.Xhtml
             stream.Dispose();
         }
 
-        public INarrationCommand Parse()
+        public NarrationCommand Parse()
         {
-            XmlReaderSettings settings = new XmlReaderSettings();
+            XmlReaderSettings xmlSettings = new XmlReaderSettings();
             // Used for custom entities
-            settings.DtdProcessing = DtdProcessing.Parse;
+            xmlSettings.DtdProcessing = DtdProcessing.Parse;
             // TODO: Check if comments are ignored in IE10
-            settings.IgnoreComments = false;
+            xmlSettings.IgnoreComments = false;
 
-            XmlReader reader = XmlReader.Create(stream, settings);
+            XmlReader reader = XmlReader.Create(stream, xmlSettings);
             XDocument doc = XDocument.Load(reader);
-            Parser parser = new Parser(doc, defaultLanguage);
+            Parser parser = new Parser(doc, settings);
             return parser.Parse();
         }
 
@@ -53,20 +54,22 @@ namespace Albite.Reader.Speech.Narration.Xhtml
 
             private Stack<string> languages = new Stack<string>();
 
-            private string defaultLanguage;
+            private NarrationSettings settings;
 
             private int emphasis = 0;
             private int paragraph = 0;
-            private int header = 0;
+            private int heading = 0;
             private int quote = 0;
 
-            public Parser(XDocument doc, string defaultLanguage)
+            private NarrationCommand currentCommand = null;
+
+            public Parser(XDocument doc, NarrationSettings settings)
             {
                 this.doc = doc;
-                this.defaultLanguage = defaultLanguage;
+                this.settings = settings;
             }
 
-            public INarrationCommand Parse()
+            public NarrationCommand Parse()
             {
                 // Get to a known state
                 reset();
@@ -74,7 +77,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 // Get the body element
                 XElement body = doc.Root.Elements(BodyElementName).First();
 
-                string language = defaultLanguage;
+                string language = settings.BaseLanguage;
 
                 // Go up from body to root and try retrieving the language
                 for (XElement element = body; element != null; element = element.Parent)
@@ -94,7 +97,27 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 parse(body.FirstNode);
 
                 // TODO: return the first of the created commands
-                return null;
+                NarrationCommand rootCommand = currentCommand;
+
+                if (rootCommand != null)
+                {
+                    while (rootCommand.Previous != null)
+                    {
+                        rootCommand = rootCommand.Previous;
+                    }
+                }
+
+                return rootCommand;
+            }
+
+            private void addCommand(NarrationCommand command)
+            {
+                if (currentCommand != null)
+                {
+                    currentCommand.AddNext(command);
+                }
+
+                currentCommand = command;
             }
 
             private void reset()
@@ -103,7 +126,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 languages.Clear();
                 emphasis = 0;
                 paragraph = 0;
-                header = 0;
+                heading = 0;
                 quote = 0;
             }
 
@@ -126,8 +149,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 {
                     // Text node
                     XText text = (XText)node;
-                    dumpTextNode(text);
-                    // TODO
+                    processText(text);
                 }
                 else if (node is XElement)
                 {
@@ -140,6 +162,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                     if (language != null)
                     {
                         languages.Push(language);
+                        addCommand(new LanguageCommand(language));
                     }
 
                     // Get the tag name
@@ -161,7 +184,66 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                     if (language != null)
                     {
                         languages.Pop();
+
+                        // This should never throw, as there is
+                        // a default language
+                        string previousLanguage = languages.Peek();
+                        addCommand(new LanguageCommand(previousLanguage));
                     }
+                }
+            }
+
+            // TODO: A better and more correct trimmer that will include
+            // the separators *with* the expressions and also
+            // will be able to filter out "empty" expressions
+
+            private static readonly char[] Splitters
+                = new char[] { '.', '?', '!', '\'', '"', ',', ':', '(', ')', '“', '”', };
+
+            private void processText(XText textNode)
+            {
+                string text = textNode.Value;
+                int pauseDuration = heading > 0 ? settings.HeadingSentencePause : settings.SentencePause;
+                int offset = 0;
+
+
+                // Split to "expressions"
+                foreach (string ex in splitAndKeep(text, Splitters))
+                {
+                    string exTrimmed = ex.Trim();
+
+                    if (exTrimmed.Length > 0)
+                    {
+                        XhtmlLocation location = new XhtmlLocation(path.Reverse().ToArray(), offset);
+                        XhtmlNarrationExpression expression = new XhtmlNarrationExpression(exTrimmed, location);
+                        addCommand(expression);
+                        addCommand(new PauseCommand(pauseDuration));
+                    }
+
+                    offset += ex.Length;
+                }
+            }
+
+            private static IEnumerable<string> splitAndKeep(string s, char[] delims)
+            {
+                int start = 0;
+                int index = 0;
+                int tmp = 0;
+
+                while ((index = s.IndexOfAny(delims, start)) != -1)
+                {
+                    index++;
+                    tmp = index;
+                    index = start;
+                    start = tmp;
+
+                    yield return s.Substring(index, start - index - 1);
+                    yield return s.Substring(start - 1, 1);
+                }
+
+                if (start < s.Length)
+                {
+                    yield return s.Substring(start);
                 }
             }
 
@@ -171,23 +253,111 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 {
                     case CommandType.Heading:
                         // read slower. add a pause after
-                        header += starting ? +1 : -1;
+                        processHeading(starting);
                         break;
 
                     case CommandType.Paragraph:
                         // Add a pause after
-                        paragraph += starting ? +1 : -1; 
+                        processParagraph(starting); 
                         break;
 
                     case CommandType.Empasis:
-                        emphasis += starting ? +1 : -1;
+                        processEmphasis(starting);
                         break;
 
                     case CommandType.Quote:
                         // read like a quote
-                        quote += starting ? +1 : -1;
+                        processQuote(starting);
                         break;
                 }
+            }
+
+            private void processHeading(bool starting)
+            {
+                if (starting)
+                {
+                    heading++;
+                }
+                else
+                {
+                    if (--heading == 0)
+                    {
+                        // Just finished
+                        addCommand(new PauseCommand(settings.HeadingAfterPause));
+                    }
+                }
+            }
+
+            private void processParagraph(bool starting)
+            {
+                if (starting)
+                {
+                    paragraph++;
+                }
+                else
+                {
+                    if (--paragraph == 0)
+                    {
+                        // Just finished
+                        addCommand(new PauseCommand(settings.ParagraphAfterPause));
+                    }
+                }
+            }
+
+            private void processEmphasis(bool starting)
+            {
+                if (starting)
+                {
+                    if (emphasis++ == 0)
+                    {
+                        // Just started
+                        adjustSpeed();
+                    }
+                }
+                else
+                {
+                    if (--emphasis == 0)
+                    {
+                        // Just finished
+                        adjustSpeed();
+                    }
+                }
+            }
+
+            private void processQuote(bool starting)
+            {
+                if (starting)
+                {
+                    if (quote++ == 0)
+                    {
+                        // Just started
+                        adjustSpeed();
+                    }
+                }
+                else
+                {
+                    if (--quote == 0)
+                    {
+                        // Just finished
+                        adjustSpeed();
+                    }
+                }
+            }
+
+            private void adjustSpeed()
+            {
+                float speed = settings.BaseSpeedRatio;
+
+                if (emphasis > 0)
+                {
+                    speed = settings.EmphasisSpeedRatio;
+                }
+                else if (quote > 0)
+                {
+                    speed = settings.QuoteSpeedRatio;
+                }
+
+                addCommand(new SpeedCommand(speed));
             }
 
             private CommandType getCommand(string tagName)
@@ -233,32 +403,6 @@ namespace Albite.Reader.Speech.Narration.Xhtml
             {
                 XAttribute attribute = element.Attribute(LangAttributeName);
                 return attribute != null ? attribute.Value : null;
-            }
-
-            private void dumpTextNode(XText text)
-            {
-                StringBuilder b = new StringBuilder();
-                IEnumerable<int> path_ = path.Reverse<int>();
-                string path__ = string.Join<int>(", ", path_);
-
-                b.Append("Text at [");
-                b.Append(path__);
-                b.Append("] with styles (");
-                b.Append("e: ");
-                b.Append(emphasis);
-                b.Append(", h: ");
-                b.Append(header);
-                b.Append(", p: ");
-                b.Append(paragraph);
-                b.Append(", q: ");
-                b.Append(quote);
-                b.Append(") in `");
-                b.Append(languages.Peek());
-                b.Append("` {{");
-                b.Append(text.Value);
-                b.Append("}}");
-
-                Log.D(Tag, b.ToString());
             }
 
             private enum CommandType

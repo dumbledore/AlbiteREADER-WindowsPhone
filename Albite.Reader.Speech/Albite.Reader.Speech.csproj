@@ -84,14 +84,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Narration\INarrationCommand.cs" />
-    <Compile Include="Source\Narration\NarrationExpression.cs" />
+    <Compile Include="Source\Narration\Commands\LanguageCommand.cs" />
+    <Compile Include="Source\Narration\Commands\NarrationCommand.cs" />
+    <Compile Include="Source\Narration\Commands\NarrationExpression.cs" />
+    <Compile Include="Source\Narration\Commands\SpeedCommand.cs" />
+    <Compile Include="Source\Narration\INarrationState.cs" />
+    <Compile Include="Source\Narration\NarrationEngineSynthesizer.cs" />
     <Compile Include="Source\Narration\NarrationSettings.cs" />
+    <Compile Include="Source\Narration\Commands\PauseCommand.cs" />
+    <Compile Include="Source\Narration\NarrationState.cs" />
+    <Compile Include="Source\Narration\NarratorEngine.cs" />
+    <Compile Include="Source\Narration\NarratorThread.cs" />
+    <Compile Include="Source\Narration\INarrationEngine.cs" />
+    <Compile Include="Source\Narration\Xhtml\XhtmlLocation.cs" />
     <Compile Include="Source\Narration\Xhtml\XhtmlNarrationExpression.cs" />
     <Compile Include="Source\Narration\Xhtml\XhtmlNarrator.cs" />
     <Compile Include="Source\Narration\Xhtml\XhtmlNarrationParser.cs" />
     <Compile Include="Source\Narration\Narrator.cs" />
-    <Compile Include="Test\XhtmlParserTest.cs" />
+    <Compile Include="Test\XhtmlNarratorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Albite.Reader.Core\Albite.Reader.Core.csproj">
