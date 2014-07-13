@@ -1,78 +1,43 @@
-﻿using Albite.Reader.Speech.Narration.Commands;
+﻿using Albite.Reader.Core.Diagnostics;
+using Albite.Reader.Speech.Narration.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using Windows.Phone.Speech.Synthesis;
 
 namespace Albite.Reader.Speech.Narration
 {
-    public abstract class Narrator<TExpression> where TExpression : NarrationExpression
+    public abstract class Narrator<TLocation>
     {
-        protected NarrationCommand Root { get; private set; }
+        private static readonly string Tag = "Narrator";
 
-        private readonly NarrationState<TExpression> state;
-        private NarratorThread<TExpression> thread;
+        internal RootNode Root { get; private set; }
+
         private object myLock = new object();
 
-        protected Narrator(NarrationCommand root, NarrationSettings settings)
+        private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+
+        internal Narrator(RootNode root, NarrationSettings settings)
         {
-            // Set up root command
+            // Set up root node
             Root = root;
-
-            // Now set up default state
-            state = new NarrationState<TExpression>(root, settings.BaseLanguage, settings.BaseSpeedRatio);
         }
 
-        public NarrationCommand Command
+        public TLocation Location
         {
-            get { return state.Command; }
-        }
-
-        public TExpression Expression
-        {
-            get { return state.Expression; }
+            get
+            {
+                // TODO
+                return default(TLocation);
+            }
         }
 
         public void ReadAsync()
         {
-            lock (myLock)
-            {
-                if (thread != null)
-                {
-                    throw new InvalidOperationException("Still reading");
-                }
-
-                thread = new NarratorThread<TExpression>(state);
-                thread.Start();
-            }
-        }
-
-        public void CancelAsync()
-        {
-            lock (myLock)
-            {
-                if (thread == null)
-                {
-                    return;
-                }
-
-                thread.Stop();
-                thread = null;
-            }
-        }
-
-        public override string ToString()
-        {
-            StringBuilder b = new StringBuilder();
-            NarrationCommand command = Root;
-            while (command != null)
-            {
-                b.Append(command);
-                b.Append('\n');
-                command = command.Next;
-            }
-
-            return b.ToString();
+            string text = Root.ToSsml();
+            Log.I(Tag, text);
+            synthesizer.SpeakSsmlAsync(text);
         }
     }
 }

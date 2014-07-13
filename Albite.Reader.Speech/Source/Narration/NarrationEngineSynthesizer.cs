@@ -1,10 +1,9 @@
 using Albite.Reader.Core.Diagnostics;
-using Albite.Reader.Speech.Narration.Commands;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using Windows.Phone.Speech.Synthesis;
-
+/*
 namespace Albite.Reader.Speech.Narration
 {
     internal class NarrationEngineSynthesizer<TExpression> : NarrationEngine<TExpression>, IDisposable where TExpression : NarrationExpression
@@ -61,3 +60,4 @@ namespace Albite.Reader.Speech.Narration
         }
     }
 }
+*/
