@@ -77,14 +77,11 @@ namespace Albite.Reader.Container.Epub
             // INode<IContentItem>
             public INode<IContentItem> FirstChild { get; private set; }
             public INode<IContentItem> NextSibling { get; private set; }
-            public int Depth { get; private set; }
             public IContentItem Value { get { return this; } }
 
             public NavPoint(XElement element, ReportErrorDelegate reportError, GetPathForDelegate getPath, int depth)
                 : base(element, reportError, getPath)
             {
-                Depth = depth;
-
                 XElement child = element.Element(ElementName);
                 if (child != null)
                 {
