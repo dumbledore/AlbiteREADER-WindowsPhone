@@ -14,7 +14,7 @@ namespace Albite.Reader.Tests
                 new CoreTests(),
                 new EpubTests(),
                 new TemplateTest("Test/Template/Main.xhtml"),
-                new XhtmlParserTest("Test/Speech/down-the-rabbit-hole.xhtml"),
+                new XhtmlNarratorTest("Test/Speech/down-the-rabbit-hole.xhtml"),
             };
         }
     }
