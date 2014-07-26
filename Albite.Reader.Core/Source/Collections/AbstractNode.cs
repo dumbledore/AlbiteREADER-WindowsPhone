@@ -1,4 +1,6 @@
-﻿namespace Albite.Reader.Core.Collections
+﻿using System;
+
+namespace Albite.Reader.Core.Collections
 {
     public abstract class AbstractNode<TValue> : INode<TValue>
     {
@@ -22,8 +24,12 @@
 
         public abstract TValue Value { get;}
 
+        private bool alreadyAdded = false;
+
         public void AddChild(AbstractNode<TValue> newChild)
         {
+            makeSureNotAdded(newChild);
+
             if (firstChild_ == null)
             {
                 // FirstChild and LastChild can both be null
@@ -36,6 +42,16 @@
             }
 
             lastChild_ = newChild;
+        }
+
+        private void makeSureNotAdded(AbstractNode<TValue> other)
+        {
+            if (other.alreadyAdded)
+            {
+                throw new InvalidOperationException("Node already added");
+            }
+
+            other.alreadyAdded = true;
         }
     }
 }
