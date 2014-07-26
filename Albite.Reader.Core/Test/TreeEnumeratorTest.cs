@@ -91,7 +91,7 @@ namespace Albite.Reader.Core.Test
             List<INode<string>> resultList = new List<INode<string>>();
             foreach (INode<string> node in tree)
             {
-                Log("{1}", node.Value);
+                Log("{0}", node.Value);
                 resultList.Add(node);
             }
 
