@@ -146,7 +146,6 @@
       <DependentUpon>PaginationTestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\PaginationTest.cs" />
-    <Compile Include="Source\SpeechSynthesisTest.cs" />
     <Compile Include="Source\CoreTests.cs" />
     <Compile Include="Source\ReaderPageTest.cs" />
     <Compile Include="Source\Pages\TestPage.xaml.cs">

@@ -3,6 +3,7 @@ using Albite.Reader.BookLibrary.Test;
 using Albite.Reader.Core.Diagnostics;
 using System;
 using System.IO.IsolatedStorage;
+using Albite.Reader.Speech.Test;
 
 namespace Albite.Reader.Tests.Pages
 {
@@ -64,7 +65,7 @@ namespace Albite.Reader.Tests.Pages
 
         private void SpeechSynthesisTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            new SpeechSynthesisTest().Test();
+            new XhtmlNarratorTest("Test/Speech/down-the-rabbit-hole.xhtml").Test();
         }
 
         private void PaginationTestButton_Click(object sender, System.Windows.RoutedEventArgs e)

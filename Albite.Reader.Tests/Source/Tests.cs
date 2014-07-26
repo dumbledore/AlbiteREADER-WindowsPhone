@@ -1,6 +1,5 @@
 ﻿using Albite.Reader.Core.Test;
 using Albite.Reader.Engine.Test;
-using Albite.Reader.Speech.Test;
 using System.Collections.Generic;
 
 namespace Albite.Reader.Tests
@@ -14,7 +13,6 @@ namespace Albite.Reader.Tests
                 new CoreTests(),
                 new EpubTests(),
                 new TemplateTest("Test/Template/Main.xhtml"),
-                new XhtmlNarratorTest("Test/Speech/down-the-rabbit-hole.xhtml"),
             };
         }
     }
