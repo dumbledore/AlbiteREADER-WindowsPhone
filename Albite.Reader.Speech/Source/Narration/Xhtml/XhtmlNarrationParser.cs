@@ -15,7 +15,6 @@ namespace Albite.Reader.Speech.Narration.Xhtml
 
         private static readonly XNamespace XmlNamespace = XNamespace.Get("http://www.w3.org/XML/1998/namespace");
         private static readonly XName LangAttributeName = XName.Get("lang", XmlNamespace.NamespaceName);
-        private static readonly string Tag = "XhtmlNarrationParser";
 
         private Stream stream;
         private string baseLanguage;
