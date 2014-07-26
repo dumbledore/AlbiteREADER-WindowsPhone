@@ -17,7 +17,7 @@
 
         private static string adjustText(string text)
         {
-            return text.Replace("\n", "");
+            return text.Replace("\n", " ");
         }
 
         protected override void StartElement(Builder builder)
