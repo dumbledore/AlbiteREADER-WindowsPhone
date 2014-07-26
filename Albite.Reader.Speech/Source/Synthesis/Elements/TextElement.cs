@@ -1,4 +1,5 @@
-﻿namespace Albite.Reader.Speech.Synthesis.Elements
+﻿using System.Text;
+namespace Albite.Reader.Speech.Synthesis.Elements
 {
     public class TextElement : SynthesisElement
     {
@@ -15,9 +16,21 @@
             Location = location;
         }
 
+        private static char[] charsToRemove = new char[]
+        {
+            '\n',
+            '\r',
+            '*',
+        };
+
         private static string adjustText(string text)
         {
-            return text.Replace("\n", " ");
+            StringBuilder b = new System.Text.StringBuilder(text);
+            foreach (char c in charsToRemove)
+            {
+                b.Replace(c, ' ');
+            }
+            return b.ToString();
         }
 
         protected override void StartElement(Builder builder)
