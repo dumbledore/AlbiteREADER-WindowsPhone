@@ -117,7 +117,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                     // Text node
                     XText text = (XText)node;
                     XhtmlLocation location = new XhtmlLocation(path.Reverse());
-                    TextElement textElement = new TextElement(textNodeId++, text.Value, location);
+                    TextElement<XhtmlLocation> textElement = new TextElement<XhtmlLocation>(textNodeId++, text.Value, location);
                     nElement.AddChild(textElement);
                 }
                 else if (node is XElement)

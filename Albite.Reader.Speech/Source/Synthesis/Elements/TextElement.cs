@@ -1,4 +1,5 @@
 ﻿using System.Text;
+
 namespace Albite.Reader.Speech.Synthesis.Elements
 {
     public class TextElement : SynthesisElement
@@ -7,13 +8,11 @@ namespace Albite.Reader.Speech.Synthesis.Elements
 
         public string Text { get; private set; }
 
-        public object Location { get; private set; }
 
-        public TextElement(int id, string text, object location)
+        public TextElement(int id, string text)
         {
             Id = id;
             Text = adjustText(text);
-            Location = location;
         }
 
         private static char[] charsToRemove = new char[]

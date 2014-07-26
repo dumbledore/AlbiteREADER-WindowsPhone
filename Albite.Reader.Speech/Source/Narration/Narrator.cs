@@ -5,17 +5,17 @@ using Windows.Foundation;
 
 namespace Albite.Reader.Speech.Narration
 {
-    public abstract class Narrator
+    public abstract class Narrator<TLocation>
     {
         public RootElement Root { get; private set; }
 
-        private Synthesizer synth;
+        private Synthesizer<TLocation> synth;
 
         protected Narrator(RootElement root, NarrationSettings settings)
         {
             Root = root;
             SynthesisElement sRoot = Root.ToSynthesisElement(settings);
-            synth = new Synthesizer((SpeakElement)sRoot);
+            synth = new Synthesizer<TLocation>((SpeakElement)sRoot);
         }
 
         public IAsyncAction ReadAsync()

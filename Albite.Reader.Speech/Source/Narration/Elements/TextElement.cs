@@ -3,15 +3,15 @@ using Albite.Reader.Speech.Synthesis.Elements;
 
 namespace Albite.Reader.Speech.Narration.Elements
 {
-    public class TextElement : NarrationElement
+    public class TextElement<TLocation> : NarrationElement
     {
         public int Id { get; private set; }
 
         public string Text { get; private set; }
 
-        public object Location { get; private set; }
+        public TLocation Location { get; private set; }
 
-        public TextElement(int id, string text, object location)
+        public TextElement(int id, string text, TLocation location)
         {
             Id = id;
             Text = text;
@@ -20,7 +20,7 @@ namespace Albite.Reader.Speech.Narration.Elements
 
         protected override SynthesisElement StartElement(NarrationSettings settings, AbstractNode<SynthesisElement> current)
         {
-            Synthesis.Elements.TextElement text = new Synthesis.Elements.TextElement(Id, Text, Location);
+            LocatedTextElement<TLocation> text = new LocatedTextElement<TLocation>(Id, Text, Location);
             current.AddChild(text);
             return text;
         }

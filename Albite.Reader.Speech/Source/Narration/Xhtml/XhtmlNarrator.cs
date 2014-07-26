@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Albite.Reader.Speech.Narration.Xhtml
 {
-    public class XhtmlNarrator : Narrator
+    public class XhtmlNarrator : Narrator<XhtmlLocation>
     {
         public XhtmlNarrator(Stream stream, string baseLanguage, NarrationSettings settings)
             : base(createRoot(stream, baseLanguage, settings), settings)

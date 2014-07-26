@@ -95,6 +95,7 @@
     <Compile Include="Source\Narration\NarrationSettings.cs" />
     <Compile Include="Source\Synthesis\Elements\BreakElement.cs" />
     <Compile Include="Source\Synthesis\Elements\LanguageElement.cs" />
+    <Compile Include="Source\Synthesis\Elements\LocatedTextElement.cs" />
     <Compile Include="Source\Synthesis\Elements\ParagraphElement.cs" />
     <Compile Include="Source\Synthesis\Elements\ProsodyElement.cs" />
     <Compile Include="Source\Synthesis\Elements\SpeakElement.cs" />

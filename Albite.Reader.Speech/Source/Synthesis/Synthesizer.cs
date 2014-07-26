@@ -8,17 +8,17 @@ using Windows.Phone.Speech.Synthesis;
 
 namespace Albite.Reader.Speech.Synthesis
 {
-    public class Synthesizer : IDisposable
+    public class Synthesizer<TLocation> : IDisposable
     {
         private static readonly string Tag = "Synthesizer";
 
-        public event TypedEventHandler<SpeechSynthesizer, TextElement> TextReached;
+        public event TypedEventHandler<SpeechSynthesizer, LocatedTextElement<TLocation>> TextReached;
 
         public SpeakElement Root { get; private set; }
 
         private SpeechSynthesizer synth;
 
-        private TextElement[] textElements;
+        private LocatedTextElement<TLocation>[] textElements;
 
         public Synthesizer(SpeakElement root)
         {
@@ -35,14 +35,14 @@ namespace Albite.Reader.Speech.Synthesis
 
         private void initialiseTextElements()
         {
-            List<TextElement> list = new List<TextElement>();
+            List<LocatedTextElement<TLocation>> list = new List<LocatedTextElement<TLocation>>();
 
             Tree<SynthesisElement> tree = new Tree<SynthesisElement>(Root);
             foreach (SynthesisElement el in tree)
             {
-                if (el is TextElement)
+                if (el is LocatedTextElement<TLocation>)
                 {
-                    list.Add((TextElement)el);
+                    list.Add((LocatedTextElement<TLocation>)el);
                 }
             }
 
@@ -71,7 +71,7 @@ namespace Albite.Reader.Speech.Synthesis
 
             if (notify)
             {
-                TextElement text = textElements[bookmarkId];
+                LocatedTextElement<TLocation> text = textElements[bookmarkId];
                 Log.I(Tag, "Reached #" + text.Id + ": " + text.Text);
             }
         }
