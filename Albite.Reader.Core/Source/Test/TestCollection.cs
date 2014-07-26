@@ -33,5 +33,13 @@ namespace Albite.Reader.Core.Test
                 return count;
             }
         }
+
+        public override void Dispose()
+        {
+            foreach (TestCase test in tests)
+            {
+                test.Dispose();
+            }
+        }
     }
 }

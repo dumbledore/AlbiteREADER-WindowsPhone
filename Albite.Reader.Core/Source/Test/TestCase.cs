@@ -2,7 +2,7 @@
 
 namespace Albite.Reader.Core.Test
 {
-    public abstract class TestCase
+    public abstract class TestCase : IDisposable
     {
         public bool Passed { get; private set; }
 
@@ -54,5 +54,7 @@ namespace Albite.Reader.Core.Test
         protected abstract void TestImplementation();
 
         public virtual int NumberOfTests { get { return 1; } }
+
+        public virtual void Dispose() { }
     }
 }

@@ -4,6 +4,7 @@ using Albite.Reader.Core.Diagnostics;
 using System;
 using System.IO.IsolatedStorage;
 using Albite.Reader.Speech.Test;
+using Albite.Reader.Core.Test;
 
 namespace Albite.Reader.Tests.Pages
 {
@@ -29,7 +30,10 @@ namespace Albite.Reader.Tests.Pages
             removeStore();
 
             // Now run the tests
-            new Tests().Test();
+            using (TestCase test = new Tests())
+            {
+                test.Test();
+            }
         }
 
         private void WebBrowserSecurityTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -51,7 +55,11 @@ namespace Albite.Reader.Tests.Pages
                 = new string[] {
                       "Test/epub/aliceDynamic.epub",
                   };
-            new LibraryAddBookTest("Test/Library/", books).Test();
+
+            using (TestCase test = new LibraryAddBookTest("Test/Library/", books))
+            {
+                test.Test();
+            }
         }
 
         private void ReaderPageTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -60,17 +68,26 @@ namespace Albite.Reader.Tests.Pages
             removeStore();
 
             // Now run the actual test
-            new ReaderPageTest("Test/epub/aliceDynamic.epub", NavigationService).Test();
+            using (TestCase test = new ReaderPageTest("Test/epub/aliceDynamic.epub", NavigationService))
+            {
+                test.Test();
+            }
         }
 
         private void SpeechSynthesisTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            new XhtmlNarratorTest("Test/Speech/down-the-rabbit-hole.xhtml").Test();
+            using (TestCase test = new XhtmlNarratorTest("Test/Speech/down-the-rabbit-hole.xhtml"))
+            {
+                test.Test();
+            }
         }
 
         private void PaginationTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            new PaginationTest("Test/epub/aliceDynamic.epub", 3, 16, NavigationService).Test();
+            using (TestCase test = new PaginationTest("Test/epub/aliceDynamic.epub", 3, 16, NavigationService))
+            {
+                test.Test();
+            }
         }
     }
 }

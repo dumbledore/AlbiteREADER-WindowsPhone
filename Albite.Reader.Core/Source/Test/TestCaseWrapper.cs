@@ -8,5 +8,10 @@
         {
             this.test = test;
         }
+
+        public override void Dispose()
+        {
+            test.Dispose();
+        }
     }
 }
