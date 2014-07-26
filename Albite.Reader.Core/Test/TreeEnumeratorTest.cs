@@ -26,29 +26,9 @@ namespace Albite.Reader.Core.Test
             { }
         }
 
-        private class Tree : ITree<string>
-        {
-            public INode<string> Root { get; private set; }
-
-            public Tree(Node root)
-            {
-                Root = root;
-            }
-
-            public IEnumerator<INode<string>> GetEnumerator()
-            {
-                return new DepthFirstTreeEnumerator<string>(Root);
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
-        }
-
         protected override void TestImplementation()
         {
-            Tree tree = new Tree(
+            Tree<string> tree = new Tree<string>(
                 new Node(                                   // Root (1)
                     new Node(                               // Root's child (1.1)
                         null,

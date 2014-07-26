@@ -139,6 +139,7 @@
     <Compile Include="Source\Collections\ITreeEnumerator.cs" />
     <Compile Include="Source\Collections\DepthFirstTreeEnumerator.cs" />
     <Compile Include="Source\Collections\AbstractNode.cs" />
+    <Compile Include="Source\Collections\Tree.cs" />
     <Compile Include="Source\Diagnostics\MessageBoxLog.cs" />
     <Compile Include="Source\IO\IHashableContainer.cs" />
     <Compile Include="Source\IO\Template.cs" />
