@@ -5,14 +5,14 @@ namespace Albite.Reader.Speech.Narration.Xhtml
 {
     public class XhtmlNarrator : Narrator
     {
-        public XhtmlNarrator(Stream stream, NarrationSettings settings)
-            : base(createRoot(stream, settings), settings)
+        public XhtmlNarrator(Stream stream, string baseLanguage, NarrationSettings settings)
+            : base(createRoot(stream, baseLanguage, settings), settings)
         {
         }
 
-        private static RootElement createRoot(Stream stream, NarrationSettings settings)
+        private static RootElement createRoot(Stream stream, string baseLanguage, NarrationSettings settings)
         {
-            using (XhtmlNarrationParser parser = new XhtmlNarrationParser(stream, settings))
+            using (XhtmlNarrationParser parser = new XhtmlNarrationParser(stream, baseLanguage, settings))
             {
                 return parser.Parse();
             }

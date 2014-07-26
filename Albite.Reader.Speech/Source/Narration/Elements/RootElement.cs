@@ -3,11 +3,13 @@ using Albite.Reader.Speech.Synthesis.Elements;
 
 namespace Albite.Reader.Speech.Narration.Elements
 {
-    public class RootElement : NarrationElement
+    public class RootElement : LanguageElement
     {
+        public RootElement(string language) : base(language) { }
+
         protected override SynthesisElement StartElement(NarrationSettings settings, AbstractNode<SynthesisElement> current)
         {
-            SynthesisElement root = new SpeakElement(settings.BaseLanguage);
+            SynthesisElement root = new SpeakElement(Language);
             current.AddChild(root);
 
             SynthesisElement prosody = new ProsodyElement(settings.BaseSpeedRatio);

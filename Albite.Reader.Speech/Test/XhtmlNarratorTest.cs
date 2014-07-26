@@ -24,7 +24,7 @@ namespace Albite.Reader.Speech.Test
             {
                 using (Stream stream = res.GetStream(FileAccess.Read))
                 {
-                    XhtmlNarrator narrator = new XhtmlNarrator(stream, settings);
+                    XhtmlNarrator narrator = new XhtmlNarrator(stream, "en", settings);
                     await narrator.ReadAsync();
                 }
             }

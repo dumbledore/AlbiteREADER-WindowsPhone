@@ -18,11 +18,13 @@ namespace Albite.Reader.Speech.Narration.Xhtml
         private static readonly string Tag = "XhtmlNarrationParser";
 
         private Stream stream;
+        private string baseLanguage;
         private NarrationSettings settings;
 
-        public XhtmlNarrationParser(Stream stream, NarrationSettings settings)
+        public XhtmlNarrationParser(Stream stream, string baseLanguage, NarrationSettings settings)
         {
             this.stream = stream;
+            this.baseLanguage = baseLanguage;
             this.settings = settings;
         }
 
@@ -41,7 +43,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
 
             XmlReader reader = XmlReader.Create(stream, xmlSettings);
             XDocument doc = XDocument.Load(reader);
-            Parser parser = new Parser(doc, settings);
+            Parser parser = new Parser(doc, baseLanguage, settings);
             return parser.Parse();
         }
 
@@ -52,10 +54,12 @@ namespace Albite.Reader.Speech.Narration.Xhtml
             private int textNodeId = 0;
 
             private NarrationSettings settings;
+            private string baseLanguage;
 
-            public Parser(XDocument doc, NarrationSettings settings)
+            public Parser(XDocument doc, string baseLanguage, NarrationSettings settings)
             {
                 this.doc = doc;
+                this.baseLanguage = baseLanguage;
                 this.settings = settings;
             }
 
@@ -67,7 +71,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 // Get the body element
                 XElement body = doc.Root.Elements(BodyElementName).First();
 
-                string language = settings.BaseLanguage;
+                string language = baseLanguage;
 
                 // Go up from body to root and try retrieving the language
                 for (XElement element = body; element != null; element = element.Parent)
@@ -81,7 +85,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 }
 
                 // Root
-                RootElement rootElement = new RootElement();
+                RootElement rootElement = new RootElement(language);
 
                 // Now start parsing down
                 parse(body.FirstNode, rootElement);
