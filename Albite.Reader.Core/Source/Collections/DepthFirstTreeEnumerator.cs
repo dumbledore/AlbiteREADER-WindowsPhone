@@ -12,7 +12,7 @@ namespace Albite.Reader.Core.Collections
     /// <typeparam name="TValue">Value type of the tree nodes</typeparam>
     public class DepthFirstTreeEnumerator<TValue> : ITreeEnumerator<TValue>
     {
-        private ITree<TValue> tree;
+        private INode<TValue> root;
         private INode<TValue> currentNode;
 
         // A stack of nodes to visit
@@ -23,14 +23,14 @@ namespace Albite.Reader.Core.Collections
         // enumerator, instead of a post-order one.
         private List<INode<TValue>> tempNodes = new List<INode<TValue>>();
 
-        public DepthFirstTreeEnumerator(ITree<TValue> tree)
+        public DepthFirstTreeEnumerator(INode<TValue> root)
         {
-            if (tree.Root == null)
+            if (root == null)
             {
                 throw new NullReferenceException("Root node is null");
             }
 
-            this.tree = tree;
+            this.root = root;
 
             Reset();
         }
@@ -41,7 +41,7 @@ namespace Albite.Reader.Core.Collections
             nodesToVisit.Clear();
 
             // Note the root could potentially have siblings
-            prependSiblings(tree.Root);
+            prependSiblings(root);
         }
 
         public bool MoveNext()

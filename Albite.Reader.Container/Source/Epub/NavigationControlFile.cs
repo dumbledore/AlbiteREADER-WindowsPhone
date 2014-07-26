@@ -48,7 +48,7 @@ namespace Albite.Reader.Container.Epub
 
             public IEnumerator<INode<IContentItem>> GetEnumerator()
             {
-                return new DepthFirstTreeEnumerator<IContentItem>(this);
+                return new DepthFirstTreeEnumerator<IContentItem>(Root);
             }
 
             IEnumerator IEnumerable.GetEnumerator()

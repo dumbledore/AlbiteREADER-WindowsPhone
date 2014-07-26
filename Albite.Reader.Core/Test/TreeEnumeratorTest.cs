@@ -37,7 +37,7 @@ namespace Albite.Reader.Core.Test
 
             public IEnumerator<INode<string>> GetEnumerator()
             {
-                return new DepthFirstTreeEnumerator<string>(this);
+                return new DepthFirstTreeEnumerator<string>(Root);
             }
 
             IEnumerator IEnumerable.GetEnumerator()
