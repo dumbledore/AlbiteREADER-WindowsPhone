@@ -9,6 +9,8 @@ namespace Albite.Reader.Speech.Narration
     {
         public RootElement Root { get; private set; }
 
+        public event TypedEventHandler<Narrator<TLocation>, ILocatedText<TLocation>> TextReached;
+
         private Synthesizer<TLocation> synth;
 
         protected Narrator(RootElement root, NarrationSettings settings)
@@ -19,9 +21,12 @@ namespace Albite.Reader.Speech.Narration
             synth.TextReached += synth_TextReached;
         }
 
-        private void synth_TextReached(Synthesizer<TLocation> sender, LocatedTextElement<TLocation> text)
+        private void synth_TextReached(Synthesizer<TLocation> sender, ILocatedText<TLocation> text)
         {
-            Albite.Reader.Core.Diagnostics.Log.I("", "Reached #" + text.Id + ": " + text.Text);
+            if (TextReached != null)
+            {
+                TextReached(this, text);
+            }
         }
 
         public IAsyncAction ReadAsync()

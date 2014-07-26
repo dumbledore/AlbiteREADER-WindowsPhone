@@ -1,5 +1,4 @@
-﻿using Albite.Reader.Core.Collections;
-using Albite.Reader.Core.Diagnostics;
+using Albite.Reader.Core.Collections;
 using Albite.Reader.Speech.Synthesis.Elements;
 using System;
 using System.Collections.Generic;
@@ -10,9 +9,7 @@ namespace Albite.Reader.Speech.Synthesis
 {
     public class Synthesizer<TLocation> : IDisposable
     {
-        private static readonly string Tag = "Synthesizer";
-
-        public event TypedEventHandler<Synthesizer<TLocation>, LocatedTextElement<TLocation>> TextReached;
+        public event TypedEventHandler<Synthesizer<TLocation>, ILocatedText<TLocation>> TextReached;
 
         public SpeakElement Root { get; private set; }
 
@@ -72,7 +69,10 @@ namespace Albite.Reader.Speech.Synthesis
             if (notify)
             {
                 LocatedTextElement<TLocation> text = textElements[bookmarkId];
-                TextReached(this, text);
+                if (TextReached != null)
+                {
+                    TextReached(this, text);
+                }
             }
         }
 

@@ -4,10 +4,11 @@ namespace Albite.Reader.Speech.Synthesis.Elements
 {
     public class TextElement : SynthesisElement
     {
-        public int Id { get; private set; }
+        public int Id { get; protected set; }
 
-        public string Text { get; private set; }
+        public string Text { get; protected set; }
 
+        protected TextElement() { }
 
         public TextElement(int id, string text)
         {

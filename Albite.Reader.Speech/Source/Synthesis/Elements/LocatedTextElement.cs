@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Albite.Reader.Speech.Synthesis.Elements
 {
-    public class LocatedTextElement<TLocation> : TextElement
+    public class LocatedTextElement<TLocation> : TextElement, ILocatedText<TLocation>
     {
         public TLocation Location { get; private set; }
 
@@ -14,6 +8,18 @@ namespace Albite.Reader.Speech.Synthesis.Elements
             : base(id, text)
         {
             Location = location;
+        }
+
+        private LocatedTextElement() { }
+
+        // Used for copying the element so that the "node" info would be reset
+        public LocatedTextElement<TLocation> CopyToNew()
+        {
+            LocatedTextElement<TLocation> n = new LocatedTextElement<TLocation>();
+            n.Id = Id;
+            n.Text = Text;
+            n.Location = Location;
+            return n;
         }
     }
 }
