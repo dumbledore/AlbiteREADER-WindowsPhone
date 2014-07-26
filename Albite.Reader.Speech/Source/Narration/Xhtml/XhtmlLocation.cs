@@ -1,28 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Albite.Reader.Speech.Narration.Xhtml
 {
     public class XhtmlLocation
     {
-        private int[] elementPath;
-        public IList<int> ElementPath
-        {
-            get { return Array.AsReadOnly<int>(elementPath); }
-        }
+        public IEnumerable<int> ElementPath { get; private set; }
 
-        public int TextOffset { get; private set; }
-
-        public XhtmlLocation(int[] elementPath, int textOffset)
+        public XhtmlLocation(IEnumerable<int> elementPath)
         {
-            this.elementPath = elementPath;
-            TextOffset = textOffset;
-        }
-
-        public override string ToString()
-        {
-            string p = string.Join<int>(", ", elementPath);
-            return "Location: {{ Node: [ " + p + " ], TextOffset: " + TextOffset + " }}";
+            ElementPath = elementPath;
         }
     }
 }
