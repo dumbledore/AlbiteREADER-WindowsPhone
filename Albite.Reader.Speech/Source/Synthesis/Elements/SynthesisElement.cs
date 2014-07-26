@@ -20,19 +20,19 @@ namespace Albite.Reader.Speech.Synthesis.Elements
             return b.ToString();
         }
 
-        private void build(Builder builder, int firstTextElementId)
+        private bool build(Builder builder, int firstTextElementId, bool reachedText = false)
         {
             INode<SynthesisElement> node = this;
 
             while (node != null)
             {
-                bool buildNode = true;
-
                 if (node.Value is TextElement)
                 {
                     TextElement text = (TextElement)node.Value;
-                    buildNode = text.Id >= firstTextElementId;
+                    reachedText = text.Id >= firstTextElementId;
                 }
+
+                bool buildNode = reachedText || !(node.Value is TextElement || node.Value is BreakElement);
 
                 if (buildNode)
                 {
@@ -43,7 +43,7 @@ namespace Albite.Reader.Speech.Synthesis.Elements
                 if (node.FirstChild != null)
                 {
                     // Build children contents
-                    node.FirstChild.Value.build(builder, firstTextElementId);
+                    node.FirstChild.Value.build(builder, firstTextElementId, reachedText);
                 }
 
                 if (buildNode)
@@ -55,6 +55,8 @@ namespace Albite.Reader.Speech.Synthesis.Elements
                 // Next node
                 node = node.NextSibling;
             }
+
+            return reachedText;
         }
 
         protected class Builder
