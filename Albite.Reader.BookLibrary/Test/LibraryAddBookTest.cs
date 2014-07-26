@@ -14,14 +14,14 @@ namespace Albite.Reader.BookLibrary.Test
             this.books = books;
         }
 
-        protected override void TestImplementation()
+        protected override async void TestImplementation()
         {
             // Start using the library
             BookLibrary.Library library = new BookLibrary.Library(location);
             foreach (string book in books)
             {
                 // Add a book
-                LibraryHelper.AddEpubFromResource(book, library);
+                await LibraryHelper.AddEpubFromResource(book, library);
             }
         }
     }

@@ -2,12 +2,14 @@
 using Albite.Reader.Container.Epub;
 using Albite.Reader.Core.IO;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Albite.Reader.BookLibrary.Test
 {
     public static class LibraryHelper
     {
-        public static Book AddEpubFromResource(string resourcePath, Library library)
+        public static async Task<Book> AddEpubFromResource(string resourcePath, Library library)
         {
             using (ResourceStorage res = new ResourceStorage(resourcePath))
             {
@@ -18,7 +20,7 @@ namespace Albite.Reader.BookLibrary.Test
                         using (EpubContainer epub = new EpubContainer(zip))
                         {
                             // Add to the library
-                            return library.Books.Add(epub);
+                            return await library.Books.AddAsync(epub, CancellationToken.None, null);
                         }
                     }
                 }
