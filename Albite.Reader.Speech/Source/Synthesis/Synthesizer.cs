@@ -12,7 +12,7 @@ namespace Albite.Reader.Speech.Synthesis
     {
         private static readonly string Tag = "Synthesizer";
 
-        public event TypedEventHandler<SpeechSynthesizer, LocatedTextElement<TLocation>> TextReached;
+        public event TypedEventHandler<Synthesizer<TLocation>, LocatedTextElement<TLocation>> TextReached;
 
         public SpeakElement Root { get; private set; }
 
@@ -72,7 +72,7 @@ namespace Albite.Reader.Speech.Synthesis
             if (notify)
             {
                 LocatedTextElement<TLocation> text = textElements[bookmarkId];
-                Log.I(Tag, "Reached #" + text.Id + ": " + text.Text);
+                TextReached(this, text);
             }
         }
 

@@ -16,6 +16,12 @@ namespace Albite.Reader.Speech.Narration
             Root = root;
             SynthesisElement sRoot = Root.ToSynthesisElement(settings);
             synth = new Synthesizer<TLocation>((SpeakElement)sRoot);
+            synth.TextReached += synth_TextReached;
+        }
+
+        private void synth_TextReached(Synthesizer<TLocation> sender, LocatedTextElement<TLocation> text)
+        {
+            Albite.Reader.Core.Diagnostics.Log.I("", "Reached #" + text.Id + ": " + text.Text);
         }
 
         public IAsyncAction ReadAsync()
