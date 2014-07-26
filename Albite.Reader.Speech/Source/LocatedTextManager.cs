@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Windows.Foundation;
 
 namespace Albite.Reader.Speech
@@ -54,6 +55,17 @@ namespace Albite.Reader.Speech
                 lock (locations_)
                 {
                     return locations_[index];
+                }
+            }
+        }
+
+        public ILocatedText<TLocation> this[TLocation location]
+        {
+            get
+            {
+                lock (locations_)
+                {
+                    return locations_.Single(t => t.Location.Equals(location));
                 }
             }
         }
