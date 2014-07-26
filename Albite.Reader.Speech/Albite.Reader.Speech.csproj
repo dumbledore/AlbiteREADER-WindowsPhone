@@ -106,7 +106,7 @@
     <Compile Include="Source\Narration\Xhtml\XhtmlNarrationParser.cs" />
     <Compile Include="Source\Narration\Narrator.cs" />
     <Compile Include="Source\Synthesis\Elements\SynthesisElement.cs" />
-    <Compile Include="Source\Synthesis\ILocatedText.cs" />
+    <Compile Include="Source\ILocatedText.cs" />
     <Compile Include="Source\Synthesis\Synthesizer.cs" />
     <Compile Include="Test\XhtmlNarratorTest.cs" />
   </ItemGroup>
