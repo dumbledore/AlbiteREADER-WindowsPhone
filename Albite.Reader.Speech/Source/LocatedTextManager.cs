@@ -23,7 +23,8 @@ namespace Albite.Reader.Speech
         public LocatedTextManager(
             ILocatedText<TLocation>[] locations, ILocatedTextManagerUpdaterProxy proxy)
         {
-            this.locations_ = locations;
+            locations_ = locations;
+            current_ = locations_.First();
             updater = new LocatedTextManagerUpdater(this);
             proxy.SetUpdater(updater);
         }
@@ -38,11 +39,15 @@ namespace Albite.Reader.Speech
                     return current_;
                 }
             }
-
             set
             {
                 lock (locations_)
                 {
+                    if (!locations_.Contains(value))
+                    {
+                        throw new InvalidOperationException("Current does not come from Locations");
+                    }
+
                     current_ = value;
                 }
             }

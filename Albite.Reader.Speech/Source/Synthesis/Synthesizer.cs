@@ -86,7 +86,7 @@ namespace Albite.Reader.Speech.Synthesis
 
         public IAsyncAction ReadAsync()
         {
-            string ssml = Root.ToSsml();
+            string ssml = Root.ToSsml(LocatedTextManager.Current.Id);
             return synth.SpeakSsmlAsync(ssml);
         }
 
