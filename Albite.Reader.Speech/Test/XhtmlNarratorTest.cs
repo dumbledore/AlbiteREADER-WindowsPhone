@@ -25,9 +25,15 @@ namespace Albite.Reader.Speech.Test
                 using (Stream stream = res.GetStream(FileAccess.Read))
                 {
                     XhtmlNarrator narrator = new XhtmlNarrator(stream, "en", settings);
+                    narrator.LocatedTextManager.TextReached += LocatedTextManager_TextReached;
                     await narrator.ReadAsync();
                 }
             }
+        }
+
+        void LocatedTextManager_TextReached(LocatedTextManager<XhtmlLocation> sender, ILocatedText<XhtmlLocation> args)
+        {
+            Log("Reached: {0}", args.Text);
         }
     }
 }

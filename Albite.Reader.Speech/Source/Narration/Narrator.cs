@@ -13,20 +13,16 @@ namespace Albite.Reader.Speech.Narration
 
         private Synthesizer<TLocation> synth;
 
+        public LocatedTextManager<TLocation> LocatedTextManager
+        {
+            get { return synth.LocatedTextManager; }
+        }
+
         protected Narrator(RootElement root, NarrationSettings settings)
         {
             Root = root;
             SynthesisElement sRoot = Root.ToSynthesisElement(settings);
             synth = new Synthesizer<TLocation>((SpeakElement)sRoot);
-            synth.TextReached += synth_TextReached;
-        }
-
-        private void synth_TextReached(Synthesizer<TLocation> sender, ILocatedText<TLocation> text)
-        {
-            if (TextReached != null)
-            {
-                TextReached(this, text);
-            }
         }
 
         public IAsyncAction ReadAsync()

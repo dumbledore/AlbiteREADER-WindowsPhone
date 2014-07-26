@@ -9,13 +9,13 @@ namespace Albite.Reader.Speech.Synthesis
 {
     public class Synthesizer<TLocation> : IDisposable
     {
-        public event TypedEventHandler<Synthesizer<TLocation>, ILocatedText<TLocation>> TextReached;
-
         public SpeakElement Root { get; private set; }
 
         private SpeechSynthesizer synth;
 
-        private LocatedTextElement<TLocation>[] textElements;
+        public LocatedTextManager<TLocation> LocatedTextManager { get; private set; }
+
+        private LocatedManagerUpdaterProxy LocalManagerUpdaterProxy;
 
         public Synthesizer(SpeakElement root)
         {
@@ -43,7 +43,8 @@ namespace Albite.Reader.Speech.Synthesis
                 }
             }
 
-            textElements = list.ToArray();
+            LocalManagerUpdaterProxy = new LocatedManagerUpdaterProxy();
+            LocatedTextManager = new LocatedTextManager<TLocation>(list.ToArray(), LocalManagerUpdaterProxy);
         }
 
         private int currentTextElement = 0;
@@ -57,7 +58,7 @@ namespace Albite.Reader.Speech.Synthesis
             // So we need to sync this, otherwise it might appear we are going backwards.
             bool notify = false;
 
-            lock (textElements)
+            lock (LocatedTextManager)
             {
                 if (bookmarkId > currentTextElement)
                 {
@@ -68,11 +69,18 @@ namespace Albite.Reader.Speech.Synthesis
 
             if (notify)
             {
-                LocatedTextElement<TLocation> text = textElements[bookmarkId];
-                if (TextReached != null)
-                {
-                    TextReached(this, text);
-                }
+                LocalManagerUpdaterProxy.Updater.Update(bookmarkId);
+            }
+        }
+
+        private class LocatedManagerUpdaterProxy
+            : LocatedTextManager<TLocation>.ILocatedTextManagerUpdaterProxy
+        {
+            public LocatedTextManager<TLocation>.ILocatedTextManagerUpdater Updater { get; private set; }
+
+            public void SetUpdater(LocatedTextManager<TLocation>.ILocatedTextManagerUpdater updater)
+            {
+                Updater = updater;
             }
         }
 
