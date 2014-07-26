@@ -1,16 +1,16 @@
-﻿namespace Albite.Reader.Speech.Narration.Nodes
+namespace Albite.Reader.Speech.Synthesis.Elements
 {
-    internal class RootNode : LanguageNode
+    public class SpeakElement : LanguageElement
     {
-        public RootNode(string language) : base(language) { }
+        public SpeakElement(string language) : base(language) { }
 
-        protected override void BuildStart(Builder builder)
+        protected override void StartElement(Builder builder)
         {
             builder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"");
             builder.Append(Language).Append("\">");
         }
 
-        protected override void BuildEnd(Builder builder)
+        protected override void EndElement(Builder builder)
         {
             builder.Append("</speak>");
         }

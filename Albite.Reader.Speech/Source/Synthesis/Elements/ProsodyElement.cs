@@ -1,20 +1,20 @@
-﻿namespace Albite.Reader.Speech.Narration.Nodes
+﻿namespace Albite.Reader.Speech.Synthesis.Elements
 {
-    internal class ProsodyNode : NarrationNode
+    public class ProsodyElement : SynthesisElement
     {
         public float Speed { get; private set; }
 
-        public ProsodyNode(float speed)
+        public ProsodyElement(float speed)
         {
             Speed = speed;
         }
 
-        protected override void BuildStart(Builder builder)
+        protected override void StartElement(Builder builder)
         {
             builder.Append("<prosody rate=\"").Append(Speed).Append("\">");
         }
 
-        protected override void BuildEnd(Builder builder)
+        protected override void EndElement(Builder builder)
         {
             builder.Append("</prosody>");
         }

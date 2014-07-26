@@ -1,7 +1,8 @@
-﻿using Albite.Reader.Core.IO;
+using Albite.Reader.Core.IO;
 using Albite.Reader.Core.Test;
 using Albite.Reader.Speech.Narration;
 using Albite.Reader.Speech.Narration.Xhtml;
+using System;
 using System.IO;
 
 namespace Albite.Reader.Speech.Test
@@ -15,7 +16,7 @@ namespace Albite.Reader.Speech.Test
             FilePath = filePath;
         }
 
-        protected override void TestImplementation()
+        protected override async void TestImplementation()
         {
             NarrationSettings settings = new NarrationSettings();
 
@@ -24,7 +25,7 @@ namespace Albite.Reader.Speech.Test
                 using (Stream stream = res.GetStream(FileAccess.Read))
                 {
                     XhtmlNarrator narrator = new XhtmlNarrator(stream, settings);
-                    narrator.ReadAsync();
+                    await narrator.ReadAsync();
                 }
             }
         }

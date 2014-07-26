@@ -1,43 +1,39 @@
-﻿using Albite.Reader.Core.Diagnostics;
-using Albite.Reader.Speech.Narration.Nodes;
+using Albite.Reader.Core.Diagnostics;
+using Albite.Reader.Speech.Narration.Elements;
+using Albite.Reader.Speech.Synthesis;
+using Albite.Reader.Speech.Synthesis.Elements;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using Windows.Foundation;
 using Windows.Phone.Speech.Synthesis;
 
 namespace Albite.Reader.Speech.Narration
 {
-    public abstract class Narrator<TLocation>
+    public abstract class Narrator
     {
         private static readonly string Tag = "Narrator";
 
-        internal RootNode Root { get; private set; }
+        public RootElement Root { get; private set; }
 
-        private object myLock = new object();
+        private Synthesizer synth;
 
-        private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-
-        internal Narrator(RootNode root, NarrationSettings settings)
+        protected Narrator(RootElement root, NarrationSettings settings)
         {
-            // Set up root node
             Root = root;
+            SynthesisElement sRoot = Root.ToSynthesisElement(settings);
+            synth = new Synthesizer((SpeakElement)sRoot);
         }
 
-        public TLocation Location
+        public IAsyncAction ReadAsync()
         {
-            get
-            {
-                // TODO
-                return default(TLocation);
-            }
+            return synth.ReadAsync();
         }
 
-        public void ReadAsync()
+        public void Stop()
         {
-            string text = Root.ToSsml();
-            Log.I(Tag, text);
-            synthesizer.SpeakSsmlAsync(text);
+            synth.Stop();
         }
     }
 }

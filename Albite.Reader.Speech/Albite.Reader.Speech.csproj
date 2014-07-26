@@ -84,22 +84,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Narration\NarrationEngineSynthesizer.cs" />
+    <Compile Include="Source\Narration\Elements\EmphasisElement.cs" />
+    <Compile Include="Source\Narration\Elements\HeadingElement.cs" />
+    <Compile Include="Source\Narration\Elements\LanguageElement.cs" />
+    <Compile Include="Source\Narration\Elements\NarrationElement.cs" />
+    <Compile Include="Source\Narration\Elements\ParagraphElement.cs" />
+    <Compile Include="Source\Narration\Elements\QuoteElement.cs" />
+    <Compile Include="Source\Narration\Elements\RootElement.cs" />
+    <Compile Include="Source\Narration\Elements\TextElement.cs" />
     <Compile Include="Source\Narration\NarrationSettings.cs" />
-    <Compile Include="Source\Narration\Nodes\BreakNode.cs" />
-    <Compile Include="Source\Narration\Nodes\LanguageNode.cs" />
-    <Compile Include="Source\Narration\Nodes\LocatedTextNode.cs" />
-    <Compile Include="Source\Narration\Nodes\NarrationNode.cs" />
-    <Compile Include="Source\Narration\Nodes\NodeBuilder.cs" />
-    <Compile Include="Source\Narration\Nodes\ParagraphNode.cs" />
-    <Compile Include="Source\Narration\Nodes\ProsodyNode.cs" />
-    <Compile Include="Source\Narration\Nodes\RootNode.cs" />
-    <Compile Include="Source\Narration\Nodes\TextNode.cs" />
-    <Compile Include="Source\Narration\Nodes\VoiceNode.cs" />
+    <Compile Include="Source\Synthesis\Elements\BreakElement.cs" />
+    <Compile Include="Source\Synthesis\Elements\LanguageElement.cs" />
+    <Compile Include="Source\Synthesis\Elements\ParagraphElement.cs" />
+    <Compile Include="Source\Synthesis\Elements\ProsodyElement.cs" />
+    <Compile Include="Source\Synthesis\Elements\SpeakElement.cs" />
+    <Compile Include="Source\Synthesis\Elements\TextElement.cs" />
+    <Compile Include="Source\Synthesis\Elements\VoiceElement.cs" />
     <Compile Include="Source\Narration\Xhtml\XhtmlLocation.cs" />
     <Compile Include="Source\Narration\Xhtml\XhtmlNarrator.cs" />
     <Compile Include="Source\Narration\Xhtml\XhtmlNarrationParser.cs" />
     <Compile Include="Source\Narration\Narrator.cs" />
+    <Compile Include="Source\Synthesis\Elements\SynthesisElement.cs" />
+    <Compile Include="Source\Synthesis\Synthesizer.cs" />
     <Compile Include="Test\XhtmlNarratorTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +114,7 @@
       <Name>Albite.Reader.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />

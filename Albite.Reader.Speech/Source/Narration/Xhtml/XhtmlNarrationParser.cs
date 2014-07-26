@@ -1,4 +1,4 @@
-﻿using Albite.Reader.Speech.Narration.Nodes;
+﻿using Albite.Reader.Speech.Narration.Elements;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +31,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
             stream.Dispose();
         }
 
-        public RootNode Parse()
+        public RootElement Parse()
         {
             XmlReaderSettings xmlSettings = new XmlReaderSettings();
             // Used for custom entities
@@ -59,7 +59,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 this.settings = settings;
             }
 
-            public RootNode Parse()
+            public RootElement Parse()
             {
                 // Get to a known state
                 reset();
@@ -80,17 +80,13 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                     }
                 }
 
-                // Root. Base language
-                RootNode rootNode = new RootNode(language);
-
-                // Base speed
-                ProsodyNode speedNode = new ProsodyNode(settings.BaseSpeedRatio);
-                rootNode.AddChild(speedNode);
+                // Root
+                RootElement rootElement = new RootElement();
 
                 // Now start parsing down
-                parse(body.FirstNode, speedNode);
+                parse(body.FirstNode, rootElement);
 
-                return rootNode;
+                return rootElement;
             }
 
             private void reset()
@@ -98,28 +94,28 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 path.Clear();
             }
 
-            private void parse(XNode node, NarrationNode nNode)
+            private void parse(XNode node, NarrationElement nElement)
             {
                 int i = 0;
                 while (node != null)
                 {
                     path.Push(i);
-                    processNode(node, nNode); // This will go down if needed
+                    processNode(node, nElement); // This will go down if needed
                     node = node.NextNode;
                     path.Pop();
                     i++;
                 }
             }
 
-            private void processNode(XNode node, NarrationNode nNode)
+            private void processNode(XNode node, NarrationElement nElement)
             {
                 if (node is XText)
                 {
                     // Text node
                     XText text = (XText)node;
                     XhtmlLocation location = new XhtmlLocation(path.Reverse().ToArray(), 0);
-                    LocatedTextNode<XhtmlLocation> textNode = new LocatedTextNode<XhtmlLocation>(textNodeId++, text.Value, location);
-                    nNode.AddChild(textNode);
+                    TextElement textElement = new TextElement(textNodeId++, text.Value, location);
+                    nElement.AddChild(textElement);
                 }
                 else if (node is XElement)
                 {
@@ -131,25 +127,25 @@ namespace Albite.Reader.Speech.Narration.Xhtml
 
                     if (language != null)
                     {
-                        VoiceNode voiceNode = new VoiceNode(language);
-                        nNode.AddChild(voiceNode);
-                        nNode = voiceNode;
+                        LanguageElement languageElement = new LanguageElement(language);
+                        nElement.AddChild(languageElement);
+                        nElement = languageElement;
                     }
 
                     // Get the tag name
                     string tagName = element.Name.LocalName;
 
                     // process the tag
-                    NarrationNode newNode = processTag(tagName, nNode);
+                    NarrationElement newElement = processTag(tagName, nElement);
 
                     // Go down
-                    parse(element.FirstNode, newNode);
+                    parse(element.FirstNode, newElement);
                 }
             }
 
-            private NarrationNode processTag(string tagName, NarrationNode nNode)
+            private NarrationElement processTag(string tagName, NarrationElement element)
             {
-                NarrationNode newNode = nNode;
+                NarrationElement newElement = element;
 
                 switch (tagName)
                 {
@@ -159,9 +155,8 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                     case "h4":
                     case "h5":
                         {
-                            newNode = new ParagraphNode();
-                            nNode.AddChild(newNode);
-                            nNode.AddChild(new BreakNode(settings.HeadingAfterPause));
+                            newElement = new HeadingElement();
+                            element.AddChild(newElement);
                             break;
                         }
 
@@ -171,14 +166,14 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                     case "strong":
                     case "u":
                         {
-                            newNode = new ProsodyNode(settings.EmphasisSpeedRatio);
-                            nNode.AddChild(newNode);
+                            newElement = new EmphasisElement();
+                            element.AddChild(newElement);
                             break;
                         }
 
                     case "p":
-                        newNode = new ParagraphNode();
-                        nNode.AddChild(newNode);
+                        newElement = new ParagraphElement();
+                        element.AddChild(newElement);
                         break;
 
                     case "q":
@@ -186,15 +181,15 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                     case "pre":
                     case "code":
                         {
-                            newNode = new ProsodyNode(settings.QuoteSpeedRatio);
-                            nNode.AddChild(newNode);
+                            newElement = new QuoteElement();
+                            element.AddChild(newElement);
                             break;
                         }
 
                     // TODO: ol, ul and li
                 }
 
-                return newNode;
+                return newElement;
             }
 
             private string getLanguage(XElement element)
