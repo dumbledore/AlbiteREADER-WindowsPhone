@@ -10,8 +10,6 @@ namespace Albite.Reader.Speech.Narration
     {
         public RootElement Root { get; private set; }
 
-        public event TypedEventHandler<Narrator<TLocation>, ILocatedText<TLocation>> TextReached;
-
         private Synthesizer<TLocation> synth;
 
         public LocatedTextManager<TLocation> LocatedTextManager
