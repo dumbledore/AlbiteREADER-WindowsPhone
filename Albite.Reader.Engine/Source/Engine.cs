@@ -107,6 +107,17 @@ namespace Albite.Reader.Engine
             Messenger.NotifyHost(message);
         }
 
+        public bool StatusBarShown
+        {
+            set
+            {
+                if (!IsLoading)
+                {
+                    Messenger.StatusBarShown = value;
+                }
+            }
+        }
+
         /// <summary>
         /// Once we have a valid client, i.e. after the first load
         /// has completed, we can request the location

@@ -50,5 +50,7 @@ namespace Albite.Reader.Engine
         /// The name of the function that is used to contact the JSEngine
         /// </summary>
         string NotifyFunction { get; }
+
+        bool StatusBarShown { set; }
     }
 }

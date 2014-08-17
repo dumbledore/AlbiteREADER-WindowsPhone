@@ -24,6 +24,10 @@ namespace Albite.Reader.Engine.Internal
             typeof(GoToLocationResultMessage),
             typeof(GoToElementByIdMessage),
             typeof(GoToElementByIdResultMessage),
+            typeof(ShowStatusBarMessage),
+            typeof(ShowStatusBarResultMessage),
+            typeof(HideStatusBarMessage),
+            typeof(HideStatusBarResultMessage),
             typeof(GetBookmarkMessage),
             typeof(GetBookmarkResultMessage),
 
@@ -122,6 +126,23 @@ namespace Albite.Reader.Engine.Internal
             return resultMessage.Bookmark;
         }
 
+        public bool StatusBarShown
+        {
+            set
+            {
+                Message requestMessage;
+                if (value)
+                {
+                    requestMessage = new ShowStatusBarMessage();
+                }
+                else
+                {
+                    requestMessage = new HideStatusBarMessage();
+                }
+                NotifyClient(requestMessage);
+            }
+        }
+
         // Error
         public class MessengerException : Exception
         {
@@ -205,6 +226,18 @@ namespace Albite.Reader.Engine.Internal
 
         [DataContract(Name = "result_goToElementById")]
         private class GoToElementByIdResultMessage : Message { }
+
+        [DataContract(Name = "showStatusBar")]
+        private class ShowStatusBarMessage : Message { }
+
+        [DataContract(Name = "result_showStatusBar")]
+        private class ShowStatusBarResultMessage : Message { }
+
+        [DataContract(Name = "hideStatusBar")]
+        private class HideStatusBarMessage : Message { }
+
+        [DataContract(Name = "result_hideStatusBar")]
+        private class HideStatusBarResultMessage : Message { }
 
         [DataContract(Name = "getBookmark")]
         private class GetBookmarkMessage : Message { }

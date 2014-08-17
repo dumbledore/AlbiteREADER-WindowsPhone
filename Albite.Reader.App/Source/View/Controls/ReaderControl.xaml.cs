@@ -113,6 +113,18 @@ namespace Albite.Reader.App.View.Controls
         {
             return presenter.CreateBookmark();
         }
+
+        public bool StatusBarShown
+        {
+            set
+            {
+                if (presenter != null)
+                {
+                    presenter.StatusBarShown = value;
+                }
+            }
+        }
+
         #endregion
 
         #region EnginePresenter
@@ -317,6 +329,17 @@ namespace Albite.Reader.App.View.Controls
                     else
                     {
                         return 0;
+                    }
+                }
+            }
+
+            public bool StatusBarShown
+            {
+                set
+                {
+                    if (engine != null)
+                    {
+                        engine.StatusBarShown = value;
                     }
                 }
             }

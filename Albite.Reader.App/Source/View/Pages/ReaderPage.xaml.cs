@@ -26,6 +26,11 @@ namespace Albite.Reader.App.View.Pages
         {
             SystemTray.IsVisible = e.IsMenuVisible;
 
+            if (ReaderControl != null)
+            {
+                ReaderControl.StatusBarShown = e.IsMenuVisible;
+            }
+
             if (e.IsMenuVisible)
             {
                 // Update the buttons

@@ -203,31 +203,42 @@ Albite.Notifications = function(context) {
   var notificationsBox = mainDocument.getElementById("notifications_box");
   var timer = null;
 
-  function hideNotification() {
-    notifications.className = "opacity_hidden_transition";
-    timer = null;
+  function hideNotifications() {
+    notifications.className = "display_none";
+    cancelTimer();
   }
 
-  function showNotification(text) {
+  function cancelTimer() {
     if (timer != null) {
       clearTimeout(timer);
       timer = null;
     }
+  }
+
+  function showNotification(text, timeout) {
+    if (typeof timeout === 'undefined') {
+      timeout = 2000; // default
+    }
+
+    cancelTimer();
 
     if (context.loaded) {
       notificationsBox.innerText = text;
-      notifications.className = "opacity_semivisible_transition";
-      timer = setTimeout(hideNotification, 2000);
+      notifications.className = "display_block";
+      if (timeout > 0) {
+        timer = setTimeout(hideNotifications, timeout);
+      }
     }
   }
 
-  function showPageNumbers() {
+  function showPageNumbers(timeout) {
     var currentPage = context.pager.getCurrentPage();
     var pageCount = context.pager.getPageCount();
-    showNotification(currentPage + " of " + pageCount);
+    showNotification(currentPage + " / " + pageCount, timeout);
   }
 
   this.showNotification = showNotification;
+  this.hideNotifications = hideNotifications;
   this.showPageNumbers = showPageNumbers;
 }
 
@@ -855,6 +866,9 @@ Albite.Pager = function(context) {
 
     // Update the current page number
     current = page;
+
+    // Hide the page notification
+    context.notifications.hideNotifications();
   }
 
   function goToPage(page) {
@@ -862,9 +876,6 @@ Albite.Pager = function(context) {
 
     // this is the wrapper
     goToPageInternal(page);
-
-    // Show current page
-    context.notifications.showPageNumbers();
   }
 
   // Don't forget to set up
@@ -1610,6 +1621,8 @@ Albite.Host = function(context) {
     "goToLocation"        : "goToLocation",
     "getDomLocation"      : "getDomLocation",
     "findText"            : "findText",
+    "showStatusBar"       : "showStatusBar",
+    "hideStatusBar"       : "hideStatusBar",
     "getBookmark"         : "getBookmark"
   };
 
@@ -1655,6 +1668,14 @@ Albite.Host = function(context) {
 
         case HostMessages.findText:
           returnMessage.pages = context.pager.findPagesForText(message.text);
+          break;
+
+        case HostMessages.showStatusBar:
+          context.notifications.showPageNumbers(0);
+          break;
+
+        case HostMessages.hideStatusBar:
+          context.notifications.hideNotifications();
           break;
 
         case HostMessages.getBookmark:
