@@ -759,6 +759,8 @@ Albite.Pager = function(context) {
   }
 
   function goToLocation(location) {
+    var showStatusBar = false;
+
     // Find what type of location it is by
     // asking the duck to squawk
     if (typeof location.firstPage !== 'undefined')
@@ -767,17 +769,23 @@ Albite.Pager = function(context) {
     } else if (typeof location.lastPage !== 'undefined') {
       goToLastPage();
     } else if (typeof location.page !== 'undefined') {
+      showStatusBar = true;
       goToPage(location.page);
     } else if (typeof location.elementId !== 'undefined') {
+      showStatusBar = true;
       goToElementById(location.elementId);
     } else if ((typeof location.elementPath !== 'undefined') && (typeof location.textOffset !== 'undefined')) {
+      showStatusBar = true;
       goToDomLocation( { 'elementPath' : location.elementPath, 'textOffset' : location.textOffset} );
     } else if (typeof location.relativeLocation !== 'undefined') {
       // test for relative location last, as all other locations would have it
+      showStatusBar = true;
       goToRelative(location.relativeLocation);
     } else {
       context.debug.log("Unknown location type");
     }
+
+    return showStatusBar;
   }
 
   function IETextIterator(text, range) {
@@ -873,9 +881,6 @@ Albite.Pager = function(context) {
 
     // Update the current page number
     current = page;
-
-    // Hide the page notification
-    context.notifications.hideNotifications();
   }
 
   function goToPage(page) {
@@ -1920,7 +1925,7 @@ Albite.Main = function(options) {
       context.pager = new Albite.Pager(context);
 
       // Go to the page location specified by the host
-      context.pager.goToLocation(context.initialLocation);
+      var shouldShowStatusBar = context.pager.goToLocation(context.initialLocation);
 
       // Set up the presentation controller
       context.controller = new Albite.PresentationController(context);
@@ -1940,8 +1945,10 @@ Albite.Main = function(options) {
         // We are done
         context.loaded = true;
 
-        // Display page numbers
-        context.notifications.showPageNumbers();
+        if (shouldShowStatusBar) {
+          // Display page numbers
+          context.notifications.showPageNumbers();
+        }
 
         // Notify the host we are done
         context.host.notifyLoaded();
