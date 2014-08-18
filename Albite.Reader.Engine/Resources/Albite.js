@@ -203,8 +203,14 @@ Albite.Notifications = function(context) {
   var notificationsBox = mainDocument.getElementById("notifications_box");
   var timer = null;
 
+  notifications.addEventListener("transitionend", function() {
+    if (notifications.className == "notifications_hidden_transition") {
+      notifications.style.display = "none";
+    }
+  }, false);
+
   function hideNotifications() {
-    notifications.className = "display_none";
+    notifications.className = "notifications_hidden_transition";
     cancelTimer();
   }
 
@@ -224,7 +230,8 @@ Albite.Notifications = function(context) {
 
     if (context.loaded) {
       notificationsBox.innerText = text;
-      notifications.className = "display_block";
+      notifications.style.display = "block";
+      notifications.className = "notifications_visible_transition";
       if (timeout > 0) {
         timer = setTimeout(hideNotifications, timeout);
       }

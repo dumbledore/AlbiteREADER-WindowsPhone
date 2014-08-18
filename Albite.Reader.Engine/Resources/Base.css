@@ -70,8 +70,17 @@ html, body {
   transition: opacity ease 1s;
 }
 
+.notifications_visible_transition {
+  opacity: 0.85;
+  transition: opacity ease 1s;
+}
+
+.notifications_hidden_transition {
+  opacity: 0;
+  transition: opacity ease 0.8s;
+}
+
 #notifications {
-  opacity:          0.6;
   position:         fixed;
   padding:          80px 15px 15px 15px;
   margin:           0px 30px 30px 30px;
