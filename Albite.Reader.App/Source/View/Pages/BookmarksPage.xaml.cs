@@ -18,11 +18,8 @@ namespace Albite.Reader.App.View.Pages
         {
             InitializeComponent();
 
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get the book presenter
-            BookPresenter bookPresenter = context.BookPresenter;
+            BookPresenter bookPresenter = App.Context.BookPresenter;
 
             // Set the title
             string titleUppercase = bookPresenter.Book.Title.ToUpper();

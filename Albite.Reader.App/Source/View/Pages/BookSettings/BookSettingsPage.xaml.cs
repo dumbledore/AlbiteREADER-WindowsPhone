@@ -23,11 +23,8 @@ namespace Albite.Reader.App.View.Pages.BookSettings
 
         private void updateStatusValues()
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get current layout settings
-            LayoutSettings settings = context.LayoutSettings;
+            LayoutSettings settings = App.Context.LayoutSettings;
 
             // Set current theme name
             ThemeControl.ContentText = settings.Theme.Name;

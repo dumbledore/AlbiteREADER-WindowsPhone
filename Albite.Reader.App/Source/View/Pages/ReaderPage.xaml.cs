@@ -62,11 +62,8 @@ namespace Albite.Reader.App.View.Pages
 
         private void updateColors()
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get current layout settings
-            LayoutSettings settings = context.LayoutSettings;
+            LayoutSettings settings = App.Context.LayoutSettings;
 
             // Get current theme
             Theme theme = settings.Theme;
@@ -187,11 +184,8 @@ namespace Albite.Reader.App.View.Pages
 
         private void PinButton_Click(object sender, EventArgs e)
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Pin book tile to start
-            TileManager.PinBook(context.BookPresenter);
+            TileManager.PinBook(App.Context.BookPresenter);
         }
 #endregion
 

@@ -236,11 +236,8 @@ namespace Albite.Reader.App.View.Controls
                     // Update the current value
                     bookPresenter = value;
 
-                    // Get the context
-                    Context context = ((IApplication)App.Current).CurrentContext;
-
                     // Get current layout settings
-                    LayoutSettings settings = context.LayoutSettings;
+                    LayoutSettings settings = App.Context.LayoutSettings;
 
                     // Load the engine.
                     engine = new Albite.Reader.Engine.Engine(this, bookPresenter, settings);

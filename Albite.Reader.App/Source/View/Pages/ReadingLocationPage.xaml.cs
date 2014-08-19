@@ -19,11 +19,8 @@ namespace Albite.Reader.App.View.Pages
 
         private void setCurrentState()
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get the book presenter
-            BookPresenter bookPresenter = context.BookPresenter;
+            BookPresenter bookPresenter = App.Context.BookPresenter;
 
             // Set the title
             string titleUppercase = bookPresenter.Book.Title.ToUpper();
@@ -61,11 +58,8 @@ namespace Albite.Reader.App.View.Pages
 
         private void applyLocation()
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get the book presenter
-            BookPresenter bookPresenter = context.BookPresenter;
+            BookPresenter bookPresenter = App.Context.BookPresenter;
 
             // Get new location
             int currentLocation = (int)LocationSlider.Value;

@@ -13,11 +13,8 @@ namespace Albite.Reader.App.View.Pages.BookSettings
 
         private void setCurrentState()
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get current layout settings
-            LayoutSettings settings = context.LayoutSettings;
+            LayoutSettings settings = App.Context.LayoutSettings;
 
             // Set justification state
             JustificationSwitch.IsChecked = settings.TextSettings.Justified;
@@ -34,11 +31,8 @@ namespace Albite.Reader.App.View.Pages.BookSettings
 
         private void applySettings()
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get current layout settings
-            LayoutSettings settings = context.LayoutSettings;
+            LayoutSettings settings = App.Context.LayoutSettings;
 
             // Update the justification state
             bool? justified = JustificationSwitch.IsChecked;
@@ -56,7 +50,7 @@ namespace Albite.Reader.App.View.Pages.BookSettings
                     settings.Theme);
 
             // Update & persist
-            context.LayoutSettings = newSettings;
+            App.Context.LayoutSettings = newSettings;
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

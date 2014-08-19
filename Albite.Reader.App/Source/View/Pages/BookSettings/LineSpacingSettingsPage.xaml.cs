@@ -18,11 +18,8 @@ namespace Albite.Reader.App.View.Pages.BookSettings
 
         private void setCurrentState()
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get current layout settings
-            LayoutSettings settings = context.LayoutSettings;
+            LayoutSettings settings = App.Context.LayoutSettings;
 
             // Get current line height
             int lineHeight = settings.TextSettings.LineHeight.Height;
@@ -52,11 +49,8 @@ namespace Albite.Reader.App.View.Pages.BookSettings
         {
             if (selected != null)
             {
-                // Get the context
-                Context context = ((IApplication)App.Current).CurrentContext;
-
                 // Get current layout settings
-                LayoutSettings settings = context.LayoutSettings;
+                LayoutSettings settings = App.Context.LayoutSettings;
 
                 // Update the line height
                 TextSettings textSettings = new TextSettings(
@@ -73,7 +67,7 @@ namespace Albite.Reader.App.View.Pages.BookSettings
                         settings.Theme);
 
                 // Update & persist
-                context.LayoutSettings = newSettings;
+                App.Context.LayoutSettings = newSettings;
             }
         }
 

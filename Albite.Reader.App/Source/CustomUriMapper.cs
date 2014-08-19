@@ -44,11 +44,8 @@ namespace Albite.Reader.App
             int fileTokenIndex = uriString.IndexOf(tokenString) + tokenString.Length;
             string fileToken = uriString.Substring(fileTokenIndex);
 
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Set the fileToken
-            context.FileToken = fileToken;
+            App.Context.FileToken = fileToken;
         }
     }
 }

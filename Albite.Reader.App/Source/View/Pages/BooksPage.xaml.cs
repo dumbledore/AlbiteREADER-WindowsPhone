@@ -65,11 +65,8 @@ namespace Albite.Reader.App.View.Pages
 
         private void setCurrentState()
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get the book library
-            Library library = context.Library;
+            Library library = App.Context.Library;
 
             // Get the books
             Book[] booksArray = library.Books.GetAll();
@@ -116,11 +113,8 @@ namespace Albite.Reader.App.View.Pages
         {
             BookHeaderedControl control = (BookHeaderedControl)sender;
 
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get the library
-            Library library = context.Library;
+            Library library = App.Context.Library;
 
             NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/ReaderPage.xaml?id=" + control.Book.Id, UriKind.Relative));
         }
@@ -137,11 +131,8 @@ namespace Albite.Reader.App.View.Pages
 
             if (MessageBox.Show(message, "Remove book", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
-                // Get the context
-                Context context = ((IApplication)App.Current).CurrentContext;
-
                 // Get the library
-                Library library = context.Library;
+                Library library = App.Context.Library;
 
                 // Unpin
                 TileManager.UnpinBook(book);

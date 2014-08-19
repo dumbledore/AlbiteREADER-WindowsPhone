@@ -19,11 +19,8 @@ namespace Albite.Reader.App.View.Pages.BookSettings
 
         private void setCurrentState()
         {
-            // Get the context
-            Context context = ((IApplication)App.Current).CurrentContext;
-
             // Get current layout settings
-            LayoutSettings settings = context.LayoutSettings;
+            LayoutSettings settings = App.Context.LayoutSettings;
 
             // Get current theme
             Theme theme = settings.Theme;
@@ -54,11 +51,8 @@ namespace Albite.Reader.App.View.Pages.BookSettings
         {
             if (selected != null)
             {
-                // Get the context
-                Context context = ((IApplication)App.Current).CurrentContext;
-
                 // Get current layout settings
-                LayoutSettings settings = context.LayoutSettings;
+                LayoutSettings settings = App.Context.LayoutSettings;
 
                 // Update the theme
                 Theme theme = new Theme(
@@ -75,7 +69,7 @@ namespace Albite.Reader.App.View.Pages.BookSettings
                         theme);
 
                 // Update & persist
-                context.LayoutSettings = newSettings;
+                App.Context.LayoutSettings = newSettings;
             }
         }
 
