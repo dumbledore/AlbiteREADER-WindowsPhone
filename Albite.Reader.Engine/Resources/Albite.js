@@ -857,10 +857,8 @@ Albite.Pager = function(context) {
       var range = doc.createRange();
       range.selectNodeContents(node);
       var box = range.getBoundingClientRect();
-      if (box.height > 0) {
-        goToPage(getPageForPoint(scroller.getPosition() + box.left));
-        return true;
-      }
+      goToPage(getPageForPoint(scroller.getPosition() + box.left));
+      return true;
     }
 
     return false;
