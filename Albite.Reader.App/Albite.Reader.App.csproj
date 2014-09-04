@@ -205,6 +205,9 @@
     <Compile Include="Source\View\Pages\ContentsPage.xaml.cs">
       <DependentUpon>ContentsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Pages\NarrationPage.xaml.cs">
+      <DependentUpon>NarrationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
     </Compile>
@@ -361,6 +364,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Source\View\Pages\NarrationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Source\View\Pages\ReaderPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -403,6 +410,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Albite.Reader.Speech\Albite.Reader.Speech.csproj">
+      <Project>{C53D8264-29BC-43C1-9ED7-40F851FB9426}</Project>
+      <Name>Albite.Reader.Speech</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Albite.Reader.Storage\Albite.Reader.Storage.csproj">
       <Project>{9768A8C6-9594-45FD-A139-D073F9D451EE}</Project>
       <Name>Albite.Reader.Storage</Name>
