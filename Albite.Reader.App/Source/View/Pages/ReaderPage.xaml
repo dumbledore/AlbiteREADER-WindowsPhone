@@ -33,6 +33,7 @@
                 <shell:ApplicationBarMenuItem Text="Bookmarks" x:Name="BookmarksButton" Click="BookmarksButton_Click"/>
                 <shell:ApplicationBarMenuItem Text="Share" x:Name="ShareButton" Click="ShareButton_Click"/>
                 <shell:ApplicationBarMenuItem Text="Pin to Start" x:Name="PinButton" Click="PinButton_Click"/>
+                <shell:ApplicationBarMenuItem Text="Narrate" x:Name="NarrateButton" Click="NarrateButton_Click"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

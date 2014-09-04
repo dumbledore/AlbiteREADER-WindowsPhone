@@ -101,6 +101,7 @@ namespace Albite.Reader.App.View.Pages
             BookmarksButton         = ApplicationBar.MenuItems[1] as ApplicationBarMenuItem;
             ShareButton             = ApplicationBar.MenuItems[2] as ApplicationBarMenuItem;
             PinButton               = ApplicationBar.MenuItems[3] as ApplicationBarMenuItem;
+            NarrateButton           = ApplicationBar.MenuItems[4] as ApplicationBarMenuItem;
         }
 
         private void BackButton_Click(object sender, EventArgs e)
@@ -186,6 +187,11 @@ namespace Albite.Reader.App.View.Pages
         {
             // Pin book tile to start
             TileManager.PinBook(App.Context.BookPresenter);
+        }
+
+        private void NarrateButton_Click(object sender, EventArgs e)
+        {
+            navigate("NarrationPage.xaml");
         }
 #endregion
 
