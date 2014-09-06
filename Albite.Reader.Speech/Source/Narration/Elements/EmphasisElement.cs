@@ -7,12 +7,8 @@ namespace Albite.Reader.Speech.Narration.Elements
     {
         protected override SynthesisElement StartElement(NarrationSettings settings, AbstractNode<SynthesisElement> current)
         {
-            BreakElement breakEl = new BreakElement(settings.EmphasisPause);
-            current.AddChild(breakEl);
-
-            ProsodyElement prosody = new ProsodyElement(settings.EmphasisSpeedRatio, settings.EmphasisPitch);
-            breakEl.AddChild(prosody);
-            return prosody;
+            // Pass. Nothing that tried sounded natural
+            return current.Value;
         }
 
         protected override SynthesisElement EndElement(NarrationSettings settings, AbstractNode<SynthesisElement> current)
