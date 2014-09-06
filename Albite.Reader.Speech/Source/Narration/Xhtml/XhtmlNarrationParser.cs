@@ -37,6 +37,10 @@ namespace Albite.Reader.Speech.Narration.Xhtml
             XmlReaderSettings xmlSettings = new XmlReaderSettings();
             // Used for custom entities
             xmlSettings.DtdProcessing = DtdProcessing.Parse;
+
+            // Disallow XmlReader to open any external resources
+            xmlSettings.XmlResolver = null;
+
             // TODO: Check if comments are ignored in IE10
             xmlSettings.IgnoreComments = false;
 
