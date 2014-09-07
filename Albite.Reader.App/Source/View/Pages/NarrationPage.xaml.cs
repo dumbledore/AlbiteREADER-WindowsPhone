@@ -11,6 +11,7 @@ using System.Linq;
 using System;
 using Albite.Reader.Core.Diagnostics;
 using System.Globalization;
+using Windows.Foundation;
 
 namespace Albite.Reader.App.View.Pages
 {
@@ -35,12 +36,7 @@ namespace Albite.Reader.App.View.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             loadBookPresenter();
-
-            if (e.NavigationMode == NavigationMode.New)
-            {
-                startReading();
-            }
-
+            startReading();
             base.OnNavigatedTo(e);
         }
 
@@ -55,6 +51,10 @@ namespace Albite.Reader.App.View.Pages
             // Now persist BookPresenter
             //bookPresenter.Persist();
 
+            // Stop reading
+            narrator.Stop();
+
+            // Going away. No need to keep the resources
             if (e.NavigationMode == NavigationMode.Back)
             {
                 unloadNarrator();
@@ -113,20 +113,7 @@ namespace Albite.Reader.App.View.Pages
                     else if (location.Location is DomLocation)
                     {
                         // go to html
-                        DomLocation dom = (DomLocation)location.Location;
-
-                        // First we need to take into account the fact that
-                        // the client JS would add an extra element to the path
-                        // (because of the root element div, i.e. albite_root),
-                        // so all paths would start with 0.
-                        int[] domPath = new int[dom.ElementPath.Count - 1];
-                        Array.Copy(dom.ElementPath.ToArray(), 1, domPath, 0, domPath.Length);
-
-                        // Also, we need to take into account that the first element after that
-                        // is offset by +1 (because of albite_start)
-                        domPath[0] = domPath[0] - 1;
-
-                        XhtmlLocation xhtmlLocation = new XhtmlLocation(domPath);
+                        XhtmlLocation xhtmlLocation = toXhtmlLocation((DomLocation)location.Location);
                         ILocatedText<XhtmlLocation> locatedText = narrator.LocatedTextManager[xhtmlLocation];
                         narrator.LocatedTextManager.Current = locatedText;
                     } // all other default to first page - nothing to do
@@ -137,6 +124,37 @@ namespace Albite.Reader.App.View.Pages
                 }
                 NarrationBlock.Text = narrator.LocatedTextManager.Current.Text;
             }
+        }
+
+        private XhtmlLocation toXhtmlLocation(DomLocation location)
+        {
+            // First we need to take into account the fact that
+            // the client JS would add an extra element to the path
+            // (because of the root element div, i.e. albite_root),
+            // so all paths would start with 0.
+            int[] domPath = new int[location.ElementPath.Count - 1];
+            Array.Copy(location.ElementPath.ToArray(), 1, domPath, 0, domPath.Length);
+
+            // Also, we need to take into account that the first element after that
+            // is offset by +1 (because of albite_start)
+            domPath[0] = domPath[0] - 1;
+
+            return new XhtmlLocation(domPath);
+        }
+
+        private DomLocation toDomLocation(XhtmlLocation location) {
+            int[] oldPath = location.ElementPath.ToArray();
+            int[] newPath = new int[oldPath.Length + 1];
+
+            // Take into account that we need to add the rootElement
+            Array.Copy(oldPath, 0, newPath, 1, oldPath.Length);
+            newPath[0] = 0;
+
+            // And we need to account for the albite_start
+            newPath[1] = newPath[1] + 1;
+
+            // TODO: relativeLocation is not calculated here
+            return new DomLocation(newPath, 0, 0);
         }
 
         private void unloadNarrator()
@@ -153,7 +171,9 @@ namespace Albite.Reader.App.View.Pages
         {
             if (narrator != null)
             {
-                Albite.Reader.Core.Diagnostics.Log.I("", narrator.ReadAsync().Status.ToString());
+                //Albite.Reader.Core.Diagnostics.Log.I("", narrator.ReadAsync().Status.ToString());
+                //Windows.Foundation.IAsyncAction a = narrator.ReadAsync();
+                narrator.ReadAsync().Completed = readingCompleted;
             }
         }
 
@@ -163,6 +183,10 @@ namespace Albite.Reader.App.View.Pages
             {
                 narrator.Stop();
             }
+        }
+
+        private void readingCompleted(IAsyncAction asyncInfo, AsyncStatus asyncStatus)
+        {
         }
 
         private void LocatedTextManager_TextReached(LocatedTextManager<XhtmlLocation> sender, ILocatedText<XhtmlLocation> args)
