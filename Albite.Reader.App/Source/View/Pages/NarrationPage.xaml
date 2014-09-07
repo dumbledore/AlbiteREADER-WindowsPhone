@@ -31,7 +31,9 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <TextBlock Grid.Row="1" Margin="12,0,12,0" x:Name="NarrationBlock" TextWrapping="Wrap"/>
+        <ScrollViewer Grid.Row="1" Margin="21,0,21,21">
+            <TextBlock x:Name="NarrationBlock" TextWrapping="Wrap" />
+        </ScrollViewer>
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
