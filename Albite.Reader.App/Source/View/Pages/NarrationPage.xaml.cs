@@ -10,6 +10,7 @@ using Albite.Reader.Speech;
 using System.Linq;
 using System;
 using Albite.Reader.Core.Diagnostics;
+using System.Globalization;
 
 namespace Albite.Reader.App.View.Pages
 {
@@ -97,7 +98,7 @@ namespace Albite.Reader.App.View.Pages
                 {
                     using (Stream stream = iso.GetStream(FileAccess.Read))
                     {
-                        narrator = new XhtmlNarrator(stream, "en", new NarrationSettings());
+                        narrator = new XhtmlNarrator(stream, CultureInfo.CurrentCulture.Name, new NarrationSettings());
                         narrator.LocatedTextManager.TextReached += LocatedTextManager_TextReached;
                     }
                 }
