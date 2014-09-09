@@ -776,7 +776,7 @@ Albite.Pager = function(context) {
       goToElementById(location.elementId);
     } else if ((typeof location.elementPath !== 'undefined') && (typeof location.textOffset !== 'undefined')) {
       showStatusBar = true;
-      goToDomLocation( { 'elementPath' : location.elementPath, 'textOffset' : location.textOffset} );
+      goToDomLocation(location);
     } else if (typeof location.relativeLocation !== 'undefined') {
       // test for relative location last, as all other locations would have it
       showStatusBar = true;
