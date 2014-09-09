@@ -20,6 +20,20 @@ namespace Albite.Reader.BookLibrary.Location
         [DataMember(Name = "relativeLocation")]
         private double relativeLocation { get; set; }
 
+#pragma warning disable 0414
+        // Versioning for backwards compatibility
+        //
+        // Default to 0, i.e. old locaiton.
+        // If unparsing an old location, it will
+        // be kept to the default, i.e zero.
+        //
+        // The JSClient will return new locations
+        // with a version > 0, but will be able
+        // to handle old ones as well.
+        [DataMember(Name = "version")]
+        private int version = 0;
+#pragma warning restore 0414
+
         public override double RelativeLocation
         {
             get { return relativeLocation; }

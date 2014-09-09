@@ -312,13 +312,70 @@ Albite.Pager = function(context) {
     return page;
   }
 
+
+  var VERSIONS = {
+    "V1" : 1
+  }
+
+  var LAST_VERSION = VERSIONS.V1;
+
+  function importLocation(loc) {
+    switch (loc.version) {
+      case VERSIONS.V1:
+        return importLocationV1(loc);
+    }
+
+    // Assume internal location, i.e.
+    // there's nothing to import
+    return loc;
+  }
+
+  function importLocationV1(loc) {
+    // copy the old path
+    var newPath = loc.elementPath.slice(0);
+
+    // account for albite_root
+    newPath.splice(0, 0, 0);
+
+    // account for albite_start
+    newPath[1] += 1;
+
+    // Shallow copy of the the location
+    var newLocation = Albite.Helpers.shallowCopy(loc);
+
+    // Use new path
+    newLocation["elementPath"] = newPath;
+
+    return newLocation;
+  }
+
+  function exportLocation(loc) {
+    // Copy the old path and account for albite_root
+    var newPath = loc.elementPath.slice(1);
+
+    // Account for albite_start
+    newPath[0] -= 1;
+
+    // Shallow copy of the the location
+    var newLocation = Albite.Helpers.shallowCopy(loc);
+
+    // Use new path
+    newLocation["elementPath"] = newPath;
+
+    // set correct version
+    newLocation["version"] = LAST_VERSION;
+
+    return newLocation;
+  }
+
   function getPageForPoint(x) {
     return validate(Math.floor(x / pageWidth));
   }
 
   function getPageForLocation(location) {
     try {
-      var path  = location.elementPath;
+      var iLoc  = importLocation(location);
+      var path  = iLoc.elementPath;
       var doc   = context.contentWindow.document;
       var node  = doc.body;
 
@@ -328,7 +385,7 @@ Albite.Pager = function(context) {
       }
 
       // default the offset to 0,
-      var offset = location.textOffset || 0;
+      var offset = iLoc.textOffset || 0;
       if (offset >= node.length) {
         // In case the offset was bad and range.setStart() would throw
         // an exception. We'd rather be a little off the right spot
@@ -637,7 +694,7 @@ Albite.Pager = function(context) {
     // The path is leaf to root, but we need it root to leaf, so reverse it
     elementPath.reverse();
 
-    return { "elementPath" : elementPath, "textOffset" : textOffset, "relativeLocation" : relativeLocation };
+    return exportLocation( { "elementPath" : elementPath, "textOffset" : textOffset, "relativeLocation" : relativeLocation} );
   }
 
   function getRelative() {
