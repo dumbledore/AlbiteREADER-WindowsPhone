@@ -116,14 +116,14 @@ Albite.Helpers = {
     }
   },
 
-  copyOptions: function(options) {
-    var newOptions = {};
+  shallowCopy: function(obj) {
+    var newObj = { };
 
-    for (var key in options) {
-      newOptions[key] = options[key];
+    for (var key in obj) {
+      newObj[key] = obj[key];
     }
 
-    return newOptions;
+    return newObj;
   }
 };
 
@@ -1751,7 +1751,7 @@ Albite.Main = function(options) {
   Albite.Helpers.setDefaultOptions(options, defaultOptions);
 
   // We want to add new properties and we want them private
-  context = Albite.Helpers.copyOptions(options);
+  context = Albite.Helpers.shallowCopy(options);
 
   // Set up the host early on so that one could send
   // error reports
