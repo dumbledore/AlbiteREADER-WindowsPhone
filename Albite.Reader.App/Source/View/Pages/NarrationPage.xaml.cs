@@ -113,7 +113,8 @@ namespace Albite.Reader.App.View.Pages
                     else if (location.Location is DomLocation)
                     {
                         // go to html
-                        XhtmlLocation xhtmlLocation = toXhtmlLocation((DomLocation)location.Location);
+                        DomLocation domLocation = (DomLocation)location.Location;
+                        XhtmlLocation xhtmlLocation = new XhtmlLocation(domLocation.ElementPath);
                         ILocatedText<XhtmlLocation> locatedText = narrator.LocatedTextManager[xhtmlLocation];
                         narrator.LocatedTextManager.Current = locatedText;
                     } // all other default to first page - nothing to do
@@ -124,37 +125,6 @@ namespace Albite.Reader.App.View.Pages
                 }
                 NarrationBlock.Text = narrator.LocatedTextManager.Current.Text;
             }
-        }
-
-        private XhtmlLocation toXhtmlLocation(DomLocation location)
-        {
-            // First we need to take into account the fact that
-            // the client JS would add an extra element to the path
-            // (because of the root element div, i.e. albite_root),
-            // so all paths would start with 0.
-            int[] domPath = new int[location.ElementPath.Count - 1];
-            Array.Copy(location.ElementPath.ToArray(), 1, domPath, 0, domPath.Length);
-
-            // Also, we need to take into account that the first element after that
-            // is offset by +1 (because of albite_start)
-            domPath[0] = domPath[0] - 1;
-
-            return new XhtmlLocation(domPath);
-        }
-
-        private DomLocation toDomLocation(XhtmlLocation location) {
-            int[] oldPath = location.ElementPath.ToArray();
-            int[] newPath = new int[oldPath.Length + 1];
-
-            // Take into account that we need to add the rootElement
-            Array.Copy(oldPath, 0, newPath, 1, oldPath.Length);
-            newPath[0] = 0;
-
-            // And we need to account for the albite_start
-            newPath[1] = newPath[1] + 1;
-
-            // TODO: relativeLocation is not calculated here
-            return new DomLocation(newPath, 0, 0);
         }
 
         private void unloadNarrator()
