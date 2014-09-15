@@ -28,7 +28,7 @@ namespace Albite.Reader.Core.Collections
 
         public void AddChild(AbstractNode<TValue> newChild)
         {
-            makeSureNotAdded(newChild);
+            newChild.makeSureNotAdded();
 
             if (firstChild_ == null)
             {
@@ -44,14 +44,14 @@ namespace Albite.Reader.Core.Collections
             lastChild_ = newChild;
         }
 
-        private void makeSureNotAdded(AbstractNode<TValue> other)
+        private void makeSureNotAdded()
         {
-            if (other.alreadyAdded)
+            if (alreadyAdded)
             {
                 throw new InvalidOperationException("Node already added");
             }
 
-            other.alreadyAdded = true;
+            alreadyAdded = true;
         }
     }
 }
