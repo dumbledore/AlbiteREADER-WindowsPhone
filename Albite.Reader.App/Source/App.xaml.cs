@@ -165,6 +165,11 @@ namespace Albite.Reader.App
             if (RootVisual != RootFrame)
                 RootVisual = RootFrame;
 
+            // Enabling idle detection mode in case it was disabled before by NarrationPage
+            // According to the docs, IdleDetection should be set only after
+            // PhoneApplicationFrame has been initialized.
+            PhoneApplicationService.Current.ApplicationIdleDetectionMode = IdleDetectionMode.Enabled;
+
             // Remove this handler since it is no longer needed
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
         }

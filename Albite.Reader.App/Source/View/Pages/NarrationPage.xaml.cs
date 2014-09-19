@@ -12,6 +12,7 @@ using System;
 using Albite.Reader.Core.Diagnostics;
 using System.Globalization;
 using Windows.Foundation;
+using Microsoft.Phone.Shell;
 
 namespace Albite.Reader.App.View.Pages
 {
@@ -181,6 +182,9 @@ namespace Albite.Reader.App.View.Pages
             if (narrator != null)
             {
                 narrator.ReadAsync().Completed = readingCompleted;
+
+                // Disable idle detection so that it can run under locked screen
+                PhoneApplicationService.Current.ApplicationIdleDetectionMode = IdleDetectionMode.Disabled;
             }
         }
 
