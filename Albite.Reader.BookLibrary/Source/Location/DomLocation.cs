@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Albite.Reader.BookLibrary.Location
@@ -39,11 +40,10 @@ namespace Albite.Reader.BookLibrary.Location
             get { return relativeLocation; }
         }
 
-        public DomLocation(IList<int> elementPath, int textOffset, double relativeLocation)
+        public DomLocation(IEnumerable<int> elementPath, int textOffset, double relativeLocation)
         {
-            this.elementPath = new int[elementPath.Count];
-            elementPath.CopyTo(this.elementPath, 0);
-            TextOffset = textOffset;
+            this.elementPath = elementPath.ToArray();
+            this.TextOffset = textOffset;
             this.relativeLocation = relativeLocation;
         }
 
