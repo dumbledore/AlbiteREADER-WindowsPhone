@@ -21,6 +21,7 @@ namespace Albite.Reader.App.View.Pages
 
         private XhtmlNarrator narrator;
         private Chapter chapter;
+        private object myLock = new object();
 
         public NarrationPage()
         {
@@ -36,50 +37,62 @@ namespace Albite.Reader.App.View.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            loadBookPresenter();
-            startReading();
+            lock (myLock)
+            {
+                loadBookPresenter();
+                startReading();
+            }
+
             base.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            // Stop reading
-            narrator.Stop();
-
-            if (chapter != null)
+            lock (myLock)
             {
-                // Update the BookLocation of BookPresenter to match
-                // the current BookLocation
-                ILocatedText<XhtmlLocation> current = narrator.LocatedTextManager.Current;
-                if (current != null)
+                // stop the narrator
+                stopReading();
+
+                if (chapter != null)
                 {
-                    // relative position is dummy (0), but that shouldn't be an issue as it
-                    //is not going to be used anyway, yet it will be updated in ReaderPage
-                    ChapterLocation cLocation = new DomLocation(current.Location.ElementPath, 0, 0);
+                    // Update the BookLocation of BookPresenter to match
+                    // the current BookLocation
+                    ILocatedText<XhtmlLocation> current = narrator.LocatedTextManager.Current;
+                    if (current != null)
+                    {
+                        // Relative position is dummy (0), but that shouldn't be an issue as it
+                        // is not going to be used anyway, yet it will be updated in ReaderPage
+                        persistLocaiton(new DomLocation(current.Location.ElementPath, 0, 0));
+                    }
 
-                    // We are now ready to create the book location
-                    BookLocation bLocation = chapter.CreateLocation(cLocation);
-
-                    // Update the location in HistoryStack
-                    chapter.BookPresenter.HistoryStack.SetCurrentLocation(bLocation);
-
-                    // And persist BookPresenter
-                    chapter.BookPresenter.Persist();
+                    // Do not leak the Chapter/BookPresenter
+                    chapter = null;
                 }
 
-                // Do not leak the Chapter/BookPresenter
-                chapter = null;
-            }
-
-            // Going away. No need to keep the resources
-            if (e.NavigationMode == NavigationMode.Back)
-            {
-                unloadNarrator();
+                // Going away. No need to keep the resources
+                if (e.NavigationMode == NavigationMode.Back)
+                {
+                    unloadNarrator();
+                }
             }
 
             base.OnNavigatedFrom(e);
         }
 
+        // shall be called locked
+        private void persistLocaiton(ChapterLocation cLocation)
+        {
+            // Create the book location
+            BookLocation bLocation = chapter.CreateLocation(cLocation);
+
+            // Update the location in HistoryStack
+            chapter.BookPresenter.HistoryStack.SetCurrentLocation(bLocation);
+
+            // And finally persist
+            chapter.BookPresenter.Persist();
+        }
+
+        // shall be called locked
         private void loadBookPresenter()
         {
             if (narrator == null)
@@ -99,6 +112,7 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
+        // shall be called locked
         private void loadNarrator()
         {
             if (narrator == null)
@@ -147,6 +161,7 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
+        // shall be called locked
         private void unloadNarrator()
         {
             if (narrator != null)
@@ -160,6 +175,7 @@ namespace Albite.Reader.App.View.Pages
             chapter = null;
         }
 
+        // shall be called locked
         private void startReading()
         {
             if (narrator != null)
@@ -168,6 +184,7 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
+        // shall be called locked
         private void stopReading()
         {
             if (narrator != null)
@@ -178,6 +195,39 @@ namespace Albite.Reader.App.View.Pages
 
         private void readingCompleted(IAsyncAction asyncInfo, AsyncStatus asyncStatus)
         {
+            if (asyncStatus == AsyncStatus.Completed)
+            {
+                // Chapter ended.
+                // Queue this for later or narrator.Dispose() would dead-lock
+                Dispatcher.BeginInvoke(() =>
+                    {
+                        lock (myLock)
+                        {
+                            // Just in case
+                            stopReading();
+
+                            // Chapter shan't be null, but just in case.
+                            // Also, check if it's the last chapter.
+                            if (chapter != null && chapter.Next != null)
+                            {
+                                // Set to next chapter
+                                chapter = chapter.Next;
+
+                                // And now persist to first page
+                                persistLocaiton(new FirstPageLocation());
+                            }
+
+                            // Current narrator is not needed anymore
+                            unloadNarrator();
+
+                            // Reload new narrator (for the new location)
+                            loadNarrator();
+
+                            // And start
+                            startReading();
+                        }
+                    });
+            }
         }
 
         private void LocatedTextManager_TextReached(LocatedTextManager<XhtmlLocation> sender, ILocatedText<XhtmlLocation> args)
