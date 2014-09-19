@@ -164,8 +164,6 @@ namespace Albite.Reader.App.View.Pages
         {
             if (narrator != null)
             {
-                //Albite.Reader.Core.Diagnostics.Log.I("", narrator.ReadAsync().Status.ToString());
-                //Windows.Foundation.IAsyncAction a = narrator.ReadAsync();
                 narrator.ReadAsync().Completed = readingCompleted;
             }
         }
