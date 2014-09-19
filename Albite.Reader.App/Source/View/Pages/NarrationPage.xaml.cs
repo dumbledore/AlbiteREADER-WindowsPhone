@@ -59,6 +59,7 @@ namespace Albite.Reader.App.View.Pages
         {
             Dispatcher.BeginInvoke(() =>
             {
+                NarrationScroller.ScrollToVerticalOffset(0);
                 NarrationBlock.Text = args;
             });
         }
