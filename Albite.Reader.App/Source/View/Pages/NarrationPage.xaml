@@ -31,7 +31,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <ScrollViewer Grid.Row="1" Margin="21,0,21,21">
+        <ScrollViewer Grid.Row="1" Margin="21,0,21,0">
             <TextBlock x:Name="NarrationBlock" TextWrapping="Wrap" />
         </ScrollViewer>
     </Grid>
