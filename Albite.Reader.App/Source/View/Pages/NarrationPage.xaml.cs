@@ -20,6 +20,7 @@ namespace Albite.Reader.App.View.Pages
         private static readonly string tag = "NarrationPage";
 
         private XhtmlNarrator narrator;
+        private Chapter chapter;
 
         public NarrationPage()
         {
@@ -42,17 +43,33 @@ namespace Albite.Reader.App.View.Pages
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            //TODO
-
-            // Update the BookLocation of BookPresenter to match
-            // the current BookLocation
-            //bookPresenter.HistoryStack.SetCurrentLocation(ReaderControl.BookLocation);
-
-            // Now persist BookPresenter
-            //bookPresenter.Persist();
-
             // Stop reading
             narrator.Stop();
+
+            if (chapter != null)
+            {
+                // Update the BookLocation of BookPresenter to match
+                // the current BookLocation
+                ILocatedText<XhtmlLocation> current = narrator.LocatedTextManager.Current;
+                if (current != null)
+                {
+                    // relative position is dummy (0), but that shouldn't be an issue as it
+                    //is not going to be used anyway, yet it will be updated in ReaderPage
+                    ChapterLocation cLocation = new DomLocation(current.Location.ElementPath, 0, 0);
+
+                    // We are now ready to create the book location
+                    BookLocation bLocation = chapter.CreateLocation(cLocation);
+
+                    // Update the location in HistoryStack
+                    chapter.BookPresenter.HistoryStack.SetCurrentLocation(bLocation);
+
+                    // And persist BookPresenter
+                    chapter.BookPresenter.Persist();
+                }
+
+                // Do not leak the Chapter/BookPresenter
+                chapter = null;
+            }
 
             // Going away. No need to keep the resources
             if (e.NavigationMode == NavigationMode.Back)
@@ -91,8 +108,11 @@ namespace Albite.Reader.App.View.Pages
                 // Now get the latest location
                 BookLocation location = presenter.HistoryStack.GetCurrentLocation();
 
+                // Cache the current chapter
+                chapter = location.Chapter;
+
                 // Get the name of the chapter file
-                string path = Path.Combine(presenter.ContentPath, location.Chapter.Url);
+                string path = Path.Combine(presenter.ContentPath, chapter.Url);
 
                 using (IsolatedStorage iso = new IsolatedStorage(path))
                 {
@@ -135,6 +155,9 @@ namespace Albite.Reader.App.View.Pages
                 narrator.Dispose();
                 narrator = null;
             }
+
+            // Do not leak Chapter/BookPresenter
+            chapter = null;
         }
 
         private void startReading()
