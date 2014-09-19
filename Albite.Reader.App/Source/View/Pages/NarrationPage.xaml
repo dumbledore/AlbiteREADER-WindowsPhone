@@ -38,6 +38,10 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True">
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/transport.rew.png" Text="Previous" x:Name="PreviousButton" Click="PreviousButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/transport.pause.png" Text="Pause" x:Name="PlayButton" Click="PlayButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/transport.ff.png" Text="Next" x:Name="NextButton" Click="NextButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Resources/Images/feature.settings.png" Text="Settings" x:Name="SettingsButton" Click="SettingsButton_Click" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

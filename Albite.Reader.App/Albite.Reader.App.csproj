@@ -266,6 +266,10 @@
     <Content Include="Resources\Images\feature.search.png" />
     <Content Include="Resources\Images\folder-dark.png" />
     <Content Include="Resources\Images\folder.png" />
+    <Content Include="Resources\Images\transport.ff.png" />
+    <Content Include="Resources\Images\transport.pause.png" />
+    <Content Include="Resources\Images\transport.play.png" />
+    <Content Include="Resources\Images\transport.rew.png" />
     <Content Include="Resources\MediumTile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

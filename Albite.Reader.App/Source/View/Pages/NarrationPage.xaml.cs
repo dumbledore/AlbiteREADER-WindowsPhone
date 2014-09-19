@@ -2,6 +2,8 @@
 using Albite.Reader.BookLibrary;
 using System.Windows.Navigation;
 using System.Globalization;
+using System;
+using Microsoft.Phone.Shell;
 
 namespace Albite.Reader.App.View.Pages
 {
@@ -62,6 +64,31 @@ namespace Albite.Reader.App.View.Pages
                 NarrationScroller.ScrollToVerticalOffset(0);
                 NarrationBlock.Text = args;
             });
+        }
+
+        private void initializeApplicationBar()
+        {
+            // The buttons can't be addressed using "x:Name"
+            PreviousButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            PlayButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
+            NextButton = ApplicationBar.Buttons[2] as ApplicationBarIconButton;
+            SettingsButton = ApplicationBar.Buttons[3] as ApplicationBarIconButton;
+        }
+
+        private void PreviousButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void SettingsButton_Click(object sender, EventArgs e)
+        {
         }
     }
 }
