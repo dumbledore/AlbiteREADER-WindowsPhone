@@ -35,6 +35,8 @@ namespace Albite.Reader.BookLibrary.Location
         private int version = 0;
 #pragma warning restore 0414
 
+        private readonly int CurrentVersion = 1;
+
         public override double RelativeLocation
         {
             get { return relativeLocation; }
@@ -45,6 +47,9 @@ namespace Albite.Reader.BookLibrary.Location
             this.elementPath = elementPath.ToArray();
             this.TextOffset = textOffset;
             this.relativeLocation = relativeLocation;
+
+            // fix the version
+            this.version = CurrentVersion;
         }
 
         public override int CompareTo(ChapterLocation otherLocation)
