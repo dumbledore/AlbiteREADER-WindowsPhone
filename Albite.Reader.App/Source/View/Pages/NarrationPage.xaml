@@ -37,7 +37,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" BackgroundColor="{StaticResource PhoneBackgroundColor}">
+        <shell:ApplicationBar IsVisible="True">
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>
