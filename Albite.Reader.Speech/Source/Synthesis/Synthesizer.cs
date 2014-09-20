@@ -48,6 +48,7 @@ namespace Albite.Reader.Speech.Synthesis
         }
 
         private int currentTextElement = 0;
+        private object currentTextElementLock = new object();
 
         private void synth_BookmarkReached(SpeechSynthesizer sender, SpeechBookmarkReachedEventArgs args)
         {
@@ -58,7 +59,7 @@ namespace Albite.Reader.Speech.Synthesis
             // So we need to sync this, otherwise it might appear we are going backwards.
             bool notify = false;
 
-            lock (LocatedTextManager)
+            lock (currentTextElementLock)
             {
                 if (bookmarkId > currentTextElement)
                 {
