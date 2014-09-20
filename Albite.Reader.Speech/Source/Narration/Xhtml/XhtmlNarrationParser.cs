@@ -179,6 +179,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                         }
 
                     case "p":
+                    case "td":
                         newElement = new ParagraphElement();
                         element.AddChild(newElement);
                         break;
