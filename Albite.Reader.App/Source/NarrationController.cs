@@ -32,9 +32,15 @@ namespace Albite.Reader.App
             this.dispatcher = dispatcher;
             this.baseLanguage = baseLanguage;
 
+            // Get the BookPresenter
+            BookPresenter presenter = App.Context.BookPresenter;
+
+            // Now get the latest location
+            BookLocation location = presenter.HistoryStack.GetCurrentLocation();
+
             // Now load the narrator. No need to hold a lock as
             // no text is being read, i.e. no events will occurr.
-            loadNarrator();
+            loadNarrator(location);
         }
 
         public void Dispose()
@@ -146,13 +152,13 @@ namespace Albite.Reader.App
         private void reloadChapter(ChapterLocation location)
         {
             // And now persist to first page
-            persistLocaiton(location);
+            BookLocation bLocation = persistLocaiton(location);
 
             // Current narrator is not needed anymore
             unloadNarrator();
 
             // Reload new narrator (for the new location)
-            loadNarrator();
+            loadNarrator(bLocation);
 
             // And start
             startReadingLocked();
@@ -171,27 +177,13 @@ namespace Albite.Reader.App
             narrator.Stop();
         }
 
-        private void loadNarrator()
+        private void loadNarrator(BookLocation location)
         {
-            BookPresenter presenter = App.Context.BookPresenter;
-
-            // Now get the latest location
-            BookLocation location = presenter.HistoryStack.GetCurrentLocation();
-
             // Cache the current chapter
             chapter = location.Chapter;
 
-            // Get the name of the chapter file
-            string path = Path.Combine(presenter.ContentPath, chapter.Url);
-
-            using (IsolatedStorage iso = new IsolatedStorage(path))
-            {
-                using (Stream stream = iso.GetStream(FileAccess.Read))
-                {
-                    narrator = new XhtmlNarrator(stream, baseLanguage, new NarrationSettings());
-                    narrator.LocatedTextManager.TextReached += textReached;
-                }
-            }
+            // Now load the narrator for the provided chapter
+            loadNarrator();
 
             // Now use the provided location
             try
@@ -220,6 +212,22 @@ namespace Albite.Reader.App
             }
         }
 
+        // This loads the narrator for the current chapter
+        private void loadNarrator()
+        {
+            // Get the name of the chapter file
+            string path = Path.Combine(chapter.BookPresenter.ContentPath, chapter.Url);
+
+            using (IsolatedStorage iso = new IsolatedStorage(path))
+            {
+                using (Stream stream = iso.GetStream(FileAccess.Read))
+                {
+                    narrator = new XhtmlNarrator(stream, baseLanguage, new NarrationSettings());
+                    narrator.LocatedTextManager.TextReached += textReached;
+                }
+            }
+        }
+
         private void unloadNarrator()
         {
             narrator.Stop();
@@ -230,7 +238,7 @@ namespace Albite.Reader.App
             chapter = null;
         }
 
-        private void persistLocaiton(ChapterLocation cLocation)
+        private BookLocation persistLocaiton(ChapterLocation cLocation)
         {
             // Create the book location
             BookLocation bLocation = chapter.CreateLocation(cLocation);
@@ -240,6 +248,9 @@ namespace Albite.Reader.App
 
             // And finally persist
             chapter.BookPresenter.Persist();
+
+            // Now return the newly created BookLocation
+            return bLocation;
         }
 
         private void textReached(LocatedTextManager<XhtmlLocation> sender, ILocatedText<XhtmlLocation> args)
