@@ -108,20 +108,7 @@ namespace Albite.Reader.App
                         // Check if it's the last chapter.
                         if (chapter.Next != null)
                         {
-                            // Set to next chapter
-                            chapter = chapter.Next;
-
-                            // And now persist to first page
-                            persistLocaiton(new FirstPageLocation());
-
-                            // Current narrator is not needed anymore
-                            unloadNarrator();
-
-                            // Reload new narrator (for the new location)
-                            loadNarrator();
-
-                            // And start
-                            startReadingLocked();
+                            goToNextChapter();
                         }
                         else
                         {
@@ -136,6 +123,39 @@ namespace Albite.Reader.App
                     }
                 });
             }
+        }
+
+        private void goToPreviousChapter()
+        {
+            // Set to previous chapter
+            chapter = chapter.Previous;
+
+            // And now reload
+            reloadChapter(new LastPageLocation());
+        }
+
+        private void goToNextChapter()
+        {
+            // Set to next chapter
+            chapter = chapter.Next;
+
+            // And now reload
+            reloadChapter(new FirstPageLocation());
+        }
+
+        private void reloadChapter(ChapterLocation location)
+        {
+            // And now persist to first page
+            persistLocaiton(location);
+
+            // Current narrator is not needed anymore
+            unloadNarrator();
+
+            // Reload new narrator (for the new location)
+            loadNarrator();
+
+            // And start
+            startReadingLocked();
         }
 
         private void startReadingLocked()
