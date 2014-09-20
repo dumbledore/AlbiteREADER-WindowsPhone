@@ -114,10 +114,19 @@ namespace Albite.Reader.App.View.Pages
 
         private void PreviousButton_Click(object sender, EventArgs e)
         {
+
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
+            if (updateReadingState(!reading))
+            {
+                narrationController.StopReading();
+            }
+            else
+            {
+                narrationController.StartReading();
+            }
         }
 
         private void NextButton_Click(object sender, EventArgs e)
