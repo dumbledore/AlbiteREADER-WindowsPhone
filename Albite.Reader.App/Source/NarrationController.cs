@@ -89,7 +89,6 @@ namespace Albite.Reader.App
             }
         }
 
-
         private void readingCompleted(IAsyncAction asyncInfo, AsyncStatus asyncStatus)
         {
             if (asyncStatus == AsyncStatus.Completed)
@@ -113,16 +112,16 @@ namespace Albite.Reader.App
 
                             // And now persist to first page
                             persistLocaiton(new FirstPageLocation());
+
+                            // Current narrator is not needed anymore
+                            unloadNarrator();
+
+                            // Reload new narrator (for the new location)
+                            loadNarrator();
+
+                            // And start
+                            startReadingLocked();
                         }
-
-                        // Current narrator is not needed anymore
-                        unloadNarrator();
-
-                        // Reload new narrator (for the new location)
-                        loadNarrator();
-
-                        // And start
-                        startReadingLocked();
                     }
                 });
             }
