@@ -87,7 +87,18 @@ namespace Albite.Reader.Speech.Synthesis
 
         public IAsyncAction ReadAsync()
         {
+            lock (currentTextElementLock)
+            {
+                // This needs to be reset as we might be going backwards
+                // For instance, Current.Id now might easily be lesser than
+                // currentTextElement which will be a nice little bug.
+                currentTextElement = 0;
+            }
+
+            // Produce the SSML
             string ssml = Root.ToSsml(LocatedTextManager.Current.Id);
+
+            // And start reading
             return synth.SpeakSsmlAsync(ssml);
         }
 
