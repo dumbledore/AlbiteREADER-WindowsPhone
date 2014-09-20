@@ -114,7 +114,17 @@ namespace Albite.Reader.App.View.Pages
 
         private void PreviousButton_Click(object sender, EventArgs e)
         {
+            // Stop reading
+            narrationController.StopReading();
 
+            // Go back
+            narrationController.GoBack();
+
+            // Restore reading state
+            if (reading)
+            {
+                narrationController.StartReading();
+            }
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
@@ -131,6 +141,17 @@ namespace Albite.Reader.App.View.Pages
 
         private void NextButton_Click(object sender, EventArgs e)
         {
+            // Stop reading
+            narrationController.StopReading();
+
+            // Go forward
+            narrationController.GoForward();
+
+            // Restore reading state
+            if (reading)
+            {
+                narrationController.StartReading();
+            }
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)
