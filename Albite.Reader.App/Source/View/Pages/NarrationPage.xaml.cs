@@ -10,6 +10,7 @@ namespace Albite.Reader.App.View.Pages
     public partial class NarrationPage : PhoneApplicationPage
     {
         private NarrationController narrationController;
+        private bool reading = false;
 
         public NarrationPage()
         {
@@ -43,6 +44,9 @@ namespace Albite.Reader.App.View.Pages
             // And start reading
             narrationController.StartReading();
 
+            // Update PlayButton to "Pause"
+            updateReadingState(true);
+
             base.OnNavigatedTo(e);
         }
 
@@ -67,6 +71,18 @@ namespace Albite.Reader.App.View.Pages
                 NarrationScroller.ScrollToVerticalOffset(0);
                 NarrationBlock.Text = args;
             });
+        }
+
+        private bool updateReadingState(bool reading)
+        {
+            // Cache the old state
+            bool wasReading = this.reading;
+
+            // Save the new state
+            this.reading = reading;
+
+            // Return the old state
+            return wasReading;
         }
 
         private void initializeApplicationBar()
