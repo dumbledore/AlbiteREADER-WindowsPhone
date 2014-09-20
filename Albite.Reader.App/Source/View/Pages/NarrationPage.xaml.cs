@@ -15,6 +15,9 @@ namespace Albite.Reader.App.View.Pages
         {
             InitializeComponent();
 
+            // Get the bar buttons ready
+            initializeApplicationBar();
+
             // Get the book presenter
             BookPresenter bookPresenter = App.Context.BookPresenter;
 
