@@ -60,7 +60,7 @@ namespace Albite.Reader.App.View.Pages
             base.OnNavigatedFrom(e);
         }
 
-        void updateText(NarrationController sender, string args)
+        private void updateText(NarrationController sender, string args)
         {
             Dispatcher.BeginInvoke(() =>
             {
