@@ -76,6 +76,9 @@ namespace Albite.Reader.App.View.Pages
             });
         }
 
+        private static readonly Uri PlayUri = new Uri("/Resources/Images/transport.play.png", UriKind.Relative);
+        private static readonly Uri PauseUri = new Uri("/Resources/Images/transport.pause.png", UriKind.Relative);
+
         private bool updateReadingState(bool reading)
         {
             // Cache the old state
@@ -83,6 +86,10 @@ namespace Albite.Reader.App.View.Pages
 
             // Save the new state
             this.reading = reading;
+
+            // And update the button
+            PlayButton.IconUri = reading ? PauseUri : PlayUri;
+            PlayButton.Text = reading ? "pause" : "play";
 
             // Return the old state
             return wasReading;
