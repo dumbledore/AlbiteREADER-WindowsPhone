@@ -16,6 +16,7 @@ namespace Albite.Reader.App
     public class NarrationController : IDisposable
     {
         public event TypedEventHandler<NarrationController, string> UpdateText;
+        public event EventHandler NarrationEnded;
 
         private XhtmlNarrator narrator;
         private Chapter chapter;
@@ -121,6 +122,16 @@ namespace Albite.Reader.App
 
                             // And start
                             startReadingLocked();
+                        }
+                        else
+                        {
+                            // Book ended
+                            if (NarrationEnded != null)
+                            {
+                                // No need to call from the dispatcher,
+                                // as we are already there!
+                                NarrationEnded(this, EventArgs.Empty);
+                            }
                         }
                     }
                 });
