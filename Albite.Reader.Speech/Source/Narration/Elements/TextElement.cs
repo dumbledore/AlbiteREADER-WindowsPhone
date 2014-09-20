@@ -25,7 +25,7 @@ namespace Albite.Reader.Speech.Narration.Elements
 
         public TextElement(int id, string text, TLocation location)
         {
-            cachedText = new LocatedTextElement<TLocation>(id, text, location);
+            cachedText = new LocatedTextElement<TLocation>(id, text.Trim(), location);
         }
 
         protected override SynthesisElement StartElement(NarrationSettings settings, AbstractNode<SynthesisElement> current)
