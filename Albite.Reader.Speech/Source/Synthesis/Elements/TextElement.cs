@@ -21,6 +21,7 @@ namespace Albite.Reader.Speech.Synthesis.Elements
             '\n',
             '\r',
             '*',
+            '\u00a0',
         };
 
         private static string adjustText(string text)
