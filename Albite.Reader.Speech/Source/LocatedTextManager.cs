@@ -94,10 +94,15 @@ namespace Albite.Reader.Speech
                 lock (manager.locations_)
                 {
                     ILocatedText<TLocation> t = manager[index];
-                    manager.current_ = t;
-                    if (manager.TextReached != null)
+
+                    // Do not trigger an update for 0-length text elements
+                    if (t.Text.Length > 0)
                     {
-                        manager.TextReached(manager, t);
+                        manager.current_ = t;
+                        if (manager.TextReached != null)
+                        {
+                            manager.TextReached(manager, t);
+                        }
                     }
                 }
             }
