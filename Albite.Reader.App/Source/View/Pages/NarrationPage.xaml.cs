@@ -41,6 +41,9 @@ namespace Albite.Reader.App.View.Pages
             // Set up text updates
             narrationController.UpdateText += updateText;
 
+            // Set end of book events
+            narrationController.NarrationEnded += narrationEndedDelegate;
+
             // And start reading
             narrationController.StartReading();
 
@@ -83,6 +86,14 @@ namespace Albite.Reader.App.View.Pages
 
             // Return the old state
             return wasReading;
+        }
+
+        void narrationEndedDelegate(object sender, EventArgs e)
+        {
+            // Called from the main thread, so there's no need for a lock!
+            // That's not necessarily obvious, but it's because of how
+            // NarrationController works, i.e. it would called on the main thread
+            updateReadingState(false);
         }
 
         private void initializeApplicationBar()
