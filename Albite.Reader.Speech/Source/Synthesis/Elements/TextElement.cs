@@ -30,7 +30,8 @@ namespace Albite.Reader.Speech.Synthesis.Elements
             {
                 b.Replace(c, ' ');
             }
-            return b.ToString();
+            // Don't forget to trim it
+            return b.ToString().Trim();
         }
 
         protected override void StartElement(Builder builder)
