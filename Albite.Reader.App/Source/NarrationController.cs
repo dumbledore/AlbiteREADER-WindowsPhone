@@ -8,6 +8,7 @@ using Albite.Reader.Speech.Narration.Xhtml;
 using Microsoft.Phone.Shell;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Threading;
 using Windows.Foundation;
 
@@ -94,6 +95,87 @@ namespace Albite.Reader.App
                     persistLocaiton(new FirstPageLocation());
                 }
             }
+        }
+
+        public void GoBack()
+        {
+            lock (myLock)
+            {
+                go(true);
+            }
+        }
+
+        public void GoForward()
+        {
+            lock (myLock)
+            {
+                go(false);
+            }
+        }
+
+        private void go(bool previous)
+        {
+            stopReadingLocked();
+
+            ILocatedText<XhtmlLocation> loc = getLocation(previous);
+            if (loc != null)
+            {
+                narrator.LocatedTextManager.Current = loc;
+
+                if (UpdateText != null)
+                {
+                    UpdateText(this, loc.Text);
+                }
+            }
+        }
+
+        private ILocatedText<XhtmlLocation> getLocation(bool previous)
+        {
+            ILocatedText<XhtmlLocation> loc = null;
+
+            // Trying to find it in the current chapter
+            ILocatedText<XhtmlLocation> current = narrator.LocatedTextManager.Current;
+
+            if (current != null)
+            {
+                // Get the last/first location before/after current that actually contains any text
+                loc = previous
+                    ? narrator.LocatedTextManager.Locations.LastOrDefault(l => l.Id < current.Id && l.Text.Length > 0)
+                    : narrator.LocatedTextManager.Locations.FirstOrDefault(l => l.Id > current.Id && l.Text.Length > 0);
+            }
+
+            if (loc == null)
+            {
+                Chapter c = previous ? chapter.Previous : chapter.Next;
+
+                // Start searching in previous/next chapters
+                while(c != null)
+                {
+                    // Going to previous/next chapter. First unload the narrator
+                    unloadNarrator();
+
+                    // Update chapter info
+                    chapter = c;
+
+                    // Now load for the chapter we just set
+                    loadNarrator();
+
+                    // Get the last/first location that actually contains any text
+                    loc = previous
+                        ? narrator.LocatedTextManager.Locations.LastOrDefault(l => l.Text.Length > 0)
+                        : narrator.LocatedTextManager.Locations.FirstOrDefault(l => l.Text.Length > 0);
+
+                    if (loc != null)
+                    {
+                        // Found it
+                        break;
+                    }
+
+                    c = previous ? c.Previous : c.Next;
+                }
+            }
+
+            return loc;
         }
 
         private void readingCompleted(IAsyncAction asyncInfo, AsyncStatus asyncStatus)
