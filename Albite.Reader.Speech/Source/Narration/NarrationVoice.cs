@@ -1,13 +1,18 @@
-﻿using Windows.Phone.Speech.Synthesis;
+﻿using System.Runtime.Serialization;
+using Windows.Phone.Speech.Synthesis;
 
 namespace Albite.Reader.Speech.Narration
 {
+    [DataContract]
     public class NarrationVoice
     {
+        [DataMember]
         public string Name { get; private set; }
 
+        [DataMember]
         public string Language { get; private set; }
 
+        [DataMember]
         public bool Male { get; private set; }
 
         private NarrationVoice(string name, string language, bool male)
