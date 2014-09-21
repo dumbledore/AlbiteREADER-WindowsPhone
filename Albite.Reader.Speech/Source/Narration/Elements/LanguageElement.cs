@@ -14,7 +14,7 @@ namespace Albite.Reader.Speech.Narration.Elements
 
         protected override SynthesisElement StartElement(NarrationSettings settings, AbstractNode<SynthesisElement> current)
         {
-            VoiceElement voice = new VoiceElement(Language);
+            VoiceElement voice = new VoiceElement(Language, settings.BaseVoice.Male);
             current.AddChild(voice);
             return voice;
         }

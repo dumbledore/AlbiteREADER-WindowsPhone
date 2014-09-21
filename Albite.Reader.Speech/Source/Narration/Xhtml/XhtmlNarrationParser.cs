@@ -74,7 +74,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 // Get the body element
                 XElement body = doc.Root.Elements(BodyElementName).First();
 
-                string language = baseLanguage;
+                string language = settings.BaseVoice.Language;
 
                 // Go up from body to root and try retrieving the language
                 for (XElement element = body; element != null; element = element.Parent)

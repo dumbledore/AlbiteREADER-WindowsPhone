@@ -9,11 +9,17 @@ namespace Albite.Reader.Speech.Narration.Elements
 
         protected override SynthesisElement StartElement(NarrationSettings settings, AbstractNode<SynthesisElement> current)
         {
+            // Use the provided language instead of base language here
             SynthesisElement root = new SpeakElement(Language);
             current.AddChild(root);
 
+            // Took base voice's gender into account
+            SynthesisElement voice = new VoiceElement(Language, settings.BaseVoice.Male);
+            root.AddChild(voice);
+
+            // And now take care of base narration speed
             SynthesisElement prosody = new ProsodyElement(settings.BaseSpeedRatio);
-            root.AddChild(prosody);
+            voice.AddChild(prosody);
 
             return prosody;
         }
