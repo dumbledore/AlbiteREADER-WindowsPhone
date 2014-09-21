@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using Windows.Phone.Speech.Synthesis;
 
 namespace Albite.Reader.Speech.Narration
@@ -22,7 +24,7 @@ namespace Albite.Reader.Speech.Narration
             Male = male;
         }
 
-        public NarrationVoice(VoiceInformation v)
+        private NarrationVoice(VoiceInformation v)
             : this(v.DisplayName, v.Language, v.Gender == VoiceGender.Male) { }
 
         public static NarrationVoice Default
@@ -30,6 +32,18 @@ namespace Albite.Reader.Speech.Narration
             get
             {
                 return new NarrationVoice(InstalledVoices.Default);
+            }
+        }
+
+        public static IEnumerable<NarrationVoice> Voices
+        {
+            get
+            {
+                // Get the voices using linq. Using var here is necessary
+                var voices = from v in InstalledVoices.All select new NarrationVoice(v);
+
+                // And done
+                return voices;
             }
         }
     }
