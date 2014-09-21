@@ -206,7 +206,7 @@
     <Compile Include="Source\View\Pages\ContentsPage.xaml.cs">
       <DependentUpon>ContentsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\View\Pages\NarrationPage.xaml.cs">
+    <Compile Include="Source\View\Pages\Narration\NarrationPage.xaml.cs">
       <DependentUpon>NarrationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
@@ -369,7 +369,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\View\Pages\NarrationPage.xaml">
+    <Page Include="Source\View\Pages\Narration\NarrationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

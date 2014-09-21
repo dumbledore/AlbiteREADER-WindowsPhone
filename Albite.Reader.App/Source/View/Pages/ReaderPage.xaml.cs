@@ -191,7 +191,7 @@ namespace Albite.Reader.App.View.Pages
 
         private void NarrateButton_Click(object sender, EventArgs e)
         {
-            navigate("NarrationPage.xaml");
+            navigate("Narration/NarrationPage.xaml");
         }
 #endregion
 

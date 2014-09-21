@@ -5,7 +5,7 @@ using System.Globalization;
 using System;
 using Microsoft.Phone.Shell;
 
-namespace Albite.Reader.App.View.Pages
+namespace Albite.Reader.App.View.Pages.Narration
 {
     public partial class NarrationPage : PhoneApplicationPage
     {
