@@ -11,13 +11,17 @@ namespace Albite.Reader.Speech.Narration
         public int ParagraphAfterPause { get; set; }
         public float BaseSpeedRatio { get; set; }
         public float QuoteSpeedRatio { get; set; }
+        public NarrationVoice BaseVoice { get; set; }
 
-        public NarrationSettings()
+        public NarrationSettings(NarrationVoice baseVoice)
         {
             HeadingAfterPause = DefaultHeadingAfterPause;
             ParagraphAfterPause = DefaultParagraphAfterPause;
             BaseSpeedRatio = DefaultSpeedRatio;
             QuoteSpeedRatio = DefaultQuoteSpeedRatio;
+            BaseVoice = baseVoice;
         }
+
+        public NarrationSettings() : this(NarrationVoice.Default) { }
     }
 }
