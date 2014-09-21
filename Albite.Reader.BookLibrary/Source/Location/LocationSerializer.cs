@@ -5,7 +5,7 @@ using System;
 
 namespace Albite.Reader.BookLibrary
 {
-    internal class LocationSerializer: ISerializer<object>
+    internal static class LocationSerializer
     {
         private static readonly Type[] expectedTypes = new Type[]
         {
@@ -20,21 +20,9 @@ namespace Albite.Reader.BookLibrary
             typeof(HistoryStack.SerializedHistoryStack),
         };
 
-        private readonly JsonSerializer<object> serializer;
-
-        public LocationSerializer()
+        public static ISerializer<object> CreateSerializer()
         {
-            serializer = new JsonSerializer<object>(expectedTypes);
-        }
-
-        public string Encode(object entity)
-        {
-            return serializer.Encode(entity);
-        }
-
-        public object Decode(string data)
-        {
-            return serializer.Decode(data);
+            return new JsonSerializer<object>(expectedTypes);
         }
     }
 }

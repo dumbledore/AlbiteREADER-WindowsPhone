@@ -172,14 +172,14 @@ namespace Albite.Reader.BookLibrary.Location
 
             public static HistoryStack FromString(string encodedData)
             {
-                LocationSerializer serializer = new LocationSerializer();
+                ISerializer<object> serializer = LocationSerializer.CreateSerializer();
                 SerializedHistoryStack stack = (SerializedHistoryStack)serializer.Decode(encodedData);
                 return new HistoryStack(stack);
             }
 
             public override string ToString()
             {
-                LocationSerializer serializer = new LocationSerializer();
+                ISerializer<object> serializer = LocationSerializer.CreateSerializer();
                 return serializer.Encode(this);
             }
         }

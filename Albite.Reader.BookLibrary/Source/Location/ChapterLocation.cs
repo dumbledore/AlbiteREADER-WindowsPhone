@@ -1,4 +1,4 @@
-﻿using Albite.Reader.Core.Json;
+﻿using Albite.Reader.Core.Serialization;
 using System;
 using System.Runtime.Serialization;
 
@@ -36,7 +36,7 @@ namespace Albite.Reader.BookLibrary.Location
 
             try
             {
-                LocationSerializer serializer = new LocationSerializer();
+                ISerializer<object> serializer = LocationSerializer.CreateSerializer();
                 return (ChapterLocation)serializer.Decode(encodedData);
             }
             catch (Exception)
@@ -47,7 +47,7 @@ namespace Albite.Reader.BookLibrary.Location
 
         public override string ToString()
         {
-            LocationSerializer serializer = new LocationSerializer();
+            ISerializer<object> serializer = LocationSerializer.CreateSerializer();
             return serializer.Encode(this);
         }
     }

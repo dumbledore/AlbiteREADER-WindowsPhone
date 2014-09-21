@@ -115,13 +115,13 @@ namespace Albite.Reader.BookLibrary.Location
                 throw new ArgumentException();
             }
 
-            LocationSerializer serializer = new LocationSerializer();
+            ISerializer<object> serializer = LocationSerializer.CreateSerializer();
             return (BookLocation)serializer.Decode(encodedData);
         }
 
         public override string ToString()
         {
-            LocationSerializer serializer = new LocationSerializer();
+            ISerializer<object> serializer = LocationSerializer.CreateSerializer();
             return serializer.Encode(this);
         }
     }
