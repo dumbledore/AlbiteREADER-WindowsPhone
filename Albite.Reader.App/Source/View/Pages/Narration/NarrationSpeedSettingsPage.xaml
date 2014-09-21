@@ -39,8 +39,8 @@
                     </TextBlock>
                     <TextBlock Margin="12" TextWrapping="Wrap">
                         For example, a value of 0.5 results in reading
-                        twice as slowly, while a value of 3 would result
-                        in reading thrice as fast.
+                        twice as slowly, while a value of 2 would result
+                        in reading twice as fast.
                     </TextBlock>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -50,7 +50,7 @@
                         <Slider Grid.Column="0"
                             x:Name="SpeedSlider"
                             Minimum="0.5"
-                            Maximum="4"/>
+                            Maximum="2"/>
                         <TextBlock Grid.Column="1"
                                    TextAlignment="Center" Margin="12">
                             <TextBlock.Text>
