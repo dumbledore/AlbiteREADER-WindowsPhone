@@ -27,7 +27,7 @@ namespace Albite.Reader.Speech.Test
             {
                 using (Stream stream = res.GetStream(FileAccess.Read))
                 {
-                    using (XhtmlNarrator narrator = new XhtmlNarrator(stream, "en", settings))
+                    using (XhtmlNarrator narrator = new XhtmlNarrator(stream, settings))
                     {
 
                         narrator.LocatedTextManager.TextReached += LocatedTextManager_TextReached;

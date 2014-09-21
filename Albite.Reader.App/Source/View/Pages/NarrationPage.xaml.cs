@@ -36,7 +36,7 @@ namespace Albite.Reader.App.View.Pages
             }
 
             // Create a new controller
-            narrationController = new NarrationController(Dispatcher, CultureInfo.CurrentCulture.Name);
+            narrationController = new NarrationController(Dispatcher);
 
             // Set up text updates
             narrationController.UpdateText += updateText;

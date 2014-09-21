@@ -17,13 +17,11 @@ namespace Albite.Reader.Speech.Narration.Xhtml
         private static readonly XName LangAttributeName = XName.Get("lang", XmlNamespace.NamespaceName);
 
         private Stream stream;
-        private string baseLanguage;
         private NarrationSettings settings;
 
-        public XhtmlNarrationParser(Stream stream, string baseLanguage, NarrationSettings settings)
+        public XhtmlNarrationParser(Stream stream, NarrationSettings settings)
         {
             this.stream = stream;
-            this.baseLanguage = baseLanguage;
             this.settings = settings;
         }
 
@@ -46,7 +44,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
 
             XmlReader reader = XmlReader.Create(stream, xmlSettings);
             XDocument doc = XDocument.Load(reader);
-            Parser parser = new Parser(doc, baseLanguage, settings);
+            Parser parser = new Parser(doc, settings);
             return parser.Parse();
         }
 
@@ -57,12 +55,10 @@ namespace Albite.Reader.Speech.Narration.Xhtml
             private int textNodeId = 0;
 
             private NarrationSettings settings;
-            private string baseLanguage;
 
-            public Parser(XDocument doc, string baseLanguage, NarrationSettings settings)
+            public Parser(XDocument doc, NarrationSettings settings)
             {
                 this.doc = doc;
-                this.baseLanguage = baseLanguage;
                 this.settings = settings;
             }
 

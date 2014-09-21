@@ -22,16 +22,14 @@ namespace Albite.Reader.App
         private XhtmlNarrator narrator;
         private Chapter chapter;
         private Dispatcher dispatcher;
-        private string baseLanguage;
         private bool disposed = false;
         private object myLock = new object();
 
         private static readonly string tag = "NarrationController";
 
-        public NarrationController(Dispatcher dispatcher, string baseLanguage)
+        public NarrationController(Dispatcher dispatcher)
         {
             this.dispatcher = dispatcher;
-            this.baseLanguage = baseLanguage;
 
             // Get the BookPresenter
             BookPresenter presenter = App.Context.BookPresenter;
@@ -304,7 +302,7 @@ namespace Albite.Reader.App
             {
                 using (Stream stream = iso.GetStream(FileAccess.Read))
                 {
-                    narrator = new XhtmlNarrator(stream, baseLanguage, new NarrationSettings());
+                    narrator = new XhtmlNarrator(stream, new NarrationSettings());
                     narrator.LocatedTextManager.TextReached += textReached;
                 }
             }
