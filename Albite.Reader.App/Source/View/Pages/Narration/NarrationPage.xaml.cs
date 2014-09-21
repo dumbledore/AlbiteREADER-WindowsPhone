@@ -1,9 +1,9 @@
 ﻿using Microsoft.Phone.Controls;
 using Albite.Reader.BookLibrary;
 using System.Windows.Navigation;
-using System.Globalization;
 using System;
 using Microsoft.Phone.Shell;
+using Albite.Reader.Speech.Narration;
 
 namespace Albite.Reader.App.View.Pages.Narration
 {
@@ -35,8 +35,11 @@ namespace Albite.Reader.App.View.Pages.Narration
                 App.Context.OpenBook(bookId);
             }
 
+            // Get current narration settings
+            NarrationSettings settings = App.Context.NarrationSettings;
+
             // Create a new controller
-            narrationController = new NarrationController(Dispatcher);
+            narrationController = new NarrationController(settings, Dispatcher);
 
             // Set up text updates
             narrationController.UpdateText += updateText;

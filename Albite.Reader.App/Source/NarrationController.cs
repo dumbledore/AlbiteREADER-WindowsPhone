@@ -19,6 +19,8 @@ namespace Albite.Reader.App
         public event TypedEventHandler<NarrationController, string> UpdateText;
         public event EventHandler NarrationEnded;
 
+        public NarrationSettings NarrationSettings { get; private set; }
+
         private XhtmlNarrator narrator;
         private Chapter chapter;
         private Dispatcher dispatcher;
@@ -27,8 +29,9 @@ namespace Albite.Reader.App
 
         private static readonly string tag = "NarrationController";
 
-        public NarrationController(Dispatcher dispatcher)
+        public NarrationController(NarrationSettings settings, Dispatcher dispatcher)
         {
+            this.NarrationSettings = settings;
             this.dispatcher = dispatcher;
 
             // Get the BookPresenter
@@ -302,7 +305,7 @@ namespace Albite.Reader.App
             {
                 using (Stream stream = iso.GetStream(FileAccess.Read))
                 {
-                    narrator = new XhtmlNarrator(stream, new NarrationSettings());
+                    narrator = new XhtmlNarrator(stream, NarrationSettings);
                     narrator.LocatedTextManager.TextReached += textReached;
                 }
             }
