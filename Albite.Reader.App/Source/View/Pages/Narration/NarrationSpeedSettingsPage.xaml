@@ -62,6 +62,15 @@
                             </TextBlock.Text>
                         </TextBlock>
                     </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Tap="Button_Tap">
+                            reset to default
+                        </Button>
+                    </Grid>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

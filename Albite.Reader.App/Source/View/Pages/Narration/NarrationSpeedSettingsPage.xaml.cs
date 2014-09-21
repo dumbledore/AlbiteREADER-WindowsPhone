@@ -2,6 +2,7 @@
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Albite.Reader.Speech.Narration;
+using GEArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Albite.Reader.App.View.Pages.Narration
 {
@@ -49,6 +50,11 @@ namespace Albite.Reader.App.View.Pages.Narration
 
             // Go on as usual
             base.OnNavigatingFrom(e);
+        }
+
+        private void Button_Tap(object sender, GEArgs e)
+        {
+            SpeedSlider.Value = NarrationSettings.DefaultSpeedRatio;
         }
     }
 }
