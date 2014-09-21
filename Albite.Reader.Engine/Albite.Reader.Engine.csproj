@@ -131,7 +131,6 @@
     <Compile Include="Source\Layout\FontSize.cs" />
     <Compile Include="Source\Layout\LineHeight.cs" />
     <Compile Include="Source\Layout\MarginSettings.cs" />
-    <Compile Include="Source\Layout\SettingsSerializer.cs" />
     <Compile Include="Source\Layout\TextSettings.cs" />
     <Compile Include="Source\Internal\Paths.cs" />
     <Compile Include="Source\Layout\LayoutSettings.cs" />

@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Albite.Reader.Core.Json;
+using Albite.Reader.Core.Serialization;
+using System;
 using System.Runtime.Serialization;
+using System.Windows.Media;
 
 namespace Albite.Reader.Engine.Layout
 {
@@ -38,14 +40,31 @@ namespace Albite.Reader.Engine.Layout
                 throw new ArgumentException();
             }
 
-            SettingsSerializer serializer = new SettingsSerializer();
+            ISerializer<object> serializer = createSerializer();
             return (LayoutSettings)serializer.Decode(encodedData);
         }
 
         public override string ToString()
         {
-            SettingsSerializer serializer = new SettingsSerializer();
+            ISerializer<object> serializer = createSerializer();
             return serializer.Encode(this);
+        }
+
+        private static readonly Type[] expectedTypes = new Type[]
+        {
+            typeof(FontSettings),
+            typeof(FontSize),
+            typeof(LayoutSettings),
+            typeof(LineHeight),
+            typeof(MarginSettings),
+            typeof(TextSettings),
+            typeof(Theme),
+            typeof(Color),
+        };
+
+        private static ISerializer<object> createSerializer()
+        {
+            return new JsonSerializer<object>(expectedTypes);
         }
     }
 }
