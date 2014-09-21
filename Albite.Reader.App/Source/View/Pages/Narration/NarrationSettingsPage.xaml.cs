@@ -40,6 +40,7 @@ namespace Albite.Reader.App.View.Pages.Narration
 
         private void Voice_Tap(object sender, GEArgs e)
         {
+            NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/Narration/NarrationVoiceSettingsPage.xaml", UriKind.Relative));
         }
     }
 }
