@@ -168,6 +168,7 @@
     </Compile>
     <Compile Include="Source\View\Controls\ThemeControl.cs" />
     <Compile Include="Source\View\Controls\TocControl.cs" />
+    <Compile Include="Source\View\Controls\VoiceControl.cs" />
     <Compile Include="Source\View\Controls\WaitControl.xaml.cs">
       <DependentUpon>WaitControl.xaml</DependentUpon>
     </Compile>
