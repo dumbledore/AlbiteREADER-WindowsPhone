@@ -27,7 +27,7 @@ namespace Albite.Reader.App.View.Pages.Narration
             NarrationSettings settings = App.Context.NarrationSettings;
 
             // Set current speed
-            SpeedControl.ContentText = settings.BaseSpeedRatio.ToString();
+            SpeedControl.ContentText = String.Format("{0:0.0}", settings.BaseSpeedRatio);
 
             // Set current voice
             VoiceControl.ContentText = settings.BaseVoice.Name;
