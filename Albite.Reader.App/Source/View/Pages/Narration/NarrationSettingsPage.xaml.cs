@@ -1,5 +1,6 @@
 ﻿using Albite.Reader.Speech.Narration;
 using Microsoft.Phone.Controls;
+using System;
 using System.Windows.Navigation;
 using GEArgs = System.Windows.Input.GestureEventArgs;
 
@@ -34,6 +35,7 @@ namespace Albite.Reader.App.View.Pages.Narration
 
         private void Speed_Tap(object sender, GEArgs e)
         {
+            NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/Narration/NarrationSpeedSettingsPage.xaml", UriKind.Relative));
         }
 
         private void Voice_Tap(object sender, GEArgs e)
