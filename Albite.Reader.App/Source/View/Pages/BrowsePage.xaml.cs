@@ -412,36 +412,11 @@ namespace Albite.Reader.App.View.Pages
             // Cancel any tasks
             cancelCurrentTask();
 
-            // Reset the text box
-            SearchBox.Text = "";
-
             // Hide the app bar (if there)
             ApplicationBar.IsVisible = false;
 
             // Show the search panel
-            SearchPanel.Visibility = Visibility.Visible;
-
-            // Try focusing on the text box
-            SearchBox.Focus();
-        }
-
-        private void SearchBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                // Cancel any tasks
-                cancelCurrentTask();
-
-                // Close the search
-                closeSearch();
-
-                // Initiate a search
-                TextBox box = (TextBox)sender;
-
-                // Get a virtual search folder
-                IStorageFolder folder = service.GetSearchFolder(box.Text);
-                history.GoForward(folder);
-            }
+            SearchPanel.Show();
         }
 
         private void closeSearch()
@@ -449,7 +424,7 @@ namespace Albite.Reader.App.View.Pages
             if (SearchPanel.Visibility == Visibility.Visible)
             {
                 // Hide the search panel
-                SearchPanel.Visibility = Visibility.Collapsed;
+                SearchPanel.Hide();
 
                 // Show the appbar
                 showAppBar();
@@ -469,6 +444,24 @@ namespace Albite.Reader.App.View.Pages
             {
                 page.WaitControl.Progress = value;
             }
+        }
+
+        private void SearchPanel_SearchInitiated(VoiceSearchControl sender, string searchText)
+        {
+            // Cancel any tasks
+            cancelCurrentTask();
+
+            // Close the search
+            closeSearch();
+
+            // Get a virtual search folder
+            IStorageFolder folder = service.GetSearchFolder(searchText);
+            history.GoForward(folder);
+        }
+
+        private void SearchPanel_Loaded(object sender, RoutedEventArgs e)
+        {
+            SearchPanel.SearchInitiated += SearchPanel_SearchInitiated;
         }
     }
 }

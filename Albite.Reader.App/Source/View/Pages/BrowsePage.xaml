@@ -62,18 +62,11 @@
                 IsIndeterminate="True"
                 Opacity=".85"
                 Text="Accessing service..." />
-        <Grid x:Name="SearchPanel"
-              Background="{StaticResource PhoneBackgroundBrush}"
-              Visibility="Collapsed">
-            <StackPanel Margin="12">
-                <TextBlock
-                    FontWeight="Bold"
-                    Margin="{StaticResource PhoneHorizontalMargin}">
-                    SEARCH
-                </TextBlock>
-                <TextBox x:Name="SearchBox" KeyUp="SearchBox_KeyUp" />
-            </StackPanel>
-        </Grid>
+        <albite:VoiceSearchControl
+            x:Name="SearchPanel"
+            Visibility="Collapsed"
+            Loaded="SearchPanel_Loaded"
+            />
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="False" />
