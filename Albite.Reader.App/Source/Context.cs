@@ -5,6 +5,7 @@ using Albite.Reader.Engine.Layout;
 using Albite.Reader.App.View.Pages.BookSettings;
 using System.Collections.Generic;
 using System.IO;
+using Albite.Reader.Speech.Narration;
 
 namespace Albite.Reader.App
 {
@@ -60,6 +61,44 @@ namespace Albite.Reader.App
                 RecordStore[LayoutSettingsKey] = value.ToString();
             }
         }
+
+        public static readonly string NarrationSettingsKey = "narration-settings";
+
+        private NarrationSettings cachedNarrationSettings = null;
+        public NarrationSettings NarrationSettings
+        {
+            get
+            {
+                if (cachedNarrationSettings == null)
+                {
+                    if (RecordStore.ContainsKey(NarrationSettingsKey))
+                    {
+                        // Get data
+                        string s = RecordStore[NarrationSettingsKey];
+
+                        // Unserialize
+                        cachedNarrationSettings = NarrationSettings.FromString(s);
+                    }
+                    else
+                    {
+                        // Default Settings
+                        cachedNarrationSettings = new NarrationSettings();
+                    }
+                }
+
+                return cachedNarrationSettings;
+            }
+
+            set
+            {
+                // Cache
+                cachedNarrationSettings = value;
+
+                // Persist
+                RecordStore[NarrationSettingsKey] = value.ToString();
+            }
+        }
+
 
         private static readonly string BookPresenterKey = "book-presenter";
 
