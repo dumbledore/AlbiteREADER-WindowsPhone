@@ -159,6 +159,7 @@ namespace Albite.Reader.App.View.Pages.Narration
 
         private void SettingsButton_Click(object sender, EventArgs e)
         {
+            NavigationService.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/Narration/NarrationSettingsPage.xaml", UriKind.Relative));
         }
     }
 }

@@ -209,6 +209,9 @@
     <Compile Include="Source\View\Pages\Narration\NarrationPage.xaml.cs">
       <DependentUpon>NarrationPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\View\Pages\Narration\NarrationSettingsPage.xaml.cs">
+      <DependentUpon>NarrationSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\View\Pages\ReaderPage.xaml.cs">
       <DependentUpon>ReaderPage.xaml</DependentUpon>
     </Compile>
@@ -370,6 +373,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\View\Pages\Narration\NarrationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\View\Pages\Narration\NarrationSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
