@@ -4,22 +4,27 @@ namespace Albite.Reader.Speech.Narration
 {
     public class NarrationVoice
     {
+        public string Name { get; private set; }
+
         public string Language { get; private set; }
 
         public bool Male { get; private set; }
 
-        public NarrationVoice(string language, bool male)
+        private NarrationVoice(string name, string language, bool male)
         {
+            Name = name;
             Language = language;
             Male = male;
         }
+
+        public NarrationVoice(VoiceInformation v)
+            : this(v.DisplayName, v.Language, v.Gender == VoiceGender.Male) { }
 
         public static NarrationVoice Default
         {
             get
             {
-                VoiceInformation v = InstalledVoices.Default;
-                return new NarrationVoice(v.Language, v.Gender == VoiceGender.Male);
+                return new NarrationVoice(InstalledVoices.Default);
             }
         }
     }
