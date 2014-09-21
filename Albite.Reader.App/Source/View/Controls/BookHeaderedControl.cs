@@ -6,7 +6,7 @@ namespace Albite.Reader.App.View.Controls
     public class BookHeaderedControl : HeaderedContentControl
     {
         public static readonly DependencyProperty BookProperty
-            = DependencyProperty.Register("Bookmark", typeof(Book), typeof(BookHeaderedControl),
+            = DependencyProperty.Register("Book", typeof(Book), typeof(BookHeaderedControl),
             new PropertyMetadata(onBookChanged));
 
         public Book Book
