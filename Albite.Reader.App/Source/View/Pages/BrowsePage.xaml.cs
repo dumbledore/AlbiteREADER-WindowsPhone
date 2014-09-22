@@ -62,6 +62,11 @@ namespace Albite.Reader.App.View.Pages
                 // Save the history if not going back
                 State[HistoryKey] = history.ToString();
             }
+            else
+            {
+                // Dispose the VoiceSearchControl
+                SearchPanel.Dispose();
+            }
 
             base.OnNavigatingFrom(e);
         }
