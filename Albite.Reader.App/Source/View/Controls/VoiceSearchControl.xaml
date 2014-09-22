@@ -14,7 +14,18 @@
             <TextBlock FontWeight="Bold" Margin="{StaticResource PhoneHorizontalMargin}">
                 SEARCH
             </TextBlock>
-            <TextBox x:Name="SearchBox" KeyUp="SearchBox_KeyUp" />
+            <Grid>
+                <TextBox Grid.Column="0" x:Name="SearchBox" KeyUp="SearchBox_KeyUp" Padding="0, 0, 50, 0" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1" BorderThickness="0" Click="Button_Click">
+                        <Image Source="/Resources/Images/microphone.light.png" />
+                    </Button>
+                </Grid>
+            </Grid>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -44,5 +44,10 @@ namespace Albite.Reader.App.View.Controls
                 }
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
