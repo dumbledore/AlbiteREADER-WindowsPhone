@@ -130,6 +130,7 @@
     <Compile Include="Source\App\CachedResourceImage.cs" />
     <Compile Include="Source\App\ThemeInfo.cs" />
     <Compile Include="Source\Collections\CachedObject.cs" />
+    <Compile Include="Source\Collections\DisposableCachedObject.cs" />
     <Compile Include="Source\Collections\GenericEnumerator.cs" />
     <Compile Include="Source\Collections\CircularBuffer.cs" />
     <Compile Include="Source\Collections\CircularBufferQueue.cs" />
@@ -191,7 +192,6 @@
     <Compile Include="Test\RecordStoreTestWrapper.cs" />
     <Compile Include="Test\TreeEnumeratorTest.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />

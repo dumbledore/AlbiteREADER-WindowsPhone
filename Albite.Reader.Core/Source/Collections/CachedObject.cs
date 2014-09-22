@@ -4,7 +4,7 @@ namespace Albite.Reader.Core.Collections
 {
     public abstract class CachedObject<TValue> where TValue : class
     {
-        private WeakReference<TValue> cachedValue
+        protected WeakReference<TValue> cachedValue
             = new WeakReference<TValue>(null);
 
         protected abstract TValue GenerateValue();
