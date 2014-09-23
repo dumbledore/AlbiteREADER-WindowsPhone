@@ -229,10 +229,10 @@ namespace Albite.Reader.Storage.Services
             throw new InvalidOperationException("Search is not supported");
         }
 
-        public override IStorageFolder GetSearchFolder(string query)
+        public override ISearchResultFolder GetSearchFolder(string query)
         {
             // No need to escape the Uri string as looks like it's done in WebClient already
-            return new StorageFolder(GetSearchUrl(query), "Search for " + query);
+            return new SearchResultFolder(GetSearchUrl(query), query);
         }
     }
 }

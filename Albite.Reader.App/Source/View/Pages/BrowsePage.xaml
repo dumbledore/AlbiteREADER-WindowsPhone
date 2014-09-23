@@ -52,9 +52,7 @@
                 <TextBlock x:Name="EmptyTextBlock"
                        Visibility="Collapsed"
                        Style="{StaticResource PhoneTextLargeStyle}"
-                       Opacity=".5">
-                This folder is empty.
-                </TextBlock>
+                       Opacity=".5" />
             </Grid>
         </Grid>
         <albite:WaitControl

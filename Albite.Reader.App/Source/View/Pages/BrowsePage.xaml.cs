@@ -31,6 +31,9 @@ namespace Albite.Reader.App.View.Pages
 
         private static readonly string HistoryKey = "history";
 
+        private static readonly string EmptyFolderText = "This folder is empty.";
+        private static readonly string EmptyResultsText = "No results found.";
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (State.ContainsKey(HistoryKey))
@@ -225,6 +228,15 @@ namespace Albite.Reader.App.View.Pages
             {
                 // Empty folder
                 FoldersList.ItemsSource = null;
+                if (folder is ISearchResultFolder)
+                {
+
+                    EmptyTextBlock.Text = EmptyResultsText;
+                }
+                else
+                {
+                    EmptyTextBlock.Text = EmptyFolderText;
+                }
                 EmptyTextBlock.Visibility = Visibility.Visible;
             }
             else
@@ -460,7 +472,7 @@ namespace Albite.Reader.App.View.Pages
             closeSearch();
 
             // Get a virtual search folder
-            IStorageFolder folder = service.GetSearchFolder(searchText);
+            ISearchResultFolder folder = service.GetSearchFolder(searchText);
             history.GoForward(folder);
         }
 

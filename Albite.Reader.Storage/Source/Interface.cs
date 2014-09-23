@@ -10,6 +10,8 @@ namespace Albite.Reader.Storage
 
     public interface IStorageFolder : IStorageItem { }
 
+    public interface ISearchResultFolder : IStorageFolder { }
+
     public interface IStorageFile : IStorageItem
     {
         ImageSource FileIcon { get; }

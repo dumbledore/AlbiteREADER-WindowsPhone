@@ -94,7 +94,7 @@ namespace Albite.Reader.Storage
             get { return false; }
         }
 
-        public virtual IStorageFolder GetSearchFolder(string query)
+        public virtual ISearchResultFolder GetSearchFolder(string query)
         {
             throw new InvalidOperationException("Search is not supported");
         }

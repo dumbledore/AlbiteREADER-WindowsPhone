@@ -117,12 +117,10 @@ namespace Albite.Reader.Storage.Services
         public override async Task<ICollection<IStorageItem>> GetFolderContentsAsync(
             IStorageFolder folder, CancellationToken ct)
         {
-            string query = null;
-
-            if (folder != null && GetSearchQuery(folder, ref query))
+            if (folder != null && folder is SearchResultFolder)
             {
                 // A search is what is needed
-                return await Search(query, ct);
+                return await Search(folder.Id, ct);
             }
 
             if (folder == null)

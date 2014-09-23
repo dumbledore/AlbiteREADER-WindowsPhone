@@ -113,6 +113,7 @@ namespace Albite.Reader.Storage
             {
                     typeof(SerializedHistoryStack),
                     typeof(StorageFolder),
+                    typeof(SearchResultFolder),
             };
 
             private static JsonSerializer<object> getSerializer()
