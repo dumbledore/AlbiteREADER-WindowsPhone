@@ -69,6 +69,12 @@ namespace Albite.Reader.App.View.Controls
                 // Initiate search
                 initiateSearch(searchText);
             }
+            else
+            {
+                // Failed or cancel.
+                // In either case return focus to the textbox
+                SearchBox.Focus();
+            }
         }
 
         private void initiateSearch(string searchString)
