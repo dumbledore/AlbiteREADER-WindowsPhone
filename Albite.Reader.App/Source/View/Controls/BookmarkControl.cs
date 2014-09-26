@@ -10,9 +10,9 @@ namespace Albite.Reader.App.View.Controls
             = DependencyProperty.Register("Bookmark", typeof(Bookmark), typeof(BookmarkControl),
             new PropertyMetadata(onBookmarkChanged));
 
-        public Bookmark Bookmark
+        public IBookmark Bookmark
         {
-            get { return (Bookmark)GetValue(BookmarkProperty); }
+            get { return (IBookmark)GetValue(BookmarkProperty); }
             set { SetValue(BookmarkProperty, value); }
         }
 
@@ -20,7 +20,7 @@ namespace Albite.Reader.App.View.Controls
         {
             BookmarkControl control = (BookmarkControl)d;
 
-            Bookmark newValue = (Bookmark)e.NewValue;
+            IBookmark newValue = (IBookmark)e.NewValue;
 
             // Set up book position as header text
             control.HeaderText = string.Format("{0:P0}", getReadingPosition(newValue));
@@ -29,7 +29,7 @@ namespace Albite.Reader.App.View.Controls
             control.ContentText = newValue.Text;
         }
 
-        private static double getReadingPosition(Bookmark bookmark)
+        private static double getReadingPosition(IBookmark bookmark)
         {
             BookLocation location = bookmark.BookLocation;
 
