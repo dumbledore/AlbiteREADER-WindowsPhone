@@ -12,7 +12,7 @@ namespace Albite.Reader.App.View.Controls
 
         public static readonly DependencyProperty BrowsingServiceProperty
             = DependencyProperty.Register("BrowsingService", typeof(StorageService), typeof(BrowsingServiceControl),
-            new PropertyMetadata(onBookmarkChanged));
+            new PropertyMetadata(onServiceChanged));
 
         public StorageService BrowsingService
         {
@@ -20,7 +20,7 @@ namespace Albite.Reader.App.View.Controls
             set { SetValue(BrowsingServiceProperty, value); }
         }
 
-        private static void onBookmarkChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void onServiceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             BrowsingServiceControl control = (BrowsingServiceControl)d;
 
