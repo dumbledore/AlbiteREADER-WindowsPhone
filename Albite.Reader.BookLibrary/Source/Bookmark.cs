@@ -1,10 +1,9 @@
 ﻿using Albite.Reader.BookLibrary.DataContext;
 using Albite.Reader.BookLibrary.Location;
-using System;
 
 namespace Albite.Reader.BookLibrary
 {
-    public class Bookmark : LibraryEntity, IComparable<Bookmark>
+    public class Bookmark : LibraryEntity, IBookmark
     {
         public BookmarkManager Manager { get; private set; }
 
@@ -24,7 +23,7 @@ namespace Albite.Reader.BookLibrary
             BookLocation.Attach(manager.BookPresenter);
         }
 
-        public int CompareTo(Bookmark other)
+        public int CompareTo(IBookmark other)
         {
             return BookLocation.CompareTo(other.BookLocation);
         }

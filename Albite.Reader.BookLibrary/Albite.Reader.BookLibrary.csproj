@@ -121,6 +121,7 @@
     <Compile Include="Source\BookManager.cs" />
     <Compile Include="Source\BookPresenter.cs" />
     <Compile Include="Source\DataContext\BookEntity.cs" />
+    <Compile Include="Source\IBookmark.cs" />
     <Compile Include="Source\Location\ChapterLocation.cs" />
     <Compile Include="Source\Location\DomLocation.cs" />
     <Compile Include="Source\Entity.cs" />
