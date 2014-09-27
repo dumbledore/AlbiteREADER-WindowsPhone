@@ -68,7 +68,7 @@ namespace Albite.Reader.Speech.Narration.Xhtml
                 reset();
 
                 // Get the body element
-                XElement body = doc.Root.Elements(BodyElementName).First();
+                XElement body = doc.Root.Element(BodyElementName);
 
                 string language = settings.BaseVoice.Language;
 
