@@ -143,6 +143,7 @@
     <Compile Include="Source\Location\LocationSerializer.cs" />
     <Compile Include="Source\Location\PageLocation.cs" />
     <Compile Include="Source\Location\RelativeChapterLocation.cs" />
+    <Compile Include="Source\Search\IBookSeeker.cs" />
     <Compile Include="Source\Spine.cs" />
     <Compile Include="Test\LibraryAddBookTest.cs" />
     <Compile Include="Test\LibraryHelper.cs" />
