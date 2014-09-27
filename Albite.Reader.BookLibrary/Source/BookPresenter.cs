@@ -1,5 +1,6 @@
 ﻿using Albite.Reader.BookLibrary.DataContext;
 using Albite.Reader.BookLibrary.Location;
+using Albite.Reader.BookLibrary.Search;
 using Albite.Reader.Container;
 using Albite.Reader.Container.Epub;
 using Albite.Reader.Core.Collections;
@@ -149,6 +150,11 @@ namespace Albite.Reader.BookLibrary
         private BookEntity getEntity(LibraryDataContext dc)
         {
             return BookManager.GetEntity(dc, Book.Id);
+        }
+
+        public IBookSeeker CreateSeeker()
+        {
+            return new XhtmlBookSeeker(this);
         }
     }
 }
