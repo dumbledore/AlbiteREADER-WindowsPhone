@@ -1,20 +1,27 @@
-﻿using Albite.Reader.BookLibrary.Location;
 using Albite.Reader.Container;
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Albite.Reader.BookLibrary
 {
-    public class Spine
+    public class Spine : IEnumerable<Chapter>
     {
         private readonly Chapter[] chapters;
 
         private Spine(Chapter[] chapters)
         {
             this.chapters = chapters;
+        }
+
+        public IEnumerator<Chapter> GetEnumerator()
+        {
+            return chapters.AsEnumerable().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return chapters.GetEnumerator();
         }
 
         public int Length
