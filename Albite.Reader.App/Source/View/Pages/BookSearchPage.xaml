@@ -45,20 +45,14 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Grid x:Name="EmptyTextGrid" Visibility="Collapsed">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBlock
-                    Grid.Row="1"
-                    Style="{StaticResource PhoneTextLargeStyle}"
-                    TextAlignment="Center"
-                    Opacity=".5">
-                    No results found
-                </TextBlock>
-            </Grid>
+            <TextBlock
+                x:Name="EmptyText"
+                Style="{StaticResource PhoneTextLargeStyle}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Opacity=".5">
+                No results found
+            </TextBlock>
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>

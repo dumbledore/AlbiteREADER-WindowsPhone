@@ -111,7 +111,7 @@ namespace Albite.Reader.App.View.Pages
             BookmarksList.Focus();
 
             // Hide the results text
-            EmptyTextGrid.Visibility = Visibility.Collapsed;
+            EmptyText.Visibility = Visibility.Collapsed;
 
             // Initiate search
             CancellationTokenSource cts = new CancellationTokenSource();
@@ -133,7 +133,7 @@ namespace Albite.Reader.App.View.Pages
 
             if (searchResults.Count == 0)
             {
-                EmptyTextGrid.Visibility = Visibility.Visible;
+                EmptyText.Visibility = Visibility.Visible;
             }
         }
     }
