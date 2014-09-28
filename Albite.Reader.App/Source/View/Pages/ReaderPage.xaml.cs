@@ -99,9 +99,10 @@ namespace Albite.Reader.App.View.Pages
             // Then the menu buttons
             ReadingPositionButton   = ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
             BookmarksButton         = ApplicationBar.MenuItems[1] as ApplicationBarMenuItem;
-            ShareButton             = ApplicationBar.MenuItems[2] as ApplicationBarMenuItem;
-            PinButton               = ApplicationBar.MenuItems[3] as ApplicationBarMenuItem;
-            NarrateButton           = ApplicationBar.MenuItems[4] as ApplicationBarMenuItem;
+            NarrateButton           = ApplicationBar.MenuItems[2] as ApplicationBarMenuItem;
+            SearchButton            = ApplicationBar.MenuItems[3] as ApplicationBarMenuItem;
+            PinButton               = ApplicationBar.MenuItems[4] as ApplicationBarMenuItem;
+            ShareButton             = ApplicationBar.MenuItems[5] as ApplicationBarMenuItem;
         }
 
         private void BackButton_Click(object sender, EventArgs e)
@@ -192,6 +193,11 @@ namespace Albite.Reader.App.View.Pages
         private void NarrateButton_Click(object sender, EventArgs e)
         {
             navigate("Narration/NarrationPage.xaml");
+        }
+
+        private void SearchButton_Click(object sender, EventArgs e)
+        {
+            navigate("BookSearchPage.xaml");
         }
 #endregion
 
