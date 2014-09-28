@@ -189,7 +189,7 @@ namespace Albite.Reader.BookLibrary.Search
 
             private int indexOf(string text, int start = 0)
             {
-                return text.IndexOf(query, start);
+                return text.IndexOf(query, start, StringComparison.InvariantCultureIgnoreCase);
             }
 
             public static readonly int TextRadius = 50;
