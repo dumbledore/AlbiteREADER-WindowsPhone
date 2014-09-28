@@ -90,6 +90,9 @@ namespace Albite.Reader.App.View.Pages
             // Clear currently found results
             searchResults.Clear();
 
+            // Close the keyboard
+            BookmarksList.Focus();
+
             // Initiate search
             CancellationTokenSource cts = new CancellationTokenSource();
             currentTask = new CancellableTask(search(args, cts.Token), cts);
