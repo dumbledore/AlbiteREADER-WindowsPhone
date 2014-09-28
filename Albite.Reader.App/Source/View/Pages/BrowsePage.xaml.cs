@@ -433,7 +433,9 @@ namespace Albite.Reader.App.View.Pages
             ApplicationBar.IsVisible = false;
 
             // Show the search panel
-            SearchPanel.Show();
+            SearchPanel.Text = "";
+            SearchPanel.Visibility = Visibility.Visible;
+            SearchPanel.Focus();
         }
 
         private void closeSearch()
@@ -441,7 +443,7 @@ namespace Albite.Reader.App.View.Pages
             if (SearchPanel.Visibility == Visibility.Visible)
             {
                 // Hide the search panel
-                SearchPanel.Hide();
+                SearchPanel.Visibility = Visibility.Collapsed;
 
                 // Show the appbar
                 showAppBar();

@@ -19,21 +19,10 @@ namespace Albite.Reader.App.View.Controls
 
         private readonly CachedRecognizer cachedRecognizer = new CachedRecognizer();
 
-        public void Show()
+        public string Text
         {
-            // Reset the text box
-            SearchBox.Text = "";
-
-            // Show the search panel
-            Visibility = Visibility.Visible;
-
-            // Try focusing on the text box
-            SearchBox.Focus();
-        }
-
-        public void Hide()
-        {
-            Visibility = Visibility.Collapsed;
+            get { return SearchBox.Text; }
+            set { SearchBox.Text = value; }
         }
 
         private void SearchBox_KeyUp(object sender, KeyEventArgs e)
