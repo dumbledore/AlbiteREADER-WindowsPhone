@@ -68,9 +68,27 @@ namespace Albite.Reader.App.View.Controls
 
         private void initiateSearch(string searchString)
         {
-            if (SearchInitiated != null)
+            // Cache the min chars
+            int min = MinChars;
+
+            if (min > 0 && searchString.Length < min)
             {
-                SearchInitiated(this, searchString);
+                // Inform the user
+                MessageBox.Show(
+                    string.Format(
+                    "You need to enter at least {0} characters",
+                    min));
+
+                // Back to text
+                SearchBox.Focus();
+            }
+            else
+            {
+
+                if (SearchInitiated != null)
+                {
+                    SearchInitiated(this, searchString);
+                }
             }
         }
 
@@ -89,6 +107,15 @@ namespace Albite.Reader.App.View.Controls
         public void Dispose()
         {
             cachedRecognizer.Dispose();
+        }
+
+        public static readonly DependencyProperty MinCharsProperty =
+            DependencyProperty.Register("MinChars", typeof(int), typeof(SearchControl), null);
+
+        public int MinChars
+        {
+            get { return (int)GetValue(MinCharsProperty); }
+            set { SetValue(MinCharsProperty, value); }
         }
     }
 }
