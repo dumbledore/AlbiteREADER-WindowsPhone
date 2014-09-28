@@ -196,10 +196,17 @@ namespace Albite.Reader.BookLibrary.Search
 
             private string getText(string text, int offset)
             {
+                // Try to go as much as TextRadius chars left of the offset
                 int start = Math.Max(0, offset - TextRadius);
-                int remaining = Math.Max(0, text.Length - offset);
-                int length = Math.Min(remaining, TextRadius);
-                return text.Substring(start, length);
+
+                // That's how many chars are from the start to the offset
+                // For offset >= 0: start <= offset
+                int leftRadius = offset - start;
+
+                // Try to go as much as TextRadius chars right of the offset
+                int rightRadius = Math.Min(Math.Max(0, text.Length - offset), TextRadius);
+
+                return text.Substring(start, leftRadius + rightRadius);
             }
         }
 
