@@ -97,6 +97,9 @@ namespace Albite.Reader.App.View.Pages
             // Close the keyboard
             BookmarksList.Focus();
 
+            // Hide the results text
+            EmptyTextGrid.Visibility = Visibility.Collapsed;
+
             // Initiate search
             CancellationTokenSource cts = new CancellationTokenSource();
             currentTask = new CancellableTask(search(args, cts.Token), cts);
@@ -114,6 +117,11 @@ namespace Albite.Reader.App.View.Pages
 
             // Indicate search has finished
             SystemTray.ProgressIndicator = null;
+
+            if (searchResults.Count == 0)
+            {
+                EmptyTextGrid.Visibility = Visibility.Visible;
+            }
         }
     }
 }

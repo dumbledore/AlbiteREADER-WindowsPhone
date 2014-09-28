@@ -45,7 +45,20 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <!--<Grid Background="{StaticResource PhoneBackgroundBrush}" Opacity="0.8" />-->
+            <Grid x:Name="EmptyTextGrid" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="1"
+                    Style="{StaticResource PhoneTextLargeStyle}"
+                    TextAlignment="Center"
+                    Opacity=".5">
+                    No results found
+                </TextBlock>
+            </Grid>
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>
