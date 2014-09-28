@@ -11,7 +11,7 @@ namespace Albite.Reader.BookLibrary.Search
 
         public BookSeekerBookmark(BookLocation bookLocation, string text)
         {
-            this.BookLocation = BookLocation;
+            this.BookLocation = bookLocation;
             this.Text = text;
         }
 
