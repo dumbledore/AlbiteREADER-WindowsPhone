@@ -37,6 +37,12 @@ namespace Albite.Reader.App.View.Controls
             }
         }
 
+        private void backToSearchBox()
+        {
+            SearchBox.Focus();
+            SearchBox.SelectAll();
+        }
+
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             SpeechRecognizerUI recognizer = cachedRecognizer.Value;
@@ -62,7 +68,7 @@ namespace Albite.Reader.App.View.Controls
             {
                 // Failed or cancel.
                 // In either case return focus to the textbox
-                SearchBox.Focus();
+                backToSearchBox();
             }
         }
 
@@ -80,7 +86,7 @@ namespace Albite.Reader.App.View.Controls
                     min));
 
                 // Back to text
-                SearchBox.Focus();
+                backToSearchBox();
             }
             else
             {
