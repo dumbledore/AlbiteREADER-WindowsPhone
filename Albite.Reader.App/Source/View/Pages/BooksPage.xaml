@@ -19,56 +19,57 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid>
-    <Grid x:Name="LayoutRoot" Background="Transparent" Visibility="Collapsed">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Grid x:Name="LayoutRoot" Background="Transparent" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="ALBITE READER" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="my library" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+            <!--TitlePanel contains the name of the application and page title-->
+            <StackPanel Grid.Row="0" Margin="12,17,0,28">
+                <TextBlock Text="ALBITE READER" Style="{StaticResource PhoneTextNormalStyle}"/>
+                <TextBlock Text="my library" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid Grid.Row="1" Margin="12,0,12,0">
-            <ListBox x:Name="BooksList">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <albite:BookHeaderedControl
-                            Book="{Binding}"
-                            toolkit:TiltEffect.IsTiltEnabled="True"
-                            Tap="BookHeaderedControl_Tap" >
-                            <toolkit:ContextMenuService.ContextMenu>
-                                <toolkit:ContextMenu>
-                                    <toolkit:MenuItem Header="Remove"
+            <!--ContentPanel - place additional content here-->
+            <Grid Grid.Row="1" Margin="12,0,12,0">
+                <ListBox x:Name="BooksList">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <albite:BookHeaderedControl
+                                Book="{Binding}"
+                                toolkit:TiltEffect.IsTiltEnabled="True"
+                                Tap="BookHeaderedControl_Tap" >
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="Remove"
                                                       Click="RemoveBook_Click"
                                                       CommandParameter="{Binding}" />
-                                </toolkit:ContextMenu>
-                            </toolkit:ContextMenuService.ContextMenu>
-                        </albite:BookHeaderedControl>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <TextBlock
-                x:Name="NoBooksFoundText"
-                Style="{StaticResource PhoneTextLargeStyle}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Opacity=".5">
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
+                            </albite:BookHeaderedControl>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock
+                    x:Name="NoBooksFoundText"
+                    Style="{StaticResource PhoneTextLargeStyle}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Opacity=".5">
                 Your library is empty.
-            </TextBlock>
+                </TextBlock>
+            </Grid>
         </Grid>
-    </Grid>
-    <TextBlock x:Name="WaitText"  VerticalAlignment="Center" HorizontalAlignment="Center">
+
+        <TextBlock x:Name="WaitText"  VerticalAlignment="Center" HorizontalAlignment="Center">
         Opening book...
-    </TextBlock>
+        </TextBlock>
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
