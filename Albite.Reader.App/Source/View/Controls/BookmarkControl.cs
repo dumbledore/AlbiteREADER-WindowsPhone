@@ -7,7 +7,7 @@ namespace Albite.Reader.App.View.Controls
     public class BookmarkControl : HeaderedContentControl
     {
         public static readonly DependencyProperty BookmarkProperty
-            = DependencyProperty.Register("Bookmark", typeof(Bookmark), typeof(BookmarkControl),
+            = DependencyProperty.Register("Bookmark", typeof(IBookmark), typeof(BookmarkControl),
             new PropertyMetadata(onBookmarkChanged));
 
         public IBookmark Bookmark
