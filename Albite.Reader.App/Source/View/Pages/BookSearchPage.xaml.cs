@@ -79,7 +79,11 @@ namespace Albite.Reader.App.View.Pages
 
         private void SearchControl_Loaded(object sender, RoutedEventArgs e)
         {
+            // Add the search handler
             SearchControl.SearchInitiated += SearchControl_SearchInitiated;
+
+            // And focus
+            SearchControl.Focus();
         }
 
         void SearchControl_SearchInitiated(SearchControl sender, string args)
