@@ -74,7 +74,20 @@ namespace Albite.Reader.App.View.Pages
 
         private void BookmarkControl_Tap(object sender, GEArgs e)
         {
+            // No need to continue the search if it's still active
             cancelCurrentTask();
+
+            // Get the control
+            BookmarkControl control = (BookmarkControl)sender;
+
+            // Get the book presenter
+            BookPresenter bookPresenter = App.Context.BookPresenter;
+
+            // Update the reading location
+            bookPresenter.HistoryStack.AddNewLocation(control.Bookmark.BookLocation);
+
+            // Go back to ReaderPage
+            NavigationService.GoBack();
         }
 
         private void SearchControl_Loaded(object sender, RoutedEventArgs e)
