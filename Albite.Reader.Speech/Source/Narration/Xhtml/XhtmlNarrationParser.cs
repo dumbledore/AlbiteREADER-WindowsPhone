@@ -199,7 +199,25 @@ namespace Albite.Reader.Speech.Narration.Xhtml
             private string getLanguage(XElement element)
             {
                 XAttribute attribute = element.Attribute(LangAttributeName);
-                return attribute != null ? attribute.Value : null;
+                if (attribute != null)
+                {
+                    // get the text
+                    string language = attribute.Value;
+
+                    // normalize. This fixes issue #108
+                    if (settings.BaseVoice.Language.StartsWith(language + "-", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return settings.BaseVoice.Language;
+                    }
+                    else
+                    {
+                        return language;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }
