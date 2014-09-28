@@ -80,6 +80,10 @@ namespace Albite.Reader.App.View.Pages
             // Fill the books
             BooksList.ItemsSource = books;
 
+            // Are there any books to show?
+            NoBooksFoundText.Visibility = booksArray.Length > 0
+                    ? Visibility.Collapsed : Visibility.Visible;
+
             LayoutRoot.Visibility = Visibility.Visible;
             WaitText.Visibility = Visibility.Collapsed;
             ApplicationBar.IsVisible = true;
@@ -143,6 +147,12 @@ namespace Albite.Reader.App.View.Pages
                 // Remove from the observable collection and
                 // therefore from the ListBox
                 books.Remove(book);
+
+                if (books.Count == 0)
+                {
+                    // No books found
+                    NoBooksFoundText.Visibility = Visibility.Visible;
+                }
             }
         }
     }

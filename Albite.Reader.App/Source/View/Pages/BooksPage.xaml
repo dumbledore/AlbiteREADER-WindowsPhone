@@ -56,6 +56,14 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <TextBlock
+                x:Name="NoBooksFoundText"
+                Style="{StaticResource PhoneTextLargeStyle}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Opacity=".5">
+                Your library is empty.
+            </TextBlock>
         </Grid>
     </Grid>
     <TextBlock x:Name="WaitText"  VerticalAlignment="Center" HorizontalAlignment="Center">
