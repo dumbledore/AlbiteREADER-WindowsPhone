@@ -168,7 +168,7 @@ namespace Albite.Reader.BookLibrary.Search
                 string text = node.Value;
 
                 // keep searching for this string
-                for (int i = indexOf(text); i >= 0; i = indexOf(text, i))
+                for (int i = indexOf(text); i >= 0; i = indexOf(text, i + 1))
                 {
                     // cancel if needed
                     cancelToken.ThrowIfCancellationRequested();
