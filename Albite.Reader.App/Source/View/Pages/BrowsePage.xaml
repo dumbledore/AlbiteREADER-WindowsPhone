@@ -60,7 +60,7 @@
                 IsIndeterminate="True"
                 Opacity=".85"
                 Text="Accessing service..." />
-        <albite:VoiceSearchControl
+        <albite:SearchControl
             x:Name="SearchPanel"
             Visibility="Collapsed"
             Loaded="SearchPanel_Loaded"

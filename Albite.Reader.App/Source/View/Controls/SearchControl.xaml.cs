@@ -8,14 +8,14 @@ using Albite.Reader.Core.Collections;
 
 namespace Albite.Reader.App.View.Controls
 {
-    public partial class VoiceSearchControl : UserControl, IDisposable
+    public partial class SearchControl : UserControl, IDisposable
     {
-        public VoiceSearchControl()
+        public SearchControl()
         {
             InitializeComponent();
         }
 
-        public event TypedEventHandler<VoiceSearchControl, string> SearchInitiated;
+        public event TypedEventHandler<SearchControl, string> SearchInitiated;
 
         private readonly CachedRecognizer cachedRecognizer = new CachedRecognizer();
 

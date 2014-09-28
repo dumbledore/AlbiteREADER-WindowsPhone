@@ -169,8 +169,8 @@
     <Compile Include="Source\View\Controls\ThemeControl.cs" />
     <Compile Include="Source\View\Controls\TocControl.cs" />
     <Compile Include="Source\View\Controls\VoiceControl.cs" />
-    <Compile Include="Source\View\Controls\VoiceSearchControl.xaml.cs">
-      <DependentUpon>VoiceSearchControl.xaml</DependentUpon>
+    <Compile Include="Source\View\Controls\SearchControl.xaml.cs">
+      <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\View\Controls\WaitControl.xaml.cs">
       <DependentUpon>WaitControl.xaml</DependentUpon>
@@ -336,7 +336,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\View\Controls\VoiceSearchControl.xaml">
+    <Page Include="Source\View\Controls\SearchControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

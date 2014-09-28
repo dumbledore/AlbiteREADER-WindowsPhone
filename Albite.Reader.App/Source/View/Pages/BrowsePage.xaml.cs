@@ -463,7 +463,7 @@ namespace Albite.Reader.App.View.Pages
             }
         }
 
-        private void SearchPanel_SearchInitiated(VoiceSearchControl sender, string searchText)
+        private void SearchPanel_SearchInitiated(SearchControl sender, string searchText)
         {
             // Cancel any tasks
             cancelCurrentTask();
