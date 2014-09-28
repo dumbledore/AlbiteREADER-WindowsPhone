@@ -36,9 +36,6 @@ namespace Albite.Reader.BookLibrary.Search
             // cache total length as double
             double total = parser.TotalLength;
 
-            // current offset
-            int offset = 0;
-
             List<IBookmark> results = new List<IBookmark>();
 
             foreach (Result result in parser.Results)
@@ -54,9 +51,6 @@ namespace Albite.Reader.BookLibrary.Search
 
                 // And finally, the bookmark
                 results.Add(new BookSeekerBookmark(bookLocation, result.Text));
-
-                // Update the current offset
-                offset += result.Text.Length;
             }
 
             return results.AsReadOnly();
