@@ -90,12 +90,6 @@ namespace Albite.Reader.App.View.Pages
             // Clear currently found results
             searchResults.Clear();
 
-            // Show indication
-            ProgressIndicator progress = new ProgressIndicator();
-            progress.IsIndeterminate = true;
-            progress.IsVisible = true;
-            SystemTray.ProgressIndicator = progress;
-
             // Initiate search
             CancellationTokenSource cts = new CancellationTokenSource();
             currentTask = new CancellableTask(search(args, cts.Token), cts);
@@ -103,6 +97,12 @@ namespace Albite.Reader.App.View.Pages
 
         private async Task search(string query, CancellationToken ct)
         {
+            // Show indication
+            ProgressIndicator progress = new ProgressIndicator();
+            progress.IsIndeterminate = true;
+            progress.IsVisible = true;
+            SystemTray.ProgressIndicator = progress;
+
             await seeker.SearchAsync(query, ct);
 
             // Indicate search has finished
