@@ -30,6 +30,9 @@ namespace Albite.Reader.BookLibrary.Search
         {
             Parser parser = getParser();
 
+            // Now search for the query
+            parser.Parse();
+
             // cache total length as double
             double total = parser.TotalLength;
 
