@@ -50,6 +50,7 @@
                 Style="{StaticResource PhoneTextLargeStyle}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
+                Visibility="Collapsed"
                 Opacity=".5">
                 No results found
             </TextBlock>
