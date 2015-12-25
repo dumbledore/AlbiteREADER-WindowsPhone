@@ -117,14 +117,14 @@ namespace Albite.Reader.App.View.Controls
             private readonly ReaderControl control;
 
             private BookPresenter bookPresenter;
-            private Albite.Reader.Engine.Engine engine;
+            private IEngine engine;
 
             public EnginePresenter(ReaderControl control)
             {
                 this.control = control;
             }
 
-            public Albite.Reader.Engine.Engine Engine
+            public IEngine Engine
             {
                 get { return engine; }
             }
