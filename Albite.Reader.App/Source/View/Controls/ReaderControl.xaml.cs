@@ -245,7 +245,7 @@ namespace Albite.Reader.App.View.Controls
                 }
 
                 return (string)control.WebBrowser.InvokeScript(
-                    "albite_notify", new string[] { message });
+                    Engine.NotifyFunction, new string[] { message });
             }
 
             public void LoadingStarted()

@@ -45,5 +45,10 @@ namespace Albite.Reader.Engine
         /// </summary>
         /// <param name="message">JSON-encoded message from the JS client</param>
         void ReceiveMessage(string message);
+
+        /// <summary>
+        /// The name of the function that is used to contact the JSEngine
+        /// </summary>
+        string NotifyFunction { get; }
     }
 }

@@ -12,6 +12,8 @@ namespace Albite.Reader.Engine
     {
         private static readonly string tag = "Engine";
 
+        public string NotifyFunction { get { return "albite_notify";  } }
+
         public BookPresenter BookPresenter { get; private set; }
         public LayoutSettings Settings { get; private set; }
 
