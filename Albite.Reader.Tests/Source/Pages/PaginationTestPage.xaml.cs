@@ -44,8 +44,10 @@ namespace Albite.Reader.Tests.Pages
         private void runTest()
         {
             Library library = new Library(PaginationTest.TestFolder);
+
             // Should've been added by PaginationTest
-            Book book = library.Books[1];
+            int id = int.Parse(NavigationContext.QueryString["id"]);
+            Book book = library.Books[id];
 
             chapterNumber = int.Parse(NavigationContext.QueryString["chapterNumber"]);
             expectedPageCount = int.Parse(NavigationContext.QueryString["pageCount"]);

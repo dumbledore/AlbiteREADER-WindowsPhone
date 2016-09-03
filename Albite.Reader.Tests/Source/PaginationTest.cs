@@ -13,10 +13,10 @@ namespace Albite.Reader.Tests
     {
         public static readonly string TestFolder = "Test/Pagination/Library";
 
-        private string book;
-        private int chapterNumber;
-        private int expectedPageCount;
-        private NavigationService navigation;
+        private string _book;
+        private int _chapterNumber;
+        private int _expectedPageCount;
+        private NavigationService _navigation;
 
         public PaginationTest(
             string book,
@@ -24,13 +24,13 @@ namespace Albite.Reader.Tests
             int expectedPageCount,
             NavigationService navigation)
         {
-            this.book = book;
-            this.chapterNumber = chapterNumber;
-            this.expectedPageCount = expectedPageCount;
-            this.navigation = navigation;
+            _book = book;
+            _chapterNumber = chapterNumber;
+            _expectedPageCount = expectedPageCount;
+            _navigation = navigation;
         }
 
-        protected override void TestImplementation()
+        protected override async void TestImplementation()
         {
             Log("Removing previous data");
             using (IsolatedStorage a = new IsolatedStorage(TestFolder))
@@ -40,13 +40,12 @@ namespace Albite.Reader.Tests
 
             Library library = new Library(TestFolder);
             Log("Adding new book...");
-            LibraryHelper.AddEpubFromResource("Test/epub/aliceDynamic.epub", library);
+            Book book = await LibraryHelper.AddEpubFromResource("Test/epub/aliceDynamic.epub", library);
 
             // Navigate
-            navigation.Navigate(new Uri(
-                "/Source/Pages/PaginationTestPage.xaml?" +
-                "chapterNumber=" + chapterNumber + "&" +
-                "pageCount=" + expectedPageCount, UriKind.Relative));
+            _navigation.Navigate(new Uri(String.Format(
+                "/Source/Pages/PaginationTestPage.xaml?chapterNumber={0}&pageCount={1}&id={2}",
+                _chapterNumber, _expectedPageCount, book.Id), UriKind.Relative));
         }
     }
 }

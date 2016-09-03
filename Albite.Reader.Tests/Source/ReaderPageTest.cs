@@ -3,21 +3,22 @@ using Albite.Reader.Core.Test;
 using Albite.Reader.App;
 using System;
 using System.Windows.Navigation;
+using Albite.Reader.BookLibrary;
 
 namespace Albite.Reader.Tests
 {
     public class ReaderPageTest : TestCase
     {
-        private string book;
-        private NavigationService navigation;
+        private string _book;
+        private NavigationService _navigation;
 
         public ReaderPageTest(string book, NavigationService navigation)
         {
-            this.book = book;
-            this.navigation = navigation;
+            _book = book;
+            _navigation = navigation;
         }
 
-        protected override void TestImplementation()
+        protected override async void TestImplementation()
         {
             // Get the context
             Context context = ((IApplication) App.Current).CurrentContext;
@@ -26,10 +27,10 @@ namespace Albite.Reader.Tests
             BookLibrary.Library library = context.Library;
 
             // Add the book
-            LibraryHelper.AddEpubFromResource(book, library);
+            Book book = await LibraryHelper.AddEpubFromResource(_book, library);
 
             // Navigate
-            navigation.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/ReaderPage.xaml?id=1", UriKind.Relative));
+            _navigation.Navigate(new Uri("/Albite.Reader.App;component/Source/View/Pages/ReaderPage.xaml?id=" + book.Id, UriKind.Relative));
         }
     }
 }
