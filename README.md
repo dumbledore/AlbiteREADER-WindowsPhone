@@ -1,5 +1,8 @@
 # Albite READER for _Windows Phone_
-An _ePub_ reader for _Windows Phone_.
+An open-source _ePub_ reader for _Windows Phone_ developed by [Svetlin Ankov][1].
+
+## Video Demo
+[![Albite READER for Windows Phone Video Demo](http://img.youtube.com/vi/tZoOaxL9MLo/0.jpg)](https://www.youtube.com/watch?v=tZoOaxL9MLo "Albite READER for Windows Phone Video Demo")
 
 ## Features
 - high-quality layout using _HTML5_ rendering
@@ -15,13 +18,14 @@ An _ePub_ reader for _Windows Phone_.
 _Windows Phone_ 8.0 and higher.
 
 ## Installation
-It can be installed directly from the [Windows Phone Store][1]
+It can be installed directly from the [Windows Phone Store][2]
 
 ## Help
-For more detailed information, on using the app, check the [tutorial][2] on the various features on youtube. 
+For more detailed information, on using the app, check the [tutorial][3] on the various features on youtube. 
 
 ## License
 It is released under the _Apache_ 2.0 License.
 
-[1]: https://www.microsoft.com/store/productid/9NBLGGH4XZ08 "Get it at the Store"
-[2]: https://www.youtube.com/playlist?list=PLHZHS_1xDlfBmQnry20BsYfqixvxmaZav "How to use Albite READER on Windows Phone"
+[1]: http://ankov.blogspot.bg/ "My blog"
+[2]: https://www.microsoft.com/store/productid/9NBLGGH4XZ08 "Get it at the Store"
+[3]: https://www.youtube.com/playlist?list=PLHZHS_1xDlfBmQnry20BsYfqixvxmaZav "How to use Albite READER on Windows Phone"
